@@ -21,7 +21,7 @@
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	############################################################################################################################################
 
-		 include_once ($path.'/Lib/ws-globals-functions.php');
+		 include_once ('./../Lib/ws-globals-functions.php');
 
 	############################################################################################################################################
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE INSTALAÇÃO EXECUTA
@@ -118,8 +118,8 @@
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE VALIDAÇÃO DE CONEXÃO DO MYSQL
 	############################################################################################################################################
 		if (isset($_POST['function']) && $_POST['function'] == "testMySQL") {
-			@mysqli_connect($_POST['SERVIDOR_BD'], $_POST['USUARIO_BD'], $_POST['SENHA_BD'], $_POST['NOME_BD']);
-			if (mysqli_connect_errno()) {
+			mysqli_connect($_POST['SERVIDOR_BD'], $_POST['USUARIO_BD'], $_POST['SENHA_BD'], $_POST['NOME_BD']);
+			if (mysqli_connect_errno()){
 				echo "0";
 			} else {
 				echo "1";
@@ -161,6 +161,7 @@
 				data: {function:"testMySQL",NOME_BD:NOME_BD,USUARIO_BD:USUARIO_BD,SENHA_BD:SENHA_BD,SERVIDOR_BD:SERVIDOR_BD,},
 				error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 			}).done(function(data) { 
+				console.log(data)
 				if(data=='1'){
 					$("#formulario").removeClass("mysqlFail")
 					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./App/Templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})

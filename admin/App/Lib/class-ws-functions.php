@@ -12,6 +12,22 @@
 	##########################################################################################################
 	# RETORNA UM TOKEN INÉDITO NA COLUNA SETADA 
 	##########################################################################################################
+		function root(){
+			$tk 					=	_crypt($type);
+			$setToken				= 	new MySQL();
+	 		$setToken->set_table($tabela);
+			$setToken->set_where($coluna.'="'.$tk.'"');
+			$setToken->select();
+			if($setToken->_num_rows!=0){
+				$tk = _crypt();
+				_token($tabela,$coluna);
+			}else{
+				return $tk;
+			}
+		}
+	##########################################################################################################
+	# RETORNA UM TOKEN INÉDITO NA COLUNA SETADA 
+	##########################################################################################################
 		function _token($tabela,$coluna,$type="all"){
 			$tk 					=	_crypt($type);
 			$setToken				= 	new MySQL();
