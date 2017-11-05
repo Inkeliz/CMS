@@ -161,7 +161,6 @@
 				data: {function:"testMySQL",NOME_BD:NOME_BD,USUARIO_BD:USUARIO_BD,SENHA_BD:SENHA_BD,SERVIDOR_BD:SERVIDOR_BD,},
 				error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 			}).done(function(data) { 
-				console.log(data)
 				if(data=='1'){
 					$("#formulario").removeClass("mysqlFail")
 					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./App/Templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
