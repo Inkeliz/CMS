@@ -1,4 +1,4 @@
-<?
+<?php
 	include_once(__DIR__.'/../../Lib/class-ws-v1.php');
 	error_reporting(E_ALL); 
 	$licenseData =json_decode(file_get_contents(__DIR__.'/../../Templates/json/ws-update.json'));
@@ -11,7 +11,7 @@
 <meta name="viewport"  content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="./App/Templates/css/fontes/fonts.css" 											type="text/css" media="all" />
 <link rel="stylesheet" href="./App/Templates/css/websheep/modulos/login/estrutura.css" 						type="text/css" media="all" />
-<link rel="stylesheet" href="./App/Templates/css/websheep/modulos/login/desktop.css?v=?<?=rand(0,999999)?>" 	type="text/css" media="all" />
+<link rel="stylesheet" href="./App/Templates/css/websheep/modulos/login/desktop.css?v=?<?php echo rand(0,999999)?>" 	type="text/css" media="all" />
 <link rel="stylesheet" href="./App/Templates/css/chosen/chosen.css" 											type="text/css" media="all" />
 <link rel="stylesheet" href="./App/Templates/css/websheep/theme_blue.min.css" 									type="text/css" media="all" />
 <link rel="stylesheet" href="./App/Templates/css/websheep/funcionalidades.css" 								type="text/css" media="all" />
@@ -40,7 +40,7 @@ iframe{
 <div id="container">
 <div id="login">
 	<div id="logomarca">
-        <spam id="h3"><?=$licenseData->version?></spam>
+        <spam id="h3"><?php echo $licenseData->version?></spam>
         <img src="./App/Templates/img/websheep/logoIcon.png">
     </div>
 	<form  id="formulario">

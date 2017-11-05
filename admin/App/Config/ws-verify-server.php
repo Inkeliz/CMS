@@ -37,10 +37,10 @@ function return_bytes($val) {
 $bug = 0;
 $errors = '';
 
-if(count($_GETURL)>3){
-	$bug = 1;
-	$errors.= "<div>• O WebSheep não funciona dentro de subdiretórios. Instale o <b>WS</b> no root do seu servidor ou configure <b>O VIRTUALHOST</b> do seu servidor local. </div>";
-}
+// if(count($_GETURL)>3){
+// 	$bug = 1;
+// 	$errors.= "<div>• O WebSheep não funciona dentro de subdiretórios. Instale o <b>WS</b> no root do seu servidor ou configure <b>O VIRTUALHOST</b> do seu servidor local. </div>";
+// }
 
 if (version_compare(PHP_VERSION, '5.6.4') < 0) {
 	$bug = 1;

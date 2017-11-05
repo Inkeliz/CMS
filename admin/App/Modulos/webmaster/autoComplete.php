@@ -1,4 +1,4 @@
- <? 
+ <?php
 function mostraDirJson($dir, $oq = ""){
 	global $output;
     if (is_dir($dir)) {

@@ -1,71 +1,27 @@
 <?php
+
 	############################################################################################################################################
 	# ESTE É PRATICAMENTE O 1° ARQUIVO A SER ABERTO NO SISTEMA, QUE É A TELA DE INSTALAÇÃO
 	############################################################################################################################################
 	#
-	#			SIM, AINDA NÃO ESTÁ EM MVC!!!
+	#			SIM!!! AINDA NÃO ESTÁ EM MVC !
 	#			Em breve cuidarei disso!
 	#
+	############################################################################################################################################	
+	############################################################################################################################################	
+
+
+
 	############################################################################################################################################
 	# CAPTAMOS A BASE DO SISTEMA
 	############################################################################################################################################
 		$path = basename(realpath(__DIR__ . '/../'));
-	############################################################################################################################################
-	# GERA UMA SENHA PARA OS CAMPOS DO ARQUIVO DE CONFIGURAÇÃO
-	############################################################################################################################################
-		function generatePassword($length = 8) {
-			$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-			$count = mb_strlen($chars);
-			for ($i = 0, $result = ''; $i < $length; $i++) {
-				$index = rand(0, $count - 1);
-				$result .= mb_substr($chars, $index, 1);
-			}
-			return $result;
-		}
-
-	###########################################################################
-	#	FUNÇÃO PARA EXCLUSÃO DE DIRETÓRIOS INTEIROS 
-	###########################################################################
-	function deleteDir($Dir) {
-		if ($dd = @opendir($Dir)) {
-			while (false !== ($Arq = readdir($dd))) {
-				if ($Arq != "." && $Arq != "..") {
-					$Path = "$Dir/$Arq";
-					if (is_dir($Path)) {
-						ws_delete_dir($Path);
-					} elseif (is_file($Path)) {
-						unlink($Path);
-					}
-				}
-			}
-			closedir($dd);
-		}
-		@rmdir($Dir);
-	}
-
 
 	############################################################################################################################################
-	# COPIA UM DIRETÓRIO INTEIRO PARA OUTRO LOCAL
+	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	############################################################################################################################################
-		function CopiaDir($DirFont, $DirDest) {
-			if (!file_exists($DirDest)) {
-				mkdir($DirDest);
-			}
-			if ($dd = opendir($DirFont)) {
-				while (false !== ($Arq = readdir($dd))) {
-					if ($Arq != "." && $Arq != "..") {
-						$PathIn  = "$DirFont/$Arq";
-						$PathOut = "$DirDest/$Arq";
-						if (is_dir($PathIn)) {
-							CopiaDir($PathIn, $PathOut);
-						} elseif (is_file($PathIn)) {
-							copy($PathIn, $PathOut);
-						}
-					}
-				}
-				closedir($dd);
-			}
-		}
+
+		 include_once ($path.'/Lib/ws-globals-functions.php');
 
 	############################################################################################################################################
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE INSTALAÇÃO EXECUTA
@@ -80,7 +36,7 @@
 			############################################################################################################################################
 			# SEPARA AS VARIÁVEIS PARA GRAVAÇÃO DO ARQUIVO
 			############################################################################################################################################
-			$isso          = Array(
+			$isso= Array(
 				"{DOMINIO}",
 				"{PREFIX_TABLES}",
 				"{NOME_BD}",
@@ -127,7 +83,7 @@
 			# GERA OS TOKENS DE ACESSO DO CONFIG
 			############################################################################################################################################
 			foreach ($isso_Password as $value) {
-				$ashTokens[] = generatePassword(rand(15, 20));
+				$ashTokens[] = createPass(rand(15, 20));
 			}
 
 			##########################################################################################################################################
@@ -172,56 +128,11 @@
 		}
 
 	############################################################################################################################################
-	# COPIAMOS O HTACCES PADRÃO DO SISTEMA PARA O CAMINHO ROOT
+	# IMPORTAMOS AGORA O ARQUIVO RESPONSAVEL POR CRIAR TODA ESTRUTURA DE DIRETORIOS E ARQUIVOS INICIAIS
 	############################################################################################################################################
-		copy(ROOT_DOCUMENT.'/admin/App/Templates/txt/ws-first-htaccess.txt', ROOT_DOCUMENT . '/.htaccess');
+	include($path."/Core/ws-set-estructure.php");
 
-	############################################################################################################################################
-	# CRIAMOS TODOS OS DIRETORIOS DO WEBSITE A SER MONTADO
-	############################################################################################################################################
-	
-		deleteDir(ROOT_DOCUMENT 			.'/ws-install-master');
-		@mkdir(ROOT_DOCUMENT 				.'/website');
-		@mkdir(ROOT_DOCUMENT 				.'/ws-bkp');
-		@mkdir(ROOT_DOCUMENT 				.'/ws-cache');
-		@mkdir(ROOT_DOCUMENT 				.'/ws-tmp',0700);
-		@mkdir(ROOT_DOCUMENT 				.'/website/includes');
-		@mkdir(ROOT_DOCUMENT 				.'/website/plugins');
-		CopiaDir(ROOT_DOCUMENT 				.'/admin/App/Modulos/plugins', ROOT_DOCUMENT . '/website/plugins');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/upload-files');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/upload-files/thumbnail');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/libraries');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/css');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/js');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/img');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/template');
-		@mkdir(ROOT_DOCUMENT 				.'/website/assets/fonts');
-		@mkdir(ROOT_DOCUMENT 				.'/ws-shortcodes');
 
-		@copy(ROOT_DOCUMENT."/admin/App/Lib/my-shortcode.php",ROOT_DOCUMENT."/ws-shortcodes/my-shortcode.php");
-		if (!file_exists(ROOT_DOCUMENT 		.'/website/includes/header.php')) 	@file_put_contents(ROOT_DOCUMENT . '/website/includes/header.php', 'Header<hr>');
-		if (!file_exists(ROOT_DOCUMENT 		.'/website/includes/erro404.php')) 	@file_put_contents(ROOT_DOCUMENT . '/website/includes/erro404.php', 'ERRO 404!');
-		if (!file_exists(ROOT_DOCUMENT 		.'/website/includes/inicio.php')) 	@file_put_contents(ROOT_DOCUMENT . '/website/includes/inicio.php', 'Olá mundo!');
-		if (!file_exists(ROOT_DOCUMENT 		.'/website/includes/footer.php')) 	@file_put_contents(ROOT_DOCUMENT . '/website/includes/footer.php', '<hr>Footer');
-		if (file_exists(ROOT_DOCUMENT 		.'/website/index.php')) 			@rename(ROOT_DOCUMENT . '/website/index.php', ROOT_DOCUMENT . '/website/index_bkp.php');
-																				@file_put_contents(ROOT_DOCUMENT 	.'/website/assets/.htaccess', 'RewriteEngine Off');
-
-	######################################################################################################################################
-	# CASO NÃO TENHA AINDA O ARQUIVOO NO LUGAR CERTO E ESTEJA FAZENDO UPDATE AO INVEZ DE INSTALL
-	######################################################################################################################################
-		file_put_contents(ROOT_DOCUMENT.'/ws-bkp/.htaccess', "<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteCond %{SCRIPT_FILENAME} !-f\nRewriteRule ^(.*)$ ws-download-template.php\n</IfModule>");
-		copy(ROOT_DOCUMENT."/admin/App/Lib/ws-download-template.php", ROOT_DOCUMENT."/ws-bkp/ws-download-template.php");
-
-	############################################################################################################################################
-	# SIMPLES FUNÇÃO QUE RETORNA UMA SENHA CRYPT COM MD5
-	############################################################################################################################################
-		function _crypt() {
-			$CodeCru        = @crypt(md5(rand(0, 50)));
-			$vowels         = array("$", "/", ".", '=');
-			$onlyconsonants = str_replace($vowels, "", $CodeCru);
-			return substr($onlyconsonants, 1);
-		}
 ?>
 <html lang="pt-br" class='bgradial01' id="html">
 <head>

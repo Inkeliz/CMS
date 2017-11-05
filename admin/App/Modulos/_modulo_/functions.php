@@ -123,7 +123,7 @@
 		$getPath->set_limit(1);
 		$getPath->select();
 		$getPath = $getPath->fetch_array[0]['url_plugin'];
-		CopiaDir(ROOT_ADMIN . '/App/Modulos/plugins/padrao', ROOT_WEBSITE . '/' . $getPath . '/padrao_' . date('d-m-Y_H-i'));
+		_copyFolder(ROOT_ADMIN . '/App/Modulos/plugins/padrao', ROOT_WEBSITE . '/' . $getPath . '/padrao_' . date('d-m-Y_H-i'));
 		//id_user,id_ferramenta ,id_item, titulo,descricao,detalhes,tabela,$type
 		ws::insertLog($user->get('id'),0 ,0,"Plugin","Criou um novo plugin",$_REQUEST['path'] ,"","system");
 		exit;

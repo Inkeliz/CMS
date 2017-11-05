@@ -2,6 +2,7 @@
 	include_once(__DIR__.'/../../../ws-config.php');
 	include_once(ROOT_ADMIN.'/App/Lib/ws-connect-mysql.php');
 	include_once(ROOT_ADMIN.'/App/Lib/class-ws-mysql.php');
+	include_once(ROOT_ADMIN.'/App/Lib/ws-globals-functions.php');
 	include_once(ROOT_ADMIN.'/App/Lib/class-ws-functions.php');
 	include_once(ROOT_ADMIN.'/App/Lib/class-template.php');
 	include_once(ROOT_ADMIN.'/App/Lib/class-cookie.php');

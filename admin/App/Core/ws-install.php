@@ -1,6 +1,14 @@
-<? 
-	include_once(ROOT_DOCUMENT.'/ws-config.php');
-	$php_version = file_get_contents(ROOT_ADMIN.'/App/Templates/txt/ws-php-version.txt');
+<?php
+	##########################################################################################################
+	# 	PUXA OS DADOS DE CONFIGURAÇÃO DO SISTEMA
+	##########################################################################################################
+		include_once(ROOT_DOCUMENT.'/ws-config.php');
+
+	##########################################################################################################
+	# 	FUNÇÕES GLOBAIS DO SISTEMA
+	##########################################################################################################
+		include_once (ROOT_ADMIN.'/App/Lib/ws-globals-functions.php');
+
 	##########################################################################################
 	#  VERSÃO DO SISTEMA   
 	##########################################################################################
@@ -10,29 +18,13 @@
 	#  QUANDO SE UTILIZA UM ARQUIVO, NÃO PODEMOS FAZER ELE SE AUTO EXCLUIR, PORTANTO    
 	#  QUANDO FIZEMOS O INSTALL OU UPDATE EXCLUI O DIRETÓRIO CASO EXISTA
 	######################################################################################################################################	
-	function ws_delete_dir($Dir) {
-		if ($dd = @opendir($Dir)) {
-			while (false !== ($Arq = readdir($dd))) {
-				if ($Arq != "." && $Arq != "..") {
-					$Path = "$Dir/$Arq";
-					if (is_dir($Path)) {
-						ws_delete_dir($Path);
-					} elseif (is_file($Path)) {
-						unlink($Path);
-					}
-				}
-			}
-			closedir($dd);
-		}
-		@rmdir($Dir);
-	}
-	ws_delete_dir(ROOT_DOCUMENT.'/ws-install-master/');
+	_excluiDir(ROOT_DOCUMENT.'/ws-install-master/');
 
 	######################################################################################################################################
 	# CASO NÃO TENHA AINDA O ARQUIVOO NO LUGAR CERTO E ESTEJA FAZENDO UPDATE AO INVEZ DE INSTALL
 	######################################################################################################################################
 		file_put_contents(ROOT_DOCUMENT.'/ws-bkp/.htaccess', "<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteCond %{SCRIPT_FILENAME} !-f\nRewriteRule ^(.*)$ ws-download-template.php\n</IfModule>");
-		copy(ROOT_ADMIN."/App/Lib/ws-download-template.php", ROOT_DOCUMENT."/ws-bkp/ws-download-template.php");
+		_copy(ROOT_ADMIN."/App/Lib/ws-download-template.php", ROOT_DOCUMENT."/ws-bkp/ws-download-template.php");
 
 	######################################################################################################################################
 	######################################################################################################################################
