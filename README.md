@@ -13,7 +13,9 @@ O WebSheep é um aplicativo usado para criar, editar, gerenciar e publicar conte
 ## Release da nova versão
 
 • Instalação CrossFolder
+
 • Melhorias no Front-End
+
 • Melhorias na segurança
 
 
