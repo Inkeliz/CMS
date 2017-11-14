@@ -1,0 +1,52 @@
+<IfModule mod_rewrite.c>
+	#########################################################################################
+		Options -Indexes -MultiViews +FollowSymLinks 
+
+	#########################################################################################
+	# 	ENVIAMOS AS VARIÁVEIS AO PHP COM OS PATHS DE INSTALAÇÃO 
+	#########################################################################################
+		SetEnv ROOT_WEBSHEEP 	{{ROOT_WEBSHEEP}}
+		SetEnv INCLUDE_PATH 	{{INCLUDE_PATH}}
+
+	#########################################################################################
+	# 	ATIVAMOS  O RewriteEngine 
+	#########################################################################################
+		RewriteEngine On
+
+	#########################################################################################
+	# 	SETAMOS A BASE DOS ARQUIVOS 
+	#########################################################################################
+		RewriteBase {{ROOT_WEBSHEEP}}website/
+
+	#########################################################################################
+	# 	URL'S GLOBAIS DO SISTEMA
+	#########################################################################################
+		RewriteCond %{SCRIPT_FILENAME} !-f
+		RewriteCond	%{SCRIPT_FILENAME} !-d
+		RewriteRule	^ws-img/(.*)$ 			./../admin/App/Core/ws-img.php 							[L]	
+		RewriteRule	^ws-leads/(.*)$ 		./../admin/App/Core/ws-leads.php 						[L]
+		RewriteRule	^ws-class.php$ 			./../admin/App/Lib/class-ws-v1.php						[L]
+		RewriteRule	^ws-download-now/(.*)$ 	./../admin/App/Core/ws-download-now.php?filename=$1		[L]
+		RewriteRule	^ws-gz/(.*)$ 			./../admin/App/Core/ws-gz.php?type=admin				[L]
+		RewriteRule	^ws-gzip/(.*)$ 			./../admin/App/Core/ws-gz.php?type=website				[L]
+		RewriteRule	^ws-video/(.*)$ 		./../admin/App/Core/ws-video.php 						[L]
+		RewriteRule	^ws-download/(.*)$ 		./../admin/App/Core/ws-download.php 					[L]
+		RewriteRule	^ws-rest/(.*)$ 			./../admin/App/Core/ws-rest.php?rest=$1					[L]	
+		RewriteRule	^ws-branches$			./../admin/App/Core/ws-branches.php 					[L]
+		RewriteRule	^ws-commits$			./../admin/App/Core/ws-commits.php 						[L]
+
+
+	#########################################################################################
+	# 	VERIFICAMOS SE A URL SETADA É UM ARQUIVO EXISTENTE
+	#########################################################################################
+		RewriteCond %{SCRIPT_FILENAME}/../website/$1 -f			
+		RewriteCond %{SCRIPT_FILENAME}/../website/$1 !-d
+		RewriteRule ^(.*)$		$1		[L]
+
+	#########################################################################################
+	# 	QUALQUER OUTRA URL 
+	#########################################################################################
+		RewriteCond %{SCRIPT_FILENAME} !-f
+		RewriteRule ^(.*)$		./../admin/App/Core/ws-website.php		[L]
+
+</IfModule>
