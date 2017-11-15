@@ -1566,13 +1566,18 @@
 			$a = explode("{{" . $this->aliasStr, $this->template);
 			foreach ($a as $str) {
 				if (stripos($str, '}}')) {
+
 					$key    = substr($str, 0, stripos($str, '}}'));
 					$newKey = explode(',', $key);
-					$COLUNA = ($newKey[0] != "id" && $this->thisType == "item") ? $this->ws_prefix_ferramenta . $newKey[0] : $newKey[0];
+					$COLUNA = (
+									$newKey[0]		!= "id" 		&& 
+									$newKey[0] 		!= "ws_count" 	&&
+									$newKey[0] 		!= "ws_total" 	&&
+									$this->thisType == "item" 		
+								) ? $this->ws_prefix_ferramenta . $newKey[0] : $newKey[0];
 					if (count($newKey) == 1) {
 						$b[] = "{{" . $this->aliasStr . $key . "}}";
 						$c[] = @$retorno[$COLUNA];
-
 						// se tiver 2 parâmetros
 					} elseif (count($newKey) >= 2) {
 						$verify = implode(array_slice($newKey, 1), ',');
@@ -1594,6 +1599,7 @@
 							$c[] = $func($vars);
 						}
 					}
+					
 				}
 			}
 			$processo = str_replace($b, $c, $this->template);
@@ -1860,7 +1866,6 @@
 			
 			$filtrosLenght = count($this->filterColum);
 			$arrayFetchL   = $this->_num_rows;
-			
 			if ($filtrosLenght) {
 				for ($i = 0; $i < $arrayFetchL; $i++) {
 					for ($f = 0; $f < $filtrosLenght; $f++) {
@@ -1868,83 +1873,87 @@
 						$funct    = $this->filterFn[$f];
 						$vars     = $this->filterVars[$f];
 						$original = $_busca_->fetch_array[$i][$getColum];
-
 						if ($vars != "") {
 							$original = str_replace("(this)", $original, $vars);
 							$original = explode(',', $original);
 							$original = implode($original, '","');
 						}
-
-						$_busca_->fetch_array[$i]['ws_count']	= $i; 
 						$_busca_->fetch_array[$i][$getColum]	= $funct($original);
 					}
 				}
 			}
 
+			###############################################################################
+			# INSERIMOS AS TAGS ADICIONAIS
+			###############################################################################
+
+	 	  	  $i=0; 
+		      foreach ($_busca_->fetch_array as $key => $value) { 
+		      	$value["ws_count"] = $key;
+		      	$value["ws_total"] = $this->_num_rows;
+		        $_busca_->fetch_array[$key] = $value; 
+		        ++$i; 
+		      } 
+
+	 	  	  $i=0; 
+		      foreach ($_busca_->obj as $key => $value) { 
+		      	$value->{"ws_count"} = $key;
+		      	$value->{"ws_total"} = $this->_num_rows;
+		        $_busca_->obj[$key] = $value; 
+		        ++$i; 
+		      } 
 
 
- 	  $i=0; 
-      foreach ($_busca_->fetch_array as $key => $value) { 
-        $value[$this->ws_prefix_ferramenta . 'ws_count'] = $i; 
-        $value[$this->ws_prefix_ferramenta . 'num_rows'] = $arrayFetchL; 
-        $_busca_->fetch_array[$key]                      = $value; 
-        ++$i; 
-      } 
-
-
+			###############################################################################
+			
 			if ($this->template == "") {
-				array_map(array(
-					__CLASS__,
-					'process_array_newprefix'
-				), $_busca_->fetch_array);
-				array_map(array(
-					__CLASS__,
-					'process_obj_newprefix'
-				), $_busca_->obj);
+				array_map(array(__CLASS__, 'process_array_newprefix'), $_busca_->fetch_array);
+				array_map(array(__CLASS__,'process_obj_newprefix'), $_busca_->obj);
 			} else {
+				
 				if (count($_busca_->fetch_array) == 1) {
+
 					$this->result .= $this->get_template($_busca_->fetch_array[0]);
 				} else {
 					array_map(function($a) {
 						$this->result .= $this->get_template($a);
-					}, $_busca_->fetch_array);
+					},$_busca_->fetch_array);
 				}
 			}
 			
 			return $this;
 		}
-		public function process_obj_newprefix($fetch) {
-			$i=0; 
-			$newColum = Array();
-			foreach ($fetch as $key => $value) {
-				$colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta));
-				if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") {
-					$key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key));
-				}
-				$newColum['ws_count'] 	= $i; 
-				$newColum[$key] 		= $value;
-				++$i;
-			}
-			
-			$this->obj[] = (Object) $newColum;
-		}
 
-		public function process_array_newprefix($fetch) {
-			$i=0; 
-			$newColum = Array();
-			foreach ($fetch as $key => $value) {
-				$colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta));
-				if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") {
-					$key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key));
-				}
-				$newColum['ws_count'] = $i; 
-				$newColum[$key] = $value;
-				++$i;
-			}
-			$this->result[] = $newColum;
-		}
+    public function process_obj_newprefix($fetch) { 
+      $newColum = Array(); 
+      $i=1; 
+      foreach ($fetch as $key => $value) { 
+        $colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta)); 
+        if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") { 
+          $key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key)); 
+        } 
+        $newColum[$key] 		= $value; 
+        ++$i; 
+      } 
+      $this->obj[] = (Object) $newColum; 
+    } 
 
-		
+
+    public function process_array_newprefix($fetch) { 
+      $newColum = Array(); 
+      $i=1; 
+      foreach ($fetch as $key => $value) { 
+        $colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta)); 
+        if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") { 
+          $key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key)); 
+        } 
+        $newColum[$key] = $value; 
+        ++$i; 
+      } 
+      $this->result[] = $newColum; 
+    } 
+
+
 		public function setColum($COLUMNS = "") {
 			$conditions = array(
 				"COUNT"
