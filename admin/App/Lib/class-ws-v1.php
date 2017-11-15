@@ -1868,19 +1868,30 @@
 						$funct    = $this->filterFn[$f];
 						$vars     = $this->filterVars[$f];
 						$original = $_busca_->fetch_array[$i][$getColum];
+
 						if ($vars != "") {
 							$original = str_replace("(this)", $original, $vars);
 							$original = explode(',', $original);
 							$original = implode($original, '","');
 						}
-						$_busca_->fetch_array[$i][$getColum] = $funct($original);
+
+						$_busca_->fetch_array[$i]['ws_count']	= $i; 
+						$_busca_->fetch_array[$i][$getColum]	= $funct($original);
 					}
 				}
 			}
-			foreach ($_busca_->fetch_array as $key => $value) {
-				$value[$this->ws_prefix_ferramenta . 'num_rows'] = $arrayFetchL;
-				$_busca_->fetch_array[$key]                      = $value;
-			}
+
+
+
+ 	  $i=0; 
+      foreach ($_busca_->fetch_array as $key => $value) { 
+        $value[$this->ws_prefix_ferramenta . 'ws_count'] = $i; 
+        $value[$this->ws_prefix_ferramenta . 'num_rows'] = $arrayFetchL; 
+        $_busca_->fetch_array[$key]                      = $value; 
+        ++$i; 
+      } 
+
+
 			if ($this->template == "") {
 				array_map(array(
 					__CLASS__,
@@ -1903,28 +1914,37 @@
 			return $this;
 		}
 		public function process_obj_newprefix($fetch) {
+			$i=0; 
 			$newColum = Array();
 			foreach ($fetch as $key => $value) {
 				$colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta));
 				if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") {
 					$key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key));
 				}
-				$newColum[$key] = $value;
+				$newColum['ws_count'] 	= $i; 
+				$newColum[$key] 		= $value;
+				++$i;
 			}
 			
 			$this->obj[] = (Object) $newColum;
 		}
+
 		public function process_array_newprefix($fetch) {
+			$i=0; 
 			$newColum = Array();
 			foreach ($fetch as $key => $value) {
 				$colum_verify = substr($key, 0, strlen($this->ws_prefix_ferramenta));
 				if ($colum_verify == $this->ws_prefix_ferramenta && $key != "id" && $this->thisType == "item") {
 					$key = substr($key, strlen($this->ws_prefix_ferramenta), strlen($key));
 				}
+				$newColum['ws_count'] = $i; 
 				$newColum[$key] = $value;
+				++$i;
 			}
 			$this->result[] = $newColum;
 		}
+
+		
 		public function setColum($COLUMNS = "") {
 			$conditions = array(
 				"COUNT"
