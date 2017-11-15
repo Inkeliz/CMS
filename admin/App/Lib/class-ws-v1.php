@@ -529,7 +529,8 @@
 							));
 						}
 					}
-					$col = @mysqli_query($_conectMySQLi_, "SELECT   " . mysqli_real_escape_string($_conectMySQLi_,$campo['coluna_mysql']) . "  FROM  " . PREFIX_TABLES . "_model_item");
+					$colunm = ws::preventMySQLInject($campo['coluna_mysql']);
+					$col = @mysqli_query($_conectMySQLi_,"SELECT ".$colunm. " FROM ".PREFIX_TABLES."_model_item");
 					if (!$col) {
 						$s->add_column();
 					}
@@ -1580,20 +1581,18 @@
 								$b[] = "{{" . $key . "}}";
 								$c[] = substr(strip_tags(str_replace("_ws_php_eol_", PHP_EOL, @$retorno[$COLUNA])), 0, $newKey[1]);
 							} else {
-								eval('$result=' . $newKey[1] . '("' . @$retorno[$COLUNA] . '");');
-								$result = str_replace("_ws_php_eol_", PHP_EOL, $result);
+								$result = str_replace("_ws_php_eol_", PHP_EOL, $newKey[1](@$retorno[$COLUNA]));
 								$b[]    = "{{" . $this->aliasStr . $key . "}}";
 								$c[]    = $result;
 							}
 						// se for o campo 1° e depois a função depois parametros
 						} elseif (count($newKey) > 2) {
-							$vars = str_replace("(this)", @$retorno[$COLUNA], implode(array_slice($newKey, 2), '","'));
+							$vars = str_replace("(this)", @$retorno[$COLUNA], implode(array_slice($newKey, 2), '","'));						
 							$func = $newKey[1];
-							eval('$result=' . $func . '("' . $vars . '");');
+
 							$b[] = "{{" . $this->aliasStr . $key . "}}";
-							$c[] = $result;
+							$c[] = $func($vars);
 						}
-						
 					}
 				}
 			}
@@ -1874,8 +1873,7 @@
 							$original = explode(',', $original);
 							$original = implode($original, '","');
 						}
-						eval('$result=' . $funct . '("' . $original . '");');
-						$_busca_->fetch_array[$i][$getColum] = $result;
+						$_busca_->fetch_array[$i][$getColum] = $funct($original);
 					}
 				}
 			}
