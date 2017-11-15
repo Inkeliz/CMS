@@ -1,7 +1,7 @@
-![WebSheep](https://raw.githubusercontent.com/websheep/cms/v.6.2/admin/App/Templates/img/websheep/logoEmail.png)
+![WebSheep](https://raw.githubusercontent.com/websheep/cms/v.6.3/admin/App/Templates/img/websheep/logoEmail.png)
 
 
-![Latest Stable Version](https://img.shields.io/badge/version-0.6.2-blue.svg)
+![Latest Stable Version](https://img.shields.io/badge/version-0.6.3-blue.svg)
 [![GitHub issues](https://img.shields.io/github/issues/websheep/CMS.svg)](https://github.com/websheep/CMS/issues)
 [![GitHub forks](https://img.shields.io/github/forks/websheep/CMS.svg)](https://github.com/websheep/CMS/network)
 [![GitHub stars](https://img.shields.io/github/stars/websheep/CMS.svg)](https://github.com/websheep/CMS/stargazers)
@@ -39,10 +39,6 @@ Nossa intenção é melhorar cada vez mais o sistema, ampliar a cobertura de tes
 
 Versão PHP 5.6 ou superior.
 MySQL versão 5.0 ou superior.
-
-## ATENÇÃO!
-Para que o sistema funcione 100% é necessário ter um Virtual Host configurado em seu localhost ou diretamente na pasta /www/admin de uma hospedagem. 
-Ou seja, **não funciona** (ainda) assim: http://127.0.0.1/meu-site/admin 
 
 ## História
 O WebSheep foi idealizado no início de 2008 por **Israel Nogueira** e **Anereu Bighetti**, inicialmente seria um sistema de sites rápidos e barato chamado **Web Cheap**
