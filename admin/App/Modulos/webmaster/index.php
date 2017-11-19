@@ -26,13 +26,18 @@ $session = new session();
 	<script src="./app/templates/js/formatCode/p_a_c_k_e_r_unpacker.js"></script>
 	<script src="./app/templates/js/formatCode/myobfuscate_unpacker.js"></script>
  -->
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
 <script type="text/javascript">
 	include_css('./app/templates/css/websheep/modulos/webmaster/style.min.css?<?=md5(uniqid(rand(), true))?>',  	'css_mod', 'All');
 </script>
 <style type="text/css">
 	#container {
-	z-indexms-touch-action: none;
+		z-indexms-touch-action: none;
 		overflow: inherit!important;;
+	}
+	#divEditor{
+		font-family: 'Source Code Pro', monospace;
+		font-size: 15px;
 	}
 	.nave_folders{overflow: hidden!important;}
 	.palco_02 .ps-container.ps-active-x>.ps-scrollbar-x-rail,
@@ -218,7 +223,11 @@ $session = new session();
 				$ext = explode('.',$arquivo);
 				$ext = @$ext[1];
 				if(	isset($ext)		&&($ext=="txt" 	||$ext=="htm" 	||$ext=="html" 	||$ext=="xhtml" 	||$ext=="xml" 	||$ext=="js"	 	||$ext=="json" 	||$ext=="php" 	||$ext=="css" 	||$ext=="less" 	||$ext=="sass" 	||$ext=="htaccess"||$ext=="key" 	||$ext=="asp" 	||$ext=="aspx" 	||$ext=="net" 	||$ext=="conf" 	||$ext=="ini" 	||$ext=="sql" 	||$ext=="as" 		||$ext=="htc" 	|| $ext=="--")){
+					
+					if(substr($dir,-1)!="/"){$dir=$dir.'/';}
+
 					echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
+				
 				};
 			};
 		};
@@ -396,7 +405,8 @@ $(document).ready(function() {
 				}
 				ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 				window.htmEditor = ace.edit("divEditor");
-				window.htmEditor.setTheme("ace/theme/websheep.0.3");
+				window.htmEditor.setTheme("ace/theme/monokai");
+				// window.htmEditor.setTheme("ace/theme/websheep.0.3");
 				window.htmEditor.getSession().setMode("ace/mode/php");
 
 				window.htmEditor.setShowPrintMargin(true); // mostra linha ativa atual
@@ -809,7 +819,14 @@ $(document).ready(function() {
 											}
 										});
 									},
-									onCancel: function() {}
+									posFn:function(){
+										sanfona('.folder_alert');
+										$(".nave_folders .folder_alert").bind("click tap press",function(){
+											$(".nave_folders .folder_alert").css({"background-color":"transparent",color:"#9e9e9e","font-weight":500}).removeClass("selectExclude");
+											$(this).css({"background-color":"#d4e1f4",color:"#497bbe","font-weight":600}).addClass("selectExclude")
+											$(".ws_confirm_conteudo .inputText.path").val($(this).data("folder"))
+										})
+									}
 								})
 							}
 						});
@@ -871,6 +888,7 @@ $(document).ready(function() {
 							}
 						});
 					});
+
 					$('#exclFile').unbind('tap click').bind('tap click', function() {
 						confirma({
 							conteudo: "Você tem <b>CERTEZA</b> de que gostaria de excluir esse arquivo?<br><div class='bg08' style='position: relative;margin: 10px;padding: 20px;color: #F00;'>1 • Todos os BKPs deste arquivo também serão apagados.<br>2 • E lembre-se, esta ação <b>NÃO</b> terá mais volta.</div>",
@@ -893,7 +911,18 @@ $(document).ready(function() {
 										})
 									},
 									Sucess: function(e) {
-										$(".ferramenta_especial[data-path='./app/modulos/webmaster/']").click();
+										out(e)
+										eval(e);
+										functions({
+											funcao: "refreshFolders",
+											vars: "folders=1",
+											patch: "<? echo $session->get('_PATCH_');?>",
+											Sucess: function(e) {
+												$("#nave_folders").html(e)
+												window.refreshClick();
+											}
+										})
+//										$(".ferramenta_especial[data-path='<?=ROOT_WEBSHEEP?>admin/app/modulos/webmaster/index.php']").click();
 									}
 								});
 							}

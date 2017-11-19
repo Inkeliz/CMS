@@ -802,13 +802,20 @@ function _excl_dir_(){
 }
 
 
-function createFolder($NewPath=null){
+function createFolder($NewPath=null,$return=true){
 	global $session;
-	$dir = implode(array_filter(explode("/",str_replace(array('..','.'),"",$_POST['newFile']))),"/");
+	if($NewPath==null && isset($_POST['newFile'])){ $NewPath=$_POST['newFile'];}
+
+	$dir = implode(array_filter(explode("/",str_replace(array('..','.'),"",$NewPath))),"/");
 	if(_mkdir('website/'.$dir,true)){
-		echo "sucesso";exit;
+		if($return==true){
+			echo "sucesso";exit;
+		}
 	}else{
-		echo "falha";exit;	};
+		if($return==true){
+			echo "falha";exit;
+		}
+	};
 }
 
 function CriaPastas($dir,$oq=0){
@@ -831,19 +838,21 @@ function CriaPastas($dir,$oq=0){
 
 function createFile (){
 	global $session;
-		$dirname 	= dirname($_REQUEST['newFile']);
-		$filename 	= basename($_REQUEST['newFile']);
-		$fileCreate = "";
-		createFolder($dirname);
-		if($dirname=='.'){
+		$filename 	= 	basename($_POST['newFile']);
+		$dirname 	=	implode(array_filter(explode("/",str_replace(".","-",dirname($_POST['newFile'])))),"/");
+
+
+		if($dirname=='-'){
+			$dirname 	= "";
 			$fileCreate = INCLUDE_PATH.'website/'.$filename;
-		}elseif(substr($dirname,0,1)!='/'){
-			$fileCreate = INCLUDE_PATH.'website/'.$dirname.'/'.$filename;
 		}else{
-			$fileCreate = INCLUDE_PATH.'website'.$dirname.'/'.$filename;
+			createFolder($dirname,false);
+			$fileCreate = INCLUDE_PATH.'website/'.$dirname.'/'.$filename;
 		}
+
 		if(file_put_contents($fileCreate,$filename)){
-			loadFile(INCLUDE_PATH.'website'.$dirname.'/'.$filename);
+			$fullPathFile = implode(array_filter(explode("/",INCLUDE_PATH.'website/'.$dirname.'/'.$filename)),"/");
+			loadFile($fullPathFile);
 		}else{
 			echo "falha";
 		};
@@ -857,17 +866,7 @@ function ListFolderNewFile (){
 	echo '</div>
 	<div class="c"></div>
 	<input class="inputText path" placeholder="Digite o path do seu diretório:">
-	<div class="c"></div>
-	<script>
-		$("*[legenda]").LegendaOver();
-
-		var newFolder = null;
-		$(".folder_alert").unbind("click tap").bind("click tap",function(){
-			var getFolder = $(this).data("folder");
-			$("input.path").val(getFolder.replace("./../../../website","")+"/")
-		})
-		sanfona(\'.folder_alert\');
-	</script>';
+	<div class="c"></div>';
 }
 function ListFolderExclFolder (){
 	global $session;
@@ -1187,33 +1186,40 @@ function load_path(){
 	checkinchekcout($load_path_file->fetch_array[0]['id'], $load_path_file->fetch_array[0]['checkin'],$codigo);}
 function exclui_file(){
 	global $session;
-		$U= new MySQL();
-		$U->set_table(PREFIX_TABLES.'ws_webmaster');
-		$U->set_where('path="'.str_replace('./../../..', '',$_REQUEST['pathFile']).'"');
-		$U->set_where('AND original="'.$_REQUEST['loadFile'].'"');
-		$U->select();
-		$qtdd_total = $U->_num_rows;
-		if($qtdd_total>0){
-			foreach ($U->fetch_array as $value) {
-				$E= new MySQL();
-				$E->set_table(PREFIX_TABLES.'ws_webmaster');
-				$E->set_where('id="'.$value['id'].'"');
-				$E->exclui();
-				$NewFile = './versoes'.$value['path'].'/'.$value['bkpfile'];
-				@unlink($NewFile);
-			}
-		}
-		$UNIC = $_REQUEST['pathFile'].'/'.$_REQUEST['loadFile'];
-		@unlink($_REQUEST['pathFile'].'/'.$_REQUEST['loadFile']);
-		echo 'window.htmEditor.getSession().setMode("ace/mode/text");';
-		echo '$("#mode option[value 	=\'Ttext\']").attr("selected","true").trigger("chosen:updated");';
-		echo 'window.newTokenFile		= null;';
-		echo 'window.typeLoaded			= null;';
-		echo 'window.pathFile 			= null;';
-		echo 'window.loadFile 			= null;';
-		echo 'window.newTokenFile 		= null;';
-		echo 'window.htmEditor.setValue("");';
-		echo '$("#bkpsFile").html("").trigger("chosen:updated");';
+
+		// $U= new MySQL();
+		// $U->set_table(PREFIX_TABLES.'ws_webmaster');
+		// $U->set_where('path="'.str_replace('./../../..', '',$_REQUEST['pathFile']).'"');
+		// $U->set_where('AND original="'.$_REQUEST['loadFile'].'"');
+		// $U->select();
+		// $qtdd_total = $U->_num_rows;
+		// if($qtdd_total>0){
+		// 	foreach ($U->fetch_array as $value) {
+		// 		$E= new MySQL();
+		// 		$E->set_table(PREFIX_TABLES.'ws_webmaster');
+		// 		$E->set_where('id="'.$value['id'].'"');
+		// 		$E->exclui();
+		// 		$NewFile = './versoes'.$value['path'].'/'.$value['bkpfile'];
+		// 		@unlink($NewFile);
+		// 	}
+		// }
+
+		$PATH = dirname($_POST['pathFile']).'/';
+		$FILE = $_POST['loadFile'];
+		@unlink($_REQUEST['pathFile']);
+		$aba =  '".fileTab[data-pathfile=\''.$PATH.'\'][data-loadfile=\''.$FILE.'\']"';
+		echo 'var token = $('.$aba.').data("token");'.PHP_EOL;
+		echo 'delete window.listFilesWebmaster[token];'.PHP_EOL;
+		echo '$('.$aba.').remove();'.PHP_EOL;
+		echo 'window.htmEditor.getSession().setMode("ace/mode/text");'.PHP_EOL;
+		echo '$("#mode option[value 	=\'Ttext\']").attr("selected","true").trigger("chosen:updated");'.PHP_EOL;
+		echo 'window.newTokenFile		= null;'.PHP_EOL;
+		echo 'window.typeLoaded			= null;'.PHP_EOL;
+		echo 'window.pathFile 			= null;'.PHP_EOL;
+		echo 'window.loadFile 			= null;'.PHP_EOL;
+		echo 'window.newTokenFile 		= null;'.PHP_EOL;
+		echo '$("#bkpsFile").html("").trigger("chosen:updated");'.PHP_EOL;
+		echo 'window.htmEditor.setValue("");'.PHP_EOL;
 	}
 function saveFileBKP(){
 	global $session;
