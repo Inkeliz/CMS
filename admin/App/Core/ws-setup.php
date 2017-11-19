@@ -11,9 +11,20 @@
 	############################################################################################################################################	
 
 	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+		if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+	############################################################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	############################################################################################################################################
-		 include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-globals-functions.php');
+		 include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
 
 	############################################################################################################################################
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE INSTALAÇÃO EXECUTA
@@ -76,7 +87,7 @@
 			##########################################################################################################################################
 			# PEGAMOS A STRING O ARQUIVO CONFIG BASE
 			##########################################################################################################################################
-			$wsConfigDefault         = file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Config/ws-config-default.php');
+			$wsConfigDefault         = file_get_contents(INCLUDE_PATH.'admin/app/config/ws-config-default.php');
 
 			##########################################################################################################################################
 			# FORMATAMOS O CONTEUDO DELE
@@ -87,7 +98,7 @@
 			#######################################################################################################################################
 			# GRAVAMOS O NOVO ARQUIVO ws-config.php E RETORNAMOS O RESULTADO
 			#######################################################################################################################################
-			if (!file_put_contents($_SERVER['INCLUDE_PATH'].'/ws-config.php', $wsConfigDefaultFormated)) {
+			if (!file_put_contents(INCLUDE_PATH.'ws-config.php', $wsConfigDefaultFormated)) {
 				echo json_encode(array(
 					'status' => 'falha',
 					'resposta' => 'Não foi possível gravar o ws-config.php'
@@ -101,11 +112,12 @@
 			exit;
 		}
 
+
 	############################################################################################################################################
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE VALIDAÇÃO DE CONEXÃO DO MYSQL
 	############################################################################################################################################
 		if (isset($_POST['function']) && $_POST['function'] == "testMySQL") {
-			mysqli_connect($_POST['SERVIDOR_BD'], $_POST['USUARIO_BD'], $_POST['SENHA_BD'], $_POST['NOME_BD']);
+			@mysqli_connect($_POST['SERVIDOR_BD'], $_POST['USUARIO_BD'], $_POST['SENHA_BD'], $_POST['NOME_BD']);
 			if (mysqli_connect_errno()){
 				echo "0";
 			} else {
@@ -117,22 +129,22 @@
 	############################################################################################################################################
 	# IMPORTAMOS AGORA O ARQUIVO RESPONSAVEL POR CRIAR TODA ESTRUTURA DE DIRETORIOS E ARQUIVOS INICIAIS
 	############################################################################################################################################
-		include_once($_SERVER['INCLUDE_PATH']."/admin/App/Core/ws-set-estructure.php");
+		include_once(INCLUDE_PATH.'admin/app/lib/ws-set-estructure.php');
 
 ?>
 <html lang="pt-br" class='bgradial01' id="html">
 <head>
 <meta charset="UTF-8">
-<link type="image/x-icon" href="./img/favicon.png" rel="shortcut icon" />
+<link type="image/x-icon" href="<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/websheep/estrutura.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/websheep/desktop.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/websheep/install.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/websheep/funcionalidades.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/fontes/fonts.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/css/websheep/theme_blue.min.css" />
-<script type = 'text/javascript' 												 src="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Vendor/jquery/2.2.0/jquery.min.js"></script>
-<script type = 'text/javascript' 												 src="<?=$_SERVER['ROOT_WEBSHEEP']?>admin/App/Templates/js/websheep/funcionalidades.js"></script>
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/estrutura.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/desktop.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/install.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css" />
+<script type = 'text/javascript' 												 src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"></script>
+<script type = 'text/javascript' 												 src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js"></script>
 
 <script type = 'text/javascript'>
 	$(document).ready(function(){
@@ -143,17 +155,17 @@
 			var SENHA_BD 		=	$("input[name='SENHA_BD']").val();
 			var SERVIDOR_BD 	=	$("input[name='SERVIDOR_BD']").val();
 			$.ajax({
-				type: "POST",cache: false,url: "./App/Core/ws-setup.php",
+				type: "POST",cache: false,url: "./app/core/ws-setup.php",
 				data: {function:"testMySQL",NOME_BD:NOME_BD,USUARIO_BD:USUARIO_BD,SENHA_BD:SENHA_BD,SERVIDOR_BD:SERVIDOR_BD,},
 				error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 			}).done(function(data) { 
 				if(data=='1'){
 					$("#formulario").removeClass("mysqlFail")
-					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./App/Templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
+					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./app/templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
 				}else{
 					console.error(data);
 					$("#formulario").addClass("mysqlFail")
-					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#d03b00",paddingLeft:33,'background-image':"url('./App/Templates/img/websheep/cross.png')",'background-position':10,'background-repeat':"no-repeat"})
+					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#d03b00",paddingLeft:33,'background-image':"url('./app/templates/img/websheep/cross.png')",'background-position':10,'background-repeat':"no-repeat"})
 				}
 			});
 		})
@@ -162,8 +174,8 @@
 			$.ajax({
 				type: "POST",
 				cache: false,
-				url: "./App/Core/ws-setup.php",
-			    beforeSend:function(){confirma({width:"auto",conteudo:"  Criando ws-config...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				url: "./app/core/ws-setup.php",
+			    beforeSend:function(){confirma({width:"auto",conteudo:"  Criando ws-config...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				data: {function:"createWsConfig", form:formulario},
 			}).done(function(data) {
 						objJSON = JSON.parse(data)
@@ -171,8 +183,8 @@
 							$.ajax({
 									type: "POST",
 									cache: false,
-									beforeSend:function(){confirma({width:"auto",conteudo:"  Configurando MySQL...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-									url: "./App/Modulos/_tools_/functions.php",
+									beforeSend:function(){confirma({width:"auto",conteudo:"  Configurando MySQL...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+									url: "./app/modulos/_tools_/functions.php",
 									data: {function:"installSQLInit",formulario:formulario},
 									error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 								}).done(function(data) {
@@ -233,7 +245,7 @@
 		<div class="w1" style="border:solid 1px #CCC;position: relative;transform: translate(-50%,0);left: 50%;padding: 30px;width: calc(100% - 100px );float: left;top: 10px;">
 			<div id='step0' style="position: relative;float: left;text-align: center;">
 
-				<img src="./App/Templates/img/websheep/logo_ws_install.jpg" style="width: 80px;">
+				<img src="./app/templates/img/websheep/logo_ws_install.jpg" style="width: 80px;">
 
 				<div class="c"></div>
 				<strong style="font-family: 'Titillium Web', sans-serif;font-size: 30px;line-height">Bem-Vindo(a) ao WebSheep!</strong><br>
@@ -276,7 +288,7 @@
 						<div style="width: 50%;text-align:left;" class="label">Idioma do sistema</div>
 						<input	name="RECAPTCHA" value="" style="width: calc(50% - 5px);margin-left: 0;">
 						<select name="LANG" style="width: calc(50% - 5px);margin-right: 0;"><?
-							$pasta = $_SERVER["INCLUDE_PATH"].'/admin/App/Config/lang';
+							$pasta = INCLUDE_PATH.'admin/app/config/lang';
 							if(is_dir($pasta)){
 								$dh = opendir($pasta);
 								while($diretorio = readdir($dh)){

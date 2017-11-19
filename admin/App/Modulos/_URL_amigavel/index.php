@@ -1,14 +1,18 @@
 <?php
-	#####################################################  
-	# FORMATA O CAMINHO ROOT
-	#####################################################
-	$r                        = $_SERVER["DOCUMENT_ROOT"];
-	$_SERVER["DOCUMENT_ROOT"] = (substr($r, -1) == '/') ? substr($r, 0, -1) : $r;
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
 
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 	#####################################################  
 	# DEFINE O PATH DO MÓDULO 
 	#####################################################
-	define("PATH", 'App/Modulos/_URL_amigavel');
+	define("PATH", 'app/modulos/_URL_amigavel');
 		
 	#####################################################  
 	# LIMPA O CACHE INTERNO
@@ -28,7 +32,7 @@
 	# IMPORTA A CLASSE PADRÃO DO SISTEMA
 	#####################################################
 	ob_start();
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	
 	#####################################################  
 	# CRIA SESSÃO
@@ -43,7 +47,7 @@
 	#####################################################  
 	# DEFINE O LINK DO TEMPLATE DESTE MÓDULO 
 	#####################################################  
-	define("TEMPLATE_LINK", $_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/_URL_amigavel/ws-tool-index.html');
+	define("TEMPLATE_LINK", INCLUDE_PATH.'admin/app/templates/html/Modulos/_URL_amigavel/ws-tool-index.html');
 	
 	#####################################################  
 	# SEPARAMOS A VARIÁVEL DO SETUP DATA 

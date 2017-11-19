@@ -1,14 +1,26 @@
 <?php
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+############################################################################################################################################
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 function templateUser($_id_,$_nome_,$_sobrenome_,$_email_,$_thumb_){
 
 	$template="";
 	$template .= '<li class="parceirobase bg06 w2" id="'.$_id_.'">';
 	if($_thumb_==""){
-		$template .= '<div class="thumbuser bg02"><img src="./App/Templates/img/websheep/Sem_avatar.png" /></div>';
+		$template .= '<div class="thumbuser bg02"><img src="./app/templates/img/websheep/Sem_avatar.png" /></div>';
 	}else{
-		$template .= '<div class="thumbuser bg02"><img src="./App/Modulos/usuarios/upload/'.$_thumb_.'" width="65" height="39" /></div>';
+		$template .= '<div class="thumbuser bg02"><img src="./app/modulos/usuarios/upload/'.$_thumb_.'" width="65" height="39" /></div>';
 	}
 	$template .= ' <div class="dadosuser"><div class="w1 tituloUser">'.$_nome_.' '.$_sobrenome_.'</div>
 					<div class="email w2">'.$_email_.'</div> </div><div class="acoes bg02">
@@ -87,7 +99,7 @@ function LoadDadosUser(){
 			$s->set_where('id="'.$_REQUEST['iD'].'"');
 			$s->select();
 			echo '<div id="DadosUserBase" class="content_2">
-					<form action="./App/Modulos/usuarios/upload_files.php?iD='.$s->fetch_array[0]['id'].'" method="post" enctype="multipart/form-data" name="formUpload" id="formUpload">
+					<form action="./app/modulos/usuarios/upload_files.php?iD='.$s->fetch_array[0]['id'].'" method="post" enctype="multipart/form-data" name="formUpload" id="formUpload">
 		          	<input type="file" id="botUpload" name="myfile" /><input type="submit" class="botao botupload" value="Fazer Upload" id="botaoUpload"></form>
 					<form id="dadosUserForm">
 					<div id="thumbUpload"></div>
@@ -95,7 +107,7 @@ function LoadDadosUser(){
 					<div id="bar" class="bg05"></div>
 					</div>
 					<div id="thumb">';
-					if($s->fetch_array[0]['avatar']!=""){echo '<img src="./App/Modulos/usuarios/upload/'.$s->fetch_array[0]['avatar'].'" width="200" height="200"/>';} 
+					if($s->fetch_array[0]['avatar']!=""){echo '<img src="./app/modulos/usuarios/upload/'.$s->fetch_array[0]['avatar'].'" width="200" height="200"/>';} 
 			echo '	</div>
 					<input name="nome" id="nome" value="'.$s->fetch_array[0]['nome'].'">
 					<input name="id_user"  value="'.$s->fetch_array[0]['id'].'" hidden="true">

@@ -1,26 +1,40 @@
 <?php
-	include_once($_SERVER['INCLUDE_PATH'].'/ws-config.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-connect-mysql.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-mysql.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-globals-functions.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-functions.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-template.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-cookie.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-session.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-controller.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-browser.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-simple-html-dom.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-base2n.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-canvas.class.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-htmlprocess.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-lipsum.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-mobile-detect.php');
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Vendor/PHPMailer/PHPMailerAutoload.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+############################################################################################################################################
+# IMPORTA CLASSES NECESSÁRIAS PARA O SISTEMA
+############################################################################################################################################
+	include_once(INCLUDE_PATH.'ws-config.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/ws-connect-mysql.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-mysql.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-functions.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-template.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-cookie.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-session.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-controller.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-browser.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-simple-html-dom.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-base2n.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-canvas.class.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-htmlprocess.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-lipsum.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-mobile-detect.php');
+	include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
 
 
 	class WS {
-   		const includePath 	=  	null;
-   		const rootPath 		= 	null;
+   		const includePath 	=  	INCLUDE_PATH;
+   		const rootPath 		= 	ROOT_WEBSHEEP;
 		public function __construct() {
 			$this->dataRelType          = "item";
 			$this->setpag               = null;
@@ -71,9 +85,9 @@
 				"img_gal"
 			);
 		}
-		static function getFullPath(){			return $_SERVER['INCLUDE_PATH'];}
+		static function getFullPath(){			return INCLUDE_PATH;}
 		
-		static function getRootPath(){			return $_SERVER['ROOT_WEBSHEEP'];}
+		static function getRootPath(){			return ROOT_WEBSHEEP;}
 
 		static function getFullSitePath(){		return ws::getFullPath().'/website/';}
 
@@ -206,7 +220,7 @@
 		#
 		###################################################################################
 		static function getlang($path = null, $isso = "", $porisso = "") {
-			$json  = str_replace(array(PHP_EOL, "\n", "\r"), "", file_get_contents(ws::includePath.'/admin/App/Config/lang/' . LANG . '.json'));
+			$json  = str_replace(array(PHP_EOL, "\n", "\r"), "", file_get_contents(ws::includePath.'/admin/app/config/lang/' . LANG . '.json'));
 			$obj   = json_decode($json, TRUE);
 			$paths = explode(">", $path);
 			if ($path == null) {
@@ -466,7 +480,7 @@
 			##################################################################################
 			# INCLUIMOS O SCRIPT DE UPDATE DI MYSQL...
 			##################################################################################
-			include($_SERVER['INCLUDE_PATH'].'/admin/App/Modulos/update/ws_update.php');
+			include(INCLUDE_PATH.'admin/app/modulos/update/ws_update.php');
 
 			##################################################################################
 			# EXECUTAMOS O MYSQLI
@@ -553,7 +567,7 @@
 			##################################################################################
 			# grava na sessão o PATH da ferramenta
 			##################################################################################
-			$session->set('PATCH','App/Modulos/_modulo_');
+			$session->set('PATCH','app/modulos/_modulo_');
 			
 			##################################################################################
 			# SELECT NA TABELA DAS FERRAMENTAS
@@ -604,15 +618,20 @@
 		#
 		###################################################################################
 		static function urlPath($node = null, $debug = true,$type="string") {
-			$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],(strlen('/'.$_SERVER["ROOT_WEBSHEEP"])));
-			$_REQUEST_URI= (substr($_REQUEST_URI, 0, 1) == '/')? substr($_REQUEST_URI, 1, strlen($_REQUEST_URI)) : $_REQUEST_URI;
+
+			$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],
+											(
+												strpos($_SERVER['REQUEST_URI'],basename(INCLUDE_PATH)) + strlen(basename(INCLUDE_PATH))
+											)
+									);
+
 			if (is_string($node)) {
 				_erro(ws::GetDebugError(debug_backtrace(), "Erro: Isso não é um número ->	ws::urlPath('" . $node . "')"));
 				exit;
 			} elseif ($node == null || $node == 0) {
 				$_REQUEST_URI = explode('?', $_REQUEST_URI);
 				 if($type=='array'){
-					return explode('/',$_REQUEST_URI[0]);
+					return array_filter(explode('/',$_REQUEST_URI[0]));
 				 	
 				 }elseif($type=='get'){
 				 	if(count($_REQUEST_URI[1])>=1){ 
@@ -701,7 +720,7 @@
 			// VERIFICA NO SISTEMA SE O CACHE ESTÁ HABILITADO  E QUE CACHE EXISTA O ARQUIVO E INSERE
 			if ($setupdata['ws_cache'] == '1' && file_exists(ws::includePath.'/ws-cache/'.$urlCache)) {
 				ob_end_clean();
-				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/App/Templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
+				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/app/templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
 				include(ws::includePath.'/ws-cache/'.$urlCache);
 				exit;
 			}
@@ -972,7 +991,7 @@
 				// GRAVA O ARQUIVO COM O NOME CORRETO
 				file_put_contents(ws::includePath.'/ws-cache/'.$urlCache, $_outPutCacheHTML);
 			}
-				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/App/Templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
+				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/app/templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
 				echo $_outPutCache;
 
 			ob_end_flush();
@@ -1168,7 +1187,7 @@
 			if ($favicon == null) {
 				_erro(ws::GetDebugError(debug_backtrace(), 'Por favor, coloque uma URL válida como favicon -> ws::favicon(string)'));
 				exit;
-			} elseif (!file_exists($_SERVER['INCLUDE_PATH'].'/website/'. $favicon)) {
+			} elseif (!file_exists(INCLUDE_PATH.'website/'. $favicon)) {
 				_erro(ws::GetDebugError(debug_backtrace(), 'Erro: Este arquivo não existe -> ws::favicon("' . $favicon . '")'));
 				exit;
 			}
@@ -1205,9 +1224,9 @@
 						$h     = (isset($value[3])) ? $value[3] : 0;
 						$q     = (isset($value[4])) ? "&q=" . $value[4] : '';
 						if ($w == "0" && $h == "0") {
-							$img = ws::includePath.'/admin/App/Modulos/_modulo_/uploads/' . $img;
+							$img = ws::includePath.'/admin/app/modulos/_modulo_/uploads/' . $img;
 						} else {
-							$img = ws::includePath.'/admin/App/Core/ws-thumb-crop.php?img=../App/Modulos/_modulo_/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
+							$img = ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/modulos/_modulo_/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
 						}
 						$arrayIMG[] = $media . ':' . $img;
 					}
@@ -1225,15 +1244,15 @@
 				}
 				if ($newPath == null) {
 					if ($w == "0" && $h == "0") {
-						return ws::includePath.'/admin/App/Modulos/_modulo_/uploads/' . $imagem;
+						return ws::includePath.'/admin/app/modulos/_modulo_/uploads/' . $imagem;
 					} else {
-						return ws::includePath.'/admin/App/Core/ws-thumb-crop.php?img=../App/Modulos/_modulo_/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
+						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/modulos/_modulo_/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
 					}
 				} else {
 					if ($w == "0" && $h == "0") {
 						return $newPath . $imagem;
 					} else {
-						return ws::includePath.'/admin/App/Core/ws-thumb-crop.php?img=../../' . $newPath . '/' . $imagem . "&w=" . $w . "&h=" . $h;
+						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../../' . $newPath . '/' . $imagem . "&w=" . $w . "&h=" . $h;
 					}
 				}
 				
@@ -1243,9 +1262,9 @@
 		}
 		static function Less($less, $css) {
 			if (!class_exists('lessc')) {
-				include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-lessc-inc.php');
+				include(INCLUDE_PATH.'admin/app/lib/class-lessc-inc.php');
 			}
-			if (!file_exists($_SERVER['INCLUDE_PATH'].'/website/' . $less)) {
+			if (!file_exists(INCLUDE_PATH.'website/' . $less)) {
 				_erro(ws::GetDebugError(debug_backtrace(), "Erro: Este arquivo não existe -> ws::Less('" . $less . "')"));
 				exit;
 			}

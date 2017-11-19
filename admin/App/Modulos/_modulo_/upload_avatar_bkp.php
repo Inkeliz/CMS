@@ -4,7 +4,20 @@
 	header("Cache-Control: no-store, no-cache, must-revalidate");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	
+	############################################################################################################################################
+		include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 
 	$tmp_name 	= 	$_FILES['arquivo']["tmp_name"];
@@ -16,16 +29,16 @@
 	$token 		= 	md5(uniqid(rand(), true));
 	$nome_novo 	=	strtolower($token.'.'.$ext);
 
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets')){				mkdir($_SERVER['INCLUDE_PATH'].'/website/assets');					}		
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files')){	mkdir($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files');	}		
-		if(move_uploaded_file( $tmp_name ,$_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/'.$nome_novo)){
+		if(!file_exists(INCLUDE_PATH.'website/assets')){				mkdir(INCLUDE_PATH.'website/assets');					}		
+		if(!file_exists(INCLUDE_PATH.'website/assets/upload-files')){	mkdir(INCLUDE_PATH.'website/assets/upload-files');	}		
+		if(move_uploaded_file( $tmp_name ,INCLUDE_PATH.'website/assets/upload-files/'.$nome_novo)){
 				$_biblioteca_					= new MySQL();
 				$_biblioteca_->set_table(PREFIX_TABLES.'ws_biblioteca');
 				$_biblioteca_->set_insert('file',		$nome_novo);
 				$_biblioteca_->set_insert('filename',	$nome);
 				$_biblioteca_->set_insert('token',		$token);
 				$_biblioteca_->set_insert('type',		$type);
-				$_biblioteca_->set_insert('upload_size',filesize($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/'.$nome_novo));
+				$_biblioteca_->set_insert('upload_size',filesize(INCLUDE_PATH.'website/assets/upload-files/'.$nome_novo));
 				$_biblioteca_->insert();
 				echo  $nome_novo;
 				exit;

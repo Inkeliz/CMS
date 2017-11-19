@@ -1,106 +1,111 @@
 <?
 set_time_limit(0);
 
-#####################################################################
-# 	CASO A VARIÁVEL __DIR__ NÃO ESTEJA DISPONÍVEL (alguns servers nao funciona ñ sei porque) 
-#####################################################################
-	if( !defined( '__DIR__' ) )define( '__DIR__', dirname(__FILE__) );
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{	
+		if(!defined("ROOT_WEBSHEEP"))	{
+			$path = explode("/admin",substr(dirname($_SERVER['REQUEST_URI']),1));
+			define('ROOT_WEBSHEEP',(($path[0]=="") ? "/" : '/'.$path[0].'/'));
+		}
+	}
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+#########################################################################
+# EVITANDO CONFLITOS COM QUEBRA DE LINHA
+#########################################################################
+if (!defined('PHP_EOL')) {
+	switch (strtoupper(substr(PHP_OS, 0, 3))) {
+		case 'WIN':
+			define('PHP_EOL', "\r\n");// Windows
+			break;      
+		case 'DAR':
+			define('PHP_EOL', "\r");// Mac
+			break;       
+		default:
+			define('PHP_EOL', "\n");// Unix
+	}
+}
+
+
+
+#########################################################################
+# CAPTA UM CALL DE ERRO
+#########################################################################
+
+function get_caller_info() {
+    $c = '';
+    $file = '';
+    $func = '';
+    $class = '';
+    $trace = debug_backtrace();
+    if (isset($trace[2])) {
+        $file = $trace[1]['file'];
+        $func = $trace[2]['function'];
+        if ((substr($func, 0, 7) == 'include') || (substr($func, 0, 7) == 'require')) {
+            $func = '';
+        }
+    } else if (isset($trace[1])) {
+        $file = $trace[1]['file'];
+        $func = '';
+    }
+    if (isset($trace[3]['class'])) {
+        $class = $trace[3]['class'];
+        $func = $trace[3]['function'];
+        $file = $trace[2]['file'];
+    } else if (isset($trace[2]['class'])) {
+        $class = $trace[2]['class'];
+        $func = $trace[2]['function'];
+        $file = $trace[1]['file'];
+    }
+    if ($file != '') $file = basename($file);
+    $c = $file . ": ";
+    $c .= ($class != '') ? ":" . $class . "->" : "";
+    $c .= ($func != '') ? $func . "(): " : "";
+    return($c);
+}
 
 #########################################################################
 # CRIAMOS O HTACCESS DO PAINEL
 #########################################################################
-	function refresh_Path_htaccess($get, $set, $INCLUDE_PATH,$ROOT_WEBSHEEP){
-		
-		if($ROOT_WEBSHEEP==""){
-			$ROOT_WEBSHEEP="/";
-		}else{
-			$ROOT_WEBSHEEP="/".$ROOT_WEBSHEEP."/";
-		}
-		$htaccess 		=	str_replace(array("\n\r","\n","\r"),PHP_EOL, file_get_contents($get));
-		$htaccess 		=	array_filter(explode(PHP_EOL,$htaccess));
+	function refresh_Path_htaccess($get, $set){
+		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($get)));
 		$newClass		=	array();
-
-		foreach ($htaccess as $key => $line) {
-			if (strpos($line,'SetEnv') >= 1 && strpos($line,'ROOT_WEBSHEEP') >= 1) {
- 		 				$line=  PHP_EOL.'			SetEnv ROOT_WEBSHEEP	'.$ROOT_WEBSHEEP;
-			}elseif (strpos($line,"SetEnv") >= 1 && strpos($line,"INCLUDE_PATH") >= 1) {
- 			 				$line=  PHP_EOL.'			SetEnv INCLUDE_PATH		'.$INCLUDE_PATH;
-			}elseif (strpos($line,"RewriteBase") >= 1) {
-  							$line=  PHP_EOL.'		RewriteBase '.$ROOT_WEBSHEEP.'website/';
+		 foreach ($htaccess as $key => $line) {
+			if (strpos($line,"RewriteBase") >= 1) {
+ 		 		$line=  '		RewriteBase '.ROOT_WEBSHEEP.'website/';
 			}
 			$newClass[] =  $line;		
 		}
-
-		file_put_contents($set, implode("",$newClass));
+		file_put_contents($set, implode(PHP_EOL,array_filter($newClass)));
 	}
 
 #########################################################################
 # REFRESH PATH NO FUNCTIONS WS JS
 #########################################################################
-	function refresh_Path_functions_JS($INCLUDE_PATH,$ROOT_WEBSHEEP){
-		if($ROOT_WEBSHEEP==""){
-			$ROOT_WEBSHEEP="/";
-		}else{
-			$ROOT_WEBSHEEP="/".$ROOT_WEBSHEEP."/";
-		}
-		$pathDestino 	= 	$INCLUDE_PATH.'/admin/App/Templates/js/websheep/functionsws.js';
-		$htaccess 		=	str_replace(array("\n\r","\n","\r"),PHP_EOL, file_get_contents($pathDestino));
-		$htaccess 		=	array_filter(explode(PHP_EOL,$htaccess));
+	function refresh_Path_functions_JS(){
+		$pathDestino 	= 	INCLUDE_PATH.'admin/app/templates/js/websheep/functionsws.js';
+		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($pathDestino)));
 		$newClass		=	array();
 		foreach ($htaccess as $key => $line) {
 			if (strpos($line,"rootPath") >= 1) {
-  				$line=  PHP_EOL.'	rootPath:"'.$ROOT_WEBSHEEP.'",';
+  				$line=  '	rootPath:"'.ROOT_WEBSHEEP.'",';
 			}
 			$newClass[] =  $line;		
 		}
-		file_put_contents($pathDestino, implode("",$newClass));
+		copy($pathDestino,$pathDestino.'.bkp');
+		file_put_contents($pathDestino, implode(PHP_EOL,$newClass));
 	}
 	
 #########################################################################
-# GRAVAMOS TAMBÉM NA CLASSE V1 OS PATHS 
-#########################################################################
-	function refresh_Path_ClassWS($INCLUDE_PATH,$ROOT_WEBSHEEP){
-		if($ROOT_WEBSHEEP==""){
-			$ROOT_WEBSHEEP="/";
-		}else{
-			$ROOT_WEBSHEEP="/".$ROOT_WEBSHEEP."/";
-		}
-
-		$fileClassV1	=	$INCLUDE_PATH.'/admin/App/Lib/class-ws-v1.php';
-		$classV1 		=	file_get_contents($fileClassV1);
-		$classV1 		=	str_replace(array("\n\r","\n","\r"),PHP_EOL, $classV1);
-		$classV1 		=	array_filter(explode(PHP_EOL,$classV1));
-		$newClass		=	array();
-		foreach ($classV1 as $key => $value) {
-			if($value!="" && $value!=PHP_EOL){
-				$linha = $value;
-		  		if (strpos($linha,'const') >= 1 && strpos($linha,'includePath') >= 1) 	{	
-		  			$newClass[] = PHP_EOL.'		const includePath	="'.$INCLUDE_PATH.'";';
-		  		}elseif (strpos($linha,'const') >= 1 && strpos($linha,'rootPath') >= 1) 		{	
-		  			$newClass[] = PHP_EOL.'		const rootPath		="'.$ROOT_WEBSHEEP.'";';
-		  		}else{
-		  			$newClass[] = str_replace(PHP_EOL,"",$linha);
-		  		}
-			}
-		}
-		file_put_contents($fileClassV1,implode($newClass));
-	}
-
-#########################################################################
 # ATUALIZA O PATH
 #########################################################################
-    function refresh_Path_AllFiles($INCLUDE_PATH,$ROOT_WEBSHEEP){
-		refresh_Path_functions_JS($INCLUDE_PATH,$ROOT_WEBSHEEP);
-		refresh_Path_ClassWS($INCLUDE_PATH,$ROOT_WEBSHEEP);
-		refresh_Path_htaccess($INCLUDE_PATH.'/admin/App/Templates/txt/ws-first-htaccess-admin.txt',	$INCLUDE_PATH.'/admin/.htaccess',	$INCLUDE_PATH,$ROOT_WEBSHEEP);
-		refresh_Path_htaccess($INCLUDE_PATH.'/admin/App/Templates/txt/ws-first-htaccess.txt',		$INCLUDE_PATH.'/.htaccess',			$INCLUDE_PATH,$ROOT_WEBSHEEP);
+    function refresh_Path_AllFiles(){
+		 refresh_Path_functions_JS();
+		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess-admin.txt',	INCLUDE_PATH.'admin/.htaccess');
+		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess.txt',		INCLUDE_PATH.'.htaccess');
     }
-
-
-
-
-
-
 
 #####################################################################
 # 	RETORNA ARQUIVOS CONFORMA O PATERN SETADO
@@ -117,18 +122,31 @@ set_time_limit(0);
 #########################################################################
 # FUNÇÃO PARA CRIAR DIRETÓRIOS VERIFICANDO ANTES
 #########################################################################
-    function _mkdir($_SETPATH=null){
+    function _mkdir($_SETPATH=null,$root=false){
+    	if(strpos($_SETPATH,INCLUDE_PATH)>=0){ 
+    		$_SETPATH = str_replace(INCLUDE_PATH,"",$_SETPATH);
+    	}
         $upload_directories = explode('/',$_SETPATH);
         $createDirectory 	= array();
         foreach ($upload_directories as $upload_directory){
             if($upload_directory!=""){$createDirectory[]=$upload_directory;};
             $createDirectoryPath = implode('/',$createDirectory);
-            if(!file_exists($createDirectoryPath) || !is_dir($createDirectoryPath)){
-                $old = umask(0); 
-                @mkdir($createDirectoryPath,0775);
-                umask($old); 
-            }               
-        }
+			$old = umask(0); 
+			if($root==true){
+				$dir_exist 	= file_exists(INCLUDE_PATH.$createDirectoryPath);
+				$ir_dir 	= is_dir(INCLUDE_PATH.$createDirectoryPath);
+				if(!$dir_exist || !$ir_dir){
+					mkdir(INCLUDE_PATH.$createDirectoryPath,0775);
+				}
+			}else{
+				$dir_exist 	= file_exists($createDirectoryPath);
+				$ir_dir 	= is_dir($createDirectoryPath);
+				if(!$dir_exist || !$ir_dir){
+					mkdir($createDirectoryPath,0775);
+				}        
+			}        
+			umask($old); 
+		}
         return true;
     }
 
@@ -228,17 +246,36 @@ set_time_limit(0);
 #########################################################################
 # COPIA UM DIRETÓRIO INTEIRO PARA OUTRO LOCAL
 #########################################################################
-	function _copyFolder($DirFont, $DirDest) {
-		if (!file_exists($DirDest))_mkdir($DirDest); 
-		if ($dd = opendir($DirFont)) {
-			while (false !== ($Arq = readdir($dd))) {
-				if ($Arq != "." && $Arq != "..") {
-					$PathIn  = "$DirFont/$Arq";
-					$PathOut = "$DirDest/$Arq";
-					if (is_dir($PathIn)) {
-						_copyFolder($PathIn, $PathOut);
-					} elseif (is_file($PathIn)) {
-						copy($PathIn, $PathOut);
+	function _copyFolder($DirFont, $DirDest,$root=false) {
+		if($root==true){
+			$openDir = INCLUDE_PATH.$DirFont;
+			if (!file_exists(INCLUDE_PATH.$DirDest))	_mkdir($DirDest,$root); 
+		}else{
+			$openDir = $DirFont;
+			if (!file_exists($DirDest))					_mkdir($DirDest,$root); 
+		}
+
+		if ($dd = opendir($openDir)) {
+			while ($Arq=readdir($dd)) {
+				 if ($Arq != "." && $Arq != "..") {
+				 	$PathIn  = "$DirFont/$Arq";
+				 	$PathOut = "$DirDest/$Arq";
+
+					if($root==true && is_dir(INCLUDE_PATH.$PathIn)){
+
+					 	_copyFolder($PathIn,$PathOut,$root);
+
+					}elseif($root==false && is_dir($PathIn)){
+
+					 	_copyFolder($PathIn,$PathOut,$root);
+
+					}elseif($root==true && is_file(INCLUDE_PATH.$PathIn)){
+
+				 			copy(INCLUDE_PATH.$PathIn, INCLUDE_PATH.$PathOut);
+
+					}elseif($root==false && is_file($PathIn)){
+
+				 			copy($PathIn,$PathOut);
 					}
 				}
 			}
@@ -1616,7 +1653,7 @@ set_time_limit(0);
 # 	COMPRIME OS ARQUIVOS DO SITE PARA GZIP
 #####################################################################
 	function gzipWebsite(){
-		$ftp_files = rsearch($_SERVER['INCLUDE_PATH'].'/admin/',"/^.*\.(js|css)$/");
+		$ftp_files = rsearch(INCLUDE_PATH.'admin/',"/^.*\.(js|css)$/");
 		foreach ($ftp_files as $key => $value) {
 			$gzfile 		= $value . '.gz';
 			$contentNormal 	= file_get_contents($value);

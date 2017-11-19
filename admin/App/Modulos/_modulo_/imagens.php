@@ -1,8 +1,20 @@
 <?php
+
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	##########################################################################################################
 	# IMPORTAMOS A CLASSE PADRÃO DO WEBSHEEP
 	##########################################################################################################
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 	##########################################################################################################
 	# INICIA A SESSÃO
@@ -22,7 +34,7 @@
 	##########################################################################################################
 	# IMPORTA AS CONFIGURAÇÕES DO MÓDULO
 	##########################################################################################################	
-	$session->set('PATCH','App/Modulos/_modulo_');
+	$session->set('PATCH','app/modulos/_modulo_');
 	$session->set('ws_id_ferramenta',$_FERRAMENTA['id']);
 
 	##########################################################################################################
@@ -65,7 +77,7 @@
 	##########################################################################################################
 	# IMPORTAMOS A CLASSE DE TEMPLATE
 	##########################################################################################################
-	$TEMPLATE 						= new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/ws-tool-imagens-template.html', true);
+	$TEMPLATE 						= new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-imagens-template.html', true);
 
 	if(isset($_GET['back'])){
 		$TEMPLATE->BACK = '&back='.@$_GET['back'];
@@ -80,7 +92,7 @@
 	$TEMPLATE->ID_CAT 				= $_GET['id_cat'];
 	$TEMPLATE->ID_NIVEL 			= $_GET['ws_nivel'];
 	$TEMPLATE->TITULO 				= $_FERRAMENTA['_tit_menu_'];
-	$TEMPLATE->PATH 				= 'App/Modulos/_modulo_';
+	$TEMPLATE->PATH 				= 'app/modulos/_modulo_';
 	$TEMPLATE->HTTPVARS				= http_build_query($_GET);
 
 	if(isset($_GET['ws_nivel']) && $_GET['ws_nivel']>-1 ){ 

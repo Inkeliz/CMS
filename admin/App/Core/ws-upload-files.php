@@ -7,11 +7,22 @@
 *
 *
 ######################################################################################################*/
+	
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 	##########################################################################################################  
 	# IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 	##########################################################################################################
-		include_once(str_replace("\\","/", $_SERVER['INCLUDE_PATH']).'/admin/App/Lib/class-ws-v1.php');
+		include_once(INCLUDE_PATH.'/admin/app/lib/class-ws-v1.php');
 
 	##########################################################################################################  
 	# CRIA SESSÃO
@@ -22,6 +33,7 @@
 	# Limpa as informações em cache sobre arquivos
 	##########################################################################################################
 		clearstatcache();
+		
 	##########################################################################################################  
 	# ERROS DE UPLOAD (inativo temporariamente)
 	##########################################################################################################			
@@ -36,10 +48,16 @@
 		$errorUpload[8] = 'UPLOAD_ERR_NO_FILES: No attachments are uploaded.';
 	##########################################################################################################  
 	# CASO NÃO EXISTA O DIRETÓRIO PADRÃO PARA UPLOAD, CRIAMOS
-	##########################################################################################################			
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets')){				mkdir($_SERVER['INCLUDE_PATH'].'/website/assets');				}		
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files')){	mkdir($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files');	}		
-		define("UPLOAD_DIR",$_SERVER['INCLUDE_PATH'].'/website/assets/upload-files');
+	##########################################################################################################	
+
+		if(!file_exists(INCLUDE_PATH.'website/assets')){				mkdir(INCLUDE_PATH.'website/assets');				}		
+		if(!file_exists(INCLUDE_PATH.'website/assets/upload-files')){	mkdir(INCLUDE_PATH.'website/assets/upload-files');	}		
+
+	##########################################################################################################  
+	# DEFINIMOS O LOCAL PARA O UPLOAD   
+	##########################################################################################################
+		define("UPLOAD_DIR",INCLUDE_PATH.'website/assets/upload-files');
+
 	##########################################################################################################  
 	# VERIFICAMOS SE O DIRETÓRIO EXISTE E ESTÁ EM CONDIÇÕES DE RECEBER UPLOADS   
 	##########################################################################################################			
@@ -271,10 +289,8 @@ foreach($_RETURN_FILES AS $FILE){
 		echo json_encode(array('status'=>'sucesso','original'=>$FILE['file']['name'], 'filename'=>$FILE['file']['newName']));
 		exit;
 
-
-
 	}elseif($_POST['type']=='uploadBKP'){	
-		$filename = $_SERVER['INCLUDE_PATH'].'/ws-bkp/bkp_(uploaded)_'.date("Y-m-d_H-i-s").'.zip';
+		$filename = INCLUDE_PATH.'ws-bkp/bkp_(uploaded)_'.date("Y-m-d_H-i-s").'.zip';
 		rename(UPLOAD_DIR.'/'.$FILE['file']['newName'], $filename);
 		echo json_encode(array('status'=>'sucesso'));
 		exit;
@@ -383,8 +399,8 @@ foreach($_RETURN_FILES AS $FILE){
 		echo "<li id='".$get_ID->fetch_array[0]['id']."'>	
 				<div id='combo'>
 					<div id='detalhes_img' class='bg02'>
-					<spam ><img class='editar' 	legenda='Editar Informações'	src='./App/Templates/img/websheep/layer--pencil.png'></spam>   
-					<spam ><img class='excluir'	legenda='Excluir Imagem'		src='./App/Templates/img/websheep/cross-button.png'></spam>   
+					<spam ><img class='editar' 	legenda='Editar Informações'	src='./app/templates/img/websheep/layer--pencil.png'></spam>   
+					<spam ><img class='excluir'	legenda='Excluir Imagem'		src='./app/templates/img/websheep/cross-button.png'></spam>   
 				</div>
 					<img class='thumb_exibicao' src='".ws::rootPath."ws-img/155/155/100/".$FILE['file']['newName']."'>
 				</div>

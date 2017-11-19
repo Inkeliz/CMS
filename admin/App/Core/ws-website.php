@@ -1,11 +1,15 @@
 <? 
-	$ROOT_EXISTS 		= (isset($_SERVER['ROOT_WEBSHEEP']));
-	$ROOT_WEBSHEEP 		= ($ROOT_EXISTS) ? implode(array_filter(explode("/",@$_SERVER['ROOT_WEBSHEEP'])),"/") : false;
-	$PATH_ATUAL 		= implode(array_filter(explode("/",substr($_SERVER['PHP_SELF'],0,-strlen('admin/App/Core/ws-website.php')))),"/");
-	
-	if( $ROOT_EXISTS && $ROOT_WEBSHEEP==$PATH_ATUAL && file_exists(dirname(__FILE__).'/../../../ws-config.php')){
-		include_once(dirname(__FILE__).'/../Lib/class-ws-v1.php');
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+	if(!defined("INCLUDE_PATH"))	{$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+	if(file_exists(INCLUDE_PATH.'ws-config.php')){
+		include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 		ws::init();
 	}else{
-		include_once(dirname(__FILE__).'/../../../init.php');
+		include_once(INCLUDE_PATH.'admin/app/core/init.php');
 	}

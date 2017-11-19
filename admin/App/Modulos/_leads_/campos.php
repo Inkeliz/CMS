@@ -1,14 +1,20 @@
 <?php
-	#####################################################  
-	# FORMATA O CAMINHO ROOT
-	#####################################################
-	$r                        = $_SERVER["DOCUMENT_ROOT"];
-	$_SERVER["DOCUMENT_ROOT"] = (substr($r, -1) == '/') ? substr($r, 0, -1) : $r;
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 
 	#####################################################  
 	# DEFINE O PATH DO MÓDULO 
 	#####################################################
-	define("PATH", 'App/Modulos/_leads_');
+	define("PATH", 'app/modulos/_leads_');
 		
 	#####################################################  
 	# LIMPA O CACHE INTERNO
@@ -28,7 +34,7 @@
 	# IMPORTA A CLASSE PADRÃO DO SISTEMA
 	#####################################################
 	ob_start();
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	
 	#####################################################  
 	# VERIFICA SE O USUÁRIO ESTÁ LOGADO OU AS SESSÕES E COOKIES ESTÃO EM ORDEM
@@ -38,20 +44,20 @@
 	#####################################################  
 	# DEFINE O LINK DO TEMPLATE DESTE MÓDULO 
 	#####################################################  
-	define("TEMPLATE_LINK", $_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/_leads_/ws-tool-leads-campos.html');
+	define("TEMPLATE_LINK",INCLUDE_PATH.'admin/app/templates/html/Modulos/_leads_/ws-tool-leads-campos.html');
 
 	#####################################################  
 	# GRAVAMOS NA SESSÃO O LINK DO TEMPLATE DESTE MÓDULO 
 	#####################################################
 	$session = new session();
 	$session->set('token_group', _token(PREFIX_TABLES."ws_biblioteca","token_group"));
-	$session->set('_PATCH_', "App/Modulos/_leads_");
+	$session->set('_PATCH_', "app/modulos/_leads_");
 
 	#####################################################
 	# MONTAMOS A CLASSE DOS TEMPLATES 
 	#####################################################
 	$template           	= new Template(TEMPLATE_LINK, true);
-	$template->PATH 		= 'App/Modulos/_leads_';
+	$template->PATH 		= 'app/modulos/_leads_';
 	$template->TABELA 		= $_tabela_ = strtolower(PREFIX_TABLES.'wslead_'.$_GET['token_table']);
 	$template->TOKEN_TABLE 	= $_GET['token_table'];
 	

@@ -12,10 +12,7 @@
 ############################################################################################
 #	TRATAMOS A URL PARA PEGAR O PATH DE INSTALAÇÃO ANTES DE QUALQUER COISA				   #
 ############################################################################################
-
 if(
-	(isset($_SERVER['SCRIPT_NAME'])		&& $_SERVER['SCRIPT_NAME'] == "/index.php" && $_SERVER['PHP_SELF'] == "/index.php") ||  
-	(isset($_SERVER['ROOT_WEBSHEEP']) 	&& $_SERVER['ROOT_WEBSHEEP']=="/") ||
 	(isset($_SERVER['REQUEST_URI'])		&& $_SERVER['REQUEST_URI']=="/") 
 ){
 	$WS_PATH = "/";
@@ -47,9 +44,9 @@ if(!file_exists(dirname(__FILE__).'/ws-config.php')){
 		<meta content="origin-when-cross-origin" name="referrer">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" href="<?=$WS_PATH?>admin/App/Templates/img/websheep/favicon.ico" sizes="32x32">
-		<link rel="stylesheet" href="<?=$WS_PATH;?>admin/App/Templates/css/websheep/reset.v2.min.css">
-		<link rel="stylesheet" href="<?=$WS_PATH;?>admin/App/Templates/css/fontes/fonts.css">
+		<link rel="icon" href="<?=$WS_PATH?>admin/app/templates/img/websheep/favicon.ico" sizes="32x32">
+		<link rel="stylesheet" href="<?=$WS_PATH;?>admin/app/templates/css/websheep/reset.v2.min.css">
+		<link rel="stylesheet" href="<?=$WS_PATH;?>admin/app/templates/css/fontes/fonts.css">
 	</head>
 	<body>
 		<div style="float:left;position:relative;left:50%;transform: translate(-50%,-50%);width: 440px;top: 50%;">

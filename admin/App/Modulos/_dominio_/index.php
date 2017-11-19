@@ -1,8 +1,19 @@
 <?php 
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	#####################################################  
 	# IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 	#####################################################	
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 	#####################################################  
 	# INICIA SESSÃO
@@ -31,8 +42,8 @@
 	#####################################################  
 	# IMPORTA O LINK DO TEMPLATE 
 	#####################################################  
-	$_TEMPLATE            		= new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/ws-module-domain-template.html', true);
-	$_TEMPLATE->ROOT_WEBSHEEP 	= $_SERVER['ROOT_WEBSHEEP'];
+	$_TEMPLATE            		= new Template(INCLUDE_PATH.'admin/app/templates/html/ws-module-domain-template.html', true);
+	$_TEMPLATE->ROOT_WEBSHEEP 	= ROOT_WEBSHEEP;
 
 	#####################################################  
 	# PRIMEIRO DEFINIMOS OS DADOS DA BASE 
@@ -114,7 +125,7 @@
 	#####################################################  
 	# CAPTAMOS AS TRADUÇÕES NO SERVIDOR 
 	#####################################################
-	$pasta = $_SERVER['INCLUDE_PATH'].'/admin/App/Config/lang';
+	$pasta = INCLUDE_PATH.'admin/app/config/lang';
 	if(is_dir($pasta)){
 		$dh = opendir($pasta);
 		while($diretorio = readdir($dh)){

@@ -12,7 +12,7 @@
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) return;
 			js = d.createElement(s); js.id = id;
-			js.src = "/admin/App/Templates/js/websheep/functionsws.min.js";
+			js.src = "/admin/app/templates/js/websheep/functionsws.min.js";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'websheep-functions'));
 	</script>
@@ -44,7 +44,7 @@
 		.go()
 
 	ws
-		.ajax('./App/Templates/txt/ws-model-htaccess.txt').method("POST")
+		.ajax('./app/templates/txt/ws-model-htaccess.txt').method("POST")
 		.onBeforeSend(function(){console.log("onBeforeSend")})
 		.onSucess(function(){console.log("onSucess")})
 		.onSend(function(){console.log("onSend")})
@@ -99,10 +99,10 @@ ws = {
 		creator: "WebSheep Tecnology"
 	},
 	init: function() {
-		if(ws.verify.jquery() == false && ws.insert.js("./admin/App/Vendor/jquery/2.2.0/jquery.min.js", "jQuery", true) == true) {
+		if(ws.verify.jquery() == false && ws.insert.js("./admin/app/vendor/jquery/2.2.0/jquery.min.js", "jQuery", true) == true) {
 			ws.log.info("Jquery 2.2.0 instalado");
 		}
-		if(ws.$("#style_ws").length == 0 && ws.insert.css("/admin/App/Templates/css/websheep/funcionalidades.css", "style_ws", "All") == true) {
+		if(ws.$("#style_ws").length == 0 && ws.insert.css("/admin/app/templates/css/websheep/funcionalidades.css", "style_ws", "All") == true) {
 			ws.log.info("Style Importado");
 		}
 	},
@@ -130,7 +130,7 @@ ws = {
 		},
 		log:function(opcoes){
 			var options = ws.extend({
-				url: '/admin/App/Modulos/ws_log/functions.php',
+				url: '/admin/app/modulos/ws_log/functions.php',
 				function: 'addLog',
 				ws_author: 0,
 				id_user: 2,

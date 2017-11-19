@@ -1,4 +1,13 @@
 <?
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
 	#####################################################  
 	# FUNÇÕES DO MODULO
 	#####################################################  
@@ -18,27 +27,23 @@
 	#####################################################  
 	# DEFINE PATH DOS PLUGINS
 	#####################################################
-	define("PLUGIN_PATH", $_SERVER['INCLUDE_PATH'].'/website/'.$setupdata['url_plugin']);
+	define("PLUGIN_PATH", INCLUDE_PATH.'website/'.$setupdata['url_plugin']);
 	
 	#####################################################  
 	# IMPORTA CLASS DO TEMPLATE
 	#####################################################
-	$menu_dashboard = new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/ws-dashboard-menu.html', true);
-	// $menu_dashboard->ROOT_WEBSHEEP 	= $_SERVER['ROOT_WEBSHEEP'];
-
+	$menu_dashboard 				= new Template(INCLUDE_PATH.'admin/app/templates/html/ws-dashboard-menu.html', true);
 
 	##########################################################################################
 	#  ANTES DE MONTAR O MENU, VERIFICAMOS A VERSÃO O PAINEL   
 	##########################################################################################
-	$remoteVersion = json_decode(@file_get_contents("https://raw.githubusercontent.com/websheep/cms/master/admin/App/Templates/json/ws-update.json"));
-	$localVersion  = json_decode(file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/json/ws-update.json'));
-
+	$remoteVersion = json_decode(@file_get_contents("https://raw.githubusercontent.com/websheep/cms/master/admin/app/templates/json/ws-update.json"));
+	$localVersion  = json_decode(file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
 	 if($remoteVersion && version_compare($localVersion->version,$remoteVersion->version)==-1){
 	 	$menu_dashboard->newVersion 		= $remoteVersion->version;
 	 	$menu_dashboard->newVersionContent 	= implode($remoteVersion->features,"<br>");	
 	 	$menu_dashboard->block('NEW_VERSION');
 	 } 
-
 
 	###############################################################################################################  
 	# PLUGINS:  Varre os diretórios dos plugins, separa a configuração de cada um deles, e printa a opção no menu 
@@ -122,9 +127,13 @@
 		$menu_dashboard->block("ADMIN");
 	}
 
-
-
-
+	###################################################################
+	# é necessário ter a string contatenada no inicio do ROOT_WEBSHEEP,
+	# ñ sei porque ele triplica o valor da constante
+	# quando coloco a string no final do ROOT_WEBSHEEP ele triplica msm assim.
+	###################################################################
+	$menu_dashboard->ROOT_WEBSHEEP 					= ''.ROOT_WEBSHEEP; 
+	###################################################################
 
 	$menu_dashboard->label_newversion 				= ws::getlang('dashboard>NewVersion');
 	$menu_dashboard->label_paginas 					= ws::getlang('dashboard>lateralMenu>ManagePages');

@@ -4,16 +4,27 @@
 	############################################
 	 header("Content-Type: text/html; charset=utf-8",true);
 
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+
 	############################################
 	#	CARREGA SESSION
 	############################################
 	$user = new session();
 
-
 	##########################################################################################
 	#  VERSÃO DO SISTEMA   
 	##########################################################################################
-	$localVersion  = json_decode(file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/json/ws-update.json'));
+	$localVersion  = json_decode(file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
 
 	##########################################################################################
 	#  PUXAMOS OS DADOS BÁSICOS DA INSTALAÇÃO
@@ -50,14 +61,14 @@
 	#  GRAVA UM JSON COM OS PLUGINS ATIVOS NO SITE
 	##########################################################################################
 	refreshJsonPluginsList();
-	$string 		= file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/json/ws-plugin-list.json');
+	$string 		= file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-plugin-list.json');
 	$jsonPlugins 	= json_decode($string);
 
 	##########################################################################################
 	#  INICIAMOS A CLASSE TEMPLATE
 	##########################################################################################
-	$TEMPLATE 					= new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/ws-dashboard-template.html', true);
-	// $TEMPLATE->ROOT_WEBSHEEP 	= $_SERVER['ROOT_WEBSHEEP'];
+	$TEMPLATE 					= new Template(INCLUDE_PATH.'admin/app/templates/html/ws-dashboard-template.html', true);
+	// $TEMPLATE->ROOT_WEBSHEEP 	= ROOT_WEBSHEEP;
 
 	
 	##########################################################################################
@@ -135,7 +146,7 @@
 						$TEMPLATE->LI_HREF 	= $contents->realPath.'/'.$contents->painel;
 
 
-						if(isset($contents->icon) &&$contents->icon!="" &&file_exists($_SERVER['INCLUDE_PATH'].'/website'.$contents->realPath.'/'.$contents->icon)){
+						if(isset($contents->icon) &&$contents->icon!="" &&file_exists(INCLUDE_PATH.'website'.$contents->realPath.'/'.$contents->icon)){
 							$TEMPLATE->LI_ICON 	= '<img src="'.$contents->realPath.'/'.$contents->icon.'" width="15px"/>';
 						}else{
 							$TEMPLATE->clear("LI_ICON");
@@ -153,13 +164,6 @@
 	#  MENSAGEM COPYRIGHT DO RODAPÉ   
 	##########################################################################################
 	$TEMPLATE->copyright 	= ws::getlang('dashboard>footerCopyright',array('[name]','[system_version]'),array($setupdata['client_name'],$localVersion->version));
-
-
-	##########################################################################################
-	#     
-	##########################################################################################
-
-
 
 	##########################################################################################
 	#  VERIFICA SE EXISTE 2° PATH NA URL

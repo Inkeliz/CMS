@@ -1,18 +1,29 @@
 <?php
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	##########################################################################################################
 	# 	PUXA OS DADOS DE CONFIGURAÇÃO DO SISTEMA
 	##########################################################################################################
-		include_once($_SERVER['INCLUDE_PATH'].'/ws-config.php');
+		include_once(INCLUDE_PATH.'ws-config.php');
 
 	##########################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	##########################################################################################################
-		include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-globals-functions.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
 
 	##########################################################################################
 	#  VERSÃO DO SISTEMA   
 	##########################################################################################
-	$ws_version = json_decode(@file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/json/ws-update.json'));
+	$ws_version = json_decode(@file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
 
 	######################################################################################################################################
 	#  QUANDO SE UTILIZA UM ARQUIVO, NÃO PODEMOS FAZER ELE SE AUTO EXCLUIR, PORTANTO    
@@ -23,8 +34,8 @@
 	######################################################################################################################################
 	# CASO NÃO TENHA AINDA O ARQUIVOO NO LUGAR CERTO E ESTEJA FAZENDO UPDATE AO INVEZ DE INSTALL
 	######################################################################################################################################
-		file_put_contents($_SERVER['INCLUDE_PATH'].'/ws-bkp/.htaccess', "<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteCond %{SCRIPT_FILENAME} !-f\nRewriteRule ^(.*)$ ws-download-template.php\n</IfModule>");
-		_copy($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-download-template.php', $_SERVER['INCLUDE_PATH']."/ws-bkp/ws-download-template.php");
+		file_put_contents(INCLUDE_PATH.'ws-bkp/.htaccess', "<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteCond %{SCRIPT_FILENAME} !-f\nRewriteRule ^(.*)$ ws-download-template.php\n</IfModule>");
+		_copy(INCLUDE_PATH.'admin/app/lib/ws-download-template.php', INCLUDE_PATH."ws-bkp/ws-download-template.php");
 
 	######################################################################################################################################
 	######################################################################################################################################
@@ -32,16 +43,16 @@
 <html lang="pt-br" class='bgradial01' id="html">
 <head>
 <meta charset="UTF-8">
-<link type="image/x-icon" href="/admin/App/Templates/img/websheep/favicon.ico" rel="shortcut icon" />
+<link type="image/x-icon" href="/admin/app/templates/img/websheep/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./App/Templates/css/websheep/estrutura.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./App/Templates/css/websheep/desktop.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./App/Templates/css/websheep/install.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./App/Templates/css/websheep/funcionalidades.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./App/Templates/css/fontes/fonts.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./App/Templates/css/websheep/theme_blue.min.css?v=1" />
-<script type = 'text/javascript' 												src="./App/Vendor/jquery/2.2.0/jquery.min.js"></script>
-<script type = 'text/javascript' 												src="./App/Templates/js/websheep/funcionalidades.js"></script>
+<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/websheep/estrutura.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/websheep/desktop.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/install.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/funcionalidades.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/fontes/fonts.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/theme_blue.min.css?v=1" />
+<script type = 'text/javascript' 												src="./app/vendor/jquery/2.2.0/jquery.min.js"></script>
+<script type = 'text/javascript' 												src="./app/templates/js/websheep/funcionalidades.js"></script>
 
 
 <script type = 'text/javascript'>
@@ -52,7 +63,7 @@ $(document).ready(function(){
 		if($("#eu_aceito").val()=='1'){
 			confirma({
 				width:"auto",
-				conteudo:"  Atualizando o sistema...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+				conteudo:"  Atualizando o sistema...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 				drag:false,
 				bot1:0,
 				bot2:0,
@@ -62,7 +73,7 @@ $(document).ready(function(){
 					$.ajax({
 						type: "POST",
 						cache: false,
-						url: "./App/Modulos/_tools_/functions.php",
+						url: "./app/modulos/_tools_/functions.php",
 						data: {function:"installSQLInit"},
 						error: function (xhr, ajaxOptions, thrownError) {
 							alert(xhr.status);
@@ -91,7 +102,7 @@ $(document).ready(function(){
 			<div id="palco" class="w1" >
 				<div id='step0' style="position: relative;float: left;text-align: center;">
 					<div id="resposta"></div>
-					<img src="./App/Templates/img/websheep/logo_ws_install.jpg" style="">
+					<img src="./app/templates/img/websheep/logo_ws_install.jpg" style="">
 					<div class="c"></div>
 					<strong style="font-family: 'Titillium Web', sans-serif;font-size: 30px;line-height;font-weight: 700;margin: 20px 0px;position: relative;float: left;width: 100%;">Bem vindo ao WebSheep <?=$ws_version->version?></strong>
 					<br>

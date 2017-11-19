@@ -1,6 +1,6 @@
 <!-- BEGIN WEBMASTER -->
 <script type="text/javascript">
-	include_css('./App/Templates/css/websheep/modulos/webmaster/style.min.css',  	'css_mod', 'All');
+	include_css('./app/templates/css/websheep/modulos/webmaster/style.min.css',  	'css_mod', 'All');
 </script>
 <style type="text/css">
 	#container {
@@ -200,8 +200,8 @@
 		});
 		$(document).ready(function() {
 		confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
-		$.getScript('./App/Vendor/ace/src-min-noconflict/ace.js', function() {
-			$.getScript('./App/Vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+		$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
+			$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
 		
 					$("#ws_confirm").remove();
 					$("#body").removeClass("scrollhidden");
@@ -335,7 +335,7 @@
 						setDestque();
 						//	$(".ace_scrollbar").animate({scrollTop: 0}, 200);
 					}
-					ace.config.set('basePath', './App/Vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
+					ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 					window.htmEditor = ace.edit("divEditor");
 					window.htmEditor.setTheme("ace/theme/ambiance");
 		
@@ -357,7 +357,7 @@
 									callback(null, []);
 									return
 								}
-								$.getJSON("./App/Modulos/webmaster/autoComplete.json", function(wordList) {
+								$.getJSON("./app/modulos/webmaster/autoComplete.json", function(wordList) {
 									callback(null, wordList.map(function(ea) {
 										return {
 											name: ea.value,
@@ -377,7 +377,7 @@
 						});
 						$('.chosen-results,.nave_folders').perfectScrollbar({suppressScrollX: true});
 						//window.htmEditor.setReadOnly(true); sem editar
-						// var UndoManager = require(["admin/App/Modulos/webmaster/src-min-noconflict/ace"]).UndoManager
+						// var UndoManager = require(["admin/app/modulos/webmaster/src-min-noconflict/ace"]).UndoManager
 						window.htmEditor.getSession().getUndoManager().reset();
 						window.htmEditor.on('change', function() {
 							window.htmEditor.resize();
@@ -539,7 +539,7 @@
 		
 						$('#formatHTML').unbind('tap press click').bind('tap press click', function() {
 							confirma({
-								conteudo: '<iframe id="bootstrap" src="./App/Modulos/webmaster/formatter/" width="100%" height="100%" scrolling="no"></iframe>',
+								conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/formatter/" width="100%" height="100%" scrolling="no"></iframe>',
 								width: 600,
 								height:370,
 								bot1: 'Formatar',
@@ -558,7 +558,7 @@
 						})
 						$('#templateBootstrap').unbind('tap press click').bind('tap press click', function() {
 							confirma({
-								conteudo: '<iframe id="bootstrap" src="./App/Modulos/webmaster/templateBootstrap/" width="100%" height="100%"></iframe>',
+								conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/templateBootstrap/" width="100%" height="100%"></iframe>',
 								width: 'calc(100% - 100px)',
 								height: 'calc(100% - 100px)',
 								bot1: 'Inserir',
@@ -679,7 +679,7 @@
 											var pathPlug = $("#shortcodes").val();
 											$.ajax({
 												type: "POST",
-												url: "./App/Modulos/webmaster/functions.php",
+												url: "./app/modulos/webmaster/functions.php",
 												data: {
 													'function': 'getShortCodesPlugin',
 													'path': pathPlug
@@ -827,7 +827,7 @@
 											})
 										},
 										Sucess: function(e) {
-											$(".ferramenta_especial[data-path='./App/Modulos/webmaster/']").click();
+											$(".ferramenta_especial[data-path='./app/modulos/webmaster/']").click();
 										}
 									});
 								}
@@ -953,7 +953,7 @@
 								newFun: function() {
 									$.ajax({
 										type: "POST",
-										url: "./App/Modulos/webmaster/functions.php",
+										url: "./app/modulos/webmaster/functions.php",
 										beforeSend:function(){
 												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 										},
@@ -1030,7 +1030,7 @@
 								onCancel: function() {
 									$.ajax({
 										type: "POST",
-										url: "./App/Modulos/webmaster/functions.php",
+										url: "./app/modulos/webmaster/functions.php",
 										beforeSend:function(){
 												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 										},

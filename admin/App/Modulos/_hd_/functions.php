@@ -1,5 +1,16 @@
 <?php
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 $_pesoTotalFilesSite = 0;
 $_ArquivosFTP_ =array();
@@ -14,7 +25,7 @@ $_ArquivosFTP_ =array();
 						FTP_FILES_SIZE($dir.'/'.$diretorio);
 				}elseif($diretorio != '..' && $diretorio != '.' && !is_dir($dir.'/'.$diretorio)){
 						$peso = @filesize($dir.'/'.$diretorio);
-						$_ArquivosFTP_[]= array('<b>Arquivo:</b>'.str_replace($_SERVER['INCLUDE_PATH'].'/website/',"",$dir.'/'.$diretorio), $peso);
+						$_ArquivosFTP_[]= array('<b>Arquivo:</b>'.str_replace(INCLUDE_PATH.'website/',"",$dir.'/'.$diretorio), $peso);
 						$_pesoTotalFilesSite +=  $peso;
 					};
 			};
@@ -49,7 +60,7 @@ function returnFerramentas(){
 
 			$pesoUtilizado = 0;
 			foreach ($AllFilesInModule as $arquivo){
-				$peso = @filesize($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/'.$arquivo);
+				$peso = @filesize(INCLUDE_PATH.'website/assets/upload-files/'.$arquivo);
 				if($peso!=false){
 					$pesoUtilizado +=$peso;
 				}
@@ -58,14 +69,14 @@ function returnFerramentas(){
 
 			$pesoNaoUtilizado = 0;
 			foreach ($AllFilesOutModule as $arquivo){
-				$peso = @filesize($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/'.$arquivo);
+				$peso = @filesize(INCLUDE_PATH.'website/assets/upload-files/'.$arquivo);
 				if($peso!=false){
 					$pesoNaoUtilizado +=$peso;						
 				}
 			};
 			$FERRAMENTA_ARRAY[]= array('Nao utilizado', $pesoNaoUtilizado);
 
-			FTP_FILES_SIZE($_SERVER['INCLUDE_PATH'].'/website/');
+			FTP_FILES_SIZE(INCLUDE_PATH.'website/');
 			$todo_peso = $pesoNaoUtilizado+$pesoNaoUtilizado+$_pesoTotalFilesSite;
 
 			$FERRAMENTA_ARRAY[]= array('Arquivos no FTP', $_pesoTotalFilesSite);
@@ -82,7 +93,7 @@ function returnFerramentas(){
 
 function returnAllFilesSizes(){
 		global $_ArquivosFTP_;
-		FTP_FILES_SIZE($_SERVER['INCLUDE_PATH'].'/website/');
+		FTP_FILES_SIZE(INCLUDE_PATH.'website/');
 		header('Content-Type: application/json');
 		echo json_encode($_ArquivosFTP_);
 /*		$itens = new MySQL(); 
@@ -90,8 +101,8 @@ function returnAllFilesSizes(){
 		$itens->select();
 		foreach ($itens->fetch_array as $arquivos){
 			// $_ArquivosFTP_[]= array(
-			// 	$_SERVER['INCLUDE_PATH'].'/website/assets/upload-files'.$arquivos['filename'], 
-			// 	@filesize($_SERVER['INCLUDE_PATH'].'/website/assets/upload-files'.$arquivos['file'])
+			// 	INCLUDE_PATH.'website/assets/upload-files'.$arquivos['filename'], 
+			// 	@filesize(INCLUDE_PATH.'website/assets/upload-files'.$arquivos['file'])
 			// );
 		};
 */

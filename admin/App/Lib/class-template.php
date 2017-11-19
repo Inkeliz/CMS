@@ -1,6 +1,4 @@
 <?php
-
-
 	/**
 	 * Template Management for PHP5
 	 *

@@ -14,8 +14,6 @@
  * * Configurações do MySQL
  * * Chaves secretas
  * * Prefixo das tabelas da base de dados
- *
- *
  */
 
 /** O nome do banco de dados do WebSheep */
@@ -25,6 +23,16 @@
 	if(!defined("CHARSET"))		define("CHARSET", 		"utf-8");
 	if(!defined("TIMEZONE"))	define("TIMEZONE", 		"America/Sao_Paulo");
 
+####################################################################################
+# DEFINIMOS O PATH DE INSTALAÇÃO DO WEBSITE
+####################################################################################
+if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 ####################################################################################
 # UTILIZE FALSE ESTRITAMENTE PARA DESENVOLVIMENTO!!!!
@@ -74,23 +82,18 @@ if(!defined("NONCE_SALT"))			define('NONCE_SALT',		'{NONCE_SALT}');
 
 
 ############################################
-#	DEFINE TIMEZONE
-############################################
-date_default_timezone_set('America/Sao_Paulo');
-
-############################################
 #	VERSÃO DO PHP REQUERIDO
 ############################################
-if(!defined("php_version")) 	define('php_version',file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/txt/ws-php-version.txt'));
+if(!defined("php_version")) 	define('php_version',file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-php-version.txt'));
 
 ############################################
 #	DEFINE O IDIOMA DO ADMIN
 ############################################
 // TRADUÇÃO ANTIGA
-if( !defined( '__LANG__' ) )define( '__LANG__', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/json/ws-lang.json')));
+if( !defined( '__LANG__' ) )define( '__LANG__', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-lang.json')));
 
 // TRADUÇÃO NOVA (em desenvolvimento ainda)
-if( !defined( 'wslang' ) )	define( 'wslang', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents($_SERVER['INCLUDE_PATH'].'/admin/App/Config/lang/'.LANG.'.json')) );
+if( !defined( 'wslang' ) )	define( 'wslang', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents(INCLUDE_PATH.'admin/app/config/lang/'.LANG.'.json')) );
 
 
 

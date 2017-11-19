@@ -1,6 +1,19 @@
 <?php
 	ob_start();
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	############################################################################################################################################
+
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	_session();
 	clearstatcache();
 
@@ -9,9 +22,9 @@
 
 	ob_end_clean();
 
-	define("PATH", 'App/Modulos/ws_log');
+	define("PATH", 'app/modulos/ws_log');
 
-	$_SET_TEMPLATE_INPUT                								= new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/ws_log/ws-log.html', true);
+	$_SET_TEMPLATE_INPUT                								= new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws_log/ws-log.html', true);
 	$_SET_TEMPLATE_INPUT->PATH          								= PATH;
 	// $_SET_TEMPLATE_INPUT->ID_CAT        								= 0;
 	// $_SET_TEMPLATE_INPUT->ID_FERRAMENTA 								= ID_FERRAMENTA;

@@ -1,6 +1,6 @@
 <!-- BEGIN GALERIAS -->
 <script type="text/javascript">
-	include_css ("./App/Templates/css/websheep/modulos/_modulo_/galerias.min.css?v=0.1","css_mod","All");
+	include_css ("./app/templates/css/websheep/modulos/_modulo_/galerias.min.css?v=0.1","css_mod","All");
 </script>
 <div id="topo_upload" class="bg01" >
 	<div id="topoModulo" class="TitTop bg05 w1b">{_TITULO_FERRAMENTA_}</div>
@@ -9,7 +9,7 @@
 		<div id="bt_Back_Cat" class="botao">Voltar ao ítem</div>
 		<script>
 			$("#bt_Back_Cat").unbind("click").click(function(){
-				confirma({width:"auto",conteudo:"  Carregando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+				confirma({width:"auto",conteudo:"  Carregando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 				 	 $("#conteudo").load("{PATCH}/detalhes.php?token_group={TOKEN_GROUP}&back=false&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}",function(){
 					$("#ws_confirm").remove();
 					$("#body").removeClass("scrollhidden");
@@ -29,15 +29,15 @@
 		<li id='{ID_GAL}'>
 			<div class='combo'>
 				<div class='combo_upload'>
-					<div class='pc' legenda='Meu computador'><img  src='./App/Templates/img/websheep/up_m.png'/></div>
-					<div class='bb' legenda='Na biblioteca'><img  src='./App/Templates/img/websheep/folder_m.png'/></div>
+					<div class='pc' legenda='Meu computador'><img  src='./app/templates/img/websheep/up_m.png'/></div>
+					<div class='bb' legenda='Na biblioteca'><img  src='./app/templates/img/websheep/folder_m.png'/></div>
 				</div>
 				<div id='detalhes_img' class='bg02'>
-					<spam><img class='editar' 				src='./App/Templates/img/websheep/layer--pencil.png'	legenda='Editar Informações'></spam>
-					<spam><img class='galeria'				src='./App/Templates/img/websheep/images.png'  			legenda='Adicionar imagens a essa galeria'></spam>
-					<spam><img class='excluir'				src='./App/Templates/img/websheep/cross-button.png'		legenda='<img class="editar" src="./App/Templates/img/websheep/exclamation.png" style="position: absolute;margin-top: -2px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir galeria'></spam>
+					<spam><img class='editar' 				src='./app/templates/img/websheep/layer--pencil.png'	legenda='Editar Informações'></spam>
+					<spam><img class='galeria'				src='./app/templates/img/websheep/images.png'  			legenda='Adicionar imagens a essa galeria'></spam>
+					<spam><img class='excluir'				src='./app/templates/img/websheep/cross-button.png'		legenda='<img class="editar" src="./app/templates/img/websheep/exclamation.png" style="position: absolute;margin-top: -2px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir galeria'></spam>
 				</div>
-				<form name='formUpload' 	class='formUploadGaleria' action='./App/Core/ws-upload-files.php' method='post' enctype='multipart/form-data' name='formUpload'>
+				<form name='formUpload' 	class='formUploadGaleria' action='./app/core/ws-upload-files.php' method='post' enctype='multipart/form-data' name='formUpload'>
 					<input name='arquivo' 		class='myfile' type='file' style='display:none' accept='image/jpg,image/png,image/jpeg,image/gif'/>
 					<input name='type'	 				hidden='true' value='avatar_galeria'/>
 					<input name='ws_id_ferramenta'	 	hidden='true' value='{WS_ID_FERRAMENTA}'/>
@@ -97,10 +97,10 @@
 			multiple:0,
 			onSelect:function(a){
 				$.ajax({
-				  beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				  beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				  cache: false,
 				  type: "POST",
-				  url: "./App/Modulos/_modulo_/functions.php",
+				  url: "./app/modulos/_modulo_/functions.php",
 				  data: {function:"substituiThumbGaleria",img:a,idItem:idItem,coluna:'avatar'},
 				}).done(function(e) {
 					$(imagem).attr("src",ws.rootPath+"ws-img/155/155/100/"+e)
@@ -175,14 +175,14 @@
 	})
 	$("#bt_Add_Galeria").unbind('click').click(function(){
 	
-		confirma({width:"auto",conteudo:"Adicionando galeria...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+		confirma({width:"auto",conteudo:"Adicionando galeria...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 		
 		functions({
 					funcao:"addGaleria",
 					vars:"ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&ws_nivel={WS_NIVEL}",
 					patch:"{PATCH}",
 					Sucess:function(e){
-					$("#conteudo").load("./App/Modulos/_modulo_/galerias.php?back={BACK}&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&id_galeria={ID_ITEM}&ws_nivel={WS_NIVEL}&function=null?>",function(){
+					$("#conteudo").load("./app/modulos/_modulo_/galerias.php?back={BACK}&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&id_galeria={ID_ITEM}&ws_nivel={WS_NIVEL}&function=null?>",function(){
 							$("#ws_confirm").remove();
 							$("#body").removeClass("scrollhidden");
 							$("*").removeClass("blur");
@@ -225,8 +225,8 @@
 	
 	$(".galeria").unbind('click').click(function(){
 		var iDimg 	= $(this).parent().parent().parent().parent().attr('id');
-		confirma({width:"auto",conteudo:"  Carregando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
-		$("#conteudo").load("./App/Modulos/_modulo_/galeria_fotos.php?token_group={TOKEN_GROUP}&function=null&back={BACK}&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&id_galeria="+iDimg+"&ws_nivel={WS_NIVEL}",function(){
+		confirma({width:"auto",conteudo:"  Carregando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+		$("#conteudo").load("./app/modulos/_modulo_/galeria_fotos.php?token_group={TOKEN_GROUP}&function=null&back={BACK}&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&id_galeria="+iDimg+"&ws_nivel={WS_NIVEL}",function(){
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");
@@ -249,7 +249,7 @@
 						$("#body").removeClass("scrollhidden");
 						$("*").removeClass("blur");
 						setTimeout(function(){
-							confirma({width:"auto",conteudo:"  Excluíndo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+							confirma({width:"auto",conteudo:"  Excluíndo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 							functions(	{
 								funcao:"ExcluiGaleria",
 								vars:"iDgaleria="+iDgaleria,

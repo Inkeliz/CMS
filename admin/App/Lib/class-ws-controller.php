@@ -1,4 +1,15 @@
 <?
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 class controller{
 	static function GetDebugError($dados,$plus="") {return ("<br>".$plus."<br><br><hr style='border-bottom: dashed 1px;'><br><b>Arquivo:</b>".@$dados[0]['file'].'<br><b>Linha</b>: '.$dados[0]['line'].' <br><b>Função:</b>'.$dados[0]['class'].$dados[0]['type'].$dados[0]['function'].'("'.implode($dados[0]['args'],',').'")<br><br><hr style="border-bottom: dashed 1px;"><br>Consulte:	controller::help();<br><hr>' );}
 	protected static function _erro($error){echo '<pre style="position: relative;color: #17968a;background-color: #c4e4e2;font-weight: bold;padding: 10px;text-align: center;font-size: 17px;">! -- Erro interno da Classe -- ! '.PHP_EOL.$error.PHP_EOL."</pre>";}
@@ -14,7 +25,7 @@ class controller{
 		$this->urlsIncludes	= array();
 		$this->ignoreAdd	= false;
 		$this->nocache		= false;
-		$this->Root 		= $_SERVER['INCLUDE_PATH'].'/website';
+		$this->Root 		= INCLUDE_PATH.'website';
 	}
 
 	public function returnRealPath(){
@@ -31,9 +42,9 @@ class controller{
 		$i 		= 0;
 		$lister = 1;
 
-		$this->URI = substr($this->URI, strlen($_SERVER['ROOT_WEBSHEEP']));
+		$this->URI = substr($this->URI, strlen(ROOT_WEBSHEEP));
 		// primeiro verifica se esta vazia 
-		if(ws::urlPath()=="" || ws::urlPath()==$_SERVER['ROOT_WEBSHEEP'] ){
+		if(ws::urlPath()=="" || ws::urlPath()==ROOT_WEBSHEEP ){
 			//agora verifica se existe caminho default pra ele
 				if(!in_array($this->init, $this->paths)){
 					self::_erro(utf8_decode('Por favor, o caminho Default nao esta definido ou não existe no sistema.'));
@@ -167,12 +178,12 @@ class controller{
 			self::_erro(self::GetDebugError(debug_backtrace(),'Por favor, o caminho $root nao está definido.'));
 		}else{
 			if(substr($root,-1)=='/'){$root = substr($root,0,-1);}
-			$this->Root=$_SERVER['INCLUDE_PATH'].'/website/'.$root;
+			$this->Root=INCLUDE_PATH.'website/'.$root;
 		}
 	}
 	public function ignoreAdd(){ $this->ignoreAdd = true;}
 	public function get_URI(){
-		$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],(strlen($_SERVER['ROOT_WEBSHEEP'])));
+		$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],(strlen(ROOT_WEBSHEEP)));
 		if(substr($_REQUEST_URI,0,1)=="/"){
 			$this->URI = urldecode(substr($_REQUEST_URI,1));
 		}else{

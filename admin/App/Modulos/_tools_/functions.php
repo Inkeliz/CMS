@@ -1,4 +1,6 @@
 <?
+
+
 	error_reporting(E_ALL);
 	function gravaThumbTool() {
 		$s = new MySQL();
@@ -8,7 +10,7 @@
 		$s->salvar();
 	}
 	function refreshMenuDesktop() {
-		include($_SERVER["INCLUDE_PATH"].'/admin/App/Core/ws-menu-dashboard.php');
+		include(INCLUDE_PATH.'admin/app/core/ws-menu-dashboard.php');
 	}
 	function installUpdateZip() {
 		$file = './../../../' . $_REQUEST['file'];
@@ -57,7 +59,7 @@
 
 		$filename    	= explode('?', basename($_REQUEST['page']));
 		$_FileLoad_  	= '/'.$SETUP['url_plugin'].'/'.$_REQUEST['page'];
-		$pathname		= str_replace($_SERVER["INCLUDE_PATH"].'/website',"",dirname($_FileLoad_));
+		$pathname		= str_replace(INCLUDE_PATH.'website',"",dirname($_FileLoad_));
 		$_ConfigPHP_ 	= $pathname.'/plugin.config.php';
 
 		if (isset($filename[1]) && $filename[1] != "") {
@@ -69,16 +71,16 @@
 			$_FileLoad_  = substr($_FileLoad_,0, strpos($_FileLoad_,'?'));
 		}
 
-		if (!file_exists($_SERVER["INCLUDE_PATH"].'/website'.$_ConfigPHP_)) {
+		if (!file_exists(INCLUDE_PATH.'website'.$_ConfigPHP_)) {
 			echo "Ops, parece que o arquivo <b>'" . $_FileLoad_. "'</b> não existe...";
 			exit;
 		} else {
 			ob_start();
-			include($_SERVER["INCLUDE_PATH"].'/website'.$_ConfigPHP_);
+			include(INCLUDE_PATH.'website'.$_ConfigPHP_);
 			$contents             = $plugin;
 			$contents->pathPlugin = $SETUP['url_plugin'];
 			$contents->pathFiles  = $pathname;	
-			include($_SERVER["INCLUDE_PATH"].'/website'.$_FileLoad_);
+			include(INCLUDE_PATH.'website'.$_FileLoad_);
 			$jsonRanderizado = ob_get_clean();
 			echo $jsonRanderizado;
 		}
@@ -266,7 +268,7 @@
 			);
 			$jsonName = 'importedTools/' . $TOOL->fetch_array[0]['slug'] . '.ws';
 			if ($encode) {
-				include($_SERVER["INCLUDE_PATH"].'/admin/App/Lib/class-base2n.php');
+				include(INCLUDE_PATH.'admin/app/lib/class-base2n.php');
 				$binary = new Base2n(6);
 				$json   = $binary->encode(json_encode($SQL, JSON_PRETTY_PRINT));
 				$json   = wordwrap($json, 60, PHP_EOL, true);
@@ -346,8 +348,8 @@
 	}
 
 	function _excl_dir_($Dir) {
-		$condicional_files = $Dir != './../../App/Modulos/_modulo_/uploads' && $Dir != './../../App/Modulos/_bkpws_/arquivos' && $Dir != './../../App/Modulos/usuarios/upload';
-		$condicional_Path  = $Dir != './../../App/Modulos/_modulo_' && $Dir != './../../App/Modulos/_bkpws_' && $Dir != './../../App/Modulos/usuarios' && $Dir != './../../modulos';
+		$condicional_files = $Dir != './../../app/modulos/_modulo_/uploads' && $Dir != './../../app/modulos/_bkpws_/arquivos' && $Dir != './../../app/modulos/usuarios/upload';
+		$condicional_Path  = $Dir != './../../app/modulos/_modulo_' && $Dir != './../../app/modulos/_bkpws_' && $Dir != './../../app/modulos/usuarios' && $Dir != './../../modulos';
 		if ($dd = opendir($Dir)) {
 			while (false !== ($Arq = readdir($dd))) {
 				if ($Arq != "." && $Arq != "..") {
@@ -631,7 +633,7 @@
 														var verifyBD = $.ajax({
 															type: "POST",
 															sync: true,
-															url: "./App/Modulos/_tools_/functions.php",
+															url: "./app/modulos/_tools_/functions.php",
 															data: { function: "excluirBibliotecaSelecionada", selectAntigo:selectAntigo}
 														}).done(function(msg) {
 															window.imgSelectedBiblioteca = Array();
@@ -813,11 +815,11 @@
 					<div class='w1 titulo'>" . $_tit_menu_ . "</div>
 					<div id='combo'>
 						<div id='detalhes_img'>
-							<span><img style='top:5px;position:relative;' 	class='limpar legenda' 		legenda='Limpar ferramenta' 			src='./App/Templates/img/websheep/vassoura.png'></span>
-							<span><img 										class='mover_item legenda mover_sub_item' 	legenda='Mover' 						src='./App/Templates/img/websheep/arrow-move.png'></span>
-							<span><img 										class='editar legenda' 		legenda='Editar' 		 				src='./App/Templates/img/websheep/layer--pencil.png'></span>
-							<span><img 										class='exportar legenda' 	legenda='Exportar ferramenta' 		src='./App/Templates/img/websheep/export_tool.png'></span>
-							<span><img 										class='excluir legenda' 	legenda='<img class=\"editar\" 			src=\"./App/Templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir'		src='./App/Templates/img/websheep/cross-button.png'></span>
+							<span><img style='top:5px;position:relative;' 	class='limpar legenda' 		legenda='Limpar ferramenta' 			src='./app/templates/img/websheep/vassoura.png'></span>
+							<span><img 										class='mover_item legenda mover_sub_item' 	legenda='Mover' 						src='./app/templates/img/websheep/arrow-move.png'></span>
+							<span><img 										class='editar legenda' 		legenda='Editar' 		 				src='./app/templates/img/websheep/layer--pencil.png'></span>
+							<span><img 										class='exportar legenda' 	legenda='Exportar ferramenta' 		src='./app/templates/img/websheep/export_tool.png'></span>
+							<span><img 										class='excluir legenda' 	legenda='<img class=\"editar\" 			src=\"./app/templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir'		src='./app/templates/img/websheep/cross-button.png'></span>
 					</div>
 				</div>
 			</div>";
@@ -906,7 +908,7 @@
 		$_exc_ferramenta_->set_where('id_tool="' . $_REQUEST['id_folder'] . '"');
 		$_exc_ferramenta_->exclui();
 		if ($_REQUEST['preservar'] == 'false') {
-			@unlink($_SERVER["INCLUDE_PATH"].'/website/includes/' . $selectFile->fetch_array[0]['file']);
+			@unlink(INCLUDE_PATH.'website/includes/' . $selectFile->fetch_array[0]['file']);
 		}
 	}
 	
@@ -2072,7 +2074,7 @@
 		
 		global $_conectMySQLi_;
 		$resultado = 0;
-		include($_SERVER["INCLUDE_PATH"].'/admin/App/Modulos/update/ws_update.php');
+		include(INCLUDE_PATH.'admin/app/modulos/update/ws_update.php');
 		
 		
 		$mysqli = new mysqli(SERVIDOR_BD, USUARIO_BD, SENHA_BD, NOME_BD);
@@ -2096,7 +2098,7 @@
 		$I = new MySQL();
 		$I->set_table(PREFIX_TABLES . 'setupdata');
 		$I->set_insert('id', 1);
-		$I->set_insert('system_version', file_get_contents($_SERVER["INCLUDE_PATH"].'/admin/App/Templates/txt/ws-version.txt'));
+		$I->set_insert('system_version', file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-version.txt'));
 		//####################################### apenas se for o setup inicial
 		
 		if (isset($_REQUEST['formulario'])) {
@@ -2166,7 +2168,7 @@
 		$t_ferramentas->select();
 
 
-		$first = $_SERVER["INCLUDE_PATH"].'/admin/App/Config/firstacess';
+		$first = INCLUDE_PATH.'admin/app/config/firstacess';
 		if (!file_exists($first) || file_put_contents($first,"false")) {
 			echo "sucesso";
 		} else {
@@ -2180,8 +2182,8 @@
 	**/
 	function updateSQLInit() {
 		global $_conectMySQLi_;
-		@unlink($_SERVER["INCLUDE_PATH"].'/admin/App/Config/firstacess');
-		include($_SERVER["INCLUDE_PATH"].'/admin/App/Modulos/update/ws_update.php');
+		@unlink(INCLUDE_PATH.'admin/app/config/firstacess');
+		include(INCLUDE_PATH.'admin/app/modulos/update/ws_update.php');
 		$mysqli = new mysqli(SERVIDOR_BD, USUARIO_BD, SENHA_BD, NOME_BD);
 		if (mysqli_multi_query($mysqli, $GLOBALS["ConfigSQL"])) {
 			do {
@@ -2198,7 +2200,7 @@
 		$I = new MySQL();
 		$I->set_table(PREFIX_TABLES . 'setupdata');
 		$I->set_update('id', 1);
-		$I->set_update('system_version', file_get_contents($_SERVER["INCLUDE_PATH"].'/admin/App/Templates/txt/ws-version.txt'));
+		$I->set_update('system_version', file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-version.txt'));
 		configPaths($RewriteRule);
 		if ($I->salvar()) {
 			echo "sucesso";
@@ -2219,7 +2221,7 @@
 		
 
 		$content_newPage = '<meta charset="utf-8"/>
-			<link rel="stylesheet" href="<?=ws::rootPath?>admin/App/Templates/css/fontes/fonts.css">
+			<link rel="stylesheet" href="<?=ws::rootPath?>admin/app/templates/css/fontes/fonts.css">
 			<div style="float:left;position:absolute;left:50%;transform: translate(-50%,-50%);width: auto;top: 50%;border-left: solid 10px #00939d;padding-left: 10px;">
 				<span style="font-family:\'Titillium Web\';font-weight:100;float:left;width:100%;color:#00939d;font-size: 17px;text-align: left;">
 					<strong>Título da página:</strong> /includes/'.$_getInput['oldName'].'<br>
@@ -2230,8 +2232,8 @@
 
 
 		if ($Rename->_num_rows == 1 && $_getInput['renomear'] == 'renomear') {
-			$oldFile = $_SERVER["INCLUDE_PATH"].'/website/includes/' . $_getInput['oldName'];
-			$newName = $_SERVER["INCLUDE_PATH"].'/website/includes/' . $_getInput['file'];
+			$oldFile = INCLUDE_PATH.'website/includes/' . $_getInput['oldName'];
+			$newName = INCLUDE_PATH.'website/includes/' . $_getInput['file'];
 			if (!file_exists($oldFile)) {
 				echo "OPA! Não existe um arquivo com esse nome no servidor para renomear.";
 				exit;
@@ -2239,11 +2241,11 @@
 			rename($oldFile, $newName);
 			
 		} elseif ($_getInput['renomear'] == 'novo') {
-			if (file_exists($_SERVER["INCLUDE_PATH"].'/website/includes/' . $_getInput['file'])) {
+			if (file_exists(INCLUDE_PATH.'website/includes/' . $_getInput['file'])) {
 				echo "OPA! Já existe um arquivo com esse nome no servidor.";
 				exit;
 			} else {
-				file_put_contents($_SERVER["INCLUDE_PATH"].'/website/includes/' . $_getInput['file'], $content_newPage);
+				file_put_contents(INCLUDE_PATH.'website/includes/' . $_getInput['file'], $content_newPage);
 			}
 		}
 		
@@ -2345,10 +2347,10 @@
 						<div class='c'>
 							<div id='combo'>
 									<div id='detalhes_img' class='bg02'>
-									<spam ><img class='mover_item legenda' legenda='Mover a posição do ítem' 	src='./App/Templates/img/websheep/arrow-move.png'></spam>
-									<spam ><img class='editar legenda' legenda='Editar Informações' 		 	src=./App/Templates/img/websheep/layer--pencil.png'></spam>
-									<spam ><img class='salvar legenda' legenda='Salvar ferramenta'				src=./App/Templates/img/websheep/accept.png'></spam>
-									<spam ><img class='excluir legenda' legenda='<img class=\"editar\" 			src=\"./App/Templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir ferramenta'		src='./App/Templates/img/websheep/cross-button.png'></spam>
+									<spam ><img class='mover_item legenda' legenda='Mover a posição do ítem' 	src='./app/templates/img/websheep/arrow-move.png'></spam>
+									<spam ><img class='editar legenda' legenda='Editar Informações' 		 	src=./app/templates/img/websheep/layer--pencil.png'></spam>
+									<spam ><img class='salvar legenda' legenda='Salvar ferramenta'				src=./app/templates/img/websheep/accept.png'></spam>
+									<spam ><img class='excluir legenda' legenda='<img class=\"editar\" 			src=\"./app/templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir ferramenta'		src='./app/templates/img/websheep/cross-button.png'></spam>
 							</div>
 					</div>
 				</li>";
@@ -2593,7 +2595,7 @@
 
 
 		$content_newPage = '<meta charset="utf-8"/>
-			<link rel="stylesheet" href="<?=ws::rootPath?>admin/App/Templates/css/fontes/fonts.css">
+			<link rel="stylesheet" href="<?=ws::rootPath?>admin/app/templates/css/fontes/fonts.css">
 			<div style="float:left;position:absolute;left:50%;transform: translate(-50%,-50%);width: auto;top: 50%;border-left: solid 10px #00939d;padding-left: 10px;">
 				<span style="font-family:\'Titillium Web\';font-weight:100;float:left;width:100%;color:#00939d;font-size: 17px;text-align: left;">
 					<strong>Título da página:</strong> '.$_getInput['titulo_page'].'<br>
@@ -2611,7 +2613,7 @@
 				$listPath = array();
 				foreach ($path as $value) {
 					$listPath[] = $value;
-					$newPath    = $_SERVER["INCLUDE_PATH"].'/website/includes/' . implode($listPath, '/');
+					$newPath    = INCLUDE_PATH.'website/includes/' . implode($listPath, '/');
 					if (!file_exists($newPath)) {
 						mkdir($newPath);
 					}
@@ -2622,12 +2624,12 @@
 			}
 		} else {
 			$file = implode(array_slice($path, -1), '');
-			if (!file_exists($_SERVER["INCLUDE_PATH"].'/website/includes')) {
-				mkdir($_SERVER["INCLUDE_PATH"].'/website/includes');
+			if (!file_exists(INCLUDE_PATH.'website/includes')) {
+				mkdir(INCLUDE_PATH.'website/includes');
 			}
 			
-			if (!file_exists($_SERVER["INCLUDE_PATH"].'/website/includes/'. $file)) {
-				file_put_contents($_SERVER["INCLUDE_PATH"].'/website/includes/' . $file,$content_newPage);
+			if (!file_exists(INCLUDE_PATH.'website/includes/'. $file)) {
+				file_put_contents(INCLUDE_PATH.'website/includes/' . $file,$content_newPage);
 			}
 		}
 	
@@ -2738,14 +2740,14 @@
 	
 	/*######################################################################################## BKP ############################################################## */
 	function apliqueTheme() {
-		$extractPath = $_SERVER["INCLUDE_PATH"].'/admin/..';
+		$extractPath = INCLUDE_PATH.'admin/..';
 		$_root       = $extractPath;
-		$arquivo     = $_SERVER["INCLUDE_PATH"].'/ws-bkp/' . $_REQUEST['dataFile'];
+		$arquivo     = INCLUDE_PATH.'ws-bkp/' . $_REQUEST['dataFile'];
 		$website     = $extractPath . "/website";
 		
 		if ($_REQUEST['type'] == "full") {
 			if (file_exists($website)) {
-				_excluiDir($_SERVER["INCLUDE_PATH"].'/website');
+				_excluiDir(INCLUDE_PATH.'website');
 				echo 'excluiu tudo...' . PHP_EOL;
 			}
 			$zip = new ZipArchive();
@@ -2851,7 +2853,7 @@
 		foreach ($D->fetch_array as $value) {
 			$tables[] = $value[0];
 		}
-		lista_Dir_theme($_SERVER["INCLUDE_PATH"].'/website');
+		lista_Dir_theme(INCLUDE_PATH.'website');
 		foreach ($tables as $table) {
 			########################################################################
 			# VERIFICA SE SÃO TABELAS QUE NÃO PODEMOS MEXER
@@ -2917,16 +2919,16 @@
 		}
 		
 		$z = new ZipArchive();
-		if (!file_exists($_SERVER["INCLUDE_PATH"].'/ws-bkp')) {
-			mkdir($_SERVER["INCLUDE_PATH"].'/ws-bkp');
+		if (!file_exists(INCLUDE_PATH.'ws-bkp')) {
+			mkdir(INCLUDE_PATH.'ws-bkp');
 		}
-		$criou = $z->open($_SERVER["INCLUDE_PATH"].'/ws-bkp/bkp_(' . count($_files_theme_) . '_files)_' . date("Y-m-d_H-i-s") . '.zip', ZipArchive::CREATE);
+		$criou = $z->open(INCLUDE_PATH.'ws-bkp/bkp_(' . count($_files_theme_) . '_files)_' . date("Y-m-d_H-i-s") . '.zip', ZipArchive::CREATE);
 		if ($criou === true) {
 			foreach ($_dir_theme_ as $dir) {
 				$z->addEmptyDir('website/' . $dir);
 			}
 			foreach ($_files_theme_ as $file) {
-				$z->addFile($_SERVER["INCLUDE_PATH"].'/website/' . $file, 'website/' . $file);
+				$z->addFile(INCLUDE_PATH.'website/' . $file, 'website/' . $file);
 			}
 			if ($_POST['avatar'] == "") {
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"'.ws::rootPath.'ws-img/200/200/null","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
@@ -2955,13 +2957,13 @@
 			}
 			if (is_dir($diretorio . '/' . $item)) {
 				$newDir = str_replace(array(
-					$_SERVER["INCLUDE_PATH"].'/website/'
+					INCLUDE_PATH.'website/'
 				), "", $diretorio . '/' . $item);
 				array_push($_dir_theme_, $newDir);
 				lista_Dir_theme($diretorio . '/' . $item);
 			} else {
 				$newDir = str_replace(array(
-					$_SERVER["INCLUDE_PATH"].'/website/'
+					INCLUDE_PATH.'website/'
 				), "", $diretorio . '/' . $item);
 				array_push($_files_theme_, $newDir);
 			}
@@ -2977,7 +2979,18 @@
 	//####################################################################################################################
 	//####################################################################################################################
 
-	include_once($_SERVER["INCLUDE_PATH"].'/admin/App/Lib/class-ws-v1.php');
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) 	{$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	$session = new session();
 	if (isset($_REQUEST['function'])) {
 		_exec($_REQUEST['function']);

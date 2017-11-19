@@ -1,3 +1,16 @@
+<?
+
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,15 +22,15 @@
 	<link href="//dpidudyah7i0b.cloudfront.net/devops/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 	<link href="//dpidudyah7i0b.cloudfront.net/devops/css/style.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/codemirror.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/formatting.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/beautify-html.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/beautify.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/beautify-css.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/javascriptobfuscator_unpacker.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/urlencode_unpacker.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/p_a_c_k_e_r_unpacker.js"></script>
-	<script src="/<?=$_SERVER['ROOT_WEBSHEEP']?>/admin/App/Vendor/formatCode/myobfuscate_unpacker.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/codemirror.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/formatting.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/beautify-html.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/beautify.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/beautify-css.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/javascriptobfuscator_unpacker.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/urlencode_unpacker.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/p_a_c_k_e_r_unpacker.js"></script>
+	<script src="<?=ROOT_WEBSHEEP?>admin/app/vendor/formatCode/myobfuscate_unpacker.js"></script>
 </head>
 
 <body>

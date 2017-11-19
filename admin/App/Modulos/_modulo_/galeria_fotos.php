@@ -1,8 +1,19 @@
 <?php
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 ##################################################################################
 # IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 ##################################################################################
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 ##################################################################################
 # INICIA SESSÃO
@@ -23,7 +34,7 @@
 	@define("BACK"				,$_GET['back']);
 	@define("TOKEN_GROUP"		,$_GET['token_group']);
 	@define("TITULO_FERRAMENTA"	,$session->get('_TITULO_FERRAMENTA_'));
-	@define("PATCH"				,'App/Modulos/_modulo_');
+	@define("PATCH"				,'app/modulos/_modulo_');
 
 ##################################################################################
 # PESQUISA NA BASE DE DADOS AS IMAGENS DA GALERIA
@@ -37,7 +48,7 @@
 ##################################################################################
 # INVOCA A CLASSE DO TEMPLATE
 ##################################################################################
-	$_SET_TEMPLATE_INPUT = new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/ws-tool-galeria-fotos-template.html', true);
+	$_SET_TEMPLATE_INPUT = new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-galeria-fotos-template.html', true);
 
 ##################################################################################
 # SETAMOS AS VARIAVEIS AO TEMPLATE

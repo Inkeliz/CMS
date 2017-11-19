@@ -1,7 +1,17 @@
 <?
-	
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	#####################################################  FUNÇÕES DO MODULO
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 	#####################################################
 	_session();
@@ -26,7 +36,7 @@
 	if(empty($_GET['token_group'])) {
 		$_GET['token_group'] = _token(PREFIX_TABLES."ws_biblioteca","token_group");
 	}
-	$_SET_TEMPLATE_INPUT 						= new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/ws-tool-category-datails-template.html', true);
+	$_SET_TEMPLATE_INPUT 						= new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-category-datails-template.html', true);
 	
 	$_SET_TEMPLATE_INPUT->ws_rootPath 			= ws::rootPath;
 	$_SET_TEMPLATE_INPUT->TOKEN_GROUP 			= $_GET['token_group'];
@@ -34,7 +44,7 @@
 	$_SET_TEMPLATE_INPUT->DESCRIPTION 			= stripslashes(urldecode($_CATEGORIA->texto));
 	$_SET_TEMPLATE_INPUT->TITULO 				= $_CATEGORIA->titulo;
 	$_SET_TEMPLATE_INPUT->ID_CAT 				= $_CATEGORIA->id;
-	$_SET_TEMPLATE_INPUT->PATH 					= 'App/Modulos/_modulo_';
+	$_SET_TEMPLATE_INPUT->PATH 					= 'app/modulos/_modulo_';
 	$_SET_TEMPLATE_INPUT->CAT_AVATAR 			= $_CATEGORIA->avatar;
 	$_SET_TEMPLATE_INPUT->CAT_PAI 				= $_CATEGORIA->id_cat;
 	$_SET_TEMPLATE_INPUT->PAGE 					= $_GET['LIMIT'];

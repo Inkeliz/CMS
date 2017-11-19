@@ -1,4 +1,15 @@
 <?
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 class htmlProcess{
 	public function __construct(){}
 	public static function process_tag_ws_paginate	($key=null){
@@ -284,7 +295,7 @@ class htmlProcess{
 		$ws->innertext 	= $innertext;
 		unset($ws->attr->function);
 		if(isset($atributos['function'])){
-			$file = $_SERVER['INCLUDE_PATH'].'/ws-shortcodes/'.$atributos['function'].'.php';
+			$file = INCLUDE_PATH.'ws-shortcodes/'.$atributos['function'].'.php';
 			if(!file_exists($file)){
 				$wsReturn = "<pre>! shortcodes não existe - ".$atributos['function'].".php</pre>";
 			}else{
@@ -539,9 +550,9 @@ class htmlProcess{
 				$atributos->{$key}= $value;
 			}
 		}
-		ob_start(); @include($_SERVER['INCLUDE_PATH'].'/website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/plugin.config.php'); ob_get_clean();
+		ob_start(); @include(INCLUDE_PATH.'website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/plugin.config.php'); ob_get_clean();
 		$ws = (object) array('config' => $plugin, 'rootPath'=>$setupdata['url_plugin'].'/'.$atributos->path,'shortcode'=>$outertext,'vars' =>$atributos);
-		ob_start(); @include($_SERVER['INCLUDE_PATH'].'/website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/'.$plugin->plugin); $content=ob_get_clean();
+		ob_start(); @include(INCLUDE_PATH.'website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/'.$plugin->plugin); $content=ob_get_clean();
 		return $content;
 	}
 	public static function processHTML($htmlStr=null){

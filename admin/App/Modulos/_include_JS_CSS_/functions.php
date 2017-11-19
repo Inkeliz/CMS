@@ -1,6 +1,17 @@
 <?php
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	ob_start();
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	ob_end_clean();
 	function OrdenaItem()
 	{
@@ -60,7 +71,7 @@
 		$NewPage->set_Insert('token', $token);
 		if($NewPage->insert())
 		{
-			$template   = new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html', true);
+			$template   = new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html', true);
 			$SelectPage = new MySQL();
 			$SelectPage->set_table(PREFIX_TABLES . 'ws_link_url_file');
 			$SelectPage->set_where('id_url="' . $_REQUEST['idPage'] . '"');
@@ -99,7 +110,7 @@
 		$I->set_where('id="' . $_REQUEST['id_file'] . '"');
 		if($I->exclui())
 		{
-			$template   = new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html', true);
+			$template   = new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html', true);
 			$SelectPage = new MySQL();
 			$SelectPage->set_table(PREFIX_TABLES . 'ws_link_url_file');
 			$SelectPage->set_where('id_url="' . $_REQUEST['id_url'] . '"');

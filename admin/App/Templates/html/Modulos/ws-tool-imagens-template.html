@@ -1,6 +1,6 @@
 <!-- BEGIN BLOCK_IMG -->
 <script type="text/javascript">
-		include_css ("./App/Templates/css/websheep/modulos/_modulo_/imagens.min.css","css_mod","All");
+		include_css ("./app/templates/css/websheep/modulos/_modulo_/imagens.min.css","css_mod","All");
 </script>
 <div id="topoModulo" class="TitTop bg05 w1b">{TITULO}</div>
 	<div id="topo_upload" class="bg01" >
@@ -9,7 +9,7 @@
 					<div id="bt_voltar_cat" class="botao">Voltar</div>
 					<script>
 						 	 $("#bt_voltar_cat").unbind("click").click(function(){
-									confirma({width:"auto",conteudo:"  Voltando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+									confirma({width:"auto",conteudo:"  Voltando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 									$("#conteudo").load("./{PATH}/detalhes.php?token_group={TOKEN_GROUP}{BACK}&ws_id_ferramenta={WS_ID_FERRAMENTA}&id_item={ID_ITEM}&id_cat={ID_CAT}&ws_nivel={ID_NIVEL}",function(){
 										$("#ws_confirm").remove();
 										$("#body").removeClass("scrollhidden");
@@ -25,8 +25,8 @@
 						 	 $("#bt_voltar_cat").unbind("click").bind("click",function(){
 								$.ajax({
 								  type: "POST",
-								  url: "App/Modulos/_modulo_/functions.php",
-								  beforeSend:function(){confirma({width:"auto",conteudo:"  Publicando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+								  url: "app/modulos/_modulo_/functions.php",
+								  beforeSend:function(){confirma({width:"auto",conteudo:"  Publicando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 								  cache: false,
 								  data: {
 								  	"function":"PublicaRascunhoImagens",
@@ -37,7 +37,7 @@
 									out(e)
 									$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 									if(e=="Ítem salvo com sucesso!"){var cor=3;}else{var cor=2;}
-									$("#conteudo").load("./App/Modulos/_modulo_/imagens.php?{HTTPVARS}");
+									$("#conteudo").load("./app/modulos/_modulo_/imagens.php?{HTTPVARS}");
 
 								})
 							});
@@ -46,7 +46,7 @@
 				<div id="DraftKey" class="draft"></div>
 
 
-				<form name="formUpload" id="formUpload" action="./App/Core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+				<form name="formUpload" id="formUpload" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 					<input name="arquivo[]" id="myfile" type="file" multiple  style="display:none" accept='image/jpg,image/png,image/jpeg,image/gif' />
 					<input type="hidden" 				name="type"				value="img_inner_item"/>
 					<input type="hidden" 				name="ws_id_ferramenta" value="{WS_ID_FERRAMENTA}"/>
@@ -92,7 +92,7 @@
 				  beforeSend:function(){},
 				  cache: false,
 				  type: "POST",
-				  url: "./App/Modulos/_modulo_/functions.php",
+				  url: "./app/modulos/_modulo_/functions.php",
 				  data: {funcao:"ordena_fotos_imgs",vars:"ids="+posicoes,patch:"{PATH}"},
 				}).done(function(e) {
 					out(e)
@@ -248,10 +248,10 @@ function reloadFunctions(){
 			multiple:1,
 			onSelect:function(_out_){
 				$.ajax({
-				  beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				  beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				  cache: false,
 				  type: "POST",
-				  url: "./App/Modulos/_modulo_/functions.php",
+				  url: "./app/modulos/_modulo_/functions.php",
 				  data: {function:"addImagensBibliotecaItem",ws_id_ferramenta:"{WS_ID_FERRAMENTA}",img:_out_,id_item:"{ID_ITEM}",id_cat:"{ID_CAT}",ws_nivel:"{ID_NIVEL}"},
 				}).done(function(e) {
 					out(e)

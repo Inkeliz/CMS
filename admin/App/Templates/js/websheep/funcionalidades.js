@@ -234,8 +234,8 @@ function loadPluginFile(opcoes){
 	jQuery.ajax({
 		type: "POST",
 		sync: true,
-		beforeSend:function(){confirma({width:"auto",conteudo:options.mensagem+"<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0}); },
-		url: "./App/Modulos/_tools_/functions.php",
+		beforeSend:function(){confirma({width:"auto",conteudo:options.mensagem+"<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0}); },
+		url: "./app/modulos/_tools_/functions.php",
 		data: {"function":"returnFileInnerPlugin","page":options.filename}
 	}).done(function(e) {
 
@@ -1267,7 +1267,7 @@ function abreBiblioteca(opcoes) {
 		   window.imgSelectedBiblioteca = Array();
 		  jQuery.ajax({
 			type: "POST",
-			url: "./App/Modulos/_tools_/functions.php",
+			url: "./app/modulos/_tools_/functions.php",
 			beforeSend:function(){
 				confirma({
 					width:"auto",

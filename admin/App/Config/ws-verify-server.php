@@ -43,9 +43,9 @@
 		$errors.="<div>• A versão do PHP é ".PHP_VERSION.". Por favor, instale o php 5.6.4 ou superior para que o sistema funcione corretamente.</div>";
 	}
 
-	if (!date_default_timezone_get()) {
-		$errors.="<div>• date_default_timezone_set</div>";
-	    $bug = 1;
+	if (!ini_get('date.timezone')) {
+		$errors.="<div>• É necessário habilitar em seu php.ini um valor default em date.timezone</div>";
+		$bug = 1;
 	}
 
 	if(@$config->php_ini->file_uploads["global_value"] != 1){

@@ -1,8 +1,19 @@
 <?php
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	############################################################################################################  
 	# DEFINE O PATH DO MÓDULO 
 	############################################################################################################
-	define("PATH", 'App/Modulos/_include_JS_CSS_');
+	define("PATH", 'app/modulos/_include_JS_CSS_');
 		
 	############################################################################################################  
 	# LIMPA O CACHE INTERNO
@@ -22,7 +33,7 @@
 	# IMPORTA A CLASSE PADRÃO DO SISTEMA
 	############################################################################################################
 	ob_start();
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	
 	############################################################################################################  
 	# CRIA SESSÃO
@@ -37,13 +48,13 @@
 	############################################################################################################  
 	# DEFINE O LINK DO TEMPLATE DESTE MÓDULO 
 	############################################################################################################  
-	define("TEMPLATE_LINK", $_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html');
+	define("TEMPLATE_LINK", INCLUDE_PATH.'admin/app/templates/html/Modulos/_include_JS_CSS_/ws-tool-urls-js-css.html');
 
 	############################################################################################################  
 	# MONTAMOS A CLASSE DOS TEMPLATES 
 	############################################################################################################
 	$template           										= new Template(TEMPLATE_LINK, true);
-	$template->PATH 											= 'App/Modulos/_include_JS_CSS_';
+	$template->PATH 											= 'app/modulos/_include_JS_CSS_';
 	$template->ID_PATH 											= $_GET['idPath'];
 	$template->includeJsCss_includeFiles_moduleTitle 			= ws::getlang("includeJsCss>includeFiles>moduleTitle","{PATH_FILE}",$_GET['Path']);
 	$template->includeJsCss_includeFiles_moduleTitle 			= ws::getlang("includeJsCss>includeFiles>moduleTitle");
@@ -76,9 +87,9 @@
 	############################################################################################################  
 	# AGORA INCLUÍMOS NELAS OS ARQUIVOS DO FTP 
 	############################################################################################################
-	$GetFilesFTP = glob_recursive($_SERVER['INCLUDE_PATH'].'/website/*.' . $_GET['type'], $flags = 0);
+	$GetFilesFTP = glob_recursive(INCLUDE_PATH.'website/*.' . $_GET['type'], $flags = 0);
 	foreach($GetFilesFTP as $value){
-		$ArquivosFTP[] = str_replace($_SERVER['INCLUDE_PATH'].'/website', "", $value);
+		$ArquivosFTP[] = str_replace(INCLUDE_PATH.'website', "", $value);
 	}
 
 	############################################################################################################  
@@ -95,7 +106,7 @@
 	# VARREMOS A BASE E RETORNAMOS OS ARQUIVOS GRAVADOS NA ARRAY 
 	############################################################################################################
 	foreach($GetFilesLink->fetch_array as $value){
-		$ArquivosUsados[] = str_replace($_SERVER['INCLUDE_PATH'].'/website', "", $value['file']);
+		$ArquivosUsados[] = str_replace(INCLUDE_PATH.'website', "", $value['file']);
 	}
 
 	############################################################################################################  
@@ -103,7 +114,7 @@
 	############################################################################################################
 	foreach($ArquivosFTP as $value)	{
 		$hidden = "";
-		$value  = str_replace($_SERVER['INCLUDE_PATH'].'/website', '', $value);
+		$value  = str_replace(INCLUDE_PATH.'website', '', $value);
 		$hidden = "";
 		if(in_array($value, $ArquivosUsados)){
 			$hidden = "opacity: 0.3;";
@@ -125,7 +136,7 @@
 	############################################################################################################
 	foreach($GetFilesLink->fetch_array as $value){
 		$hidden						= '';
-		$value						= str_replace($_SERVER['INCLUDE_PATH'].'/website', '', $value);
+		$value						= str_replace(INCLUDE_PATH.'website', '', $value);
 		$template->ID				= $value['id'];
 		$template->FILE				= $value['file'];
 		$template->URL				= $value['id_url'];

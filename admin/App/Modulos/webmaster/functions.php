@@ -1,7 +1,18 @@
 <?
 
 ob_start();
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 $session = new session();
 ob_end_clean();
 
@@ -718,7 +729,6 @@ function getShortCodesPlugin (){
 			echo $jsonRanderizado;
 	}
 	exit;
-
 }
 function loadShortCodes (){
 	global $session;
@@ -781,19 +791,21 @@ function returnBKP (){
 		}
 		foreach($file_exists_dir->fetch_array as $opt){echo '<option value="'.$opt['token'].'">'.$opt['created'].'</option>'.PHP_EOL;};
 }
+
+
 function _excl_dir_(){
-	global $session;
+		global $session;
 		$Dir = $_REQUEST['exclFolder'];
-		echo $Dir;exit;
-		// _excluiDir($Dir);
-
-
+		_excluiDir(INCLUDE_PATH.'website/'.$Dir);
+		echo true;
+		exit;
 }
+
 
 function createFolder($NewPath=null){
 	global $session;
-	$dir = str_replace("\\","/", implode(array_filter(explode("/",$_SERVER['INCLUDE_PATH'].'/website/'.str_replace(array('./','..','.'),"",$_POST['newFile']))),"/"));
-	if(_mkdir($dir)){
+	$dir = implode(array_filter(explode("/",str_replace(array('..','.'),"",$_POST['newFile']))),"/");
+	if(_mkdir('website/'.$dir,true)){
 		echo "sucesso";exit;
 	}else{
 		echo "falha";exit;	};
@@ -805,10 +817,11 @@ function CriaPastas($dir,$oq=0){
 		$dh = opendir($dir);
 		while($diretorio = readdir($dh)){
 			if($diretorio != '..' && $diretorio != '.' && is_dir($dir.'/'.$diretorio)){
-				echo '<div class="w1 folder_alert folder" data-folder="'.str_replace($_SERVER['INCLUDE_PATH'].'/website',"",$dir.'/'.$diretorio).'">'.$diretorio."</div>".PHP_EOL;
+				$folder_tratado = implode(array_filter(explode("/",str_replace(array('..','.'),"",str_replace(INCLUDE_PATH.'website/',"",$dir.'/'.$diretorio)))),"/");
+				echo '<div class="w1 folder_alert folder" data-folder="'.$folder_tratado.'">'.$diretorio."</div>".PHP_EOL;
 				echo "<div class='w1 container'>".PHP_EOL;
-				CriaPastas($dir.'/'.$diretorio."/",$oq);
-				if($oq==1 || $oq==true) MostraFiles($dir.'/'.$diretorio."/");
+				CriaPastas($dir.'/'.$diretorio,$oq);
+				if($oq==1 || $oq==true) MostraFiles($dir.'/'.$diretorio);
 				echo "</div>".PHP_EOL;
 			};
 		};
@@ -823,14 +836,14 @@ function createFile (){
 		$fileCreate = "";
 		createFolder($dirname);
 		if($dirname=='.'){
-			$fileCreate = $_SERVER['INCLUDE_PATH'].'/website/'.$filename;
+			$fileCreate = INCLUDE_PATH.'website/'.$filename;
 		}elseif(substr($dirname,0,1)!='/'){
-			$fileCreate = $_SERVER['INCLUDE_PATH'].'/website/'.$dirname.'/'.$filename;
+			$fileCreate = INCLUDE_PATH.'website/'.$dirname.'/'.$filename;
 		}else{
-			$fileCreate = $_SERVER['INCLUDE_PATH'].'/website'.$dirname.'/'.$filename;
+			$fileCreate = INCLUDE_PATH.'website'.$dirname.'/'.$filename;
 		}
 		if(file_put_contents($fileCreate,$filename)){
-			loadFile($_SERVER['INCLUDE_PATH'].'/website'.$dirname.'/'.$filename);
+			loadFile(INCLUDE_PATH.'website'.$dirname.'/'.$filename);
 		}else{
 			echo "falha";
 		};
@@ -840,7 +853,7 @@ function ListFolderNewFile (){
 	global $session;
 	echo 'Criar um arquivo novo
 	<div class="nave_folders">';
-	CriaPastas($_SERVER['INCLUDE_PATH'].'/website');
+	CriaPastas(INCLUDE_PATH.'website');
 	echo '</div>
 	<div class="c"></div>
 	<input class="inputText path" placeholder="Digite o path do seu diretório:">
@@ -864,24 +877,26 @@ function ListFolderExclFolder (){
 	<div class="c"></div>
 
 	<div class="nave_folders"><form>';
-	CriaPastas($_SERVER['INCLUDE_PATH'].'/website');
+	CriaPastas(INCLUDE_PATH.'website');
 	echo '</div></form>
 	<div class="c"></div>
 	<script>
-		var newFolder = null;
-		$(".folder_alert").unbind("click tap").bind("click tap",function(){
-			var getFolder = $(this).data("folder");
-			$("input.path").val(getFolder.replace("./../../../","")+"/")
-		})
-		sanfona(\'.folder_alert\');
+		// var newFolder = null;
+		// $(".folder_alert").unbind("click tap").bind("click tap",function(){
+			// var getFolder = $(this).data("folder");
+		// })
+		// sanfona(\'.folder_alert\');
 	</script>';}
+
+
+
 function ListFolderNewFolder (){
 	global $session;
 	echo 'Selecione um diretório e complemente com o nome do novo folder <br>ou apenas escreva o nome do novo folder no campo a baixo:
 	<div class="c"></div>
 
 	<div class="nave_folders">';
-	CriaPastas($_SERVER['INCLUDE_PATH'].'/website');
+	CriaPastas(INCLUDE_PATH.'website');
 	echo '</div>
 	<div class="c"></div>
 	<input class="inputText path" placeholder="Digite o path do seu diretório:">
@@ -899,11 +914,34 @@ function MostraFiles($dir){
 	global $session;
 	$dh = opendir($dir);
 	while($arquivo = readdir($dh)){
-		if($arquivo != '..' && $arquivo != '.' && !is_dir($dir.$arquivo)){
+		if($arquivo != '..' && $arquivo != '.' && !is_dir($dir.'/'.$arquivo)){
 			$ext = explode('.',$arquivo);
 			$ext = @$ext[1];
-			if(	isset($ext)		&&($ext=="txt" 	||$ext=="htm" 	||$ext=="html" 	||$ext=="xhtml" 	||$ext=="xml" 	||$ext=="js"	 	||$ext=="json" 	||$ext=="php" 	||$ext=="css" 	||$ext=="less" 	||$ext=="sass" 	||$ext=="htaccess"||$ext=="key" 	||$ext=="asp" 	||$ext=="aspx" 	||$ext=="net" 	||$ext=="conf" 	||$ext=="ini" 	||$ext=="sql" 	||$ext=="as" 		||$ext=="htc" 	||$ext=="--")){
-				echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
+			if(	isset($ext)		&& (
+				$ext=="txt" 	||
+				$ext=="htm" 	||
+				$ext=="html" 	||
+				$ext=="xhtml" 	||
+				$ext=="xml" 	||
+				$ext=="js"	 	||
+				$ext=="json" 	||
+				$ext=="php" 	||
+				$ext=="css" 	||
+				$ext=="less" 	||
+				$ext=="sass" 	||
+				$ext=="htaccess"||
+				$ext=="key" 	||
+				$ext=="asp" 	||
+				$ext=="aspx" 	||
+				$ext=="net" 	||
+				$ext=="conf" 	||
+				$ext=="ini" 	||
+				$ext=="sql" 	||
+				$ext=="as" 		||
+				$ext=="htc" 	||
+				$ext=="--"
+			)){
+				echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.'/'.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
 			};
 		};
 	};
@@ -911,14 +949,14 @@ function MostraFiles($dir){
 
 function 	refreshFolders (){
 	global $session;
-	CriaPastas($_SERVER['INCLUDE_PATH'].'/website',true);
-	MostraFiles($_SERVER['INCLUDE_PATH'].'/website');
+	CriaPastas(INCLUDE_PATH.'website',true);
+	MostraFiles(INCLUDE_PATH.'website');
 	echo '<script>sanfona(\'.folder\');</script>';
 }
 
 function loadFile($pathFile=null){
-	global $session;
-	global $_conectMySQLi_;
+		global $session;
+		global $_conectMySQLi_;
 
 		if(isset($_REQUEST['pathFile']) && $pathFile==null){
 			$pathFile 	= $_REQUEST['pathFile'];
@@ -926,10 +964,12 @@ function loadFile($pathFile=null){
 			$_REQUEST['pathFile'] = $pathFile;
 		}
 
-		$path 		=	dirname(implode("/",array_filter(explode("/",$pathFile))));
-		$file 		=	basename($pathFile);
-		$pathFile 	=	implode("/",array_filter(explode("/",$pathFile)));
-		$file_exists_dir 				= new MySQL();
+
+		$path 							=	dirname(implode("/",array_filter(explode("/",$pathFile))));
+		$file 							=	basename($pathFile);
+
+
+		$file_exists_dir 				= 	new MySQL();
 		$file_exists_dir->set_table(PREFIX_TABLES.'ws_webmaster');
 		$file_exists_dir->set_where('path="'.$pathFile.'"');
 		$file_exists_dir->set_where('AND original="'.$file.'"');
@@ -941,34 +981,32 @@ function loadFile($pathFile=null){
 		$newTokenFile = createPass(rand(9,50), $maiusculas = true, $numeros = false, $simbolos = false);
 		if($ext=="txt"){$ext="text";}
 		if($ext=="js"){$ext="javascript";}
-		$stringFile = mysqli_real_escape_string($_conectMySQLi_,file_get_contents($path.'/'.$file));
+		$stringFile = mysqli_real_escape_string($_conectMySQLi_,file_get_contents($pathFile));
 
-
-
-	echo 'if(!$(\'.fileTabContainer .fileTab[data-pathFile="'.$pathFile.'"][data-loadFile="'.$file.'"]\').length){';
-				echo '$("#nameFile").html("<span class=\'b1 noSelect\'>Nome do arquivo:</span> /'.str_replace('./../../../','', $_REQUEST['pathFile']).'");';
-				echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
-				echo 'window.typeLoaded			= "file";';
-				echo 'window.pathFile 			= "'.$pathFile.'";';
-				echo 'window.loadFile 			= "'.$file.'";';
-				echo 'window.newTokenFile 		= "'.$newTokenFile.'";';
-				echo 'window.htmEditor.setReadOnly(false);';
-				//MONTA O OBJETO COM OS ARQUIVOS E AS SESSÕES 
-				echo 'window.listFilesWebmaster.'.$newTokenFile.' = Object();';
-				echo 'window.listFilesWebmaster.'.$newTokenFile.' ={'.
-																	'session:		ace.createEditSession("'.$stringFile.'" ,"ace/mode/'.$ext.'")'.
-																	',file:			"'.$file.'"'.
-																	',pathFile:		"'.$pathFile.'"'.
-																	',newTokenFile: "'.$newTokenFile.'"'.
-																	',setReadOnly: 	false'.
-																	',saved: "saved"'.
-																'};'.PHP_EOL.PHP_EOL;
-				//APLICA AS SESSÕES AO EDITOR
-				echo 'window.htmEditor.setSession(window.listFilesWebmaster.'.$newTokenFile.'.session);';
-				echo 'window.addTab("'.$newTokenFile.'",window.pathFile,window.loadFile,"saved");';
-	echo '}else{
+		echo 'if(!$(\'.fileTabContainer .fileTab[data-pathFile="'.$pathFile.'"][data-loadFile="'.$file.'"]\').length){';
+		echo '$("#nameFile").html("<span class=\'b1 noSelect\'>Nome do arquivo:</span> /'.str_replace('./../../../','', $_REQUEST['pathFile']).'");';
+		echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
+		echo 'window.typeLoaded			= "file";';
+		echo 'window.pathFile 			= "'.$pathFile.'";';
+		echo 'window.loadFile 			= "'.$file.'";';
+		echo 'window.newTokenFile 		= "'.$newTokenFile.'";';
+		echo 'window.htmEditor.setReadOnly(false);';
+		//MONTA O OBJETO COM OS ARQUIVOS E AS SESSÕES 
+		echo 'window.listFilesWebmaster.'.$newTokenFile.' = Object();';
+		echo 'window.listFilesWebmaster.'.$newTokenFile.' ={'.
+															'session:		ace.createEditSession("'.$stringFile.'" ,"ace/mode/'.$ext.'")'.
+															',file:			"'.$file.'"'.
+															',pathFile:		"'.$pathFile.'"'.
+															',newTokenFile: "'.$newTokenFile.'"'.
+															',setReadOnly: 	false'.
+															',saved: "saved"'.
+															'};'.PHP_EOL.PHP_EOL;
+		//APLICA AS SESSÕES AO EDITOR
+		echo 'window.htmEditor.setSession(window.listFilesWebmaster.'.$newTokenFile.'.session);';
+		echo 'window.addTab("'.$newTokenFile.'",window.pathFile,window.loadFile,"saved");';
+		echo '}else{
 				$(\'.fileTabContainer .fileTab[data-pathFile="'.$pathFile.'"][data-loadFile="'.$file.'"]\').click();
-		 };';
+			};';
 
 	}
 	function loadFileBKP(){
@@ -1000,19 +1038,15 @@ function loadFile($pathFile=null){
 
 function geraBKPeAplica(){
 		global $session;
-		parse_str($_POST['GET'], $POST);
-		$file 		= $POST['filename'];
-		$fileBKP 	= 'bkp_'.date('d-m-y_H-i-s').'_'.$file;
-		$pathFile 	= implode(array_filter(explode('/',$POST['pathFile'])),"/");
-		$folderFTP 	= $pathFile.'/'.$file;
+		parse_str($_POST['GET'], $POST);	
+		$folderFTP 	=  $POST['pathFile'].$POST['filename'];
 		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{
 			echo "fail";
 		};
-
-
-		// $folderBKP 	= $_SERVER['INCLUDE_PATH'].'/admin/App/Modulos/webmaster/versoes/'.$pathFile.'/'.$fileBKP;
+		// $fileBKP 	= 'bkp_'.date('d-m-y_H-i-s').'_'.$file;
+		// $folderBKP 	= INCLUDE_PATH.'admin/app/modulos/webmaster/versoes/'.$pathFile.'/'.$fileBKP;
 		// if($_POST['bkp']=='true'){
 		// 	file_put_contents($folderBKP, file_get_contents($folderFTP));
 		// 	$file_exists_dir 				= new MySQL();

@@ -1,14 +1,31 @@
 <?php
 ob_start();
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+
+	if(!defined("ROOT_WEBSHEEP"))	{
+		if(strpos($_SERVER['REQUEST_URI'],"ws-gz/")){
+			$gzpath ="ws-gz";
+		}else{
+			$gzpath ="ws-gzip";
+		}
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],$gzpath));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 ###################################################################
 # IMPORTA A CLASSE PADRÃO DO SISTEMA
 ###################################################################
-include_once($_SERVER['INCLUDE_PATH'].'/ws-config.php');
+include_once(INCLUDE_PATH.'ws-config.php');
 
 #####################################################################
 # 	RETORNA ARQUIVOS CONFORMA O PATERN SETADO
 #####################################################################
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-get-typeof.php');
+include_once(INCLUDE_PATH.'admin/app/lib/ws-get-typeof.php');
 
 ###################################################################
 # 	PEGAMOS A URL QUE FOI SETADA
@@ -19,9 +36,9 @@ include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/ws-get-typeof.php');
 # VERIFICAMOS DE ONDE ELE DEVE PUXAR O CONTEUDO: ADMIN OU WEBSITE
 ###################################################################
 	if(isset($_GET['type']) && $_GET['type']=='website'){
-		$BASE_FILE = $_SERVER['INCLUDE_PATH'].'/website/'.implode('/',$BASE_FILE);
+		$BASE_FILE = INCLUDE_PATH.'website/'.implode('/',$BASE_FILE);
 	}else{
-		$BASE_FILE = $_SERVER['INCLUDE_PATH'].'/admin/'.implode('/',$BASE_FILE);
+		$BASE_FILE = INCLUDE_PATH.'admin/'.implode('/',$BASE_FILE);
 	}
 
 ###################################################################

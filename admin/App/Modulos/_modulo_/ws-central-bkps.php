@@ -1,15 +1,27 @@
 <?php
-	##########################################################################################################
+
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	
+	############################################################################################################################################
 	# IMPORTA CLASSE PADRÃO DO SISTEMA
 	##########################################################################################################
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	_session();
 	clearstatcache();
 
 	##########################################################################################################
 	# DEFINE O PATH DO MÓDULO
 	##########################################################################################################
-	define("PATH",'App/Modulos/_modulo_');
+	define("PATH",'app/modulos/_modulo_');
 
 
 	#####################################################  
@@ -25,7 +37,7 @@
 	##########################################################################################################
 	# IMPORTA A CLASSE DE TEMPLATE
 	##########################################################################################################	
-	$template 						=	new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/ws-central-bkp.html', true);
+	$template 						=	new Template(INCLUDE_PATH.'admin/app/templates/html/ws-central-bkp.html', true);
 
 	##########################################################################################################
 	# DEFINIMOS AS STRINGS PRINCIPAIS PUXANDO DO JSON
@@ -80,12 +92,12 @@
 	##########################################################################################################
 	# CASO NÃO TENHA O DIRETÓRIO, CRIA A PASTA PADRÃO DE BKP
 	##########################################################################################################
-	if(!file_exists($_SERVER['INCLUDE_PATH'].'/ws-bkp')){mkdir($_SERVER['INCLUDE_PATH'].'/ws-bkp');}
+	if(!file_exists(INCLUDE_PATH.'ws-bkp')){mkdir(INCLUDE_PATH.'ws-bkp');}
 
 	##########################################################################################################
 	# FAZ O WHILE NAS PASTAS LISTADAS E RERTORNA O TEMPLATE COM O NOME E LINK
 	##########################################################################################################
-	$dh = opendir($_SERVER['INCLUDE_PATH'].'/ws-bkp');
+	$dh = opendir(INCLUDE_PATH.'ws-bkp');
 	while($diretorio = readdir($dh)){
 		if($diretorio != '..' && $diretorio != '.' && substr($diretorio,-3)=="zip"){
 			$newSplashScreen= "";			
@@ -96,7 +108,7 @@
 			##########################################################################################################
 			# ABRIMOS O ZIP PARA VERIFICAR O CONTEÚDO
 			##########################################################################################################
-				$fileZip = $_SERVER['INCLUDE_PATH'].'/ws-bkp/'.$diretorio;
+				$fileZip = INCLUDE_PATH.'ws-bkp/'.$diretorio;
 				$zip = new ZipArchive();
 				if($zip->open($fileZip) === TRUE ){
 					##########################################################################################################

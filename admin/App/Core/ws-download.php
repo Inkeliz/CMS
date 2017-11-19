@@ -1,5 +1,16 @@
 <?
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-download'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	$login 		= false;
 	$_url_ 		= ws::urlPath(2,false);
 
@@ -57,7 +68,7 @@ include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
 exit;
 ######################################################
 direct:
-		$file 			= $_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/'.$biblioteca->obj[0]->file;
+		$file 			= INCLUDE_PATH.'website/assets/upload-files/'.$biblioteca->obj[0]->file;
 		if(!file_exists($file)){goto arquivoNull;exit;}
 		$upload_size    	=  _filesize($biblioteca->obj[0]->upload_size);
 		$fileName   		=  $biblioteca->obj[0]->filename;
@@ -89,15 +100,15 @@ botDownload:
 	<meta charset="UTF-8">
 	<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/reset.css" 										type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/estrutura.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/funcionalidades.css" 						type="text/css" media="all" />
-	<script type="text/javascript" src="./../admin/App/Vendor/jquery/2.2.0/jquery.min.js"							id="jquery"></script>
-	<script type="text/javascript" src="./../admin/App/Templates/js/websheep/funcionalidades.min.js" 				id="funcionalidades"></script>
-	<script type="text/javascript" src="./../admin/App/Templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 										type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 						type="text/css" media="all" />
+	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"							id="jquery"></script>
+	<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 				id="funcionalidades"></script>
+	<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
 	<style>
 		.formularioDownload{
 			margin-left:0!important;
@@ -180,15 +191,15 @@ arquivoNull:
 		<meta charset="UTF-8">
 		<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/reset.css" 								type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/login/estrutura.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
-	<script type="text/javascript" src="./../admin/App/Vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
-	<script type="text/javascript" src="./../admin/App/Templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
-	<script type="text/javascript" src="./../admin/App/Templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 								type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
+	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
+	<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
+	<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
 
 		<style>
 			.formularioDownload{
@@ -234,15 +245,15 @@ getPass:
 <meta charset="UTF-8">
 <link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/login/reset.css" 								type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/login/estrutura.css" 							type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/App/Templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
-<script type="text/javascript" src="./../admin/App/Vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
-<script type="text/javascript" src="./../admin/App/Templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
-<script type="text/javascript" src="./../admin/App/Templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 								type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 							type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
+<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
+<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
+<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
 <style>
 	.formularioDownload{
 		margin-left:0!important;

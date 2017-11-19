@@ -19,51 +19,59 @@
 			com este programa, Se não, veja <http://www.gnu.org/licenses/>.
 	*/
 
+		// date_default_timezone_set('America/Sao_Paulo');
+
 		ob_start();	
 
 	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
-		define('INCLUDE_PATH', dirname(str_replace(array('\\'), DIRECTORY_SEPARATOR, dirname(__FILE__))));
-		define('ROOT_WEBSHEEP', substr(dirname($_SERVER['REQUEST_URI']),1));
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+		if(!defined("INCLUDE_PATH"))	{$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 		
-	############################################################################################################################################
-	# IMPORTAMOS AS FUNÇÕES GLOBAIS 
-	############################################################################################################################################
-	include_once('./App/Lib/ws-globals-functions.php');
-
-	############################################################################################################################################
-	# ANTES DE TUDO, VERIFICA SE JÁ TEMOS AS VARIÁVEIS NO HTACCESS E SE ESTÃO CORRETAS
-	############################################################################################################################################
-	include_once('./App/Lib/ws-refresh-paths.php');
-
 	############################################################################################################################
 	# CASO NÃO TENHA SIDO VERIFICADO OU SEJA UMA NOVA INSTALAÇÃO/UPDATE IMPORTA VERIFICAÇÃO DO SERVIDOR
 	############################################################################################################################
 	if(
-		!file_exists($_SERVER['INCLUDE_PATH'].'/admin/App/Config/ws-server-ok')
+		!file_exists(INCLUDE_PATH.'admin/app/config/ws-server-ok')
 	){
-		include_once(INCLUDE_PATH.'/admin/App/Config/ws-verify-server.php');
+		include_once(INCLUDE_PATH.'admin/app/config/ws-verify-server.php');
 	}
+
+	############################################################################################################################################
+	# IMPORTAMOS AS FUNÇÕES GLOBAIS 
+	############################################################################################################################################
+	include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
+
+	############################################################################################################################################
+	# ANTES DE TUDO, VERIFICA SE JÁ TEMOS AS VARIÁVEIS NO HTACCESS E SE ESTÃO CORRETAS
+	############################################################################################################################################
+	include_once(INCLUDE_PATH.'admin/app/lib/ws-refresh-paths.php');
+
 
 	############################################################################################################################
 	# CASO NÃO EXISTA O 'ws-config.php' IMPORTA A TELA DE SETUP
 	############################################################################################################################
-	if(!file_exists($_SERVER['INCLUDE_PATH'].'/ws-config.php')) {
-		include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Core/ws-setup.php');
+	if(!file_exists(INCLUDE_PATH.'ws-config.php')) {
+		include_once(INCLUDE_PATH.'admin/app/core/ws-setup.php');
 		exit;
 	}
 
 	############################################################################################################################
 	# IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 	############################################################################################################################
-		include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 	############################################################################################################################
 	#	CASO SEJA O 1° ACESSO, IMPORTA A TELA DE INSTALAÇÃO
 	############################################################################################################################
-	if(file_exists(ws::getFullPath().'/admin/App/Config/firstacess') && file_get_contents(ws::getFullPath().'/admin/App/Config/firstacess')=='true'){
-		include(ws::getFullPath().'/admin/App/Core/ws-install.php');exit;
+	if(file_exists(INCLUDE_PATH.'admin/app/config/firstacess') && file_get_contents(INCLUDE_PATH.'admin/app/config/firstacess')=='true'){
+		include(INCLUDE_PATH.'admin/app/core/ws-install.php');exit;
 	}
 
 	############################################################################################################################
@@ -95,11 +103,11 @@
 			(isset($authKey) && $authKey == true) || 
 			$log_session->verifyLogin() == true
 		){	
-			include(ws::getFullPath().'/admin/App/Core/ws-dashboard.php');
+			include(INCLUDE_PATH.'admin/app/core/ws-dashboard.php');
 			exit;
 		}
 
 	############################################################################################################################
 	#	CASO ESTEJA OFFLINE JÁ DIRECIONA PRO LOGIN
 	############################################################################################################################
-		include(ws::getFullPath().'/admin/App/Modulos/login/index.php');
+		include(INCLUDE_PATH.'admin/app/modulos/login/index.php');

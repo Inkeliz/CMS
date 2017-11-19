@@ -1,5 +1,5 @@
 <!-- BEGIN BLOCK_DOMAIN -->
-<script>include_css(ws.rootPath+'admin/App/Templates/css/websheep/modulos/_dominio_/style.min.css','css_mod','All');</script>
+<script>include_css(ws.rootPath+'admin/app/templates/css/websheep/modulos/_dominio_/style.min.css','css_mod','All');</script>
 <div id="topoModulo" class="TitTop bg05 w1b">{domainPanel_AccountDetails}</div>
 <div class='palco_01' id="palco">
 <form id="detalhes_domain">
@@ -60,20 +60,20 @@
 		<div class="tituloLabel w1" style="margin-bottom:30px;">{domainPanel_SplashScreen}:</div>
 		<div id="splash_ws_img" style="  background-repeat: no-repeat;background-image:url('./../ws-img/395/325/100/{splash_img}')">
 			<div class="combo_upload">
-				<div class="pc" legenda="Meu computador"><img  src="{ws_rootPath}admin/App/Templates/img/websheep/up_m.png"/></div>
-				<div class="bb" legenda="Na biblioteca"><img  src="{ws_rootPath}admin/App/Templates/img/websheep/folder_m.png"/></div>
+				<div class="pc" legenda="Meu computador"><img  src="{ws_rootPath}admin/app/templates/img/websheep/up_m.png"/></div>
+				<div class="bb" legenda="Na biblioteca"><img  src="{ws_rootPath}admin/app/templates/img/websheep/folder_m.png"/></div>
 			</div>
 		</div>
 		<div class="c"></div>
 		<div class="botao"  id="salvar">{domainPanel_UpdateData}</div>
 </form>
 </div>
-<form id="Upload_File_topo"     style="display:none" action="{ws_rootPath}admin/App/Core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+<form id="Upload_File_topo"     style="display:none" action="{ws_rootPath}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 	<input name="arquivo"     id="myfile" type="file"   />
 	<button type="submit"     id="enviar_arquivos"></button>
 	<div id="bt_search_files"   style="dispaly:none;position: absolute;cursor: pointer;"></div>
 </form>
-<form id="Upload_File_Splash"   style="display:none" action="{ws_rootPath}admin/App/Core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+<form id="Upload_File_Splash"   style="display:none" action="{ws_rootPath}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 	<input name="type"     		type="hidden" value="splashScreen"   />
 	<input name="arquivo"     	id="myfile" type="file"   />
 	<button type="submit"     id="enviar_arquivos"></button>
@@ -84,7 +84,7 @@
 
 		$('#ws_lang option[value={ATUAL_LANG}]').attr('selected','selected');
 		$('#metaTags').bind('tap click press',function(){
-			$("#conteudo").load(ws.rootPath+"admin/App/Modulos/_modulo_/metaTags.php?id_page=0");
+			$("#conteudo").load(ws.rootPath+"admin/app/modulos/_modulo_/metaTags.php?id_page=0");
 		})
 		$('*[legenda]').LegendaOver();
 		$(document).off("mouseenter").off("mouseleave");
@@ -115,10 +115,10 @@
 				multiple:0,
 				onSelect:function(a){
 					$.ajax({
-						beforeSend:function(){confirma({width:"auto",conteudo:"  {domainPanel_modal_Saving}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+						beforeSend:function(){confirma({width:"auto",conteudo:"  {domainPanel_modal_Saving}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 						cache: false,
 						type: "POST",
-						url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+						url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 						data: {function:"substituiTopo",img:a},
 					}).done(function(e) {
 								$("#ws_confirm").remove();
@@ -151,10 +151,10 @@
 				multiple:0,
 				onSelect:function(a){
 					$.ajax({
-						beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+						beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 						cache: false,
 						type: "POST",
-						url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+						url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 						data: {function:"substituiSplash",img:a},
 					}).done(function(e) {
 						out(e)
@@ -176,11 +176,11 @@
 						newFun:function(){
 						// VERIFICA 
 								setTimeout(function(){
-									 confirma({width:"auto",conteudo:" {domainPanel_modal_Checking} ...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+									 confirma({width:"auto",conteudo:" {domainPanel_modal_Checking} ...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 									$.ajax({
 										type: "POST",
 										cache: false,
-										url: 	ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+										url: 	ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 										data: {"function":"VerificaPacote" }
 									}).done(function(e) {
 										var json = jQuery.parseJSON(e);
@@ -209,9 +209,9 @@
 											drag:false, 
 											bot1:'{domainPanel_modal_Compact}',
 											newFun:function(){
-														setTimeout(function(){confirma({width:600,conteudo:" <div id='mensagemZIP'> {domainPanel_modal_Compacting}...</div><div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});},500)               
+														setTimeout(function(){confirma({width:600,conteudo:" <div id='mensagemZIP'> {domainPanel_modal_Compacting}...</div><div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});},500)               
 												$.ajax({
-													url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+													url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 													data: {"function":"CompactarZIPtoFTP" },
 													type: "POST",
 													cache: false,
@@ -236,13 +236,13 @@
 																					Init:function(){
 	
 																						downloadFile({
-																				file: ws.rootPath+"admin/App/Modulos/_dominio_/"+objJSON.namefile,
+																				file: ws.rootPath+"admin/app/modulos/_dominio_/"+objJSON.namefile,
 																				finish:function(e){
 																					$("#ws_confirm").remove();
 																					$("#body").removeClass("scrollhidden");
 																					$("*").removeClass("blur");
 																					$.ajax({
-																						url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+																						url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 																						data: {"function":"delZIPtoFTP",namefile:objJSON.namefile},
 																						type: "POST",
 																						cache: false,
@@ -273,7 +273,7 @@
 												$.ajax({
 													type: "POST",
 													cache: false,
-													url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+													url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 													data: {"function":"getFtpConnection" }
 												}).done(function(e) {
 													out(e)
@@ -300,7 +300,7 @@
 					$.ajax({
 						type: "POST",
 						cache: false,
-						url: ws.rootPath+"admin/App/Modulos/_dominio_/functions.php",
+						url: ws.rootPath+"admin/app/modulos/_dominio_/functions.php",
 						data: {function:"salvaDominio", inputs:inputs }
 					}).done(function(e) {
 					if(e=='{domainPanel_modal_ItemSavedSucces}'){var cor=3;}else{var cor=2;}

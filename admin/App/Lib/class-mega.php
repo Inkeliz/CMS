@@ -8,8 +8,8 @@
  */
 
 ini_set("allow_url_fopen", "On");
-require 'admin/App/Lib/class-zip-progress.php';
-require 'admin/App/Lib/class-http-lib.php';
+require 'admin/app/lib/class-zip-progress.php';
+require 'admin/app/lib/class-http-lib.php';
 
 class MEGA
 {

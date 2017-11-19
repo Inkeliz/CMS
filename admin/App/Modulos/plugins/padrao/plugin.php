@@ -20,7 +20,7 @@
 */
 
 
-// include($_SERVER["DOCUMENT_ROOT"]."/admin/App/Lib/class-ws-v1.php");
+// include($_SERVER["DOCUMENT_ROOT"]."/admin/app/lib/class-ws-v1.php");
 // ws::processPluginData();
 
 ?>

@@ -1,13 +1,13 @@
 <!-- BEGIN BLOCKUSER -->
 <script>
-include_css('./App/Templates/css/websheep/modulos/usuarios/detalhes.min.css', 'css_mod', 'All');
+include_css('./app/templates/css/websheep/modulos/usuarios/detalhes.min.css', 'css_mod', 'All');
 </script>
 <div class="bg02 comboBT">
     <div id="voltar" class="botao botTop">{userManager_details_back}</div><div class="botao botTop salvarUsuario">{userManager_details_save}</div>
 </div>
 <script type="text/javascript">
 $("#voltar").unbind("click").click(function() {
-    $("#conteudo").load("./App/Modulos/usuarios/index.php");
+    $("#conteudo").load("./app/modulos/usuarios/index.php");
 })
 window.PermUserTools;
 $(".salvarUsuario").unbind("click").click(function() {
@@ -38,7 +38,7 @@ $(".salvarUsuario").unbind("click").click(function() {
 })
 </script>
 <div id="palco" class="palco_01">
-    <form id="formUploadAvatar" style="display:none" action="./App/Modulos/_modulo_/upload_avatar.php" method="post" enctype="multipart/form-data" name="formUpload">
+    <form id="formUploadAvatar" style="display:none" action="./app/modulos/_modulo_/upload_avatar.php" method="post" enctype="multipart/form-data" name="formUpload">
         <input name="arquivo" id="myfile" type="file" style="display:none">
         <input type="hidden" name="id_item" id="id_item" value="1">
         <button type="submit" id="enviar_arquivos" style="dispaly:none;"></button>

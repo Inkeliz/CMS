@@ -3,7 +3,7 @@
 	# IMPORTAMAMOS A CLASSE INTERNA 
 	########################################################################
 	$r = $_SERVER["DOCUMENT_ROOT"];$_SERVER["DOCUMENT_ROOT"] = (substr($r, -1) == '/') ? substr($r, 0, -1) : $r;
-	include_once ($_SERVER["DOCUMENT_ROOT"].'/admin/App/Lib/class-ws-v1.php');
+	include_once ($_SERVER["DOCUMENT_ROOT"].'/admin/app/lib/class-ws-v1.php');
 	session_name('_WS_');
 	session_regenerate_id();
 	session_id($_COOKIE['ws_session']);

@@ -1,40 +1,41 @@
 <IfModule mod_rewrite.c>
 	#########################################################################################
 		Options -Indexes -MultiViews +FollowSymLinks 
-
-	#########################################################################################
-	# 	ENVIAMOS AS VARIÁVEIS AO PHP COM OS PATHS DE INSTALAÇÃO 
-	#########################################################################################
-		SetEnv ROOT_WEBSHEEP 	{{ROOT_WEBSHEEP}}
-		SetEnv INCLUDE_PATH 	{{INCLUDE_PATH}}
-
+		
 	#########################################################################################
 	# 	ATIVAMOS  O RewriteEngine 
 	#########################################################################################
 		RewriteEngine On
 
 	#########################################################################################
-	# 	SETAMOS A BASE DOS ARQUIVOS 
+	# 	VERIFICAMOS SE A URL SETADA É UM ARQUIVO EXISTENTE
 	#########################################################################################
-		RewriteBase {{ROOT_WEBSHEEP}}website/
+		RewriteCond %{SCRIPT_FILENAME}/admin/$1 -f			
+		RewriteCond %{SCRIPT_FILENAME}/admin/$1 !-d
+		RewriteRule ^(.*)$		./admin/$1		[L]
 
 	#########################################################################################
 	# 	URL'S GLOBAIS DO SISTEMA
 	#########################################################################################
 		RewriteCond %{SCRIPT_FILENAME} !-f
 		RewriteCond	%{SCRIPT_FILENAME} !-d
-		RewriteRule	^ws-img/(.*)$ 			./../admin/App/Core/ws-img.php 							[L]	
-		RewriteRule	^ws-leads/(.*)$ 		./../admin/App/Core/ws-leads.php 						[L]
-		RewriteRule	^ws-class.php$ 			./../admin/App/Lib/class-ws-v1.php						[L]
-		RewriteRule	^ws-download-now/(.*)$ 	./../admin/App/Core/ws-download-now.php?filename=$1		[L]
-		RewriteRule	^ws-gz/(.*)$ 			./../admin/App/Core/ws-gz.php?type=admin				[L]
-		RewriteRule	^ws-gzip/(.*)$ 			./../admin/App/Core/ws-gz.php?type=website				[L]
-		RewriteRule	^ws-video/(.*)$ 		./../admin/App/Core/ws-video.php 						[L]
-		RewriteRule	^ws-download/(.*)$ 		./../admin/App/Core/ws-download.php 					[L]
-		RewriteRule	^ws-rest/(.*)$ 			./../admin/App/Core/ws-rest.php?rest=$1					[L]	
-		RewriteRule	^ws-branches$			./../admin/App/Core/ws-branches.php 					[L]
-		RewriteRule	^ws-commits$			./../admin/App/Core/ws-commits.php 						[L]
-
+		RewriteRule	^ws-img/(.*)$ 			./../admin/app/core/ws-img.php 							[L]	
+		RewriteRule	^ws-leads/(.*)$ 		./../admin/app/core/ws-leads.php 						[L]
+		RewriteRule	^ws-class.php$ 			./../admin/app/lib/class-ws-v1.php						[L]
+		RewriteRule	^ws-download-now/(.*)$ 	./../admin/app/core/ws-download-now.php?filename=$1		[L]
+		RewriteRule	^ws-gz/(.*)$ 			./../admin/app/core/ws-gz.php?type=admin				[L]
+		RewriteRule	^ws-gzip/(.*)$ 			./../admin/app/core/ws-gz.php?type=website				[L]
+		RewriteRule	^ws-video/(.*)$ 		./../admin/app/core/ws-video.php 						[L]
+		RewriteRule	^ws-download/(.*)$ 		./../admin/app/core/ws-download.php 					[L]
+		RewriteRule	^ws-rest/(.*)$ 			./../admin/app/core/ws-rest.php?rest=$1					[L]	
+		RewriteRule	^ws-branches$			./../admin/app/core/ws-branches.php 					[L]
+		RewriteRule	^ws-commits$			./../admin/app/core/ws-commits.php 						[L]
+		RewriteRule	^ws-php-info$			./../admin/app/config/ws-php-info.php 					[L]
+		
+	#########################################################################################
+	# 	SETAMOS A BASE DOS ARQUIVOS 
+	#########################################################################################
+		RewriteBase /ws_full_path/ws_path/website/
 
 	#########################################################################################
 	# 	VERIFICAMOS SE A URL SETADA É UM ARQUIVO EXISTENTE
@@ -47,6 +48,8 @@
 	# 	QUALQUER OUTRA URL 
 	#########################################################################################
 		RewriteCond %{SCRIPT_FILENAME} !-f
-		RewriteRule ^(.*)$		./../admin/App/Core/ws-website.php		[L]
+		RewriteCond %{SCRIPT_FILENAME} !-d
+		RewriteRule ^$			./../admin/app/core/ws-website.php		[L]
+		RewriteRule ^(.*)$		./../admin/app/core/ws-website.php		[L]
 
 </IfModule>

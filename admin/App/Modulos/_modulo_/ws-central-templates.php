@@ -1,10 +1,22 @@
 <?php
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	
+	############################################################################################################################################
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	_session();
 	clearstatcache();
 	#####################################################  CONFIGURA DADOS GERAIS
-	define("PATH",'App/Modulos/_modulo_');
-	$template 						=	new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/ws-central-bkp.html', true);
+	define("PATH",'app/modulos/_modulo_');
+	$template 						=	new Template(INCLUDE_PATH.'admin/app/templates/html/ws-central-bkp.html', true);
 	$template->BOT_RESTAURAR_BKP	=	_getLangMsn("ws000048");
 	$template->TITULO				=	_getLangMsn('ws000049');
 	$template->LABEL_BOT_TOP		=	_getLangMsn('ws000050');

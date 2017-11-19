@@ -1,4 +1,16 @@
 <?
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+############################################################################################################################################
 ob_start();
 function login (){
 	global $_conectMySQLi_;
@@ -131,7 +143,7 @@ function enviaemail(){
 		define("SMTPSecure"		,$local->smtp_secure);
 		if($local->smtp_auth==1) {define("SMTPAuth",true); }else{define("SMTPAuth",false); }
 
-		include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Vendor/PHPMailer/PHPMailerAutoload.php');
+		include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
 
 		$mail = new PHPMailer;
 
@@ -149,7 +161,7 @@ function enviaemail(){
 		$mail->addAddress($emaildestinatario,$checkUser->fetch_array[0]['nome'].' '.$checkUser->fetch_array[0]['sobrenome']);
 		$mail->Subject =  utf8_decode("Recuperação de senha");
 		$mail->AltBody = strip_tags(utf8_decode('Olá '.$checkUser->fetch_array[0]['nome'].', para redefinir a sua senha, acesse o link a baixo.'));
-		$mail->AddEmbeddedImage($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/img/websheep/logoEmail.jpg', "topo", 'logoEmail.jpg');
+		$mail->AddEmbeddedImage(INCLUDE_PATH.'admin/app/templates/img/websheep/logoEmail.jpg', "topo", 'logoEmail.jpg');
 		$MENSAGEM = '
 			<img src="cid:topo" style="width: 177px;height: 38px;"><br>
 			Olá <b>'.$checkUser->fetch_array[0]['nome'].'</b>, para redefinir a sua senha, acesse o link a baixo.<br>
@@ -166,7 +178,7 @@ function enviaemail(){
 	}
 }
 
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 _exec($_REQUEST['function']);
 ob_end_flush();
 ?>

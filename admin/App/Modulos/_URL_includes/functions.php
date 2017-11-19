@@ -1,5 +1,16 @@
 <?
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
 
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+############################################################################################################################################
 function template ($id,$slug,$obs, $_token_){
 	global $session;
 	$retorno= "<li data-id='".$id."' data-token='".$_token_."'>
@@ -8,8 +19,8 @@ function template ($id,$slug,$obs, $_token_){
 						<div class='w1 obs'>".$obs."</div>
 						<div id='combo'>
 							<div id='detalhes_img'>
-								<span><img class='editar legenda' 		legenda='Editar' 		 				src='./App/Templates/img/websheep/layer--pencil.png'></span>
-								<span><img class='excluir legenda' 		legenda='<img class=\"editar\" 			src=\"/admin/App/Templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir'		src='".$session->get('PATCH')."/img/cross-button.png'></span>
+								<span><img class='editar legenda' 		legenda='Editar' 		 				src='./app/templates/img/websheep/layer--pencil.png'></span>
+								<span><img class='excluir legenda' 		legenda='<img class=\"editar\" 			src=\"/admin/app/templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir'		src='".$session->get('PATCH')."/img/cross-button.png'></span>
 							</div>
 						</div>
 					</div>
@@ -63,13 +74,13 @@ function salvaInclude(){
 	$Other->select();
 
 	$Atual_Igual_Novo 			= ($File_atual->fetch_array[0]['file']==$file) 							? true : false;
-	$Se_file_BD_existe 			= (file_exists($_SERVER['INCLUDE_PATH'].'/website/'.$File_atual->fetch_array[0]['file'])) 	? true : false;
-	$Se_novo_file_existe 		= (file_exists($_SERVER['INCLUDE_PATH'].'/website/'.$file)) 								? true : false;
+	$Se_file_BD_existe 			= (file_exists(INCLUDE_PATH.'website/'.$File_atual->fetch_array[0]['file'])) 	? true : false;
+	$Se_novo_file_existe 		= (file_exists(INCLUDE_PATH.'website/'.$file)) 								? true : false;
 	$Registro_Em_Outros_Tools 	= $Other->_num_rows >=1;
 	$registro_atual_vaziu 		= $File_atual->fetch_array[0]['file']=="";
 
 	if(!$registro_atual_vaziu && !$Se_novo_file_existe && $Se_file_BD_existe && !$Registro_Em_Outros_Tools && !$Atual_Igual_Novo &&    $info=="renomear"){
-			if(rename($_SERVER['INCLUDE_PATH'].'/website/'.$File_atual->fetch_array[0]['file'],$_SERVER['INCLUDE_PATH'].'/website/'.$file)){
+			if(rename(INCLUDE_PATH.'website/'.$File_atual->fetch_array[0]['file'],INCLUDE_PATH.'website/'.$file)){
 				$NewPage 					= new MySQL();
 				$NewPage->set_table(PREFIX_TABLES.'ws_pages');
 				$NewPage->set_where('id="'.$id_include.'"');
@@ -81,7 +92,7 @@ function salvaInclude(){
 		}elseif((!$Se_file_BD_existe || $registro_atual_vaziu) && !$Se_novo_file_existe && !$Registro_Em_Outros_Tools  &&  $info=="renomear"){
 
 		$content = '<meta charset="utf-8"/>
-			<link rel="stylesheet" href="<?=ws::rootPath?>admin/App/Templates/css/fontes/fonts.css">
+			<link rel="stylesheet" href="<?=ws::rootPath?>admin/app/templates/css/fontes/fonts.css">
 			<div style="float:left;position:absolute;left:50%;transform: translate(-50%,-50%);width: auto;top: 50%;border-left: solid 10px #00939d;padding-left: 10px;">
 				<span style="font-family:\'Titillium Web\';font-weight:100;float:left;width:100%;color:#00939d;font-size: 17px;text-align: left;">
 					<strong>Tipo:</strong>Include<br>
@@ -91,7 +102,7 @@ function salvaInclude(){
 			</div>';
 
 
-			if(file_put_contents($_SERVER['INCLUDE_PATH'].'/website/'.$file,$content)){
+			if(file_put_contents(INCLUDE_PATH.'website/'.$file,$content)){
 				$NewPage 					= new MySQL();
 				$NewPage->set_table(PREFIX_TABLES.'ws_pages');
 				$NewPage->set_where('id="'.$id_include.'"');
@@ -188,7 +199,7 @@ function excluiRegistroFile(){
 		$I->select();
 		$file =  $I->fetch_array[0]['file'];
 
-		if(@unlink($_SERVER['INCLUDE_PATH'].'/website/'.$file)){
+		if(@unlink(INCLUDE_PATH.'website/'.$file)){
 			goto excluiFile;
 		}else{
 			echo "Falha ao excluir o arquivo =(";
@@ -210,7 +221,7 @@ function excluiRegistroFile(){
 //####################################################################################################################
 //####################################################################################################################
 ob_start();
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 $session = new session();
 ob_end_clean();
 _exec($_REQUEST['function']);

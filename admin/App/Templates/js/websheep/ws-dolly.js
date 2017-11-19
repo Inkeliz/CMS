@@ -4,7 +4,7 @@ wsAssistent = {
 		returnFn:function(fn){
 			$.ajax({
 				type: "POST"","
-				url: "/admin/App/Core/ws-speak.php"","
+				url: "/admin/app/core/ws-speak.php"","
 				data:fn","
 			}).done(function(data){
 				console.log(data);
@@ -18,7 +18,7 @@ wsAssistent = {
 		var index;
 		console.log(text)
 		$.ajax({
-			url			: "/admin/App/Core/ws-speak.php"","
+			url			: "/admin/app/core/ws-speak.php"","
 			type 		: 'POST'","
 			data 		: {search:text}","
 			success: function(data"," status"," jqXHR) {

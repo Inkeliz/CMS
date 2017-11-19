@@ -1,26 +1,37 @@
 <?
 	ob_start();
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-rest'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	##################################################################
 	# IMPORTAMOS A CLASSE PADRÃO DO SISTEMA 
 	##################################################################
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+
 	##################################################################
 	# SETAMOS OS CABEÇALHOS DA APLICAÇÃO
 	# Security-Policy, Allow-Origin e Content-Type  
 	##################################################################
-	header("Content-Type:application/json");
-
+		header("Content-Type:application/json");
 
 	##################################################################
 	# FUNÇÃO ADDSLASHES NAS VARIÁVEIS
 	##################################################################
-	function AddSlashesArray(&$string, $x) { 
-		if(is_numeric($string) || is_int($string)){
-			$string = $string; 
-		}else{
-			$string = '"'.addSlashes($string).'"'; 
+		function AddSlashesArray(&$string, $x) { 
+			if(is_numeric($string) || is_int($string)){
+				$string = $string; 
+			}else{
+				$string = '"'.addSlashes($string).'"'; 
+			}
 		}
-	}
 
 	##################################################################
 	# VERIFICAMOS O TIPO DE REQUISIÇÃO FEITO PELO CLIENT 

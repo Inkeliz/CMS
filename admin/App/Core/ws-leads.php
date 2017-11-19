@@ -109,11 +109,24 @@
 		exit;
 	}
 */	
+
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-leads'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+
 	error_reporting(E_ALL) ;
 	$TYPE_SEND = $_POST;
 	$TYPE_SEND = $_REQUEST;
 
-	include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	if(isset($TYPE_SEND['typeSend']) && $TYPE_SEND['typeSend']=='captcha'){
 		@session_name('_WS_');@session_id($_COOKIE['_WS_']);@session_start(); 
 		$codeCaptcha = trim(_decripta(@$_SESSION['ws-captcha'] ,'ws-captcha-keycode'));
@@ -122,8 +135,8 @@
 	}
 	if(empty($TYPE_SEND)){_erro('Desculpe, dados inválidos ou inexistentes... '); exit; }
 	if(count($_FILES)>=1){
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets')){						mkdir($_SERVER['INCLUDE_PATH'].'/website/assets');				}		
-		if(!file_exists($_SERVER['INCLUDE_PATH'].'/website/assets/upload-leads-files')){	mkdir($_SERVER['INCLUDE_PATH'].'/website/assets/upload-leads-files');	}	
+		if(!file_exists(INCLUDE_PATH.'website/assets')){						mkdir(INCLUDE_PATH.'website/assets');				}		
+		if(!file_exists(INCLUDE_PATH.'website/assets/upload-leads-files')){	mkdir(INCLUDE_PATH.'website/assets/upload-leads-files');	}	
 		foreach ($_FILES as $key => $__FILE__) {
 			if(is_array($__FILE__['name'])){
 				$linkName 	= array();

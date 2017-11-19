@@ -1,10 +1,22 @@
 <?
 	set_time_limit(0); 
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-img'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+
+
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 	################################################################################
 	# IMPORTAMOS A CLASSE THUMB CANVAS
 	################################################################################
 	ob_start();
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	################################################################################
 	# EXPLODIMOS A URL DA IMAGEM
 	################################################################################
@@ -13,38 +25,41 @@
 	################################################################################
 	# AGORA TRATAMOS A ARRAY COM OS DADOS NECESSÁRIOS
 	################################################################################
+	
 	if (count($URL) >= 5) {
-		$vars['largura'] = ws::urlPath(2, false);
-		$vars['altura']  = ws::urlPath(3, false);
-		$vars['q']       = ws::urlPath(4, false);
-		$vars['imagem']  = ws::urlPath(5, false);
+		$vars['largura'] = $URL[2];
+		$vars['altura']  = $URL[3];
+		$vars['q']       = $URL[4];
+		$vars['imagem']  = $URL[5];
+
 	} elseif (count($URL) == 4) {
-		$vars['largura'] = ws::urlPath(2, false);
-		$vars['altura']  = ws::urlPath(3, false);
-		if (is_numeric(ws::urlPath(4, false))) {
-			$vars['q']      = ws::urlPath(4, false);
+		$vars['largura'] = $URL[2];
+		$vars['altura']  = $URL[3];
+		if (is_numeric($URL[4])) {
+			$vars['q']      = $URL[4];
 			$vars['imagem'] = null;
 		} else {
 			$vars['q']      = null;
-			$vars['imagem'] = ws::urlPath(4, false);
+			$vars['imagem'] = $URL[4];
 		}
 	} elseif (count($URL) == 3) {
 		$vars['q']       = null;
-		$vars['largura'] = ws::urlPath(2, false);
-		if (is_numeric(ws::urlPath(3, false))) {
-			$vars['altura'] = ws::urlPath(3, false);
+		$vars['largura'] = $URL[2];
+		if (is_numeric($URL[3])) {
+			$vars['altura'] = $URL[3];
 			$vars['imagem'] = null;
 		} else {
 			$vars['altura'] = 0;
-			$vars['imagem'] = ws::urlPath(3, false);
+			$vars['imagem'] = $URL[3];
 		}
 	} elseif (count($URL) == 2) {
-		if (is_numeric(ws::urlPath(2, false))) {
-			$vars['largura'] = ws::urlPath(2, false);
+		$vars['q']       = null;
+		if (is_numeric($URL[2])) {
+			$vars['largura'] = $URL[2];
 			$vars['altura']  = 0;
 			$vars['imagem']  = null;
 		} else {
-			$vars['imagem']  = ws::urlPath(2, false);
+			$vars['imagem']  = $URL[2];
 			$vars['altura']  = 0;
 			$vars['largura'] = 0;
 		}
@@ -54,7 +69,7 @@
 		$vars['largura'] = 0;
 		$vars['q']       = null;
 	}
-	
+
 	################################################################################
 	# RETIRAMOS O @2X PARA NÃO DAR CONFLITO COM TEMPLATES RESPONSIVOS
 	################################################################################
@@ -63,14 +78,14 @@
 	################################################################################
 	# DEFINE O PATH QUE IRÁ BUSCAR AS IMAGENS
 	################################################################################
-	$pathUpload = $_SERVER['INCLUDE_PATH'].'/website/assets/upload-files/';
+	$pathUpload = INCLUDE_PATH.'website/assets/upload-files/';
 	
 	################################################################################
 	# CASO NÃO EXISTA A IMAGEM, SUBSTITUIMOS PELA IMAGEM PADRÃO DO SISTEMA
 	################################################################################
 	if ($vars['imagem'] == null || !file_exists($pathUpload . $vars['imagem'])) {
 		$OriginalExists=false;
-		$vars['imagem'] = $_SERVER['INCLUDE_PATH'].'/admin/App/Templates/img/websheep/no-img.png';
+		$vars['imagem'] = INCLUDE_PATH.'admin/app/templates/img/websheep/no-img.png';
 	} else {
 		$OriginalExists=true;
 		$vars['imagem'] = $pathUpload . $vars['imagem'];
@@ -114,7 +129,7 @@
 	# CAMINHO ROOT DO ARQUIVO TRATADO
 	################################################################################
 
-	$_root = $_SERVER['INCLUDE_PATH'].'/website';
+	$_root = INCLUDE_PATH.'website';
 	$local = $_root.'/assets/upload-files/thumbnail';
 
 

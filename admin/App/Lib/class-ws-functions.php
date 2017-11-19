@@ -1,13 +1,25 @@
 <?
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+
 	##########################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	##########################################################################################################
-		include_once($_SERVER["INCLUDE_PATH"].'/admin/App/Lib/ws-globals-functions.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
 		
 	##########################################################################################################
 	# 	INCLUIMOS A SESSÃO
 	##########################################################################################################
-		include_once($_SERVER["INCLUDE_PATH"].'/admin/App/Lib/class-session.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/class-session.php');
 		
 	##########################################################################################################
 	# RETORNA UM TOKEN INÉDITO NA COLUNA SETADA 
@@ -50,6 +62,8 @@
 				$keyAccess = ws::getTokenRest(ws::urlPath(3, false), false);
 			} elseif (ws::urlPath(2, false)) {
 				$keyAccess = ws::getTokenRest(ws::urlPath(2, false), false);
+			}else{
+				$keyAccess = false;
 			}
 			$log_session = new session();
 			if ((SECURE == TRUE && $keyAccess == false) && ($log_session->verifyLogin() != true)) {
@@ -639,7 +653,7 @@
 			$setupdata->select();
 			$setupdata = $setupdata->fetch_array[0];
 			//################################################################################################
-			$_path_plugin_ = $_SERVER["INCLUDE_PATH"].'/website/'.$setupdata['url_plugin']; 
+			$_path_plugin_ = INCLUDE_PATH.'website/'.$setupdata['url_plugin']; 
 			$json_plugins = array();
 			if(is_dir($_path_plugin_)){
 				$dh = opendir($_path_plugin_);
@@ -658,13 +672,13 @@
 						}else{
 							@$contents->{'active'}="no";
 						}
-						$contents->{'realPath'}=str_replace($_SERVER["INCLUDE_PATH"].'/website/','',$_path_plugin_).'/'.$diretorio;
+						$contents->{'realPath'}=str_replace(INCLUDE_PATH.'website/','',$_path_plugin_).'/'.$diretorio;
 						//################################################################################################
 						$json_plugins[] = $contents;
 					}
 				}
 			}
-			file_put_contents($_SERVER["INCLUDE_PATH"].'/admin/App/Templates/json/ws-plugin-list.json', json_encode($json_plugins,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+			file_put_contents(INCLUDE_PATH.'admin/app/templates/json/ws-plugin-list.json', json_encode($json_plugins,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 		}
 
 	##########################################################################################################
@@ -688,7 +702,7 @@
 			$pathinfo 	= pathinfo($webtool);
 			$ext 		= $pathinfo['extension'];
 			if($ext=="ws"){
-				include($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-base2n.php');
+				include(INCLUDE_PATH.'admin/app/lib/class-base2n.php');
 				$binary 	= new Base2n(6);
 				$content	= $binary->decode(file_get_contents($webtool));
 			}elseif($ext=="json"){

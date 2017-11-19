@@ -1,25 +1,33 @@
 <?php 
-	 
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 ############################################################################
 # IMPORTAMOS A CLASSE DO SISTEMA
 ############################################################################
-
-include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 // _session(); 
 $session = new session();
 
-	$session->set('_PATCH_', 'App/Modulos/webmaster'); 
+	$session->set('_PATCH_', 'app/modulos/webmaster'); 
 	include("./autoComplete.php");
 
 ?>
 <!-- 
-	<script src="./App/Templates/js/formatCode/javascriptobfuscator_unpacker.js"></script>
-	<script src="./App/Templates/js/formatCode/urlencode_unpacker.js"></script>
-	<script src="./App/Templates/js/formatCode/p_a_c_k_e_r_unpacker.js"></script>
-	<script src="./App/Templates/js/formatCode/myobfuscate_unpacker.js"></script>
+	<script src="./app/templates/js/formatCode/javascriptobfuscator_unpacker.js"></script>
+	<script src="./app/templates/js/formatCode/urlencode_unpacker.js"></script>
+	<script src="./app/templates/js/formatCode/p_a_c_k_e_r_unpacker.js"></script>
+	<script src="./app/templates/js/formatCode/myobfuscate_unpacker.js"></script>
  -->
 <script type="text/javascript">
-	include_css('./App/Templates/css/websheep/modulos/webmaster/style.min.css?<?=md5(uniqid(rand(), true))?>',  	'css_mod', 'All');
+	include_css('./app/templates/css/websheep/modulos/webmaster/style.min.css?<?=md5(uniqid(rand(), true))?>',  	'css_mod', 'All');
 </script>
 <style type="text/css">
 	#container {
@@ -194,7 +202,7 @@ $session = new session();
 			while($diretorio = readdir($dh)){
 				if($diretorio != '..' && $diretorio != '.' && is_dir($dir.'/'.$diretorio)){
 					if(!file_exists($dir.'/'.$diretorio.'/.htaccess')){ file_put_contents($dir.'/'.$diretorio.'/.htaccess',"#".PHP_EOL."#".PHP_EOL."#Exclua apenas se souber o que está fazendo.".PHP_EOL."#".PHP_EOL."#".PHP_EOL."RewriteEngine off");}
-					echo '<div class="w1 folder_alert folder" data-folder="'.str_replace($_SERVER['INCLUDE_PATH'].'/website',"",$dir.'/'.$diretorio).'">'.$diretorio."</div>".PHP_EOL;
+					echo '<div class="w1 folder_alert folder" data-folder="'.str_replace(INCLUDE_PATH.'website',"",$dir.'/'.$diretorio).'">'.$diretorio."</div>".PHP_EOL;
 					echo "<div class='w1 container'>".PHP_EOL;
 					CriaPastas($dir.'/'.$diretorio."/",$oq);
 					if($oq==1 || $oq==true) MostraFiles($dir.'/'.$diretorio."/");
@@ -210,13 +218,13 @@ $session = new session();
 				$ext = explode('.',$arquivo);
 				$ext = @$ext[1];
 				if(	isset($ext)		&&($ext=="txt" 	||$ext=="htm" 	||$ext=="html" 	||$ext=="xhtml" 	||$ext=="xml" 	||$ext=="js"	 	||$ext=="json" 	||$ext=="php" 	||$ext=="css" 	||$ext=="less" 	||$ext=="sass" 	||$ext=="htaccess"||$ext=="key" 	||$ext=="asp" 	||$ext=="aspx" 	||$ext=="net" 	||$ext=="conf" 	||$ext=="ini" 	||$ext=="sql" 	||$ext=="as" 		||$ext=="htc" 	|| $ext=="--")){
-					echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.'/'.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
+					echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
 				};
 			};
 		};
 	};
-	CriaPastas($_SERVER['INCLUDE_PATH'].'/website',true);
-	MostraFiles($_SERVER['INCLUDE_PATH'].'/website');
+	CriaPastas(INCLUDE_PATH.'website',true);
+	MostraFiles(INCLUDE_PATH.'website');
 ?>
 </div>
 <div id="palco" class="palco_02 recolhido">
@@ -245,10 +253,10 @@ $session = new session();
 		}
 	});
 $(document).ready(function() {
-	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 
-	$.getScript('./App/Vendor/ace/src-min-noconflict/ace.js', function() {
-		$.getScript('./App/Vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+	$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
+		$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
 
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
@@ -347,14 +355,14 @@ $(document).ready(function() {
 						$(".fileTab").removeClass("active");
 
 						$(".fileTabContainer .container").prepend('<div '+
-							'legenda="' +$pathFile.replace("<?=str_replace("\\","/",$_SERVER['INCLUDE_PATH'].'/website')?>", "")+'" '+ 
+							'legenda="' +$pathFile.replace("<?=str_replace("\\","/",INCLUDE_PATH.'website')?>", "")+'" '+ 
 							'class="tabSortable fileTab active ' + $saved + '" '+
 							'data-token="' + $newTokenFile + '" '+
 							'data-saved="true" '+
 							'data-pathFile="' + $pathFile.replace($loadFile,"") + '" '+
 							'data-loadFile="' + $loadFile + '"> '+
 							'<div class="str">' + 
-							$pathFile.replace("<?=str_replace("\\","/",$_SERVER['INCLUDE_PATH'].'/website')?>", "")+'</div>'+
+							$pathFile.replace("<?=str_replace("\\","/",INCLUDE_PATH.'website')?>", "")+'</div>'+
 							'<div class="close"></div><div class="tab_shadow"></div><textarea style="display:none"></textarea> </div>');
 
 						if ($(".fileTabContainer .container.ui-sortable").length) {
@@ -386,7 +394,7 @@ $(document).ready(function() {
 					window.htmEditor.resize();
 					//	$(".ace_scrollbar").animate({scrollTop: 0}, 200);
 				}
-				ace.config.set('basePath', './App/Vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
+				ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 				window.htmEditor = ace.edit("divEditor");
 				window.htmEditor.setTheme("ace/theme/websheep.0.3");
 				window.htmEditor.getSession().setMode("ace/mode/php");
@@ -405,7 +413,7 @@ $(document).ready(function() {
 								callback(null, []);
 								return
 							}
-							$.getJSON("./App/Modulos/webmaster/autoComplete.json", function(wordList) {
+							$.getJSON("./app/modulos/webmaster/autoComplete.json", function(wordList) {
 								callback(null, wordList.map(function(ea) {
 									return {
 										name: ea.value,
@@ -425,7 +433,7 @@ $(document).ready(function() {
 					});
 					$('.chosen-results,.nave_folders').perfectScrollbar({suppressScrollX: true});
 					//window.htmEditor.setReadOnly(true); sem editar
-					// var UndoManager = require(["admin/App/Modulos/webmaster/src-min-noconflict/ace"]).UndoManager
+					// var UndoManager = require(["admin/app/modulos/webmaster/src-min-noconflict/ace"]).UndoManager
 					window.htmEditor.getSession().getUndoManager().reset();
 					window.htmEditor.on('change', function() {
 						window.htmEditor.resize();
@@ -587,7 +595,7 @@ $(document).ready(function() {
 
 					$('#formatHTML').unbind('tap press click').bind('tap press click', function() {
 						confirma({
-							conteudo: '<iframe id="bootstrap" src="./App/Modulos/webmaster/formatter/" width="100%" height="100%" scrolling="no"></iframe>',
+							conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/formatter/index.php" width="100%" height="100%" scrolling="no"></iframe>',
 							width: 600,
 							height:370,
 							bot1: 'Formatar',
@@ -606,7 +614,7 @@ $(document).ready(function() {
 					})
 					$('#templateBootstrap').unbind('tap press click').bind('tap press click', function() {
 						confirma({
-							conteudo: '<iframe id="bootstrap" src="./App/Modulos/webmaster/templateBootstrap/" width="100%" height="100%"></iframe>',
+							conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/templateBootstrap/index.php" width="100%" height="100%"></iframe>',
 							width: 'calc(100% - 100px)',
 							height: 'calc(100% - 100px)',
 							bot1: 'Inserir',
@@ -727,7 +735,7 @@ $(document).ready(function() {
 										var pathPlug = $("#shortcodes").val();
 										$.ajax({
 											type: "POST",
-											url: "./App/Modulos/webmaster/functions.php",
+											url: "./app/modulos/webmaster/functions.php",
 											data: {
 												'function': 'getShortCodesPlugin',
 												'path': pathPlug
@@ -761,7 +769,7 @@ $(document).ready(function() {
 					$('#novoArquivo').unbind('tap click').bind('tap click', function() {
 						confirma({
 							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 							drag: false,
 							bot1: 0,
 							bot2: 0
@@ -809,7 +817,7 @@ $(document).ready(function() {
 					$('#novodir').unbind('tap click').bind('tap click', function() {
 						confirma({
 							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 							drag: false,
 							bot1: 0,
 							bot2: 0
@@ -827,6 +835,11 @@ $(document).ready(function() {
 									bot1: "Criar arquivo",
 									bot2: "Cancelar",
 									drag: false,
+									posFn:function() {
+											$(".nave_folders .folder").click(function(){
+												$(".ws_confirm_conteudo.w1 .inputText.path").val($(this).data("folder"))
+											})
+									},
 									newFun: function() {
 										var newFile = $("input.path").val();
 										functions({
@@ -834,6 +847,7 @@ $(document).ready(function() {
 											vars: "newFile=" + newFile,
 											patch: "<? echo $session->get('_PATCH_');?>",
 											Sucess: function(e) {
+												out(e)
 												if (e == "sucesso") {
 													TopAlert({
 														mensagem: "Diretório criado com sucesso!",
@@ -872,14 +886,14 @@ $(document).ready(function() {
 									beforeSend: function() {
 										confirma({
 											width: "auto",
-											conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+											conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 											drag: false,
 											bot1: 0,
 											bot2: 0
 										})
 									},
 									Sucess: function(e) {
-										$(".ferramenta_especial[data-path='./App/Modulos/webmaster/']").click();
+										$(".ferramenta_especial[data-path='./app/modulos/webmaster/']").click();
 									}
 								});
 							}
@@ -888,7 +902,7 @@ $(document).ready(function() {
 					$('#exclFolder').unbind('tap click').bind('tap click', function() {
 						confirma({
 							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 							drag: false,
 							bot1: 0,
 							bot2: 0
@@ -907,12 +921,10 @@ $(document).ready(function() {
 									bot2: "Cancelar",
 									drag: false,
 									newFun: function() {
-										var excluiFolder = $('.nave_folders input[type="radio"]:checked').val();
-										out(excluiFolder);
-										return false;
+										var excluiFolder = $('.selectExclude').data('folder');
 										setTimeout(function() {
 											confirma({
-												conteudo: "Você tem <b>CERTEZA</b> de que quer excluir o diretório: <br> <b>{/" + excluiFolder.replace('./../../../', '') + "}</b>?<br>Lembre-se, esta ação <b>NÃO</b> terá mais volta.",
+												conteudo: "Você tem <b>CERTEZA</b> de que quer excluir o diretório: <br> <b>"+excluiFolder+"?<br><div class=\"bg08\" style=\"padding: 10px 60px; margin: 10px; color: #D80000;\">Lembre-se, esta ação <b>NÃO</b> terá mais volta.</div>",
 												width: 500,
 												bot1: "Sim tenho certeza",
 												bot2: "Cancelar",
@@ -925,33 +937,46 @@ $(document).ready(function() {
 														beforeSend: function() {
 															confirma({
 																width: "auto",
-																conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+																conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 																drag: false,
 																bot1: 0,
 																bot2: 0
 															})
 														},
 														Sucess: function(e) {
-															out(e)
-															functions({
-																funcao: "refreshFolders",
-																vars: "var=0",
-																patch: "<? echo $session->get('_PATCH_');?>",
-																Sucess: function(e) {
-																	$("#nave_folders").html(e)
-																	window.refreshClick();
-																	$("#ws_confirm").remove();
-																	$("#body").removeClass("scrollhidden");
-																	$("*").removeClass("blur");
-																}
-															})
+															if(e==1){
+																functions({
+																	funcao: "refreshFolders",
+																	vars: "var=0",
+																	patch: "<? echo $session->get('_PATCH_');?>",
+																	Sucess: function(e) {
+																		$("#nave_folders").html(e)
+																		window.refreshClick();
+																		$("#ws_confirm").remove();
+																		$("#body").removeClass("scrollhidden");
+																		$("*").removeClass("blur");
+																	}
+																})
+																TopAlert({mensagem: "Diretório excluído com sucesso!",type:3});
+															}else{
+																TopAlert({mensagem:e,type:2});
+															}
 														}
 													});
-												}
+												},
+												posFn:function() {}
 											})
 										}, 500)
 									},
-									onCancel: function() {}
+									posFn:function(){
+										sanfona('.folder_alert');
+										$(".nave_folders .folder_alert").bind("click tap press",function(){
+											$(".nave_folders .folder_alert").css({"background-color":"transparent",color:"#9e9e9e","font-weight":500}).removeClass("selectExclude");
+											$(this).css({"background-color":"#d4e1f4",color:"#497bbe","font-weight":600}).addClass("selectExclude")
+											$(".nave_folders .container").css({"background-color":"transparent",color:"#9e9e9e","font-weight":500});
+											$(this).next().css({"background-color":"#d4e1f4",color:"#497bbe","font-weight":600})												
+										})
+									}
 								})
 							}
 						});
@@ -997,12 +1022,12 @@ $(document).ready(function() {
 						//out(ConteudoDoc)
 						//out(window.pathFile)
 						//out(window.loadFile)
-						var GET = "pathFile=" + window.pathFile.replace(window.loadFile, "/") + "&filename=" + window.loadFile + "&token=" + window.newTokenFile + "&ConteudoDoc=" + ConteudoDoc;
+						var GET = "pathFile=" + window.pathFile.replace(window.loadFile,"") + "&filename=" + window.loadFile + "&token=" + window.newTokenFile + "&ConteudoDoc=" + ConteudoDoc;
 						$.ajax({
 							type: "POST",
-							url: "./App/Modulos/webmaster/functions.php",
+							url: "./app/modulos/webmaster/functions.php",
 							beforeSend:function(){
-									confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+									confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 							},
 							data: {
 								'function'	: 'geraBKPeAplica',
@@ -1027,92 +1052,6 @@ $(document).ready(function() {
 									});
 								};
 						});
-
-						/*
-						confirma({
-							conteudo: "Espere um pouco <b><?=@$session->get('user')['nome']?></b>;<br>Você gostaria de gravar uma versão de segurança antes de publicar?",
-							width: 500,
-							bot1: "Gravar cópia antes",
-							bot2: "Subscrever arquivo",
-							botclose: true,
-							newFun: function() {
-								functions({
-									funcao: "geraBKPeAplica",
-									vars: "bkp=true&" + GET,
-									patch: "<? echo $session->get('_PATCH_');?>",
-									beforeSend: function() {
-										confirma({
-											width: "auto",
-											conteudo: "  Salvando e gerando BKP...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-											drag: false,
-											bot1: 0,
-											bot2: 0
-										})
-									},
-									Sucess: function(e) {
-										if (e == "sucesso") {
-											functions({
-												funcao: "returnBKP",
-												vars: "pathFile=" + window.pathFile.replace(window.loadFile, "/") + "&filename=" + window.loadFile,
-												patch: "<? echo $session->get('_PATCH_');?>",
-												Sucess: function(e) {
-													$("#bkpsFile").html(e).trigger("chosen:updated");
-													$("#ws_confirm").remove();
-													$("#body").removeClass("scrollhidden");
-													$("*").removeClass("blur");
-												}
-											})
-
-											window.listFilesWebmaster[window.newTokenFile].saved = 'saved';
-											$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').removeClass('unsave').addClass('saved')
-											if (window.closeToSave && window.closeToSave == true) {
-												window.closeToSave = false;
-												$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"] .close').click();
-											}
-
-											TopAlert({
-												mensagem: "BKP feito e arquivo atualizado com sucesso!",
-												type: 3
-											});
-										};
-									}
-								});
-							},
-							onCancel: function() {
-
-										$.ajax({
-											type: "POST",
-											url: "./App/Modulos/webmaster/functions.php",
-											beforeSend:function(){
-													confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
-											},
-											data: {
-												'function'	: 'geraBKPeAplica',
-												'bkp'		: 'false',
-												'GET'		:  GET,
-											}
-										}).done(function(e) {
-												out(e);
-												if (e == "sucesso") {
-													$("#ws_confirm").remove();
-													$("#body").removeClass("scrollhidden");
-													$("*").removeClass("blur");
-													window.listFilesWebmaster[window.newTokenFile].saved = 'saved';
-													$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').removeClass('unsave').addClass('saved')
-													if (window.closeToSave == true) {
-														window.closeToSave = false;
-														$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"] .close').click();
-													}
-													TopAlert({
-														mensagem: "Arquivo atualizado com sucesso!",
-														type: 3
-													});
-												};
-										});
-							}
-						})
-						*/
-
 					});
 					$(window).resize(function() {
 						window.htmEditor.resize();

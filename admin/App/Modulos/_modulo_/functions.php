@@ -1,4 +1,14 @@
  <?
+	############################################################################################################################################
+	# DEFINIMOS O ROOT DO SISTEMA
+	############################################################################################################################################
+		if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 	###############################################################################################################################
 	#  GERANDO ASH PARA DOWNLOAD DE TEMPLATE
@@ -6,7 +16,7 @@
 	function importTemplate() {
 
 			$remote_file =$_POST['urlFile'];
-			$local_file = $_SERVER['INCLUDE_PATH']."/ws-bkp/".basename($remote_file).".zip";
+			$local_file = INCLUDE_PATH."ws-bkp/".basename($remote_file).".zip";
 
 			if(remoteFileExists($remote_file)){
 				$ch = curl_init();
@@ -52,9 +62,9 @@
 	###############################################################################################################################
 	function disEnabledPlugin() {
 		global $user;
-		$key        = $_SERVER['INCLUDE_PATH'].'/website/' . $_REQUEST['pathPlugin'] . '/active';
-		$jsonConfig = $_SERVER['INCLUDE_PATH'].'/website/' . $_REQUEST['pathPlugin'] . '/plugin.config.json';
-		$phpConfig  = $_SERVER['INCLUDE_PATH'].'/website/' . $_REQUEST['pathPlugin'] . '/plugin.config.php';
+		$key        = INCLUDE_PATH.'website/' . $_REQUEST['pathPlugin'] . '/active';
+		$jsonConfig = INCLUDE_PATH.'website/' . $_REQUEST['pathPlugin'] . '/plugin.config.json';
+		$phpConfig  = INCLUDE_PATH.'website/' . $_REQUEST['pathPlugin'] . '/plugin.config.php';
 		if (file_exists($phpConfig)) {
 			ob_start();
 			@include($phpConfig);
@@ -107,7 +117,7 @@
 				_erro("ops, houve um erro!" . __LINE__);
 			}
 		}
-		ExcluiDir($_SERVER['INCLUDE_PATH'].'/website/' . $_REQUEST['path']);
+		ExcluiDir(INCLUDE_PATH.'website/' . $_REQUEST['path']);
 		//id_user,id_ferramenta ,id_item, titulo,descricao,detalhes,tabela,$type
 		ws::insertLog($user->get('id'),0 ,0,"Plugin","Excluiu plugin",$_REQUEST['path'] ,"","system");
 
@@ -123,7 +133,7 @@
 		$getPath->set_limit(1);
 		$getPath->select();
 		$getPath = $getPath->fetch_array[0]['url_plugin'];
-		_copyFolder('/admin/App/Modulos/plugins/padrao', '/website/' . $getPath . '/padrao_' . date('d-m-Y_H-i'));
+		_copyFolder('/admin/app/modulos/plugins/padrao', '/website/' . $getPath . '/padrao_' . date('d-m-Y_H-i'));
 		//id_user,id_ferramenta ,id_item, titulo,descricao,detalhes,tabela,$type
 		ws::insertLog($user->get('id'),0 ,0,"Plugin","Criou um novo plugin",$_REQUEST['path'] ,"","system");
 		exit;
@@ -838,7 +848,7 @@
 	
 	###############################################################################################################################
 	function ReturnUploadCKEditor() {
-		echo '<form id="formUploadCKeditor" action="/admin/App/Core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+		echo '<form id="formUploadCKeditor" action="/admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 					<input name="type" type="hidden" value="ckEditor">
 					<input name="token_group" 	type="hidden" value="'.$_POST['token_group'].'">
 					<input name="token" 		type="hidden" value="'._token(PREFIX_TABLES . 'ws_biblioteca', 'token').'">
@@ -918,7 +928,7 @@
 	
 	function loadInfosPlugin() {
 		global $user;
-		if (file_exists($_SERVER['INCLUDE_PATH'].'/website' . $_REQUEST['dataFile'])) {
+		if (file_exists(INCLUDE_PATH.'website' . $_REQUEST['dataFile'])) {
 			echo 'true';
 		} else {
 			echo 'false';
@@ -1063,8 +1073,8 @@
 				echo "<li id='" . $file->fetch_array[0]['id'] . "'>	
 						<div id='combo'>
 							<div id='detalhes_img' class='bg02'>
-							<span><img class='editar' 	legenda='Editar Informações'	src='./App/Templates/img/websheep/layer--pencil.png'></span>   
-							<span><img class='excluir'	legenda='Excluir Imagem'		src='./App/Templates/img/websheep/cross-button.png'></span>   
+							<span><img class='editar' 	legenda='Editar Informações'	src='./app/templates/img/websheep/layer--pencil.png'></span>   
+							<span><img class='excluir'	legenda='Excluir Imagem'		src='./app/templates/img/websheep/cross-button.png'></span>   
 							</div>
 							<img class='thumb_exibicao' src='".ws::rootPath."ws-img/155/155/100/" . $file->fetch_array[0]['file'] . "'>
 						</div>
@@ -1649,7 +1659,7 @@
 			$I->set_where('token="' . $token . '"');
 			$I->select();
 			if ($I->fetch_array[0]['avatar'] == '') {
-				$I->fetch_array[0]['avatar'] = '/admin/App/Templates/img/websheep/avatar.png';
+				$I->fetch_array[0]['avatar'] = '/admin/app/templates/img/websheep/avatar.png';
 			}
 		}
 	}
@@ -1714,7 +1724,7 @@
 			$dado->set_where('id=' . $_REQUEST['iDimg']);
 			$dado->select();
 			if ($dado->fetch_array[0]['avatar'] == '') {
-				$avatar = '/admin/App/Templates/img/websheep/avatar.png';
+				$avatar = '/admin/app/templates/img/websheep/avatar.png';
 			} else {
 				$avatar = $dado->fetch_array[0]['avatar'];
 			}
@@ -1723,10 +1733,10 @@
 		<span class='desc_item w2'>" . stripslashes(substr(strip_tags(urldecode($dado->fetch_array[0]['texto'])), 0, 100)) . "...</span>
 		<div id='combo'>
 		<div id='detalhes_img' class='bg02'>
-			<span><img class='mover_item' 		src='./App/Templates/img/websheep/arrow-move.png'>	</span>
-			<span><img class='galeria'			src='./App/Templates/img/websheep/images.png'>		</span>
-			<span><img class='editar' 			src='./App/Templates/img/websheep/layer--pencil.png'>	</span>
-			<span><img class='excluir'			src='./App/Templates/img/websheep/cross-button.png'>	</span>
+			<span><img class='mover_item' 		src='./app/templates/img/websheep/arrow-move.png'>	</span>
+			<span><img class='galeria'			src='./app/templates/img/websheep/images.png'>		</span>
+			<span><img class='editar' 			src='./app/templates/img/websheep/layer--pencil.png'>	</span>
+			<span><img class='excluir'			src='./app/templates/img/websheep/cross-button.png'>	</span>
 		</div>
 			<form name='formUpload' class='formUploadGaleria' action='./" . $_REQUEST['path'] . "/upload_files.php' method='post' enctype='multipart/form-data' name='formUpload'>
 				<input name='arquivo' id='myfile' type='file' style='display:none'/>
@@ -2321,7 +2331,7 @@
 	##########################################################################################################
 	clearstatcache();
 	ob_start();
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	
 	##########################################################################################################
 	# INICIA A SESSÃO

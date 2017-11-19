@@ -6,12 +6,24 @@
 	ini_set('memory_limit', $memory_limit);
 	ini_set('memory_limit', '-1');
 	
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
+
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	
 	$user = new Session();
 
 	function save_ws_lang($lang="pt-BR"){
-		$config = file_get_contents($_SERVER['INCLUDE_PATH'].'/ws-config.php');
+		$config = file_get_contents(INCLUDE_PATH.'ws-config.php');
 		$linhas = explode(PHP_EOL,$config);
 		$newDoc = array();
 		$i 		= 0;
@@ -23,7 +35,7 @@
 			}
 			$i++;
 		}
-		file_put_contents($_SERVER['INCLUDE_PATH'].'/ws-config.php', implode($newDoc,PHP_EOL));
+		file_put_contents(INCLUDE_PATH.'ws-config.php', implode($newDoc,PHP_EOL));
 	}
 
 
@@ -126,7 +138,7 @@
 		fclose($fp);
 	}
 	###########################################################################################
-	//http://websheep_producao.com/admin/App/Modulos/_dominio_/functions.php?function=ClassFTP
+	//http://websheep_producao.com/admin/app/modulos/_dominio_/functions.php?function=ClassFTP
 	
 	function ClassFTP() {
 		include('./FtpClient.php');
@@ -261,7 +273,7 @@
 		$S->set_update('url_congelamento'	, $inputs['url_congelamento']);
 		$S->set_update('ws_cache'			, $inputs['DomainCache']);
 
-		$dir = ($_SERVER['INCLUDE_PATH'].'/ws-cache');
+		$dir = (INCLUDE_PATH.'ws-cache');
 		if ($inputs['DomainCache'] == '0') {
 			if (file_exists($dir) && is_dir($dir)) {
 				_excluiDir($dir);
@@ -393,8 +405,8 @@
 			$z->addEmptyDir('admin');
 			$z->addEmptyDir('admin/plugins');
 			$z->addEmptyDir('admin/modulos');
-			$z->addEmptyDir('admin/App/Modulos/_modulo_');
-			$z->addEmptyDir('admin/App/Modulos/_modulo_/uploads');
+			$z->addEmptyDir('admin/app/modulos/_modulo_');
+			$z->addEmptyDir('admin/app/modulos/_modulo_/uploads');
 			$z->addFile('./img/go-backup-icon.jpg', 'screenshot.jpg');
 			$ws_biblioteca = new MySQL();
 			$ws_biblioteca->set_table(PREFIX_TABLES . 'ws_biblioteca');
@@ -425,7 +437,7 @@
 		########################################################################################################################### compacta apenas WS
 		$_dir_theme_   = array();
 		$_files_theme_ = array();
-		lista_Dir_theme($_SERVER['INCLUDE_PATH'].'/admin');
+		lista_Dir_theme(INCLUDE_PATH.'admin');
 		$path   = "./splitFiles";
 		$folder = opendir($path);
 		while ($item = readdir($folder)) {
@@ -444,12 +456,12 @@
 				$z->addEmptyDir($dir);
 			}
 			foreach ($_files_theme_ as $file) {
-				if (dirname($file) != 'admin/App/Modulos/_modulo_/uploads' && $file != "admin/App/Modulos/_dominio_/" . $nome_bkp) {
+				if (dirname($file) != 'admin/app/modulos/_modulo_/uploads' && $file != "admin/app/modulos/_dominio_/" . $nome_bkp) {
 					$z->addFile('./../../../' . $file, $file);
 				}
 			}
-			$z->addFile('./' . $nome_bkp, $_SERVER['INCLUDE_PATH'].'/ws-bkp/' . $nome_bkp);
-			$z->addFromString($_SERVER['INCLUDE_PATH'].'/firstaccess', '1');
+			$z->addFile('./' . $nome_bkp, INCLUDE_PATH.'ws-bkp/' . $nome_bkp);
+			$z->addFromString(INCLUDE_PATH.'firstaccess', '1');
 		}
 		//	$z->addFromString('index.php', $indexZip);
 		

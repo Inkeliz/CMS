@@ -1,8 +1,19 @@
 <?php
+############################################################################################################################################
+# DEFINIMOS O ROOT DO SISTEMA
+############################################################################################################################################
+	if(!defined("ROOT_WEBSHEEP"))	{
+	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+	$path = implode(array_filter(explode('/',$path)),"/");
+	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+}
+
+if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+
 ##################################################################################
 # IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 ##################################################################################
-	include_once($_SERVER['INCLUDE_PATH'].'/admin/App/Lib/class-ws-v1.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 
 ##################################################################################
 # INICIA SESSÃO
@@ -32,14 +43,14 @@
 ##################################################################################
 # INVOCA A CLASSE DO TEMPLATE
 ##################################################################################
-	$_SET_TEMPLATE_INPUT = new Template($_SERVER['INCLUDE_PATH'].'/admin/App/Templates/html/Modulos/ws-tool-galerias-template.html', true);
+	$_SET_TEMPLATE_INPUT = new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-galerias-template.html', true);
 	if(isset($_GET['back']) && $_GET['back']=='true'){ 
 		$_SET_TEMPLATE_INPUT->block('BOT_BACK');
 	}
 
 	$_SET_TEMPLATE_INPUT->TOKEN_GROUP 			= TOKEN_GROUP;
 	$_SET_TEMPLATE_INPUT->_TITULO_FERRAMENTA_ 	= "Galerias de fotos";//$_SESSION['_TITULO_FERRAMENTA_'];
-	$_SET_TEMPLATE_INPUT->PATCH 				= 'App/Modulos/_modulo_';
+	$_SET_TEMPLATE_INPUT->PATCH 				= 'app/modulos/_modulo_';
 	$_SET_TEMPLATE_INPUT->ID_ITEM 				= ID_ITEM;
 	$_SET_TEMPLATE_INPUT->WS_ID_FERRAMENTA 		= $_GET['ws_id_ferramenta'];
 	$_SET_TEMPLATE_INPUT->BACK 					= $_GET['back'];
@@ -72,7 +83,7 @@
 	foreach($s->fetch_array as $img){ 
 		$_SET_TEMPLATE_INPUT->ID_GAL 	= $img['id'];
 		$_SET_TEMPLATE_INPUT->AVATAR	= $img['avatar'];
-		$_SET_TEMPLATE_INPUT->PATCH 	= 'App/Modulos/_modulo_';
+		$_SET_TEMPLATE_INPUT->PATCH 	= 'app/modulos/_modulo_';
 		$_SET_TEMPLATE_INPUT->ID_ITEM 	= $_GET['id_item'];
 		$_SET_TEMPLATE_INPUT->block("BLOCK_GALERIA");
 	 }
