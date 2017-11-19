@@ -43,7 +43,6 @@
 		foreach ($includes->fetch_array as $item) {
 			$INCLUDES .= '		RewriteRule ^'.$item['path'] . '	./..' . $item['file'] . ' [L]'.PHP_EOL;
 		}
-
 		$modelo 	= INCLUDE_PATH.'admin/app/templates/txt/ws-model-htaccess.txt';
 		$original 	= INCLUDE_PATH.'.htaccess';
 		file_put_contents($original, 

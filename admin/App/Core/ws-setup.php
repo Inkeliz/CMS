@@ -98,7 +98,7 @@
 			#######################################################################################################################################
 			# GRAVAMOS O NOVO ARQUIVO ws-config.php E RETORNAMOS O RESULTADO
 			#######################################################################################################################################
-			if (!file_put_contents(INCLUDE_PATH.'ws-config.php', $wsConfigDefaultFormated)) {
+			if (!file_put_contents(INCLUDE_PATH.'website/ws-config.php', $wsConfigDefaultFormated)) {
 				echo json_encode(array(
 					'status' => 'falha',
 					'resposta' => 'Não foi possível gravar o ws-config.php'

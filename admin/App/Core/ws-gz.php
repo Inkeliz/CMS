@@ -20,7 +20,7 @@ ob_start();
 ###################################################################
 # IMPORTA A CLASSE PADRÃO DO SISTEMA
 ###################################################################
-include_once(INCLUDE_PATH.'ws-config.php');
+include_once(INCLUDE_PATH.'website/ws-config.php');
 
 #####################################################################
 # 	RETORNA ARQUIVOS CONFORMA O PATERN SETADO

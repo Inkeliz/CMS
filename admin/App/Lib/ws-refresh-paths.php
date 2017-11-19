@@ -17,6 +17,8 @@
 	#######################################################################
 	#	SETAMOS AS CONDIÇÕES NECESSÁRIAS PARA EDIÇÃO DOS PATHS
 	#######################################################################
+
+
 	if( 
 		basename($_SERVER['REQUEST_URI'])=="ws-set-paths" || !file_exists(INCLUDE_PATH.'.htaccess')
 	){

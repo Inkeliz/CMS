@@ -29,12 +29,12 @@ if(
 if(!file_exists(dirname(__FILE__).'/ws-config.php')){
 	$frase 	= "Ops, cadê o ws-config.php?";
 	$botao 	= "Criar arquivo";
-	$link 	= $WS_PATH."admin";
 }else{
 	$frase 	= "Os paths de acesso estão incorretos.<br>Para ajustar, basta acessar o painel.";
 	$botao 	= "Configurar Paths";
-	$link 	= $WS_PATH."admin/ws-set-paths";
 }
+
+$link 	= $WS_PATH."admin";
 
 ############################################################################################
 ?>

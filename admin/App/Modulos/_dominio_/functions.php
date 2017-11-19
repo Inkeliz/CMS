@@ -23,7 +23,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	$user = new Session();
 
 	function save_ws_lang($lang="pt-BR"){
-		$config = file_get_contents(INCLUDE_PATH.'ws-config.php');
+		$config = file_get_contents(INCLUDE_PATH.'website/ws-config.php');
 		$linhas = explode(PHP_EOL,$config);
 		$newDoc = array();
 		$i 		= 0;
@@ -35,7 +35,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 			}
 			$i++;
 		}
-		file_put_contents(INCLUDE_PATH.'ws-config.php', implode($newDoc,PHP_EOL));
+		file_put_contents(INCLUDE_PATH.'website/ws-config.php', implode($newDoc,PHP_EOL));
 	}
 
 

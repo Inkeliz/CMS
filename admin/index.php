@@ -57,7 +57,7 @@
 	############################################################################################################################
 	# CASO NÃO EXISTA O 'ws-config.php' IMPORTA A TELA DE SETUP
 	############################################################################################################################
-	if(!file_exists(INCLUDE_PATH.'ws-config.php')) {
+	if(!file_exists(INCLUDE_PATH.'website/ws-config.php')) {
 		include_once(INCLUDE_PATH.'admin/app/core/ws-setup.php');
 		exit;
 	}

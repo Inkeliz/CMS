@@ -13,7 +13,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	##########################################################################################################
 	# 	PUXA OS DADOS DE CONFIGURAÇÃO DO SISTEMA
 	##########################################################################################################
-		include_once(INCLUDE_PATH.'ws-config.php');
+		include_once(INCLUDE_PATH.'website/ws-config.php');
 
 	##########################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA

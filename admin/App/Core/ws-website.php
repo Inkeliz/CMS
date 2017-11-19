@@ -7,7 +7,7 @@
 
 	if(!defined("INCLUDE_PATH"))	{$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
-	if(file_exists(INCLUDE_PATH.'ws-config.php')){
+	if(file_exists(INCLUDE_PATH.'website/ws-config.php')){
 		include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 		ws::init();
 	}else{
