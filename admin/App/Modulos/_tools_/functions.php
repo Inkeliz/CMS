@@ -103,13 +103,11 @@
 		exit;
 	}
 	function installToolPanel() {
-		parse_str($_REQUEST['ToolInstall'], $tool);
-		$_REQUEST['base64'] = $tool;
-
-		
-		if (installExternalTool()) { echo "sucesso";}
+		parse_str($_REQUEST['ToolInstall'], $_REQUEST);
+		echo installExternalTool();
 		exit;
 	}
+
 	function exportToolFile($ID_TOOL = null, $multiple = false, $encode = false) {
 		if (empty($_REQUEST['toolToPlugin']))
 			$_REQUEST['toolToPlugin'] = "off";
@@ -126,9 +124,10 @@
 			$value         = explode('`', $value);
 			$FullColumns[] = $value[1];
 		}
-		$resultTool  = array();
-		$colunasTool = array();
-		$TOOL        = new MySQL();
+		$campos_colunas = array();
+		$resultTool  	= array();
+		$colunasTool 	= array();
+		$TOOL        	= new MySQL();
 		$TOOL->set_table(PREFIX_TABLES . 'ws_ferramentas');
 		$TOOL->set_where('id="' . $ID_TOOL . '"');
 		$TOOL->select();
@@ -176,9 +175,9 @@
 			'prefix' => $TOOL->fetch_array[0]['_prefix_'],
 			'slug' => $TOOL->fetch_array[0]['slug'],
 			'det_listagem_item' => implode($colunasListPrefix, ','),
-			'tool' => 'INSERT INTO `{PREFIX_TABLES}ws_ferramentas`  ( `' . implode($colunasTool, '`,`') . '`) VALUES( NULL,\'' . implode(array_slice($resultTool, 1), "','") . '\')',
-			'colunas' => array()
+			'tool' => 'INSERT INTO `{PREFIX_TABLES}ws_ferramentas`  ( `' . implode($colunasTool, '`,`') . '`) VALUES( NULL,\'' . implode(array_slice($resultTool, 1), "','") . '\')'
 		);
+
 		$campos = new MySQL();
 		$campos->set_table(PREFIX_TABLES . '_model_campos');
 		$campos->set_where('ws_id_ferramenta="' . $ID_TOOL . '"');
@@ -193,9 +192,9 @@
 			} else {
 				$coluna_mysql = $campoTool;
 			}
+
 			// EM CADA CAMPO CADASTRADO, VERIFICA SE ESTÁ NA ARRAY DO SHOW TABLES
 			if (in_array($campoTool, $FullColumns)) {
-				
 				foreach ($ColunasItem as $ColumValue) {
 					$exists = strpos($ColumValue, $campoTool);
 					if ($exists) {
@@ -222,7 +221,8 @@
 									$result[] = $colunaDoCampo;
 							}
 						}
-						$SQL['colunas'][] = array(
+
+						$campos_colunas[] = array(
 							'type' => $value['type'],
 							'colum' => $coluna_mysql,
 							'insert' => str_replace($_prefix_ . $coluna_mysql, $coluna_mysql, $ColumValue),
@@ -230,6 +230,11 @@
 						);
 					}
 				}
+
+				$SQL['colunasTool']    	= $colunasTool;
+				$SQL['colunasCampos']   = $colunas;
+				$SQL['colunas']			= $campos_colunas;
+
 			}
 			if (in_array($value['type'], array(
 				'bt_fotos',
@@ -259,13 +264,13 @@
 			}
 		}
 		
+		$encode 	= false;
+		$multiple 	= false;
 		if ($multiple == true) {
 			return $SQL;
 			exit;
 		} else {
-			$SQL      = array(
-				$SQL
-			);
+			$SQL      = array($SQL);
 			$jsonName = 'importedTools/' . $TOOL->fetch_array[0]['slug'] . '.ws';
 			if ($encode) {
 				include(INCLUDE_PATH.'admin/app/lib/class-base2n.php');
@@ -281,6 +286,9 @@
 			exit;
 		}
 	}
+
+
+
 	function export_All_Tool_File() {
 		$ferramentas = $_REQUEST['tools'];
 		$newTool     = Array();

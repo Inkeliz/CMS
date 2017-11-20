@@ -282,9 +282,6 @@
 		return false;
 	})
 
-
-
-
 	$(".programar").unbind('click').click(function(e){
 		e.preventDefault()
 		var page 				= $(this).parent().parent().parent().parent().parent().data('file');
@@ -317,17 +314,20 @@
 			  data: { "function":"exportToolFile","id_tool":id}
 			}).done(function(data) {
 					var pom = document.createElement('a');
+						// pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + data);
+						// pom.setAttribute('download', NamePlugin+".json");
 						pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + base64_encode(data));
 						pom.setAttribute('download', NamePlugin+".ws");
-					if (document.createEvent) {
-						var event = document.createEvent('MouseEvents');
-						event.initEvent('click', true, true);
-						pom.dispatchEvent(event);
-					}else{
-						pom.click().remove();
-					}
-			})
-})
+						if (document.createEvent) {
+							var event = document.createEvent('MouseEvents');
+							event.initEvent('click', true, true);
+							pom.dispatchEvent(event);
+						}else{
+							pom.click().remove();
+						}
+		
+				})
+	})
 
 
 	$(".editar ").unbind('click').click(function(){
@@ -625,32 +625,30 @@
 function SetupTool(Base64Var){
 	var json 		= base64_decode(Base64Var);
 	var json 		= eval($.parseJSON(json));
-	var conteudoModal = new Array();
-	jQuery.each(json, function(index, itemData) {
-		var data = itemData; 
-		var base = base64_encode(JSON.stringify(data))
-		conteudoModal.push({title:data.name, description:data.description,base64:base});
-	});
-	document.getElementById("myfile").value = "";
-	var Template 		= '';
-	var TemplateBase 	= '	<form class="toolUnique">\
-							<div class="w1 title">{{TITULO}}</div>\
-							<div class="w2 content">{{DESCRICAO}}</div>\
-							<div class="c"></div>\
-							<div class="w1" style="text-align: left;width: 135px;float: left;">{ToolsManager_Modal_MySQLPrefix}:</div>\
-							<div class="w1" style="text-align: left;float: left;">{ToolsManager_Modal_Slug}:</div>\
-							<div class="w1" style="text-align: left;float: left;margin-left: 100px;">{ToolsManager_Modal_NewNameTool}:</div>\
-							<div class="c"></div>\
-							<input 					name="plugin" 		type="hidden" value="plugin:{GET_PLUGIN}">\
-							<input id="prefix"		name="prefix" 		style="padding: 10px 20px;margin: 10px 0px 0px 0px;width: 132px;float:left;position: relative;" class="inputText" value="">\
-							<input id="ModalSlug"	name="slugTool" 	style="padding: 10px 20px;margin: 10px 3px;width: 130px;float: left;position: relative;"	 	class="inputText" value="">\
-							<input id="ModalName"	name="nameTool" 	style="padding: 10px 20px;margin: 10px 3px;width: 225px;float: left;position: relative;" 		class="inputText" value="">\
-							<input id="base64"		name="base64" 		type="hidden" style="padding: 10px 20px;margin: 10px 3px 0px 0px;width: 132px;float:left;position: relative;" class="inputText" value="{{BASE64}}">\
-							<div class="c"></div>\
-							<div class="botao" style="padding: 8px;"">{ToolsManager_Modal_Install}</div>\
-						</form>'
-						out(conteudoModal)
-
+		var conteudoModal = new Array();
+		jQuery.each(json, function(index, itemData) {
+			var data = itemData; 
+			var base = base64_encode(JSON.stringify(data))
+			conteudoModal.push({title:data.name, description:data.description,base64:base});
+		});
+		document.getElementById("myfile").value = "";
+		var Template 		= '';
+		var TemplateBase 	= '	<form class="toolUnique">\
+		<div class="w1 title">{{TITULO}}</div>\
+		<div class="w2 content">{{DESCRICAO}}</div>\
+		<div class="c"></div>\
+		<div class="w1" style="text-align: left;width: 135px;float: left;">{ToolsManager_Modal_MySQLPrefix}:</div>\
+		<div class="w1" style="text-align: left;float: left;">{ToolsManager_Modal_Slug}:</div>\
+		<div class="w1" style="text-align: left;float: left;margin-left: 100px;">{ToolsManager_Modal_NewNameTool}:</div>\
+		<div class="c"></div>\
+		<input 					name="plugin" 		type="hidden" value="plugin:{GET_PLUGIN}">\
+		<input id="prefix"		name="prefix" 		style="padding: 10px 20px;margin: 10px 0px 0px 0px;width: 132px;float:left;position: relative;" class="inputText" value="">\
+		<input id="ModalSlug"	name="slugTool" 	style="padding: 10px 20px;margin: 10px 3px;width: 130px;float: left;position: relative;"	 	class="inputText" value="">\
+		<input id="ModalName"	name="nameTool" 	style="padding: 10px 20px;margin: 10px 3px;width: 225px;float: left;position: relative;" 		class="inputText" value="">\
+		<input id="base64"		name="base64" 		type="hidden" style="padding: 10px 20px;margin: 10px 3px 0px 0px;width: 132px;float:left;position: relative;" class="inputText" value="{{BASE64}}">\
+		<div class="c"></div>\
+		<div class="botao" style="padding: 8px;"">{ToolsManager_Modal_Install}</div>\
+	</form>'
 	$.each(conteudoModal,function(){
 		var tool = $(this)[0];
 		var newTemplate = TemplateBase;
@@ -686,16 +684,58 @@ function SetupTool(Base64Var){
 						ToolInstall:ToolInstall
 					  }
 					}).done(function(data) { 
-						console.log(data)
-							$("#conteudo").load("./{PATH}/tools.php",function(){
-								setTimeout(function(){$("#exportarTodos,#excluir").hide();},1000)
-							});
-							if(data=="sucesso"){
-								TopAlert({mensagem: "{ToolsManager_Modal_ToolInstall}",type: 3})
-								$(DIV).css({backgroundColor: "#a7d35b"}).animate({ backgroundColor: "transparent" }, 2000);
-								window.refreshMenuDesktop();
+
+							var json 		= eval($.parseJSON(data));
+							if(json.status=="falha"){
+								ws.confirm({
+											conteudo: '<div class="bg08" style="padding:15px;margin:0 10px;color:#cd0000;">'+json.content+'</div><div class="bg07" style="padding: 0px;margin: 10px;color: #d37b00;font-weight: 600;padding: 20px;">'+json.colunas+'</div>',
+											width: 500,
+											height: 'auto',
+											mleft: 0,
+											mtop: 0,
+											posFn: function() {},
+											Init: function() {},
+											posClose: function() {},
+											bots: [
+												{
+														id			: "ok",
+														label		: "ok",
+														class		: "",
+														style 		: "",														
+														css 		: {"color":"#ffffff","backgroundColor":"#497bbe"},
+														ErrorCheck	: function() {},
+														action		: function(){},
+														Check 		: function() {return true},
+												}
+											],
+											idModal: "ws_fail_columns",
+											divScroll: "body",
+											divBlur: "#menu_tools,#container,#header",
+											drag: true,
+											botclose: false,
+											newFun: function() {},
+											onCancel: function() {},
+											onClose: function() {},
+											Callback: function() {},
+											ErrorCheck: function() {},
+											Check: function() {
+												return true
+											}
+										})
+
+
+
+
 							}else{
-								TopAlert({mensagem: "{ToolsManager_Modal_ErrorInstall}<br>"+data,type: 2})
+								$("#conteudo").load("./{PATH}/tools.php",function(){setTimeout(function(){$("#exportarTodos,#excluir").hide();},1000)});
+								if(json.status=="sucesso"){
+									TopAlert({mensagem: "{ToolsManager_Modal_ToolInstall}",type: 3})
+									$(DIV).css({backgroundColor: "#a7d35b"}).animate({ backgroundColor: "transparent" }, 2000);
+									window.refreshMenuDesktop();
+								}else{
+									TopAlert({mensagem: "{ToolsManager_Modal_ErrorInstall}<br>"+data,type: 2})
+								}
+
 							}
 					});
 				}

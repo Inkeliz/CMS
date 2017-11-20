@@ -1,15 +1,26 @@
 <?
 	############################################################################################################################################
+	############################################################################################################################################
+	############################################################################################################################################
+	#
+	#
+	# FUNÇÕES GLOBAIS DO SISTEMA QUE NECESSITAM DO MYSQLI FUNCTIONANDO
+	#
+	#
+	############################################################################################################################################
+	############################################################################################################################################
+	############################################################################################################################################
+
+	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
 		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
 
-if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
-
+		if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 	##########################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
@@ -21,22 +32,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	##########################################################################################################
 		include_once(INCLUDE_PATH.'admin/app/lib/class-session.php');
 		
-	##########################################################################################################
-	# RETORNA UM TOKEN INÉDITO NA COLUNA SETADA 
-	##########################################################################################################
-		function root(){
-			$tk 					=	_crypt($type);
-			$setToken				= 	new MySQL();
-	 		$setToken->set_table($tabela);
-			$setToken->set_where($coluna.'="'.$tk.'"');
-			$setToken->select();
-			if($setToken->_num_rows!=0){
-				$tk = _crypt();
-				_token($tabela,$coluna);
-			}else{
-				return $tk;
-			}
-		}
 	##########################################################################################################
 	# RETORNA UM TOKEN INÉDITO NA COLUNA SETADA 
 	##########################################################################################################
@@ -685,20 +680,27 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	# INSTALA UMA FERRAMENTA EXTERNA
 	##########################################################################################################
 		function installExternalTool($webtool=null,$grupoPai=null){
+
+			####################################################################
+			# FERRAMENTSA JÁ ESTA VINDO EM BASE64
+			####################################################################
 			if(isset($_REQUEST['base64'])){ 
 				####################################################################
-				# TRANSFORMAMOS O bse64 NO REQUEST MASTER
+				# ADICIONAMOS O PREFIXO DAS TABELAS
 				####################################################################
-				$_REQUEST = $_REQUEST['base64'];
-				####################################################################
-				# para ferramentas antigas que nao tinham prefixo ainda nas tabelas
-				####################################################################
-				$content =	str_replace('{PREFIX_TABLES}',PREFIX_TABLES, base64_decode($_REQUEST['base64']));
+				 $content =	str_replace('{PREFIX_TABLES}',PREFIX_TABLES, base64_decode($_REQUEST['base64']));
 				goto processa;
 			}
 
-			if($webtool==null){		echo "Insira um arquivo na função";	exit;}
+			####################################################################
+			# AQUI É CASO ESTEJAMOS DUPLICANDO UMA FERRAMENTA
+			####################################################################
 			if($grupoPai==null){	echo "Insira um grupo pai";			exit;}
+			
+			####################################################################
+			# CASO SEJA UPLOAD DE ARQUIVO, VERIFICAMOS A EXTENSÃO
+			####################################################################
+			if($webtool==null){		echo "Insira um arquivo na função";	exit;}
 			$pathinfo 	= pathinfo($webtool);
 			$ext 		= $pathinfo['extension'];
 			if($ext=="ws"){
@@ -709,15 +711,125 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$content		=	file_get_contents($webtool);
 			}
 
+			####################################################################
+			# INICIAMOS O PROCESSO DE ANALISE
+			####################################################################
 			processa:
-			if(isset($_REQUEST['prefix'])){$prefix   = $_REQUEST['prefix'];}else{$prefix = "";}
+			if(isset($_REQUEST['prefix'])){$prefix= $_REQUEST['prefix'];}else{$prefix = "";}
 			if(isset($_REQUEST['base64'])){
 				$getAll				=	array(json_decode($content,true));
 			}else{
 				$getAll				=	json_decode($content,true);
 			}
+
+
+
+
+			#####################################################################################
+			# 		ARRAY QUE VAI RECEBER OS ERROS
+			#####################################################################################
+				$_ERROS 		= array("sistema"=>array(),"ferramenta"=>array());
+			#####################################################################################
+
+				#####################################################################################
+				# 		GUARDAMOS AS COLUNAS DAS FERRAMENTAS NA VARIÁVEL $_COLUNA_FERRAMENTA
+				#####################################################################################
+				$_COLUNAS_SISTEMA 		= array();
+
+				#####################################################################################
+				# 		VERIFICAMOS SE AS COLUNAS DA FERRAMENTA EXISTEM NAS TABELAS DO SISTEMA
+				#####################################################################################
+					$campos			= new MySQL();
+					$campos->set_table(PREFIX_TABLES.'_model_campos');
+					$campos->show_columns();
+
+					foreach ($campos->fetch_array as $value) {
+						$_COLUNAS_SISTEMA[] = $value['Field'];
+					 };
+				#####################################################################################
+				# 		MONTAMOS UMA VARIÁVEL PARA RECEBER POSSÍVEIS COLUNAS INEXISTENTES
+				#####################################################################################
+				$_COLUNAS_INEXISTENTE 	= array();
+
+				#####################################################################################
+				# 		GUARDAMOS AS COLUNAS DAS FERRAMENTAS NA VARIÁVEL $_COLUNA_FERRAMENTA
+				#####################################################################################
+				$_COLUNA_FERRAMENTA 	= $getAll[0]['colunasCampos'];
+
+				#####################################################################################
+				# 		VERIFICAMOS SE AS COLUNAS DA FERRAMENTA EXISTEM NAS TABELAS DO SISTEMA
+				#####################################################################################
+				foreach ($_COLUNA_FERRAMENTA as $value) {
+					if(!in_array($value, $_COLUNAS_SISTEMA)){
+						$_ERROS['ferramenta'][] = $value;
+					}
+				}
+
+				if(count($_ERROS['ferramenta'])>=1){
+					return json_encode(
+						array(
+							'status'=>'falha',
+							'content'=>'Ops! Verificamos que esta ferramenta necessita de algumas colunas na tabela <strong>'.PREFIX_TABLES.'_model_campos</strong>:',
+							'colunas'=>implode($_ERROS['ferramenta']," , "),
+						)
+					);
+				}
+
+
+				#####################################################################################
+				# 		GUARDAMOS AS COLUNAS DAS FERRAMENTAS NA VARIÁVEL $_COLUNA_FERRAMENTA
+				#####################################################################################
+				$_COLUNAS_SISTEMA 		= array();
+
+				#####################################################################################
+
+				$ferramentas			= new MySQL();
+				$ferramentas->set_table(PREFIX_TABLES.'ws_ferramentas');
+				$ferramentas->show_columns();
+
+				foreach ($ferramentas->fetch_array as $value) {
+					$_COLUNAS_SISTEMA[] = $value['Field'];
+				 };
+
+				#####################################################################################
+				# 		MONTAMOS UMA VARIÁVEL PARA RECEBER POSSÍVEIS COLUNAS INEXISTENTES
+				#####################################################################################
+				$_COLUNAS_INEXISTENTE 	= array();
+
+				#####################################################################################
+				# 		GUARDAMOS AS COLUNAS DAS FERRAMENTAS NA VARIÁVEL $_COLUNA_FERRAMENTA
+				#####################################################################################
+				$_COLUNA_FERRAMENTA 	= $getAll[0]['colunasTool'];
+
+			#####################################################################################
+			# 		VERIFICAMOS SE AS COLUNAS DA FERRAMENTA EXISTEM NAS TABELAS DO SISTEMA
+			#####################################################################################
+				foreach ($_COLUNA_FERRAMENTA as $value) {
+					if(!in_array($value, $_COLUNAS_SISTEMA)){
+						$_ERROS['sistema'][] = $value;
+					}
+				}
+
+			#####################################################################################
+			# 		VERIFICAMOS SE AS COLUNAS DO SISTEMA EXISTEM NAS TABELAS DA FERRAMENTA
+			#####################################################################################
+				foreach ($_COLUNAS_SISTEMA as $value) {
+					if(!in_array($value, $_COLUNA_FERRAMENTA)){
+						$_ERROS['ferramenta'][] = $value;
+					}
+				}
+				if(count($_ERROS['sistema'])>=1){
+					return json_encode(
+						array(
+							'status'=>'falha',
+							'content'=>'Ops! Verificamos que esta ferramenta necessita de algumas colunas na tabela <strong>'.PREFIX_TABLES.'ws_ferramentas</strong>:',
+							'colunas'=>implode($_ERROS['sistema']," , "),
+						)
+					);
+				}
+
 			foreach ($getAll as $newTool){
-				$token 		= _token(PREFIX_TABLES.'ws_ferramentas','token');
+				$token 				= _token(PREFIX_TABLES.'ws_ferramentas','token');
 				$colunasListItens 	=	explode(',',$newTool['det_listagem_item']);
 				$colunasListPrefix 	= 	Array();
 				foreach ($colunasListItens as $val){$colunasListPrefix[] = $prefix.$val;};
@@ -739,7 +851,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 														$_REQUEST['slugTool'],
 														$_REQUEST['nameTool']
 													),$newTool['tool']);
-
 				$campos 			=   $newTool['colunas'];
 				$insert = new MySQL();
 				if($insert->select($ferramenta)){
@@ -767,10 +878,17 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 						}
 						$AddColunaItem->add_column();
 					}
-
 				}
-				return true;
+				return json_encode(
+						array(
+							'status'=>'sucesso',
+							'content'=>'Ferramenta instalada com sucesso',
+							'colunas'=>null,
+						)
+					);
+
 			};
+
 			exit;
 		}
 
