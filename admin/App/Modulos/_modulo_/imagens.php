@@ -64,11 +64,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	$_RASCUNHO_IMG->set_where('AND id_item="'.$_GET['id_item'].'"');
 	$_RASCUNHO_IMG->select();
 
-	if($_RASCUNHO_IMG->_num_rows>0 && $_INNER_IMG->_num_rows==0){
-		aplicaRascunho($_FERRAMENTA['id'],$_GET['id_item'],true);
-	}else{
-		criaRascunho($_FERRAMENTA['id'], $_GET['id_item'],true);
-	}
 
 	/*
 		LISTAR TODASSS AS IMAGENS, TROCANDO APENAS A CLASSE DE DRAFT OU ORIGINAL

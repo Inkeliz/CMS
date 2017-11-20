@@ -1861,11 +1861,20 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	#	CASO A FERRAMENTA NÃO TENHA NÍVEIS E SEJA APENAS UMA GALERIA DE IMAGENS, AO INVEZ DE SALVAR O ÍTEM, ELE PUBLICA AS IMAGENS
 	###############################################################################################################################
 	function PublicaRascunhoImagens() {
-		$vars = $_POST;
-		if (aplicaRascunho($vars['ws_id_ferramenta'], $vars['id_item'], true)) {
+		if (aplicaRascunho($_POST['ws_id_ferramenta'], $_POST['id_item'], true)) {
+			criaRascunho($_POST['ws_id_ferramenta'], $_POST['id_item']);
 			echo "Ítem salvo com sucesso!";
 		}
 	}
+	###############################################################################################################################
+	#	CASO A FERRAMENTA NÃO TENHA NÍVEIS E SEJA APENAS UMA GALERIA DE IMAGENS, AO INVEZ DE SALVAR O ÍTEM, ELE PUBLICA AS IMAGENS
+	###############################################################################################################################
+	function DescartaRascunhoImagens(){
+		if (descartaRascunho($_POST['ws_id_ferramenta'], $_POST['id_item'], true)) {
+			echo "Descartado com sucesso!";
+		}
+	}
+
 	
 	##########################################################################################################
 	# 	PUBLICA UM RASCUNHO DE UM ÍTEM

@@ -86,9 +86,86 @@
 	##########################################################################################################
 	#	FUNÇÃO QUE APLICA O RASCUNHO DO ÍTEM
 	##########################################################################################################
+		function descartaRascunho($ws_id_ferramenta,$id_item,$apenasAplica=false){
+			global $_conectMySQLi_;
+			##########################################################################################################
+			# EXCLUI O RASCUNHO DO ÍTEM
+			##########################################################################################################
+			if($apenasAplica==false){
+				$get_draft				= new MySQL();
+				$get_draft->set_table(PREFIX_TABLES."_model_item");
+				$get_draft->set_where('ws_draft="1"');
+				$get_draft->set_where('AND ws_id_draft="'.$id_item.'"');
+				$get_draft->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
+				$get_draft->exclui();
+			}
+			##########################################################################################################
+			# EXCLUI OS REGISTROS DAS IMAGENS DO ÍTEM ORIGINAL
+			##########################################################################################################
+				$ExclIMGs				= new MySQL();
+				$ExclIMGs->set_table(PREFIX_TABLES."_model_img");
+				$ExclIMGs->set_where('ws_draft="1"');
+				$ExclIMGs->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
+				$ExclIMGs->set_where('AND id_item="'.$id_item.'"');						
+				$ExclIMGs->exclui();
+
+			##########################################################################################################
+			# EXCLUI AS GALERIAS ORIGINAIS
+			##########################################################################################################
+				$ExclGal = new MySQL();
+				$ExclGal->set_table(PREFIX_TABLES.'_model_gal');
+				$ExclGal->set_where('ws_draft="1"');
+				$ExclGal->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
+				$ExclGal->set_where('AND id_item="'.$id_item.'"');
+				$ExclGal->exclui();
+			##########################################################################################################
+			# EXCLUI AS IMAGENS DAS GALERIAS ORIGINAIS
+			##########################################################################################################
+				$ExclGal = new MySQL();
+				$ExclGal->set_table(PREFIX_TABLES.'_model_img_gal');
+				$ExclGal->set_where('ws_draft="1" AND ws_id_ferramenta="'.$ws_id_ferramenta.'" AND id_item="'.$id_item.'"');
+				$ExclGal->exclui();
+
+			##########################################################################################################
+			# EXCLUI OS REGISTROS DOS ARQUIVOS DO ÍTEM ORIGINAL
+			##########################################################################################################
+				$ExclFiles				= new MySQL();
+				$ExclFiles->set_table(PREFIX_TABLES."_model_files");
+				$ExclFiles->set_where('ws_draft="1"');
+				$ExclFiles->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
+				$ExclFiles->set_where('AND id_item="'.$id_item.'"');
+				$ExclFiles->exclui();
+
+			##########################################################################################################
+			# EXCLUI OS REGISTROS DOS RELACIONAMENTOS ORIGINAIS
+			##########################################################################################################
+				$ExclLink				= new MySQL();
+				$ExclLink->set_table(PREFIX_TABLES."_model_link_prod_cat");
+				$ExclLink->set_where(' ws_draft="1" ');
+				$ExclLink->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
+				$ExclLink->set_where('AND id_item="'.$id_item.'"');
+				$ExclLink->exclui();
+			##########################################################################################################
+			# EXCLUI OS REGISTROS DOS RELACIONAMENTOS ORIGINAIS
+			##########################################################################################################
+				$Set_Link				= new MySQL();
+				$Set_Link->set_table(PREFIX_TABLES.'ws_link_itens');
+				$Set_Link->set_where('ws_draft="1" AND ws_id_draft="'.$id_item.'" AND id_item="'.$id_item.'"');
+				$Set_Link->exclui();
+
+			##########################################################################################################
+				criaRascunho($ws_id_ferramenta,$id_item,$apenasAplica);
+				return true;
+		}
+
+
+	##########################################################################################################
+	#	FUNÇÃO QUE APLICA O RASCUNHO DO ÍTEM
+	##########################################################################################################
 		function aplicaRascunho($ws_id_ferramenta,$id_item,$apenasAplica=false){
 				global $_conectMySQLi_;
 				if($apenasAplica==true){goto apenasAplica;}
+
 				##########################################################################################################
 				# SEPARA OS CAMPOS UTILIZADOS NA FERRAMENTA
 				##########################################################################################################
@@ -147,12 +224,7 @@
 							$ExclIMGs->set_where('ws_draft="0"');
 							$ExclIMGs->set_where('AND ws_id_draft="0"');
 							$ExclIMGs->set_where('AND ws_id_ferramenta="'.$ws_id_ferramenta.'"');
-							$ExclIMGs->set_where('AND id_item="'.$id_item.'"');
-							if($apenasAplica==true){
-								$ApenasAplicaQuery = new MySQL();
-								$ApenasAplicaQuery->select("SELECT COUNT(*) as count FROM ".PREFIX_TABLES."_model_img where(ws_draft='1' AND ws_id_ferramenta='".$ws_id_ferramenta."' AND id_item='".$id_item."')");
-								$ExclIMGs->set_where('AND '.$ApenasAplicaQuery->obj[0]->count.'>0');
-							}
+							$ExclIMGs->set_where('AND id_item="'.$id_item.'"');						
 							$ExclIMGs->exclui();
 						##########################################################################################################
 						# AGORA HABILITA COMO ORIGINAL OS REGISTROS DO RASCUNHO

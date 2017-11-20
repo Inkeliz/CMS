@@ -32,12 +32,12 @@
 					<input type="hidden" 				name="token_group"		value="{TOKEN_GROUP}"/>
 					<input type="hidden" 				name="id_item" 		id="id" value="{ID_ITEM}"/>
 					<button type="submit" id="enviar_arquivos" style="display:none" ></button>
-					<div id="bt_search_files" class="botao">Upload de foto</div>
-					<div id="bt_search_biblioteca" class="botao">Biblioteca</div>
+					<div id="bt_search_files" class="botao"><i class="fa fa-upload" style="margin-right: 10px;"></i>Upload</div>
+					<div id="bt_search_biblioteca" class="botao"><i class="fa fa-inbox" style="margin-right: 10px;"></i>Biblioteca</div>
 				</form>
-
 				<!-- BEGIN BOT_PUBLICAR -->
 					<div id="bt_publicar" class="botao"><i class="fa fa-share-square-o" ></i>Publicar</div>
+					<div id="bt_lixeira" class="botao"><i class="fa fa-trash" style="margin-right: 10px;"></i>Descartar Rascunho</div>
 					<script>
 						 	 $("#bt_publicar").unbind("click").bind("click",function(){
 								$.ajax({
@@ -54,6 +54,25 @@
 									out(e)
 									$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 									if(e=="Ítem salvo com sucesso!"){var cor=3;}else{var cor=2;}
+									$("#conteudo").load("./app/modulos/_modulo_/imagens.php?{HTTPVARS}");
+
+								})
+							});
+
+						 	 $("#bt_lixeira").unbind("click").bind("click",function(){
+								$.ajax({
+								  type: "POST",
+								  url: "app/modulos/_modulo_/functions.php",
+								  beforeSend:function(){confirma({width:"auto",conteudo:"  Publicando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+								  cache: false,
+								  data: {
+								  	"function":"DescartaRascunhoImagens",
+								  	"ws_id_ferramenta":"{WS_ID_FERRAMENTA}", 
+								  	"id_item":"{ID_ITEM}"
+								  },
+								}).done(function(e) {
+									out(e)
+									$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 									$("#conteudo").load("./app/modulos/_modulo_/imagens.php?{HTTPVARS}");
 
 								})
@@ -126,12 +145,12 @@ function reloadFunctions(){
 			$('.ui-sortable .draft').hide();
 			$(this).animate({"backgroundColor":"#59aec7"});
 			$(this).attr("legenda","mostrando PUBLICADAS");
-			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar").fadeOut("fast")
+			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeOut("fast")
 			$(this).find('.bolinha').animate({"marginLeft":47,"backgroundColor":"#FFF"})
 			TopAlert({ 
 					mensagem:'Mostrando imagens publicadas', 
 					height:20,
-					timer:5000,
+					timer:2000,
 					type:3
 				})
 		}else{
@@ -142,11 +161,11 @@ function reloadFunctions(){
 			$(this).animate({"backgroundColor":"#697685"})
 			$(this).find('.bolinha').animate({"marginLeft":2,"backgroundColor":"#f3f4f7"})
 			$(this).attr("legenda","mostrando RASCUNHO");
-			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar").fadeIn("fast")
+			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeIn("fast")
 			TopAlert({ 
 					mensagem:'Mostrando imagens rascunho', 
 					height:20,
-					timer:5000,
+					timer:2000,
 					type:1
 				})
 		}
