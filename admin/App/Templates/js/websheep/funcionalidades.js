@@ -1316,7 +1316,9 @@ function abreBiblioteca(opcoes) {
 								})
 							options.posFn()
 						},
-						newFun:function(){options.onSelect(window.imgSelectedBiblioteca)}
+						newFun:function(){
+							options.onSelect(window.imgSelectedBiblioteca)
+						}
 					})
 		  })
 }

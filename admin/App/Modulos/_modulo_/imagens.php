@@ -74,8 +74,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	##########################################################################################################
 	$TEMPLATE 						= new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-imagens-template.html', true);
 
-
-
 	$TEMPLATE->ws_rootPath 			= ws::rootPath;
 	$TEMPLATE->WS_ID_FERRAMENTA 	= $_FERRAMENTA['id'];
 	$TEMPLATE->TOKEN_GROUP			= $_GET['token_group'];
@@ -93,6 +91,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	}
 
 	if(isset($_GET['ws_nivel']) && $_GET['ws_nivel']>-1 ){ 
+		criaRascunho($_FERRAMENTA['id'],$_GET['id_item']);
 		$TEMPLATE->block('BOT_BACK');
 	}else{
 		$TEMPLATE->block('BOT_PUBLICAR');

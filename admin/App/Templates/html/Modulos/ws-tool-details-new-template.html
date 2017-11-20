@@ -886,10 +886,10 @@
 					})
 
 					$(".thumbmail .combo_upload .bb").unbind('click').click(function() {
-						var mysql = $(this).parent().parent().data('mysql');
-						var width = $(this).parent().parent().data("width");
-						var height = $(this).parent().parent().data("height");
-						var imagem = $(this).parent().parent().find(".thumb_img");
+						var mysql 	= $(this).parent().parent().data('mysql');
+						var width 	= $(this).parent().parent().data("width");
+						var height 	= $(this).parent().parent().data("height");
+						var imagem 	= $(this).parent().parent().find(".thumb_img");
 						abreBiblioteca({
 							multiple: 2,
 							onSelect: function(a) {
@@ -914,10 +914,12 @@
 										coluna: mysql
 									},
 								}).done(function(e) {
+									var image = ws.rootPath+"ws-img/"+width+"/"+height+"/100/"+e;
+
 									$("#ws_confirm").remove();
 									$("#body").removeClass("scrollhidden");
 									$("*").removeClass("blur");
-									$(imagem).attr("src", ws.rootPath+"ws-img/" + width + "/" + height + "/100/" + e)
+									$(imagem).attr("src",image.replace(" ",""))
 								})
 							}
 						})

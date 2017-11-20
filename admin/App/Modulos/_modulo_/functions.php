@@ -956,14 +956,15 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	function substituiThumbGaleria() {
 		global $user;
 		if (is_array($_REQUEST['img'])) {
-			$_REQUEST['img'] = $_REQUEST['img'][0];
+			$_REQUEST['img'] = trim($_REQUEST['img'][0]);
 		}
-		$U = new MySQL();
-		$U->set_table(PREFIX_TABLES . '_model_gal');
+		$U = new MySQL();  
+		$U->set_table(PREFIX_TABLES.'_model_gal');
 		$U->set_where('id="' . $_REQUEST['idItem'] . '"');
-		$U->set_update($_REQUEST['coluna'], $_REQUEST['img']);
+		$U->set_update($_REQUEST['coluna'], trim($_REQUEST['img']));
 		if ($U->salvar()) {
-			echo $_REQUEST['img'];
+			echo trim($_REQUEST['img']);
+			exit;
 		}
 	}
 	
@@ -973,18 +974,20 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	###############################################################################################################################
 	function substituiThumb() {
 		global $user;
-		criaRascunho($_POST['ws_id_ferramenta'], $_POST['idItem']);
+		criaRascunho($_POST['ws_id_ferramenta'],$_POST['idItem']);
 		if (is_array($_POST['img'])) {
-			$_POST['img'] = $_POST['img'][0];
+			$_POST['img'] = trim($_POST['img'][0]);
 		}
 		$U = new MySQL();
 		$U->set_table(PREFIX_TABLES . '_model_item');
 		//$U->set_where('id="'.$_REQUEST['idItem'].'"');
 		$U->set_where('ws_draft="1"');
 		$U->set_where('AND ws_id_draft="' . $_POST['idItem'] . '"');
-		$U->set_update($_POST['coluna'], $_POST['img']);
+		$U->set_update($_POST['coluna'], trim($_POST['img']));
 		if ($U->salvar()) {
-			echo $_POST['img'];
+			ob_end_clean();
+			echo trim($_POST['img']);
+			exit;
 		}
 	}
 	
@@ -1871,6 +1874,14 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	###############################################################################################################################
 	function DescartaRascunhoImagens(){
 		if (descartaRascunho($_POST['ws_id_ferramenta'], $_POST['id_item'], true)) {
+			echo "Descartado com sucesso!";
+		}
+	}
+	###############################################################################################################################
+	#	CASO A FERRAMENTA NÃO TENHA NÍVEIS E SEJA APENAS UMA GALERIA DE IMAGENS, AO INVEZ DE SALVAR O ÍTEM, ELE PUBLICA AS IMAGENS
+	###############################################################################################################################
+	function DescartaRascunhoItens(){
+		if (descartaRascunho($_POST['ws_id_ferramenta'], $_POST['id_item'], false)) {
 			echo "Descartado com sucesso!";
 		}
 	}

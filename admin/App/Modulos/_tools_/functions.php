@@ -382,7 +382,7 @@
 		$t_ferramentas->select();
 		foreach ($t_ferramentas->fetch_array as $img) {
 			echo '<div class="imagem" data-img="'.ws::rootPath.'website/assets/upload-files/' . $img['file'] . '">
-						<img src="'.ws::rootPath.'ws-img/150/170/50/' . $img['file'] . '">
+						<img src="'.ROOT_WEBSHEEP.'ws-img/150/170/50/' . $img['file'] . '">
 				 </div>';
 		}
 		echo "</div>";
@@ -508,7 +508,7 @@
 		$t_ferramentas->set_where('OR type="image/gif"');
 		$t_ferramentas->select();
 		foreach ($t_ferramentas->fetch_array as $img) {
-			echo '<div class="imagem" legenda="<b>Filename:</b>' . $img['filename'] . '<br><b>Upload:</b> ' . $img['horas'] . '" data-group="' . $img['token_group'] . '" data-img="' . $img['file'] . '"><img src="'.ws::rootPath.'ws-img/170/150/100/' . $img['file'] . '"></div>';
+			echo '<div class="imagem" legenda="<b>Filename:</b>' . $img['filename'] . '<br><b>Upload:</b> ' . $img['horas'] . '" data-group="' . $img['token_group'] . '" data-img="' . $img['file'] . '"><img src="'.ROOT_WEBSHEEP.'ws-img/170/150/100/' . $img['file'] . '"></div>';
 		}
 		echo "</div>";
 		
@@ -2939,7 +2939,7 @@
 				$z->addFile(INCLUDE_PATH.'website/' . $file, 'website/' . $file);
 			}
 			if ($_POST['avatar'] == "") {
-				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"'.ws::rootPath.'ws-img/200/200/null","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
+				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"'.ROOT_WEBSHEEP.'ws-img/200/200/null","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
 			} else {
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"' . basename($_POST['avatar']) . '","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
 				$z->addFromString(basename($_POST['avatar']), file_get_contents(ws::protocolURL() . DOMINIO . $_POST['avatar']));
