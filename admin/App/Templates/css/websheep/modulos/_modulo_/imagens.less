@@ -58,47 +58,51 @@
 }
 
 #DraftKey{
-    position: relative;
-    height: 18px;
-    width: 100%;
+	position: relative;
+	height: 14px;
+	width: 80px!important;
     float: left;
     margin: 10px;
     max-width: 225px;
     text-align: center;
     padding: 10px 0;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	cursor: pointer;
-	font-family: 'Titillium Web', sans-serif;
-	font-style: normal;
-	font-weight: 800;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Titillium Web',sans-serif;
+    font-style: normal;
+    font-weight: 800;
+	background-color: #697685;
+    .bolinha{
+		position: relative;
+		background-color: #f3f4f7;
+		width: 30px;
+		height: 30px;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		margin-left: 2px;
+		top: -8px;
+		box-shadow: 2px 4px 5px #0000004f;
 
-    &.draft{
-		background-color: #b9ec37;
-		-moz-box-shadow: inset 0px 1px #f7ff79;
-		-webkit-box-shadow: inset 0px 1px #f7ff79;
-		box-shadow: inset 0px 1px #f7ff79;
-		border: solid 1px #97c71a;
-	    &::after { 
-			color: #5a7d00;
-			content: "Mostrando Rascunho";
-		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
-
-    &.original{
-		background-color: #f5e057;
-		-moz-box-shadow: inset 0px 1px #f7ff79;
-		-webkit-box-shadow: inset 0px 1px #f7ff79;
-		box-shadow: inset 0px 1px #f7ff79;
-		border: solid 1px #f5d157;
-        &::after { 
-			color: #bb5001;
-			content: "Mostrando Originais";
-		}
-    }
-
-
 }
 
 
@@ -212,7 +216,7 @@
 }
 
 
-		#bt_voltar_cat, #bt_search_files, #bt_search_biblioteca{
+		#bt_publicar, #bt_voltar_cat, #bt_search_files, #bt_search_biblioteca{
 			position: relative;
 			width: 100%;
 			padding: 10px 10px;
@@ -223,7 +227,13 @@
 			margin: 10px;
 		}
 
-
+		#bt_publicar{
+			float: right;
+			i{
+				padding:0 10px;
+				font-size:18px
+			}
+		}
 
 
 		#topo_upload{
@@ -231,6 +241,22 @@
 			min-height: 57px;
 			float: left;
 			width: 100%;
+			#formUpload{
+				position: absolute;
+				width: calc(50%);
+				height: 48px;
+				left: 50%;
+				transform: translateX(-50%);
+				#bt_search_files,#bt_search_biblioteca{
+					position: relative;
+					margin: 10px 10px;
+					width: ~'calc(50% - 40px)';
+					float: left;
+					max-width: 50%;
+    			}
+
+
+			}
 			#progress_combo{
 				position: absolute;
 				left: 50%;

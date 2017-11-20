@@ -546,7 +546,7 @@
 								$("#ws_confirm").remove();
 								$("#body").removeClass("scrollhidden");
 								$("*").removeClass("blur");
-								if(e == 'Ítem salvo com sucesso!') {
+								if(e.trim() == 'Ítem salvo com sucesso!') {
 									var cor = 3;
 								} else {
 									var cor = 2;
@@ -561,7 +561,7 @@
 							})
 						},
 						onCancel: function() {
-							campos.function = 'PublicaRascunho';
+							campos.function = "PublicaRascunho";
 							$.ajax({
 								type: "POST",
 								url: "{PATH}/functions.php",
@@ -581,7 +581,7 @@
 								$("#ws_confirm").remove();
 								$("#body").removeClass("scrollhidden");
 								$("*").removeClass("blur");
-								if(e == 'Ítem salvo com sucesso!') {
+								if(e.trim() == 'Ítem salvo com sucesso!') {
 									var cor = 3;
 								} else {
 									var cor = 2;

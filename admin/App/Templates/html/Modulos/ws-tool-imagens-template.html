@@ -5,6 +5,11 @@
 <div id="topoModulo" class="TitTop bg05 w1b">{TITULO}</div>
 	<div id="topo_upload" class="bg01" >
 		<div class="centerTop">
+
+				<div id="DraftKey" class="draft" legenda="Mostrando RASCUNHO">
+						<div class="bolinha"></div>
+				</div>
+
 				<!-- BEGIN BOT_BACK -->
 					<div id="bt_voltar_cat" class="botao">Voltar</div>
 					<script>
@@ -19,10 +24,22 @@
 
 					</script>
 				<!-- END BOT_BACK -->
+
+				<form name="formUpload" id="formUpload" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+					<input name="arquivo[]" id="myfile" type="file" multiple  style="display:none" accept='image/jpg,image/png,image/jpeg,image/gif' />
+					<input type="hidden" 				name="type"				value="img_inner_item"/>
+					<input type="hidden" 				name="ws_id_ferramenta" value="{WS_ID_FERRAMENTA}"/>
+					<input type="hidden" 				name="token_group"		value="{TOKEN_GROUP}"/>
+					<input type="hidden" 				name="id_item" 		id="id" value="{ID_ITEM}"/>
+					<button type="submit" id="enviar_arquivos" style="display:none" ></button>
+					<div id="bt_search_files" class="botao">Upload de foto</div>
+					<div id="bt_search_biblioteca" class="botao">Biblioteca</div>
+				</form>
+
 				<!-- BEGIN BOT_PUBLICAR -->
-					<div id="bt_voltar_cat" class="botao">Publicar</div>
+					<div id="bt_publicar" class="botao"><i class="fa fa-share-square-o" ></i>Publicar</div>
 					<script>
-						 	 $("#bt_voltar_cat").unbind("click").bind("click",function(){
+						 	 $("#bt_publicar").unbind("click").bind("click",function(){
 								$.ajax({
 								  type: "POST",
 								  url: "app/modulos/_modulo_/functions.php",
@@ -43,19 +60,6 @@
 							});
 					</script>
 				<!-- END BOT_PUBLICAR -->
-				<div id="DraftKey" class="draft"></div>
-
-
-				<form name="formUpload" id="formUpload" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
-					<input name="arquivo[]" id="myfile" type="file" multiple  style="display:none" accept='image/jpg,image/png,image/jpeg,image/gif' />
-					<input type="hidden" 				name="type"				value="img_inner_item"/>
-					<input type="hidden" 				name="ws_id_ferramenta" value="{WS_ID_FERRAMENTA}"/>
-					<input type="hidden" 				name="token_group"		value="{TOKEN_GROUP}"/>
-					<input type="hidden" 				name="id_item" 		id="id" value="{ID_ITEM}"/>
-					<button type="submit" id="enviar_arquivos" style="display:none" ></button>
-					<div id="bt_search_files" class="botao">Upload de foto</div>
-					<div id="bt_search_biblioteca" class="botao">Biblioteca</div>
-				</form>
 		</div>
 
 
@@ -112,10 +116,7 @@
 	    $( "#palco ul" ).disableSelection();
 	 });
 function reloadFunctions(){
-	$('#palco ul li .editar').LegendaOver();
-	$('#palco ul li .excluir').LegendaOver();
-	$("#Balao_ToolType").remove();
-
+	$('*[legenda]').LegendaOver();
 /*==================================================================================================== EDITAR INFORMAÇÕES DA IMAGEM */
 	$('#DraftKey').unbind('click').click(function(){
 		if($(this).hasClass("draft")){
@@ -123,11 +124,31 @@ function reloadFunctions(){
 			$(this).addClass("original")
 			$('.ui-sortable .original').show();
 			$('.ui-sortable .draft').hide();
+			$(this).animate({"backgroundColor":"#59aec7"});
+			$(this).attr("legenda","mostrando PUBLICADAS");
+			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar").fadeOut("fast")
+			$(this).find('.bolinha').animate({"marginLeft":47,"backgroundColor":"#FFF"})
+			TopAlert({ 
+					mensagem:'Mostrando imagens publicadas', 
+					height:20,
+					timer:5000,
+					type:3
+				})
 		}else{
 			$(this).addClass("draft");
 			$(this).removeClass("original");
 			$('.ui-sortable .original').hide();
 			$('.ui-sortable .draft').show();
+			$(this).animate({"backgroundColor":"#697685"})
+			$(this).find('.bolinha').animate({"marginLeft":2,"backgroundColor":"#f3f4f7"})
+			$(this).attr("legenda","mostrando RASCUNHO");
+			$("#bt_search_files,#bt_search_biblioteca,#bt_publicar").fadeIn("fast")
+			TopAlert({ 
+					mensagem:'Mostrando imagens rascunho', 
+					height:20,
+					timer:5000,
+					type:1
+				})
 		}
 
 	})

@@ -79,11 +79,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	##########################################################################################################
 	$TEMPLATE 						= new Template(INCLUDE_PATH.'admin/app/templates/html/Modulos/ws-tool-imagens-template.html', true);
 
-	if(isset($_GET['back'])){
-		$TEMPLATE->BACK = '&back='.@$_GET['back'];
-	}else{
-		$TEMPLATE->clear("BACK");
-	}
+
 
 	$TEMPLATE->ws_rootPath 			= ws::rootPath;
 	$TEMPLATE->WS_ID_FERRAMENTA 	= $_FERRAMENTA['id'];
@@ -95,13 +91,17 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	$TEMPLATE->PATH 				= 'app/modulos/_modulo_';
 	$TEMPLATE->HTTPVARS				= http_build_query($_GET);
 
+	if(isset($_GET['back'])){
+		$TEMPLATE->BACK = '&back='.@$_GET['back'];
+	}else{
+		$TEMPLATE->clear("BACK");
+	}
+
 	if(isset($_GET['ws_nivel']) && $_GET['ws_nivel']>-1 ){ 
 		$TEMPLATE->block('BOT_BACK');
 	}else{
 		$TEMPLATE->block('BOT_PUBLICAR');
 	}
-
-
 
 
 	##########################################################################################################
