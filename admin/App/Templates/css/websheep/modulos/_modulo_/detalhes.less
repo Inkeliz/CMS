@@ -1,6 +1,6 @@
 @charset "utf-8";
 /*##################################################  STAGE LIQUIDO  #####################################################################*/
-@import "D:/localhost/data/localweb/less/vars.less";
+@import "A:/Israel/localhost/data/localweb/less/vars.less";
 
 .listaCategoriasPopup{
 	position: relative;
@@ -117,7 +117,7 @@
 	width: 100%;
 	float: left;
 	left: 50%;
-	transform: translateX(-50%);
+	transform: ~'translateX(calc(-50% - 100px))';
 	top: 10px;
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -439,6 +439,41 @@
 				height: 17px;
 
 			}
+#DraftKey{
+	position: relative;
+	height: 14px;
+	width: 80px!important;
+    float: left;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 10px;
+    max-width: 225px;
+    text-align: center;
+    padding: 10px 0;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Titillium Web',sans-serif;
+    font-style: normal;
+    font-weight: 800;
+	background-color: #697685;
+    .bolinha{
+		position: relative;
+		background-color: #f3f4f7;
+		width: 30px;
+		height: 30px;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		margin-left: 2px;
+		top: -8px;
+		box-shadow: 2px 4px 5px #0000004f;
+    }
+}
+
+
 			#bt_SalvarItem{
 				margin-top: 0px;
 				position: absolute;

@@ -244,36 +244,43 @@
 	</style>
 	<div id="topoModulo" class="TitTop bg05 w1b">{TITULO_TOOL}</div>
 	<div id="topo_upload" class="bg01">
+
 		<form name="formUpload" id="formUpload">
 				<div id="bt_SalvarItem" class="bg02 w1"><img src="./app/templates/img/websheep/disk-black.png" /> Salvar rascunho </div>
+
+
 				<div>
 					<!-- BEGIN BLOCK_ADD_CAT -->
-					<div id="bt_AddCat" class="bg02 w1"><img src="./app/templates/img/websheep/category-group.png" />Categorias</div>
+						<div id="bt_AddCat" class="bg02 w1"><img src="./app/templates/img/websheep/category-group.png" />Categorias</div>
 					<!-- END BLOCK_ADD_CAT -->
+					<div id="DraftKey" class="{CLASS_ORIGINAL}" legenda="Mostrando RASCUNHO">
+						<div class="bolinha"></div>
+					</div>
+
 
 					<!-- BEGIN BLOCK_LINK_BACK -->
-					<div id="bt_voltar_cat" class="bg02 w1"><img src="./app/templates/img/websheep/arrow-180.png" style="position: relative;float: left;top: 0px;margin-right: 10px;" />Voltar</div>
-					<script>
-						$("#bt_voltar_cat").unbind("click").click(function() {
-							confirma({
-								width: "auto",
-								conteudo: "  Voltando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-								drag: false,
-								bot1: 0,
-								bot2: 0
+						<div id="bt_voltar_cat" class="bg02 w1"><img src="./app/templates/img/websheep/arrow-180.png" style="position: relative;float: left;top: 0px;margin-right: 10px;" />Voltar</div>
+						<script>
+							$("#bt_voltar_cat").unbind("click").click(function() {
+								confirma({
+									width: "auto",
+									conteudo: "  Voltando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+									drag: false,
+									bot1: 0,
+									bot2: 0
+								});
+								$("#conteudo").load("{LINK_BACK}", function() {
+									$("#ws_confirm").remove();
+									$("#body").removeClass("scrollhidden");
+									$("*").removeClass("blur");
+								});
 							});
-							$("#conteudo").load("{LINK_BACK}", function() {
-								$("#ws_confirm").remove();
-								$("#body").removeClass("scrollhidden");
-								$("*").removeClass("blur");
-							});
-						});
-					</script>
+						</script>
 					<!-- END BLOCK_LINK_BACK -->
 		</form>
 		</div>
 		<div id="palco" class="palco_01">
-
+			<div id="hideActions" style="display:none;position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 1000; background-color:rgba(255, 255, 255, 0.35);"></div>
 			<form id="UploadFile" style="display:none" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 				<input name="arquivo" id="myfile" type="file" style="display:none" />
 				<input type="hidden" name="type" 				value="item_detail_file" />
@@ -455,6 +462,43 @@
 						}
 					})
 				})
+
+	/*######################################################################################################################*/
+			window.isDraftOrNot = function(draft){		
+				if(draft==true){
+					$("#DraftKey").removeClass("draft")
+					$("#DraftKey").addClass("original")
+					$("#DraftKey").animate({"backgroundColor":"#59aec7"});
+					$("#DraftKey").attr("legenda","mostrando PUBLICADAS");
+					$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeOut("fast")
+					$("#DraftKey").find('.bolinha').animate({"marginLeft":47,"backgroundColor":"#FFF"},function(){})
+				}else{
+					$("#DraftKey").addClass("draft");
+					$("#DraftKey").removeClass("original");
+					$("#DraftKey").animate({"backgroundColor":"#697685"})
+					$("#DraftKey").attr("legenda","mostrando RASCUNHO");
+					$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeIn("fast")
+					$("#DraftKey").find('.bolinha').animate({"marginLeft":2,"backgroundColor":"#f3f4f7"},function(){})
+				}
+			}
+
+				$('#DraftKey').unbind('click').click(function(){
+
+					if($(this).hasClass("draft")){
+						out("TRUE")
+						window.isDraftOrNot(true);
+						$("#conteudo").load('{URL_LOAD}&original=true', function() {TopAlert({mensagem:'Visualizando Original', height:20, timer:2000, type:3})});
+					}else{
+						out("FALSE")
+						window.isDraftOrNot(false);
+						$("#conteudo").load('{URL_LOAD}&original=false', function() {TopAlert({mensagem:'Visualizando Rascunho', height:20, timer:2000, type:1})});
+					}
+				})
+
+				window.isDraftOrNot({IF_ORIGINAL});
+
+
+	/*######################################################################################################################*/
 				$('#bt_SalvarItem').unbind('click tap press').bind('click tap press', function() {
 					var campos = {};
 					if(campos._link_opt_cat_) {
@@ -655,7 +699,6 @@
 							$(this).val('0');
 						}
 					})
-
 					$('.edita_select_box').unbind('click').click(function() {
 						var id_campo = $(this).parent().find('.selectbox_adicional').data('id_campo');
 						functions({
@@ -694,7 +737,6 @@
 							}
 						});
 					})
-
 					$('*[financeiro]').Dinheiro({
 						prefix: '',
 						centsSeparator: ',',
@@ -704,7 +746,6 @@
 						$(this).mask($(this).attr('filtro'))
 					});
 					$('*[legenda]').LegendaOver();
-					
 					$("#UploadFile").ajaxForm({
 						beforeSend: function(xhr) {
 							$('.tapa_upload').show("fade", {}, 'fast');
@@ -738,7 +779,6 @@
 							});
 						}
 					})
-					
 					$(".model_file .botao").unbind('click').click(function() {
 						var token = $(this).data('token');
 						var extension = $(this).data('extension');
@@ -754,7 +794,7 @@
 
 					$("#UploadFile #myfile").change(function() {
 							$("#UploadFile #enviar_arquivos").click();
-						})
+					})
 					$("#UploadThumbmails").ajaxForm({
 						beforeSend: function(xhr) {
 							$('.tapa_upload').show("fade", {}, 'fast');
@@ -915,7 +955,6 @@
 									},
 								}).done(function(e) {
 									var image = ws.rootPath+"ws-img/"+width+"/"+height+"/100/"+e;
-
 									$("#ws_confirm").remove();
 									$("#body").removeClass("scrollhidden");
 									$("*").removeClass("blur");
@@ -943,8 +982,16 @@
 						$("#UploadThumbmails #enviar_arquivos").click();
 					})
 					OrdenaCategoria();
+
+					if({IF_ORIGINAL}==true){
+						$("#hideActions").show();
+					}else{
+						$("#hideActions").hide();
+					}
+
 				}
 				reloadFunctions(); 
+				
 				{EXEC_JS_2}
 				setTimeout(function() {$('#container').perfectScrollbar('destroy');}, 200);
 			})
