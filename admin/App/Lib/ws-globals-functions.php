@@ -1285,6 +1285,7 @@ function get_caller_info() {
 	function pxToPct($elemento=100, $total=100){
 
 		return (100 / $total) * $elemento;
+		// return floor((100 / $total) * $elemento);
 
 	}
 

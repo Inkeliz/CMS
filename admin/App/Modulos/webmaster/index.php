@@ -266,11 +266,9 @@ $(document).ready(function() {
 
 	$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
 		$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
-
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");
-
 				window.funcTabs = function() {
 					$(".fileTabContainer .fileTab").unbind("tap click").bind("tap click", function() {
 						$(".fileTab").removeClass("active");

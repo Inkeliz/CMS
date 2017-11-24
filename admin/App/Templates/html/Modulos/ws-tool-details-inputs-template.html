@@ -1,5 +1,5 @@
 <!-- BEGIN 	BLOCK_INPUT_IFRAME -->
-	<iframe class="iframe_adicional" width="{WIDTH}" name="{NAME}" id="{NAME}"  src="{VALUE_OPT}" width="{WIDTH_ADD}" height="{HEIGHT}" style="position: relative;float: left; border: solid 1px #CCC;margin: 3px;"></iframe>
+	<iframe class="iframe_adicional" width="{WIDTH}%" name="{NAME}" id="{NAME}"  src="{VALUE_OPT}" width="{WIDTH_ADD}" height="{HEIGHT}" style="position: relative;float: left; border: solid 1px #CCC;margin: 3px;"></iframe>
 <!-- END 	BLOCK_INPUT_IFRAME -->
 
 <!-- BEGIN BLOCK_KEYWORKS_ADD -->
@@ -39,22 +39,20 @@
 <!-- END BLOCK_THUMBMAIL -->
 
 <!-- BEGIN BLOCK_PLAYER_MP3 -->
-	<div class="playerMP3" data-token="{TOKEN}" data-mysql="{MYSQL}" style="width:{WIDTH}px; height:{HEIGHT}px;" data-width="{WIDTH}" data-height="{HEIGHT}">
+	<div class="playerMP3" data-token="{TOKEN}" data-mysql="{MYSQL}" style="width:{WIDTH}%; height:{HEIGHT}px;" data-width="{WIDTH}" data-height="{HEIGHT}">
 		<div class="hidePlayer combo_upload">
 			<div class="insertLink" legenda="Inserir/Alterar link"><img src="./app/templates/img/websheep/iconLink.png" />
 			</div>
 
 		</div>
-		<iframe width="{WIDTH}" height="{HEIGHT}" src="{URL}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		<iframe width="100%" height="{HEIGHT}" src="{URL}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 	</div>
 <!-- END BLOCK_PLAYER_MP3 -->
+
 <!-- BEGIN BLOCK_PLAYER_VIDEO -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
-
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
 		<div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
-	
-
-		<div class="playerVideoThumb" data-token="{TOKEN}" data-mysql="{MYSQL}" style="width:{WIDTH}px; height:{HEIGHT}px;" data-width="{WIDTH}" data-height="{HEIGHT}">
+		<div class="playerVideoThumb" data-token="{TOKEN}" data-mysql="{MYSQL}" style="width:100%; height:{HEIGHT}px;" data-width="{WIDTH}" data-height="{HEIGHT}">
 			<div class="combo_upload">
 				<div class="insertLink" legenda="Inserir/Alterar link"><img src="./app/templates/img/websheep/iconLink.png" />
 				</div>
@@ -63,37 +61,34 @@
 		</div>
 	</div>
 <!-- END BLOCK_PLAYER_VIDEO -->
+
 <!-- BEGIN BLOCK_UPLOAD_FILE -->
-	<div class="model_file bg02" {LEGENDA} style="width:{WIDTH}px;">
-	
+	<div class="model_file bg02" {LEGENDA} style="width:{WIDTH}%;">
 		<div class="w1 label">{LABEL}</div>
-		
-		<div class="combo_bar bg04">
-			<div class="bar bg05"></div>
-		</div>
 		<div class="botao" data-mysql="{MYSQL}" data-download="{DOWNLOAD}" data-token="{TOKEN}">Procurar</div>
 	</div>
 <!-- END BLOCK_UPLOAD_FILE -->
 
 <!-- BEGIN BLOCK_LABEL -->
-	<div class="label_input w1" style="height:36px;width:{WIDTH}px">{LABEL}</div>
+	<div class="label_input w1" style="height:36px;width:{WIDTH}%">{LABEL}</div>
 <!-- END BLOCK_LABEL -->
 
 <!-- BEGIN BLOCK_VAZIO -->
-	<div class="espaco_vazio" style="width:{WIDTH}px;height:{HEIGHT}px"></div>
+	<div class="espaco_vazio" style="width:{WIDTH}%;height:{HEIGHT}px"></div>
 <!-- END BLOCK_VAZIO -->
 
 <!-- BEGIN BLOCK_BR -->
-
 	<div class="c"></div>
 <!-- END BLOCK_BR -->
+
 <!-- BEGIN BLOCK_SEPARADOR -->
 	<div class="c"></div>
 	<div class="label_separados w1">{LABEL}</div>
 	<div class="c"></div>
 <!-- END BLOCK_SEPARADOR -->
+
 <!-- BEGIN BLOCK_COLORPICKER -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
 	
 		<div class="label_input w1" style="height:36px;width: calc(100% - 24px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
 		
@@ -108,12 +103,12 @@
 		</div>
 	</div>
 <!-- END BLOCK_COLORPICKER -->
-<!-- BEGIN BLOCK_INPUT_TEXT -->
 
-	<div class="groupForm" style="height:auto; width: calc({WIDTH}% - 8px); position: relative; float: left;">
-		<div class="label_input w1" style="height:36px;width: calc(100% - 22px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
+<!-- BEGIN BLOCK_INPUT_TEXT -->
+	<div class="groupForm" style="height:auto; width:calc({WIDTH}% - 3px); position: relative; float: left;">
+		<div class="label_input w1" style="margin-left: 5px;height:36px;width: calc(100% - 15px);padding: 10px 0px 14px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
 		<div class="c"></div>
-		<input {FILTRO} {TYPE} {FINANCEIRO} {DISABLED} id="{ID}" {LEGENDA} class="inputText input_adicional" name="{NAME}" placeholder="{PLACE}" maxlength="{CARACTERES}" style="height:44px;width:calc(100% - 4px);" value="{VALUE}"></input>
+		<input style="height:44px;width:calc(100% - 4px);" {FILTRO} {TYPE} {FINANCEIRO} {DISABLED} id="{ID}" {LEGENDA} class="inputText input_adicional" name="{NAME}" placeholder="{PLACE}" maxlength="{CARACTERES}" value="{VALUE}"></input>
 		<!-- BEGIN 	GOOGLE_API_PLACE -->
 		<style type="text/css">
 			.pac-logo:after,
@@ -192,13 +187,13 @@
 		<!-- END 	GOOGLE_API_PLACE -->
 	</div>
 <!-- END BLOCK_INPUT_TEXT -->
+
 <!-- BEGIN BLOCK_TEXTAREA -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
-	
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin: 3px;">
 		<div class="label_input w1" style="height:36px;width: calc(100% - 24px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
-		<div class="textarea_adicional txt_ad_{ID}" style="margin: 3px;position: relative;float: left;width:{WIDTH}%;">
+		<div class="textarea_adicional txt_ad_{ID}" style="margin: 3px;position: relative;float: left;width:100%;">
 			<div class="readyOnly" style="display:none;position: absolute; width: 100%; height: 100%; background-color: #ffffff96; z-index: 1;"></div> 
-			<textarea class="textarea_adicional" id="{ID}" data-editor="{EDITOR}" class="inputText input_adicional" name="{NAME}" placeholder="{PLACE}" style="height:{INPUT_HEIGHT}px;width:100%;margin-top:0;"></textarea>
+			<textarea style="background-color:{BACKGROUND};color:{COLOR};height:{INPUT_HEIGHT}px;width:100%;margin-top:0;" class="textarea_adicional" id="{ID}" data-editor="{EDITOR}" class="inputText input_adicional" name="{NAME}" placeholder="{PLACE}"></textarea>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -363,12 +358,15 @@
 
 	</script>
 <!-- END BLOCK_TEXTAREA -->
+
 <!-- BEGIN BLOCK_SINTAXY -->
 	<textarea id="{ID}" name="{NAME}" style="display:none;"></textarea>
-	<div id="ace_{ID}" class="inputText" style="height:{INPUT_HEIGHT}px;width:{INPUT_WIDTH}px;margin-top:0;font-size: 15px;overflow-X:hidden"></div>
+	<div id="ace_{ID}" class="inputText" style="float: left;height:{INPUT_HEIGHT}px;width:{INPUT_WIDTH}%;margin-top:0;font-size: 15px;overflow-X:hidden"></div>
 	<script>
-		$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
-			$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+		$.getScript(ws.rootPath+'admin/app/vendor/ace/src-min-noconflict/ace.js', function() {
+			$.getScript(ws.rootPath+'admin/app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+
+				ace.config.set('basePath', ws.rootPath+'admin/app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 				window.AceEditor_{ID} = ace.edit("ace_{ID}");
 				var conteudo = decodeURIComponent("{CONTEUDO}")
 				window.AceEditor_{ID}.setTheme("ace/theme/monokai");
@@ -385,8 +383,9 @@
 		});
 	</script>
 <!-- END BLOCK_SINTAXY -->
+
 <!-- BEGIN BLOCK_BOT_FILE -->
-	<div style="width:{WIDTH}px;" class="botao botao_adicional" id="add_files" legenda="Aqui você poderá adicionar arquivos de diferentes extenções, <br>vinculadas a este ítem.">{LABEL}</div>
+	<div style="width:{WIDTH}%;" class="botao botao_adicional" id="add_files" legenda="Aqui você poderá adicionar arquivos de diferentes extenções, <br>vinculadas a este ítem.">{LABEL}</div>
 	<script>
 		$("#add_files").unbind("click").click(function() {
 			confirma({
@@ -404,8 +403,9 @@
 		})
 	</script>
 <!-- END BLOCK_BOT_FILE -->
+
 <!-- BEGIN BLOCK_BOT_GALERIAS -->
-	<div style="width:{WIDTH}px;" class="botao botao_adicional" id="add_gal_imgs" legenda="Aqui você poderá adicionar várias galerias de imagens segmentadas, <br>vinculadas a este ítem.">{LABEL}</div>
+	<div style="width:{WIDTH}%;" class="botao botao_adicional" id="add_gal_imgs" legenda="Aqui você poderá adicionar várias galerias de imagens segmentadas, <br>vinculadas a este ítem.">{LABEL}</div>
 	<script>
 		$("#add_gal_imgs").unbind("click").click(function() {
 			confirma({
@@ -423,8 +423,29 @@
 		})
 	</script>
 <!-- END BLOCK_BOT_GALERIAS -->
+
+<!-- BEGIN BLOCK_BOT_TOOLS -->
+	<div style="width:calc({WIDTH}% - 3px);" class="botao botao_adicional" id="InnerToll" {LEGENDA}>{LABEL}</div>
+	<script>
+		$("#InnerToll").unbind("click").click(function() {
+			confirma({
+				width: "auto",
+				conteudo: "<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:35px;background-image:url(\""+ws.rootPath +"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+				drag: false,
+				bot1: 0,
+				bot2: 0
+			});
+			$("#conteudo").load("{PATH}/index.php?back=true&ws_id_ferramenta={VALUE}", function() {
+				$("#ws_confirm").remove();
+				$("#body").removeClass("scrollhidden");
+				$("*").removeClass("blur");
+			})
+		})
+	</script>
+<!-- END BLOCK_BOT_TOOLS -->
+
 <!-- BEGIN BLOCK_BOT_FOTOS -->
-	<div style="width:{WIDTH}px;" class="botao botao_adicional" id="addimgs" legenda="Adicione imagens de exibição para este ítem.<br><i>Obs.:Imagens diretamente linkadas ao ítem. Sem galerias.">{LABEL}</div>
+	<div style="width:{WIDTH}%;" class="botao botao_adicional" id="addimgs" legenda="Adicione imagens de exibição para este ítem.<br><i>Obs.:Imagens diretamente linkadas ao ítem. Sem galerias.">{LABEL}</div>
 	<script>
 		$("#addimgs").unbind("click").click(function() {
 			confirma({
@@ -442,31 +463,31 @@
 		})
 	</script>
 <!-- END BLOCK_BOT_FOTOS -->
+
 <!-- BEGIN BLOCK_CHECKBOX -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
-	
-			<div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
-		
-		<label {LEGENDA} class="w1 class_check bg01" style="width:{WIDTH}px;">
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
+		<div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
+		<label {LEGENDA} class="w1 class_check bg01" style="width:100%;">
 			<input {DISABLED} {CHECKED} value="{VALUE}" type="checkbox" id="{ID}" name="{NAME}"> {LABEL}
 		</label>
 	</div>
 <!-- END BLOCK_CHECKBOX -->
+
 <!-- BEGIN BLOCK_RADIOBOX -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
-	
-		 <div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div> 
-		
-		<label {LEGENDA} class="w1 class_radio bg01" style="width:{WIDTH}px;">
-			<input {DISABLED} type="radio" name="{NAME}" value="{LABEL}" {CHECK}>{LABEL}</label>
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
+		<div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div> 
+		<label {LEGENDA} class="w1 class_radio bg01" style="width:100%;">
+			<input {DISABLED} type="radio" name="{NAME}" value="{LABEL}" {CHECK}>{LABEL}
+		</label>
 	</div>
 <!-- END BLOCK_RADIOBOX -->
+
 <!-- BEGIN BLOCK_SELECTBOX -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
 	
 		<div class="label_input w1" style="height:36px;width: calc(100% - 17px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
 		
-		<div class="combo_selectbox" style="width:{WIDTH};height: 36px;background:rgba(0, 0, 0, 0.07);margin: 3px;position: relative;float: left;padding: 4px 0;">
+		<div class="combo_selectbox" style="width:100%;height: 36px;background:rgba(0, 0, 0, 0.07);margin: 3px;position: relative;float: left;padding: 4px 0;">
 			<select {DISABLED} id="{ID}" name="{NAME}" data-id_campo="{ID}" class="textoarea_adicional selectbox_adicional" {LEGENDA} placeholder="{PLACE}" style="margin:3px;padding: 6px 0px;-webkit-border-radius: 5px;  -moz-border-radius: 5px;  border-radius: 5px;">
 				<option value="" disabled selected style="color:#CCC">{PLACE}</option>
 				<!-- BEGIN BLOCK_SELECTBOX_OPT -->
@@ -478,15 +499,11 @@
 	</div>
 <!-- END BLOCK_SELECTBOX -->
 
-
-
 <!-- BEGIN BLOCK_SELECTBOX_LINK_TOOL -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
-	
+	<div class="groupForm" style="height:auto; width:calc({WIDTH}% - 3px); position: relative; float: left;margin-right: 6px;">
 		<div class="label_input w1" style="height:36px;width: calc(100% - 20px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
-		
-		<div class="combo_selectbox" style="width:{WIDTH};height: 36px;background:rgba(0, 0, 0, 0.07);margin: 3px;position: relative;float: left;padding: 4px 0;">
-			<select {DISABLED} id="{ID}" name="{NAMEOPT}" data-id_campo="{ID}" class="textoarea_adicional selectbox_adicional" {LEGENDA} placeholder="{PLACE}" style="margin:3px;padding: 6px 0px;-webkit-border-radius: 5px;  -moz-border-radius: 5px;border-radius: 5px;width: calc(100% - 10px);">
+		<div class="combo_selectbox" style="width:100%;height: 36px;background:rgba(0, 0, 0, 0.07);margin: 3px;position: relative;float: left;padding: 4px 0;">
+			<select style="margin:3px;padding: 6px 0px;-webkit-border-radius: 5px;  -moz-border-radius: 5px;border-radius: 5px;width: calc(100% - 10px);" {DISABLED} id="{ID}" name="{NAMEOPT}" data-id_campo="{ID}" class="textoarea_adicional selectbox_adicional" {LEGENDA} placeholder="{PLACE}" >
 				<option value="" disabled selected style="color:#CCC">{PLACE}</option>
 				<!-- BEGIN BLOCK_SELECTBOX_OPT_TOOL -->
 				<option value="{VALUE}" {CHECKOPT}>{LABEL}</option>
@@ -496,17 +513,16 @@
 	</div>
 <!-- END BLOCK_SELECTBOX_LINK_TOOL -->
 
-
-
 <!-- BEGIN BLOCK_SELECTBOX_TOOL_LINK -->
-	<div style="width:{WIDTH}px;" class="botao botao_adicional bt_link_itens" id="{ID}" name="{ID}">{PLACE}</div>
+	<div style="width:calc({WIDTH}% - 3px);" class="botao botao_adicional bt_link_itens" id="{ID}" name="{ID}">{PLACE}</div>
 <!-- END BLOCK_SELECTBOX_TOOL_LINK -->
+
 <!-- BEGIN BLOCK_MULTIPLE_SELECTBOX -->
-	<div class="groupForm" style="height:auto; width:{WIDTH}px; position: relative; float: left;margin-right: 6px;">
+	<div class="groupForm" style="height:auto; width:{WIDTH}%; position: relative; float: left;margin-right: 6px;">
 	
 		<div class="label_input w1" style="height:36px;width: calc(100% - 24px);padding: 12px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
 		
-		<div class="multipleselect_box" style="width:{WIDTH}">
+		<div class="multipleselect_box" style="width:100%">
 			<select {DISABLED} id="{ID}" name="{ID}" data-id_campo="{ID}" class="textoarea_adicional selectbox_adicional multipleselect" placeholder="{PLACE}" style="width:{WIDTH_SELECT};margin: 10px;padding: 10px;-webkit-border-radius: 5px;  -moz-border-radius: 5px;  border-radius: 5px;" multiple>
 				<!-- BEGIN BLOCK_MULTIMPLE_SELECTBOX_OP -->
 				<option id="{OP_ID}" value="{OP_LABEL}" {OP_CHECK}>{OP_LABEL}</option>
@@ -514,6 +530,8 @@
 			</select>
 			<div class="edita_select_box_multiple" legenda="Editar opções"></div>
 		</div>
+
+		<!-- BEGIN BLOCK_MULTIMPLE_SELECTBOX_LEGENDA -->
 		<script>
 			$(function() {
 				setTimeout(function() {
@@ -521,9 +539,11 @@
 				}, 1000);
 			})
 		</script>
+		<!-- END BLOCK_MULTIMPLE_SELECTBOX_LEGENDA -->
+
 	</div>
 <!-- END BLOCK_MULTIPLE_SELECTBOX -->
 
 <!-- BEGIN BLOCK_ESCOPE_VARS -->
-{WS_NIVEL}
+	{WS_NIVEL}
 <!-- END BLOCK_ESCOPE_VARS -->

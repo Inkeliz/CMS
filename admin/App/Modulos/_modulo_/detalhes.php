@@ -49,7 +49,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	#####################################################  
 	# GRAVAMOS A LARGURA DO PALCO BASE
 	#####################################################
-	define("WSTAGE",1004);
+	define("WSTAGE",1022);
 
 	if(empty($_GET['LIMIT'])){			$_GET['LIMIT']="50";														}
 	if(empty($_GET['PAGE'])){			$_GET['PAGE']="1";															}
@@ -74,14 +74,14 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	$FERRAMENTA->debug(0);
 	$FERRAMENTA->select();
 	$_FERRAMENTA_   = $FERRAMENTA->fetch_array[0];
+
 	#####################################################
 	#    VERIFICA SE JÁ TEM UM ÍTEM NESSA FERRAMENTA
 	#####################################################
 	$verify_produto = new MySQL();
 	$verify_produto->set_table(PREFIX_TABLES . '_model_item');
 	$verify_produto->set_where('ws_id_ferramenta="' . ID_FERRAMENTA . '"');
-	/* ws_draft = rascunho */
-	$verify_produto->set_where('AND ws_draft="0"');
+	$verify_produto->set_where('AND ws_draft="0"');	/* ws_draft = rascunho */
 	$verify_produto->select();
 	# caso não tenha nenhuma, gera um código token novo e adiciona
 	$token = _token(PREFIX_TABLES . '_model_item', 'token');
@@ -92,18 +92,24 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 		$insert_produto->set_insert('ws_id_ferramenta', $_GET['ws_id_ferramenta']);
 		$insert_produto->insert();
 		# pesquisa agora com o token setado na inserção do item
-		$get_produto = new MySQL();
-		$get_produto->set_table(PREFIX_TABLES . '_model_item');
-		$get_produto->set_where('token="' . $token . '"');
-		$get_produto->select();
+		$set_produto = new MySQL();
+		$set_produto->set_table(PREFIX_TABLES . '_model_item');
+		$set_produto->set_where('token="' . $token . '"');
+		$set_produto->select();
+
+		#ADICIONA NAS VARIÁVEIS GET
+		$_GET['id_item'] = $set_produto->fetch_array[0]['id'];
+
 		# grava na sessão GET o ID simulando o produto já inserido
-		$session->set('id_item',$get_produto->fetch_array[0]['id']);
+		$session->set('id_item',$set_produto->fetch_array[0]['id']);
 		# CASO JÁ TENHA UM PRODUTO, GRAVA NA SESSÃO O ID
 	} elseif($verify_produto->_num_rows == 1) {
 		$session->set('id_item',$verify_produto->fetch_array[0]['id']);
+		$_GET['id_item'] = $verify_produto->fetch_array[0]['id'];
 	} else {
 		#CASO CONTRARIO GRAVA O ID NA SESSÃO QUE FOI ENVIADO VIA GET
 		$session->set('id_item',$_GET['id_item']);
+		$_GET['id_item'] = $verify_produto->fetch_array[0]['id'];
 	}
 	##########################################################################################################
 	# SEPARAMOS OS CAMPOS DESTE ÍTEM
@@ -133,7 +139,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	// caso nao exista rascunho ou seja pedido a visualização do arquivo original    
 	if((empty($_GET['original']) || $_GET['original'] == 'false')) {
 		criaRascunho(ID_FERRAMENTA,$_GET['id_item']);
-
 		$produto->set_where('ws_draft="1"');
 		$produto->set_where('AND ws_id_draft="' . $session->get('id_item') . '"');
 		$_IF_ORIGINAL 		= 'false';
@@ -245,33 +250,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 	
 		$_IPUNT_CAMPOS = "";
 		foreach($campos->fetch_array as $k) {
-
-
-			//#####################################################################    BOTÃO LINK DE FERRAMENTA
-			if($k['type'] == 'link_tool' || $k['type'] == '_ferramenta_interna_') {
-				$_SET_TEMPLATE_INPUT = new Template(TEMPLATE_INPUT_LINK, true);
-				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
-
-				if($k['legenda'] != '') {
-					$_SET_TEMPLATE_INPUT->LEGENDA = 'legenda="' . $k['legenda'] . '"';
-				} else {
-					$_SET_TEMPLATE_INPUT->clear('LEGENDA');
-				}
-
-
-
-				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
-				$_SET_TEMPLATE_INPUT->PATH          = PATH;
-				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
-				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura'] - 22),980);
-				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
-				$_SET_TEMPLATE_INPUT->ID            = $k['id_campo'];
-				$_SET_TEMPLATE_INPUT->WS_NIVEL      = $session->get('ws_nivel');
-				$_SET_TEMPLATE_INPUT->VALUE         = $k['values_opt'];
-				$_SET_TEMPLATE_INPUT->block("BLOCK_BOT_TOOLS");
-				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
-			}
 			//#####################################################################        iFrame
 			if($k['type'] == 'iframe') {
 
@@ -293,8 +271,8 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'];
-				$_SET_TEMPLATE_INPUT->WIDTH_ADD     = $k['largura'] + 20;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct($k['largura'],WSTAGE);
+				$_SET_TEMPLATE_INPUT->WIDTH_ADD     = pxToPct(($k['largura'] + 20),WSTAGE);;
 				$_SET_TEMPLATE_INPUT->NAME          = $k['name'];
 				$_SET_TEMPLATE_INPUT->HEIGHT        = $k['altura'];
 				$_SET_TEMPLATE_INPUT->VALUE_OPT     = (strpos($k['values_opt'], "?") === false) ? $k['values_opt'] . '?' . $vars : $k['values_opt'] . '&' . $vars;
@@ -361,7 +339,6 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 			if($k['type'] == 'playerMP3') {
 				$_SET_TEMPLATE_INPUT                = new Template(TEMPLATE_INPUT_LINK, true);
 				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
-
 				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
@@ -370,24 +347,49 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$recuoh                             = 9;
 				$_SET_TEMPLATE_INPUT->TOKEN         = $k['token'];
 				$_SET_TEMPLATE_INPUT->MYSQL         = $k['coluna_mysql'];
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] - $recuow;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura'] - $recuow),WSTAGE);
 				$_SET_TEMPLATE_INPUT->HEIGHT        = $k['altura'] + $recuoh;
 				$_SET_TEMPLATE_INPUT->LABELSUP      = $k['labelSup'];
 				if(isset($produto[$k['coluna_mysql']]) && $produto[$k['coluna_mysql']] != "") {
 					$url       = $produto[$k['coluna_mysql']];
-					$urlParsed = parse_url($url);
-					$html      = new DOMDocument();
-					@$html->loadHTML(file_get_contents($url));
-					$metaTags = array();
-					foreach($html->getElementsByTagName('meta') as $meta) {
-						if($urlParsed['host'] == 'mixcloud.com' || $urlParsed['host'] == 'www.mixcloud.com') {
-							if($meta->getAttribute('name') == 'twitter:player') {
-								$_SET_TEMPLATE_INPUT->URL = str_replace('', '', $meta->getAttribute('content'));
+					$options   = array(
+						CURLOPT_SSL_VERIFYHOST 	=> false,
+						CURLOPT_SSL_VERIFYPEER 	=> false,
+						CURLOPT_RETURNTRANSFER 	=> true, 
+						CURLOPT_HEADER 			=> false, 
+						CURLOPT_FOLLOWLOCATION 	=> true, 
+						CURLOPT_ENCODING 		=> "", 	
+						CURLOPT_USERAGENT 		=> "WebSheep",
+						CURLOPT_AUTOREFERER 	=> true, 
+						CURLOPT_CONNECTTIMEOUT 	=> 120, 
+						CURLOPT_TIMEOUT 		=> 120,	
+						CURLOPT_MAXREDIRS 		=> 10 
+					);
+					$ch        = curl_init($url);
+					curl_setopt_array($ch, $options);
+					$content = curl_exec($ch);
+					$err     = curl_errno($ch);
+					$errmsg  = curl_error($ch);
+					$header  = curl_getinfo($ch);
+					curl_close($ch);
+					$header['errno']   = $err;
+					$header['errmsg']  = $errmsg;
+					$header['content'] = $content;
+					$urlParsed 			= parse_url($url);
+					$html              = new DOMDocument();
+					libxml_use_internal_errors(true);
+					$html->loadHTML($content);
+					foreach ($html->getElementsByTagName('meta') as $meta) {
+						if ($urlParsed['host'] == 'mixcloud.com' || $urlParsed['host'] == 'www.mixcloud.com') {
+							if ($meta->getAttribute('name') == 'twitter:player') {
+								$template = str_replace('', '', $meta->getAttribute('content'));
+								$_SET_TEMPLATE_INPUT->URL = $template;
 								break;
 							}
-						} elseif($urlParsed['host'] == 'soundcloud.com' || $urlParsed['host'] == 'www.soundcloud.com') {
-							if($meta->getAttribute('property') == 'twitter:player') {
-								$_SET_TEMPLATE_INPUT->URL = str_replace('visual=true', 'visual=false', $meta->getAttribute('content'));
+						} elseif ($urlParsed['host'] == 'soundcloud.com' || $urlParsed['host'] == 'www.soundcloud.com') {
+							if ($meta->getAttribute('property') == 'twitter:player') {
+								$template = str_replace('visual=true', 'visual=false', $meta->getAttribute('content'));
+								$_SET_TEMPLATE_INPUT->URL = $template;
 								break;
 							}
 						}
@@ -438,7 +440,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				}
 				$_SET_TEMPLATE_INPUT->TOKEN    = $k['token'];
 				$_SET_TEMPLATE_INPUT->MYSQL    = $k['coluna_mysql'];
-				$_SET_TEMPLATE_INPUT->WIDTH    = $k['largura'] + $recuow;
+				$_SET_TEMPLATE_INPUT->WIDTH    = pxToPct(($k['largura'] - $recuow),WSTAGE);
 				$_SET_TEMPLATE_INPUT->HEIGHT   = $k['altura'] + $recuoh;
 				$_SET_TEMPLATE_INPUT->LABELSUP = $k['labelSup'];
 				$_SET_TEMPLATE_INPUT->block("BLOCK_PLAYER_VIDEO");
@@ -469,7 +471,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->MYSQL    = $k['coluna_mysql'];
 				$_SET_TEMPLATE_INPUT->LABEL    = $k['label'];
 				$_SET_TEMPLATE_INPUT->DOWNLOAD = $k['download'];
-				$_SET_TEMPLATE_INPUT->WIDTH    = $k['largura'] - $recuow;
+				$_SET_TEMPLATE_INPUT->WIDTH    = pxToPct(($k['largura'] - $recuow),WSTAGE);
 				$_SET_TEMPLATE_INPUT->LABELSUP = $k['labelSup'];
 				$_SET_TEMPLATE_INPUT->block("BLOCK_UPLOAD_FILE");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
@@ -477,14 +479,18 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 			//#####################################################################        LABEL SIMPLES
 			if($k['type'] == 'label') {
 				$_SET_TEMPLATE_INPUT                = new Template(TEMPLATE_INPUT_LINK, true);
-				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
+				if($k['labelTop']==0){
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";
+				}else{
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";
+				}
 
 				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
 				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] - 1;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura'] - 20),WSTAGE);
 				$_SET_TEMPLATE_INPUT->block("BLOCK_LABEL");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
 			}
@@ -498,7 +504,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
 				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'];
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura']),WSTAGE);
 				$_SET_TEMPLATE_INPUT->HEIGHT        = $k['altura'] + 18;
 				$_SET_TEMPLATE_INPUT->block("BLOCK_VAZIO");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
@@ -536,7 +542,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->TOKEN    = $k['token'];
 				$_SET_TEMPLATE_INPUT->MYSQL    = $k['coluna_mysql'];
 				$_SET_TEMPLATE_INPUT->LABEL    = $k['label'];
-				$_SET_TEMPLATE_INPUT->WIDTH    = $k['largura'] - 18;
+				$_SET_TEMPLATE_INPUT->WIDTH    = pxToPct(($k['largura']),WSTAGE);
 				$_SET_TEMPLATE_INPUT->COR      = $produto[$k['coluna_mysql']];
 				$_SET_TEMPLATE_INPUT->HEIGHT   = $k['altura'] - 12;
 				$_SET_TEMPLATE_INPUT->ID_CAMPO = $k['id_campo'];
@@ -579,7 +585,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->LABELSUP   = $k['labelSup'];
 				$_SET_TEMPLATE_INPUT->LABEL      = $k['label'];
 				$_SET_TEMPLATE_INPUT->CARACTERES = $k['caracteres'];
-				$_SET_TEMPLATE_INPUT->WIDTH      = pxToPct(($k['largura']),WSTAGE);
+				$_SET_TEMPLATE_INPUT->WIDTH      = pxToPct(($k['largura']+ 9),WSTAGE);
 
 
 				$_SET_TEMPLATE_INPUT->VALUE      = str_replace('"', "'", urldecode($produto[$k['coluna_mysql']]));
@@ -643,6 +649,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				}
 				$_SET_TEMPLATE_INPUT->LABELSUP = $k['labelSup'];
 				$_SET_TEMPLATE_INPUT->LABEL    = $k['label'];
+
 				if(empty($k['background'])) {
 					$k['background'] = "#FFF";
 				}
@@ -652,7 +659,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 					$_SET_TEMPLATE_INPUT->CARACTERES = $k['caracteres'];
 				}
 
-				$_SET_TEMPLATE_INPUT->WIDTH        = pxToPct($k['largura'],WSTAGE);
+				$_SET_TEMPLATE_INPUT->WIDTH        = pxToPct($k['largura']-1,WSTAGE);
 				$_SET_TEMPLATE_INPUT->HEIGHT       = $k['altura'] + $recuoh;
 				$_SET_TEMPLATE_INPUT->INPUT_WIDTH  = $k['largura'];
 				$_SET_TEMPLATE_INPUT->INPUT_HEIGHT = $k['altura'] + 3;
@@ -683,7 +690,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$recuoh                             = 7;
 				$recuow                             = 0;
 				$_SET_TEMPLATE_INPUT->HEIGHT        = $k['altura'] + $recuoh;
-				$_SET_TEMPLATE_INPUT->INPUT_WIDTH   = $k['largura'] + $recuow;
+				$_SET_TEMPLATE_INPUT->INPUT_WIDTH   = pxToPct($k['largura']+ $recuow,WSTAGE);
 				$_SET_TEMPLATE_INPUT->INPUT_HEIGHT  = $k['altura'] + 3;
 				$_SET_TEMPLATE_INPUT->ID            = $k['id_campo'];
 				$_SET_TEMPLATE_INPUT->NAME          = $k['name'];
@@ -702,7 +709,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] - 22;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura']- 22),WSTAGE);
 				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = $session->get('ws_nivel');
 				$_SET_TEMPLATE_INPUT->block("BLOCK_BOT_FILE");
@@ -718,7 +725,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] - 22;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura']- 22),WSTAGE);
 				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
 				$_SET_TEMPLATE_INPUT->block("BLOCK_BOT_GALERIAS");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
@@ -733,7 +740,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] - 22;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura']- 22),WSTAGE);
 				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
 				$_SET_TEMPLATE_INPUT->block("BLOCK_BOT_FOTOS");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
@@ -763,7 +770,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 					$_SET_TEMPLATE_INPUT->VALUE = "0";
 				}
 				$_SET_TEMPLATE_INPUT->ID       = $k['id_campo'];
-				$_SET_TEMPLATE_INPUT->WIDTH    = $k['largura'] + 2;
+				$_SET_TEMPLATE_INPUT->WIDTH    = pxToPct(($k['largura']),WSTAGE);
 				$_SET_TEMPLATE_INPUT->NAME     = $k['name'];
 				$_SET_TEMPLATE_INPUT->LABELSUP = $k['labelSup'];
 				$_SET_TEMPLATE_INPUT->LABEL    = $k['label'];
@@ -791,7 +798,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 					$_SET_TEMPLATE_INPUT->DISABLED = 'readonly';
 				else
 					$_SET_TEMPLATE_INPUT->clear('DISABLED');
-				$_SET_TEMPLATE_INPUT->WIDTH    = $k['largura'] + 2;
+				$_SET_TEMPLATE_INPUT->WIDTH    = pxToPct(($k['largura'] + 5),WSTAGE);
 				$_SET_TEMPLATE_INPUT->NAME     = $k['name'];
 				$_SET_TEMPLATE_INPUT->PLACE    = $k['place'];
 				$_SET_TEMPLATE_INPUT->LABEL    = $k['label'];
@@ -802,14 +809,18 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 			//#####################################################################        SELECT BOX
 			if($k['type'] == 'selectbox') {
 				$_SET_TEMPLATE_INPUT                = new Template(TEMPLATE_INPUT_LINK, true);
-				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
+
+				if($k['labelTop']==0){ 
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";
+				}else{
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";
+				}
 
 				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] + 5;
-				$_SET_TEMPLATE_INPUT->WIDTH_SELECT  = $k['largura'] - 25;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct($k['largura'],WSTAGE);
 				$_SET_TEMPLATE_INPUT->ID            = $k['id_campo'];
 				$_SET_TEMPLATE_INPUT->NAME          = $k['id_campo'];
 				$_SET_TEMPLATE_INPUT->PLACE         = $k['place'];
@@ -834,23 +845,27 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 						$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX_OPT");
 					}
 				}
-				;
 				$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX");
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
 			}
-			//#####################################################################        SELECT BOX COM ÍTENS DE OUTRA FERRAMENTA
-			//#####################################################################        LINK TOOL
+		//#####################################################################        SELECT BOX COM ÍTENS DE OUTRA FERRAMENTA
+		//#####################################################################        LINK TOOL
 			if($k['type'] == 'linkTool') {
 				$_SET_TEMPLATE_INPUT                = new Template(TEMPLATE_INPUT_LINK, true);
-				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
+				if($k['labelTop']==0){ 
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";
+				}else{
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";
+				}
 
 				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
 				$_SET_TEMPLATE_INPUT->PATH          = PATH;
 				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
 				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
-				$_SET_TEMPLATE_INPUT->WIDTH         = $k['largura'] + 4;
 				$_SET_TEMPLATE_INPUT->ID            = $k['id_campo'];
 				$_SET_TEMPLATE_INPUT->PLACE         = $k['label'];
+
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura']),WSTAGE);
 				if($k['multiple'] == "0") {
 					$_SET_TEMPLATE_INPUT->LABELSUP = $k['labelSup'];
 					if($k['filtro'] == "item") {
@@ -865,14 +880,15 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 							$_SET_TEMPLATE_INPUT->NAMEOPT = $k['id_campo'];
 							$_SET_TEMPLATE_INPUT->VALUE   = $item['id'];
 							$_SET_TEMPLATE_INPUT->LABEL   = urldecode($item[$k['referencia']]);
-							if($produto[$k['coluna_mysql']] == $item['id'])
+							if($produto[$k['coluna_mysql']] == $item['id']){
 								$_SET_TEMPLATE_INPUT->CHECKOPT = 'selected';
-							else
+							}else{
 								$_SET_TEMPLATE_INPUT->clear('CHECKOPT');
+							}
 							$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX_OPT_TOOL");
 						}
-						;
-					} elseif($k['filtro'] == "cat") {
+						$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX_LINK_TOOL");
+					}elseif($k['filtro'] == "cat") {
 						$toolLink = new MySQL();
 						$toolLink->set_table(PREFIX_TABLES . '_model_cat');
 						$toolLink->set_where('id_cat="' . $k['cat_referencia'] . '"');
@@ -882,19 +898,48 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 							$_SET_TEMPLATE_INPUT->NAMEOPT = $item['id'];
 							$_SET_TEMPLATE_INPUT->VALUE   = $item['id'];
 							$_SET_TEMPLATE_INPUT->LABEL   = urldecode($item['titulo']);
-							if($produto[$k['coluna_mysql']] == $item['id'])
+							if($produto[$k['coluna_mysql']] == $item['id']){
 								$_SET_TEMPLATE_INPUT->CHECKOPT = 'selected';
-							else
+							}else{
 								$_SET_TEMPLATE_INPUT->clear('CHECKOPT');
+							}
 							$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX_OPT_TOOL");
 						}
 					}
 				} else {
+					$_SET_TEMPLATE_INPUT->WIDTH = pxToPct(($k['largura'] - 20),WSTAGE);
 					$_SET_TEMPLATE_INPUT->block("BLOCK_SELECTBOX_TOOL_LINK");
 				}
+
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
 			}
-			//#####################################################################        MULTIPLOS SELECT BOX
+		//####################################################    BOTÃO LINK DE FERRAMENTA
+			if($k['type'] == '_ferramenta_interna_') {
+
+				$_SET_TEMPLATE_INPUT = new Template(TEMPLATE_INPUT_LINK, true);
+				if($k['labelTop']==0){ 
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";
+				}else{
+					$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";
+				}
+				if($k['legenda'] != '') {
+					$_SET_TEMPLATE_INPUT->LEGENDA = 'legenda="' . $k['legenda'] . '"';
+				} else {
+					$_SET_TEMPLATE_INPUT->clear('LEGENDA');
+				}
+				$_SET_TEMPLATE_INPUT->ID_ITEM       = ID_ITEM;
+				$_SET_TEMPLATE_INPUT->PATH          = PATH;
+				$_SET_TEMPLATE_INPUT->ID_FERRAMENTA = ID_FERRAMENTA;
+				$_SET_TEMPLATE_INPUT->WS_NIVEL      = WS_NIVEL;
+				$_SET_TEMPLATE_INPUT->WIDTH         = pxToPct(($k['largura'] - 13),WSTAGE);
+				$_SET_TEMPLATE_INPUT->LABEL         = $k['label'];
+				$_SET_TEMPLATE_INPUT->ID            = $k['id_campo'];
+				$_SET_TEMPLATE_INPUT->WS_NIVEL      = $session->get('ws_nivel');
+				$_SET_TEMPLATE_INPUT->VALUE         = $k['values_opt'];
+				$_SET_TEMPLATE_INPUT->block("BLOCK_BOT_TOOLS");
+				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
+			}
+		//#####################################################################        MULTIPLOS SELECT BOX
 			if($k['type'] == 'multiple_select') {
 				$_SET_TEMPLATE_INPUT                = new Template(TEMPLATE_INPUT_LINK, true);
 				if($k['labelTop']==0){ $_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:none;";}else{$_SET_TEMPLATE_INPUT->LABEL_TOP_INPUT="display:block;";}
@@ -910,10 +955,11 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				}
 				if($k['legenda'] != '') {
 					$_SET_TEMPLATE_INPUT->LEGENDA = $k['legenda'];
+					$_SET_TEMPLATE_INPUT->block("BLOCK_MULTIMPLE_SELECTBOX_LEGENDA");
 				} else {
 					$_SET_TEMPLATE_INPUT->clear('LEGENDA');
 				}
-				$_SET_TEMPLATE_INPUT->WIDTH        = $k['largura'] + 4;
+				$_SET_TEMPLATE_INPUT->WIDTH        = pxToPct(($k['largura'] + 4),WSTAGE);
 				$_SET_TEMPLATE_INPUT->WIDTH_SELECT = $k['largura'] - 50;
 				$_SET_TEMPLATE_INPUT->PLACE        = $k['place'];
 				$_SET_TEMPLATE_INPUT->ID           = $k['id_campo'];
@@ -950,6 +996,8 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
 			}
 		}
+
+
 	##########################################################################################################
 	# DEFINIMOS AS CONSTANTES UTILIZADAS NO PAINEL
 	##########################################################################################################
