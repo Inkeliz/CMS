@@ -28,12 +28,9 @@ if (!defined('PHP_EOL')) {
 	}
 }
 
-
-
 #########################################################################
 # COLOCAMOS UYM VALOR DEFAULT NA FUNÇÃO array_filter
 #########################################################################
-
 function _array_filter($array=array(),$filter="strlen") {
 	return array_filter($array,$filter);
 }

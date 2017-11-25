@@ -2197,18 +2197,24 @@
 			do {
 				if ($result = $mysqli->store_result()) {
 					while ($row = $result->fetch_row()) {
+						########################################################################################################
+						# ESSE =1 É PARA QUE O SCRIPT PROCESSE CADA LAÇO DO WHILLE SEM PULAR (sim ele pula o processo ñ sei pq)
+						########################################################################################################
 						$resultado = 1;
-					} // necessário para que complete o script antes do codigo continuar 
+					} 
 					$result->free();
 				}
 				if ($mysqli->more_results()) {
 				}
 			} while ($mysqli->more_results() && $mysqli->next_result());
 		}
+
+		$NEW_VERSION = json_decode(file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
+
 		$I = new MySQL();
 		$I->set_table(PREFIX_TABLES . 'setupdata');
 		$I->set_update('id', 1);
-		$I->set_update('system_version', file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-version.txt'));
+		$I->set_update('system_version',$NEW_VERSION->version);
 		configPaths($RewriteRule);
 		if ($I->salvar()) {
 			echo "sucesso";
