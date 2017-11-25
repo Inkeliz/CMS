@@ -6,13 +6,21 @@
 		if(!defined("ROOT_WEBSHEEP")){$path = substr(dirname($_SERVER['REQUEST_URI']),1);define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));}
 		if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
-
 	#######################################################################
 	#	VERIFICAMOS SE JÁ EXISTE UMA CONFIGURAÇÃO GLOBAL
 	#######################################################################
+	initRefreshPath:
 	if(!file_exists(INCLUDE_PATH.'website/ws-config.php')) {
+			#######################################################################
+			#	CASO EXISTA UM WS-CONFIG NO ROOT, COPIA PRA PASTA WEBSITE
+			#######################################################################
+			if(file_exists(INCLUDE_PATH.'ws-config.php')){
+				if(file_exists(INCLUDE_PATH.'website')){
+					rename(INCLUDE_PATH.'ws-config.php', INCLUDE_PATH.'website/ws-config.php');
+					goto initRefreshPath;
+				}
+			}
 			refreshPath:
-			echo "file_exists(INCLUDE_PATH.'website/ws-config.php')";
 			#######################################################################
 			#	EXCLUI OS HTACCESS DO SITE E SISTEMA
 			#######################################################################
