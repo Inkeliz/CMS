@@ -485,13 +485,24 @@
 				$('#DraftKey').unbind('click').click(function(){
 
 					if($(this).hasClass("draft")){
-						out("TRUE")
+						confirma({width: "auto", conteudo: "<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 33px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 						window.isDraftOrNot(true);
-						$("#conteudo").load('{URL_LOAD}&original=true', function() {TopAlert({mensagem:'Visualizando Original', height:20, timer:2000, type:3})});
+						$("#conteudo").load('{URL_LOAD}&original=true', function() {
+							TopAlert({mensagem:'Visualizando Original', height:20, timer:2000, type:3})
+							$("#ws_confirm").remove();
+							$("#body").removeClass("scrollhidden");
+							$("*").removeClass("blur");
+						});
 					}else{
 						out("FALSE")
+						confirma({width: "auto", conteudo: "<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 33px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 						window.isDraftOrNot(false);
-						$("#conteudo").load('{URL_LOAD}&original=false', function() {TopAlert({mensagem:'Visualizando Rascunho', height:20, timer:2000, type:1})});
+						$("#conteudo").load('{URL_LOAD}&original=false', function() {
+							TopAlert({mensagem:'Visualizando Rascunho', height:20, timer:2000, type:1})
+							$("#ws_confirm").remove();
+							$("#body").removeClass("scrollhidden");
+							$("*").removeClass
+						});
 					}
 				})
 
@@ -500,152 +511,162 @@
 
 	/*######################################################################################################################*/
 				$('#bt_SalvarItem').unbind('click tap press').bind('click tap press', function() {
-					var campos = {};
-					if(campos._link_opt_cat_) {
-						campos._link_opt_cat_ = null;
-					}
-					if($('#_link_opt_cat_').chosen().val() != null) {
-						campos._link_opt_cat_ = $('#_link_opt_cat_').chosen().val();
-					}
-					$(window.typeColumns).each(function(index, input) {
-						if(input.type == "key_works") {
-							if($("textarea#" + input.id).next().children().length > 0) {
-								var keyworksCampo = [];
-								$("textarea#" + input.id).next().children().each(function(index) {
-									keyworksCampo.push($(this).text());
+					if({IF_ORIGINAL}==false){
+						var campos = {};
+						if(campos._link_opt_cat_) {
+							campos._link_opt_cat_ = null;
+						}
+						if($('#_link_opt_cat_').chosen().val() != null) {
+							campos._link_opt_cat_ = $('#_link_opt_cat_').chosen().val();
+						}
+						$(window.typeColumns).each(function(index, input) {
+							if(input.type == "key_works") {
+								if($("textarea#" + input.id).next().children().length > 0) {
+									var keyworksCampo = [];
+									$("textarea#" + input.id).next().children().each(function(index) {
+										keyworksCampo.push($(this).text());
+									});
+									eval("campos." + input.id + "='" + keyworksCampo + "'");
+								} else {
+									eval("campos." + input.id + "='';");
+								}
+							} else if(input.type == "editor") {
+								eval("campos." + input.coluna_mysql + "=encodeURIComponent($(\"#" + input.id + "\").val());")
+							} else if(input.type == "textarea") {
+								if(input.editor == '1') eval("campos." + input.coluna_mysql + "=addslashes(encodeURIComponent(CKEDITOR.instances[\"" + input.id + "\"].getData()));");
+								if(input.editor == '0') eval("campos." + input.coluna_mysql + "=addslashes(encodeURIComponent($(\"#" + input.id + "\").val()));");
+							} else if(input.type == "input") {
+								if(input.financeiro == '1') {
+									eval("campos." + input.coluna_mysql + "= $(\"#" + input.id + "\").val();");
+								} else {
+									eval("campos." + input.coluna_mysql + "= encodeURIComponent($(\"#" + input.id + "\").val());");
+								}
+							} else if(input.type == 'check') {
+								eval("campos." + input.coluna_mysql + "=$(\"#" + input.id + "\").val();");
+							} else if(input.type == 'selectbox' || input.type == 'linkTool') {
+								eval("campos." + input.coluna_mysql + "=$(\"#" + input.id + "  option:selected\").val();");
+							} else if(input.type == 'multiple_select') {
+								var multipleopt = new Array();
+								$("#" + input.id + "_chosen .chosen-choices li").each(function(i) {
+									var txt = ($(this).find("span").text());
+									if(txt != "") {
+										multipleopt.push(txt);
+									};
 								});
-								eval("campos." + input.id + "='" + keyworksCampo + "'");
-							} else {
-								eval("campos." + input.id + "='';");
-							}
-						} else if(input.type == "editor") {
-							eval("campos." + input.coluna_mysql + "=encodeURIComponent($(\"#" + input.id + "\").val());")
-						} else if(input.type == "textarea") {
-							if(input.editor == '1') eval("campos." + input.coluna_mysql + "=addslashes(encodeURIComponent(CKEDITOR.instances[\"" + input.id + "\"].getData()));");
-							if(input.editor == '0') eval("campos." + input.coluna_mysql + "=addslashes(encodeURIComponent($(\"#" + input.id + "\").val()));");
-						} else if(input.type == "input") {
-							if(input.financeiro == '1') {
+								if(multipleopt.length == 0) {
+									multipleopt = null;
+								}
+								eval('campos.' + input.coluna_mysql + '="' + multipleopt + '"');
+							} else if(input.type == 'colorpicker') {
 								eval("campos." + input.coluna_mysql + "= $(\"#" + input.id + "\").val();");
-							} else {
-								eval("campos." + input.coluna_mysql + "= encodeURIComponent($(\"#" + input.id + "\").val());");
+							}else if(input.type == 'radiobox') {
+								eval("campos." + input.coluna_mysql + "= $(\"input[name='"+input.id+"']:checked\").val();");
 							}
-						} else if(input.type == 'check') {
-							eval("campos." + input.coluna_mysql + "=$(\"#" + input.id + "\").val();");
-						} else if(input.type == 'selectbox' || input.type == 'linkTool') {
-							eval("campos." + input.coluna_mysql + "=$(\"#" + input.id + "  option:selected\").val();");
-						} else if(input.type == 'multiple_select') {
-							var multipleopt = new Array();
-							$("#" + input.id + "_chosen .chosen-choices li").each(function(i) {
-								var txt = ($(this).find("span").text());
-								if(txt != "") {
-									multipleopt.push(txt);
-								};
-							});
-							if(multipleopt.length == 0) {
-								multipleopt = null;
-							}
-							eval('campos.' + input.coluna_mysql + '="' + multipleopt + '"');
-						} else if(input.type == 'colorpicker') {
-							eval("campos." + input.coluna_mysql + "= $(\"#" + input.id + "\").val();");
-						}else if(input.type == 'radiobox') {
-							eval("campos." + input.coluna_mysql + "= $(\"input[name='"+input.id+"']:checked\").val();");
-						}
-					})
-					campos.function = "SalvaDetalhes";
-					campos.id_item = "{ID_ITEM}";
-					campos.ws_id_ferramenta = "{ID_FERRAMENTA}";
-					out(campos)
-					{EXEC_JS_1}
+						})
+						campos.function = "SalvaDetalhes";
+						campos.id_item = "{ID_ITEM}";
+						campos.ws_id_ferramenta = "{ID_FERRAMENTA}";
+						out(campos)
+						{EXEC_JS_1}
 
-					confirma({
-						conteudo: "Deseja fazer o que?",
-						width: 500,
-						height: 'auto',
-						mleft: 0,
-						mtop: 0,
-						posFn: function() {},
-						Init: function() {},
-						posClose: function() {},
-						bot1: "Salvar rascunho",
-						bot2: "Salvar e publicar",
-						drag: false,
-						botclose: true,
-						newFun: function() {
-							$.ajax({
-								type: "POST",
-								url: "{PATH}/functions.php",
-								beforeSend: function() {
-									confirma({
-										width: "auto",
-										conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-										drag: false,
-										bot1: 0,
-										bot2: 0
+						confirma({
+							conteudo: "Deseja fazer o que?",
+							width: 500,
+							height: 'auto',
+							mleft: 0,
+							mtop: 0,
+							posFn: function() {},
+							Init: function() {},
+							posClose: function() {},
+							bot1: "Salvar rascunho",
+							bot2: "Salvar e publicar",
+							drag: false,
+							botclose: true,
+							newFun: function() {
+								$.ajax({
+									type: "POST",
+									url: "{PATH}/functions.php",
+									beforeSend: function() {
+										confirma({
+											width: "auto",
+											conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+											drag: false,
+											bot1: 0,
+											bot2: 0
+										})
+									},
+									cache: false,
+									data: campos,
+								}).done(function(e) {
+									out(e)
+									$("#ws_confirm").remove();
+									$("#body").removeClass("scrollhidden");
+									$("*").removeClass("blur");
+									if(e.trim() == 'Ítem salvo com sucesso!') {
+										var cor = 3;
+									} else {
+										var cor = 2;
+									}
+									TopAlert({
+										mensagem: e,
+										clickclose: true,
+										height: 20,
+										timer: 3000,
+										type: cor,
 									})
-								},
-								cache: false,
-								data: campos,
-							}).done(function(e) {
-								out(e)
-								$("#ws_confirm").remove();
-								$("#body").removeClass("scrollhidden");
-								$("*").removeClass("blur");
-								if(e.trim() == 'Ítem salvo com sucesso!') {
-									var cor = 3;
-								} else {
-									var cor = 2;
-								}
-								TopAlert({
-									mensagem: e,
-									clickclose: true,
-									height: 20,
-									timer: 3000,
-									type: cor,
 								})
-							})
-						},
-						onCancel: function() {
-							campos.function = "PublicaRascunho";
-							$.ajax({
-								type: "POST",
-								url: "{PATH}/functions.php",
-								beforeSend: function() {
-									confirma({
-										width: "auto",
-										conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-										drag: false,
-										bot1: 0,
-										bot2: 0
+							},
+							onCancel: function() {
+								campos.function = "PublicaRascunho";
+								$.ajax({
+									type: "POST",
+									url: "{PATH}/functions.php",
+									beforeSend: function() {
+										confirma({
+											width: "auto",
+											conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+											drag: false,
+											bot1: 0,
+											bot2: 0
+										})
+									},
+									cache: false,
+									data: campos,
+								}).done(function(e) {
+									out(e)
+									$("#ws_confirm").remove();
+									$("#body").removeClass("scrollhidden");
+									$("*").removeClass("blur");
+									if(e.trim() == 'Ítem salvo com sucesso!') {
+										var cor = 3;
+									} else {
+										var cor = 2;
+									}
+									TopAlert({
+										mensagem: e,
+										clickclose: true,
+										height: 20,
+										timer: 3000,
+										type: cor,
 									})
-								},
-								cache: false,
-								data: campos,
-							}).done(function(e) {
-								out(e)
-								$("#ws_confirm").remove();
-								$("#body").removeClass("scrollhidden");
-								$("*").removeClass("blur");
-								if(e.trim() == 'Ítem salvo com sucesso!') {
-									var cor = 3;
-								} else {
-									var cor = 2;
-								}
-								TopAlert({
-									mensagem: e,
-									clickclose: true,
-									height: 20,
-									timer: 3000,
-									type: cor,
 								})
+							},
+							onClose: function() {},
+							Callback: function() {},
+							ErrorCheck: function() {},
+							Check: function() {
+								return true
+							}
+						})
+					}else{
+							TopAlert({
+								mensagem: "Este ítem não pode ser salvo, edite o rascunho.",
+								clickclose: true,
+								height: 20,
+								timer: 3000,
+								type: 1,
 							})
-						},
-						onClose: function() {},
-						Callback: function() {},
-						ErrorCheck: function() {},
-						Check: function() {
-							return true
-						}
-					})
+					}
 				})
 
 				function OrdenaCategoria() {
