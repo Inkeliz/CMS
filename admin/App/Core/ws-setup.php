@@ -15,13 +15,13 @@
 	############################################################################################################################################
 	# CAPTAMOS A BASE DO SISTEMA
 	############################################################################################################################################
-		$path = basename(realpath(__DIR__ . '/../'));
+		$path = realpath(__DIR__.'/../');
 
 	############################################################################################################################################
 	# 	FUNÇÕES GLOBAIS DO SISTEMA
 	############################################################################################################################################
 
-		 include_once ('./../Lib/ws-globals-functions.php');
+		 include_once($path.'/lib/ws-globals-functions.php');
 
 	############################################################################################################################################
 	# CASO ESTE ARQUIVO SEJA INVOCADO COM A FUNÇÃO DE INSTALAÇÃO EXECUTA
@@ -130,7 +130,7 @@
 	############################################################################################################################################
 	# IMPORTAMOS AGORA O ARQUIVO RESPONSAVEL POR CRIAR TODA ESTRUTURA DE DIRETORIOS E ARQUIVOS INICIAIS
 	############################################################################################################################################
-	include($path."/Core/ws-set-estructure.php");
+	include_once($path."/Core/ws-set-estructure.php");
 
 
 ?>
@@ -161,6 +161,7 @@
 				data: {function:"testMySQL",NOME_BD:NOME_BD,USUARIO_BD:USUARIO_BD,SENHA_BD:SENHA_BD,SERVIDOR_BD:SERVIDOR_BD,},
 				error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 			}).done(function(data) { 
+				console.log(data)
 				if(data=='1'){
 					$("#formulario").removeClass("mysqlFail")
 					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./App/Templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
