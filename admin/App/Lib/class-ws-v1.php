@@ -4,7 +4,7 @@
 ############################################################################################################################################
 	if(!defined("ROOT_WEBSHEEP"))	{
 		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-		$path = implode(array_filter(explode('/',$path)),"/");
+		$path = implode(array_filter(explode('/',$path),'strlen'),"/");
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : trim('/'.$path.'/')));
 	}
 
@@ -632,7 +632,7 @@
 			} elseif ($node == null || $node == 0) {
 				$_REQUEST_URI = explode('?', $_REQUEST_URI);
 				 if($type=='array'){
-					return array_filter(explode('/',$_REQUEST_URI[0]));
+					return array_filter(explode('/',$_REQUEST_URI[0]),"strlen");
 				 	
 				 }elseif($type=='get'){
 				 	if(count($_REQUEST_URI[1])>=1){ 
@@ -642,11 +642,11 @@
 						_erro(ws::GetDebugError(debug_backtrace(), "Erro: Não existe variáveis GET nessa URL ->	ws::urlPath('" . $node . "')"));
 				 	}
 				 }else{
-				 	return implode(array_filter(explode('/',$_REQUEST_URI[0])),'/');
+				 	return implode(array_filter(explode('/',$_REQUEST_URI[0]),'strlen'),'/');
 				 }
 			} else {
 				$_REQUEST_URI = explode('?', $_REQUEST_URI);
-				$_URL         = array_filter(explode('/',$_REQUEST_URI[0]));
+				$_URL         = array_filter(explode('/',$_REQUEST_URI[0]),'strlen');
 				if($debug==false){ 
 					if(isset($_URL[($node - 1)])){ 
 						return $_URL[($node - 1)];

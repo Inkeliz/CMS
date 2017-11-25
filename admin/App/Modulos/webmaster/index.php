@@ -33,12 +33,29 @@ $session = new session();
 <style type="text/css">
 	#container {
 		z-indexms-touch-action: none;
-		overflow: inherit!important;;
+		overflow: inherit!important;
 	}
 	#divEditor{
 		font-family: 'Source Code Pro', monospace;
 		font-size: 15px;
+		background-color: #292931;
 	}
+	.ace-monokai .ace_support.ace_constant, .ace-monokai .ace_support.ace_function{
+		color: #66efe3;
+	}
+	.ace-monokai .ace_gutter{
+		background: #19191e;
+	}
+	.ace-monokai .ace_marker-layer .ace_active-line{
+		    background: rgba(255, 255, 255, 0.03137254901960784);
+	}
+	.ace-monokai .ace_marker-layer .ace_selection{
+		background: #474b58;
+	}
+	.ace-monokai .ace_comment {
+		color: #7c7c81;
+	}
+
 	.nave_folders{overflow: hidden!important;}
 	.palco_02 .ps-container.ps-active-x>.ps-scrollbar-x-rail,
 	.palco_02 .ps-container.ps-active-y>.ps-scrollbar-y-rail {display: block;}
@@ -360,12 +377,12 @@ $(document).ready(function() {
 					if (!$('.fileTabContainer .fileTab[data-pathFile="' + $pathFile + '"][data-loadFile="' + $loadFile + '"]').length) {
 						$(".tabSortable.fileTab.loader").remove();
 						$(".fileTab").removeClass("active");
-
 						$(".fileTabContainer .container").prepend('<div '+
 							'legenda="' +$pathFile.replace("<?=str_replace("\\","/",INCLUDE_PATH.'website')?>", "")+'" '+ 
 							'class="tabSortable fileTab active ' + $saved + '" '+
 							'data-token="' + $newTokenFile + '" '+
 							'data-saved="true" '+
+							'data-full-path-file="' + $pathFile.replace($loadFile,"")+$loadFile+'" '+
 							'data-pathFile="' + $pathFile.replace($loadFile,"") + '" '+
 							'data-loadFile="' + $loadFile + '"> '+
 							'<div class="str">' + 
@@ -1010,10 +1027,11 @@ $(document).ready(function() {
 					});
 					$('.nave_folders .file').unbind('tap click').bind('tap click', function() {
 						window.pathFile = $(this).data("file").split("\\").join("/");
+						out(window.pathFile)
 						$("#exclFile").show();
 						$("#palco, #divEditor ,.nave_folders,.nave_menu").addClass("recolhido")
 
-						if (!$('.fileTabContainer .fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').length) {
+						if (!$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').length) {
 							functions({
 								funcao: "loadFile",
 								vars: "pathFile=" + window.pathFile,
@@ -1038,7 +1056,7 @@ $(document).ready(function() {
 								}
 							});
 						} else {
-							$('.fileTabContainer .fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').click();
+							$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').click();
 						}
 					});
 					$('#salvarArquivo').unbind('tap click').bind('tap click', function() {
