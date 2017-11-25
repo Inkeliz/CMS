@@ -620,11 +620,12 @@
 		###################################################################################
 		static function urlPath($node = null, $debug = true,$type="string") {
 
-			$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],
-											(
-												strpos($_SERVER['REQUEST_URI'],basename(INCLUDE_PATH)) + strlen(basename(INCLUDE_PATH))
-											)
-									);
+
+			if(ROOT_WEBSHEEP=="/"){
+				$_REQUEST_URI = $_SERVER['REQUEST_URI'];
+			}else{
+				$_REQUEST_URI = str_replace(ROOT_WEBSHEEP, "/",$_SERVER['REQUEST_URI']);
+			}
 
 			if (is_string($node)) {
 				_erro(ws::GetDebugError(debug_backtrace(), "Erro: Isso não é um número ->	ws::urlPath('" . $node . "')"));

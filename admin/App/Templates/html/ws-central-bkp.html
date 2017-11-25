@@ -6,7 +6,7 @@ include_css("./app/templates/css/websheep/modulos/_modulo_/templates.min.css","c
 		<form id="UploadBKP" style="display:none" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 			<input name="file" id="myfile" type="file" style="display:none" />
 			<input type="hidden" name="type" 			value="uploadBKP" />
-			<input type="hidden" name="newName" 		value="hauahuahauhauhauaha.zip" />
+			<input type="hidden" name="newName" 		value="uploadBKP.zip" />
 			<button type="submit" id="enviar_arquivos" style="dispaly:none;"></button>
 		</form>
 	</div>
@@ -109,6 +109,7 @@ $(function(){
 		},
 		complete: function(e) {
 			out("complete")
+			out(e)
 			var response = $.parseJSON(e.responseText);
 			if(response.status=="sucesso"){
 				$( "#conteudo" ).load( './{PATH}/ws-central-bkps.php' , function( response, status, xhr ) {

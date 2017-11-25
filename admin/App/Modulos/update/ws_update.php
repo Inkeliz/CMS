@@ -17,20 +17,20 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 ############################################### URL AMIGAVEIS PADRÃO ###############################
 
 	$RewriteRule 	= array();
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-class.php$'				, 'filePath'=>'/admin/app/lib/class-ws-v1.php'						, 'type'=>'system'	,'alias'=>'ws-class'				, 'title'=>'Include das funções do painel');            
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-includes/(.*)$'			, 'filePath'=>'/admin/includes/$1'									, 'type'=>'system'	,'alias'=>'ws-includes'				, 'title'=>'Include do sistema');                    	
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-ace-editor/(.*)$'		, 'filePath'=>'/admin/app/modulos/webmaster/src-min-noconflict/$1'	, 'type'=>'system'	,'alias'=>'ws-ace-editor'			, 'title'=>'Editor de código');                     
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-video/(.*)$'				, 'filePath'=>'/admin/app/core/ws-video.php'						, 'type'=>'system'	,'alias'=>'ws-video'				, 'title'=>'URL padrão para os vídeos do sistema');     
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-download/(.*)$'			, 'filePath'=>'/admin/app/core/ws-download.php'						, 'type'=>'system'	,'alias'=>'ws-download'				, 'title'=>'URL padrão para download dos arquivos'); 
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-leads/(.*)$'				, 'filePath'=>'/admin/app/core/ws-leads.php'						, 'type'=>'system'	,'alias'=>'ws-leads'				, 'title'=>'URL padrão para cadastros de formularios'); 
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-img/(.*)$'				, 'filePath'=>'/admin/app/core/ws-img.php'							, 'type'=>'system'	,'alias'=>'ws-img'					, 'title'=>'URL padrão para as imagens do sistema');     
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-download-now/(.*)$'		, 'filePath'=>'/admin/app/core/ws-download-now.php?filename=$1'		, 'type'=>'system'	,'alias'=>'ws-download-now'			, 'title'=>'URL padrão para download de arquivos');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-rest/(.*)$'				, 'filePath'=>'/admin/app/core/ws-rest.php?rest=$1'					, 'type'=>'system'	,'alias'=>'ws-rest'					, 'title'=>'URL padrão para requisições ao BD');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-gz/(.*)$'				, 'filePath'=>'/admin/app/core/ws-gz.php?type=admin'				, 'type'=>'system'	,'alias'=>'ws-gz'					, 'title'=>'Processa arquivos .gz');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-gzip/(.*)$'				, 'filePath'=>'/admin/app/core/ws-gz.php?type=website'				, 'type'=>'system'	,'alias'=>'ws-gzip'					, 'title'=>'Processa arquivos .gz no website');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-commits$'				, 'filePath'=>'/admin/app/core/ws-commits.php'						, 'type'=>'system'	,'alias'=>'ws-commits'				, 'title'=>'Captura todos os commits do sistema');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-branches$'				, 'filePath'=>'/admin/app/core/ws-branches.php'						, 'type'=>'system'	,'alias'=>'ws-branches'				, 'title'=>'Captura todos os branches do sistema');      
-	$RewriteRule[] 	= array('urlAmigavel'=>'ws-php-info$'				, 'filePath'=>'/admin/app/config/ws-php-info.php'					, 'type'=>'system'	,'alias'=>'ws-php-info'				, 'title'=>'Retorna as configurações do php');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-class.php$'				, 'filePath'=>'/admin/app/lib/class-ws-v1.php'						, 'type'=>'system'	,'alias'=>'ws-class'				, 'title'=>'Include das funções do painel');            
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-includes/(.*)$'			, 'filePath'=>'/admin/includes/$1'									, 'type'=>'system'	,'alias'=>'ws-includes'				, 'title'=>'Include do sistema');                    	
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-ace-editor/(.*)$'		, 'filePath'=>'/admin/app/modulos/webmaster/src-min-noconflict/$1'	, 'type'=>'system'	,'alias'=>'ws-ace-editor'			, 'title'=>'Editor de código');                     
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-video/(.*)$'			, 'filePath'=>'/admin/app/core/ws-video.php'						, 'type'=>'system'	,'alias'=>'ws-video'				, 'title'=>'URL padrão para os vídeos do sistema');     
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-download/(.*)$'			, 'filePath'=>'/admin/app/core/ws-download.php'						, 'type'=>'system'	,'alias'=>'ws-download'				, 'title'=>'URL padrão para download dos arquivos'); 
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-leads/(.*)$'			, 'filePath'=>'/admin/app/core/ws-leads.php'						, 'type'=>'system'	,'alias'=>'ws-leads'				, 'title'=>'URL padrão para cadastros de formularios'); 
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-img/(.*)$'				, 'filePath'=>'/admin/app/core/ws-img.php'							, 'type'=>'system'	,'alias'=>'ws-img'					, 'title'=>'URL padrão para as imagens do sistema');     
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-download-now/(.*)$'		, 'filePath'=>'/admin/app/core/ws-download-now.php?filename=$1'		, 'type'=>'system'	,'alias'=>'ws-download-now'			, 'title'=>'URL padrão para download de arquivos');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-rest/(.*)$'				, 'filePath'=>'/admin/app/core/ws-rest.php?rest=$1'					, 'type'=>'system'	,'alias'=>'ws-rest'					, 'title'=>'URL padrão para requisições ao BD');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-gz/(.*)$'				, 'filePath'=>'/admin/app/core/ws-gz.php?type=admin'				, 'type'=>'system'	,'alias'=>'ws-gz'					, 'title'=>'Processa arquivos .gz');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-gzip/(.*)$'				, 'filePath'=>'/admin/app/core/ws-gz.php?type=website'				, 'type'=>'system'	,'alias'=>'ws-gzip'					, 'title'=>'Processa arquivos .gz no website');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-commits$'				, 'filePath'=>'/admin/app/core/ws-commits.php'						, 'type'=>'system'	,'alias'=>'ws-commits'				, 'title'=>'Captura todos os commits do sistema');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-branches$'				, 'filePath'=>'/admin/app/core/ws-branches.php'						, 'type'=>'system'	,'alias'=>'ws-branches'				, 'title'=>'Captura todos os branches do sistema');      
+	$RewriteRule[] 	= array('urlAmigavel'=>'^ws-php-info$'				, 'filePath'=>'/admin/app/config/ws-php-info.php'					, 'type'=>'system'	,'alias'=>'ws-php-info'				, 'title'=>'Retorna as configurações do php');      
 
 	############################################### SEPARA AS TABELAS EXISTENTES ###############################
 

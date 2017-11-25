@@ -290,10 +290,14 @@ foreach($_RETURN_FILES AS $FILE){
 		exit;
 
 	}elseif($_POST['type']=='uploadBKP'){	
+
 		$filename = INCLUDE_PATH.'ws-bkp/bkp_(uploaded)_'.date("Y-m-d_H-i-s").'.zip';
 		rename(UPLOAD_DIR.'/'.$FILE['file']['newName'], $filename);
 		echo json_encode(array('status'=>'sucesso'));
 		exit;
+
+
+		
 	}elseif($_POST['type']=='item_detail_thumbnail'){	
 
 		AddBiblioteca($FILE,$_POST);

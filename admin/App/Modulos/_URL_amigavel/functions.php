@@ -39,9 +39,9 @@
 		$includes->set_table(PREFIX_TABLES . "ws_pages");
 		$includes->set_where("(type='system' OR type='custom') AND path<>'' AND file<>''");
 		$includes->select();
-		$INCLUDES = '';
+		$INCLUDES =PHP_EOL;
 		foreach ($includes->fetch_array as $item) {
-			$INCLUDES .= '		RewriteRule ^'.$item['path'] . '	./..' . $item['file'] . ' [L]'.PHP_EOL;
+			$INCLUDES .= '		RewriteRule '.$item['path'] . '	./..' . $item['file'] . ' [L]'.PHP_EOL;
 		}
 		$modelo 	= INCLUDE_PATH.'admin/app/templates/txt/ws-model-htaccess.txt';
 		$original 	= INCLUDE_PATH.'.htaccess';
