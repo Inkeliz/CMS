@@ -9,6 +9,14 @@
 		});
 		include_css("./app/templates/css/websheep/modulos/_modulo_/detalhes.min.css?v={RAND}", "css_mod", "All");
 		window.styleCKEditor = {STYLE_CKEDITOR};
+
+
+		window.verifyCkEditorOriginal = function(){
+			if({IF_ORIGINAL}==true){
+				$(".cke_top.cke_reset_all").hide();
+				$(".cke_wysiwyg_frame").contents().find("body").attr("contenteditable","false");
+			}
+		}
 		window.uploadIMGEditor = function(ID) {
 			functions({
 				funcao: "ReturnUploadCKEditor",
@@ -236,6 +244,31 @@
 				}
 			})
 		}
+		window.isDraftOrNot = function(draft){		
+			if(draft==true){
+				$(document).off("mouseenter").off("mouseleave");
+				$("#DraftKey").removeClass("draft")
+				$("#DraftKey").addClass("original")
+				$("#DraftKey").animate({"backgroundColor":"#59aec7"});
+				$("#DraftKey").attr("legenda","mostrando PUBLICADAS");
+				$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeOut("fast")
+				$("#DraftKey").find('.bolinha').animate({"marginLeft":47,"backgroundColor":"#FFF"},function(){})
+				$("input[type='text'],textarea").attr("readOnly","true");
+				$("input[type='checkbox'],input[type='radio'],select").attr("disabled","true");
+				$(".colorpicker_geral,.botao").unbind("click tap press").bind("click tap press",function(){
+						TopAlert({mensagem: "Este ítem não pode ser salvo, edite o rascunho.", clickclose: true, height: 20, timer: 3000, type: 1, })
+				});
+				$(".textoarea_adicional.selectbox_adicional.multipleselect").attr("disabled", true).trigger("chosen:updated");
+			}else{
+				$("#DraftKey").addClass("draft");
+				$("#DraftKey").removeClass("original");
+				$("#DraftKey").animate({"backgroundColor":"#697685"})
+				$("#DraftKey").attr("legenda","mostrando RASCUNHO");
+				$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeIn("fast")
+				$("#DraftKey").find('.bolinha').animate({"marginLeft":2,"backgroundColor":"#f3f4f7"},function(){})
+			}
+		}
+
 	</script>
 	<style type="text/css">
 		.iframe #topoModulo {
@@ -464,23 +497,6 @@
 				})
 
 	/*######################################################################################################################*/
-			window.isDraftOrNot = function(draft){		
-				if(draft==true){
-					$("#DraftKey").removeClass("draft")
-					$("#DraftKey").addClass("original")
-					$("#DraftKey").animate({"backgroundColor":"#59aec7"});
-					$("#DraftKey").attr("legenda","mostrando PUBLICADAS");
-					$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeOut("fast")
-					$("#DraftKey").find('.bolinha').animate({"marginLeft":47,"backgroundColor":"#FFF"},function(){})
-				}else{
-					$("#DraftKey").addClass("draft");
-					$("#DraftKey").removeClass("original");
-					$("#DraftKey").animate({"backgroundColor":"#697685"})
-					$("#DraftKey").attr("legenda","mostrando RASCUNHO");
-					$("#bt_search_files,#bt_search_biblioteca,#bt_publicar,#bt_lixeira").fadeIn("fast")
-					$("#DraftKey").find('.bolinha').animate({"marginLeft":2,"backgroundColor":"#f3f4f7"},function(){})
-				}
-			}
 
 				$('#DraftKey').unbind('click').click(function(){
 
@@ -494,7 +510,6 @@
 							$("*").removeClass("blur");
 						});
 					}else{
-						out("FALSE")
 						confirma({width: "auto", conteudo: "<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 33px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 						window.isDraftOrNot(false);
 						$("#conteudo").load('{URL_LOAD}&original=false', function() {
@@ -505,11 +520,6 @@
 						});
 					}
 				})
-
-				window.isDraftOrNot({IF_ORIGINAL});
-
-
-	/*######################################################################################################################*/
 				$('#bt_SalvarItem').unbind('click tap press').bind('click tap press', function() {
 					if({IF_ORIGINAL}==false){
 						var campos = {};
@@ -1003,21 +1013,29 @@
 						$("#UploadThumbmails #enviar_arquivos").click();
 					})
 					OrdenaCategoria();
-
 					if({IF_ORIGINAL}==true){
-						$("#hideActions").show();
+						//$("#hideActions").show();
 						$("#bt_SalvarItem,#bt_voltar_cat").hide();
-
 					}else{
 						$("#bt_SalvarItem,#bt_voltar_cat").show();
-						$("#hideActions").hide();
+					//	$("#hideActions").hide();
 					}
-
 				}
 				reloadFunctions(); 
-				
 				{EXEC_JS_2}
-				setTimeout(function() {$('#container').perfectScrollbar('destroy');}, 200);
+				setTimeout(function() {
+
+				/*######################################################################################################################*/
+
+					window.isDraftOrNot({IF_ORIGINAL});
+
+				/*######################################################################################################################*/
+
+
+				}, 1000);
+
+
+
 			})
 		</script>
 <!-- END BLOCK_WS_DETAILS -->

@@ -491,30 +491,13 @@ function InsertCodeCampos(){
 		$output .= '<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_REQUEST['type'].'">'."\n";
 		$output .=  '	<!--'."\n";
 		$output .=  '		OUTRAS TAGS DISPONÍIVEIS:'."\n";
-		$output .=  '		colum=""	'."\n";
-		$output .=  '		distinct=""	'."\n";
-		$output .=  '		utf8=""	'."\n";
-		$output .=  '		url=""	'."\n";	
-		$output .=  '		order=""	'."\n";
-		$output .=  '		category=""	'."\n";
-		$output .=  '		galery=""	'."\n";
-		$output .=  '		item="" 	'."\n";
-		$output .=  '		where=""	'."\n";
-		$output .=  '		innerItem="" '."\n";
-		$output .=  '		filter=""'."\n";
+		$output .=  '		colum=""	distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter=""'."\n";
+		$output .=  "		\n\n";
 		$output .=  '		Paginação:'."\n";
+		$output .=  '		|	data-paginate="1,2"'."\n";
 		$output .=  '		|	data-paginate="1,2"'."\n";
 		$output .=  '		|	1:max por página, 2:página atual'."\n";
 		$output .=  '		|	pode ser usado parâmetros da URL ex:  data-paginate="url:1,url:2"'."\n\n";
-		$output.= '################################### LIVE EDITOR ###################################'."\n";
-		$output.= '		Agora você pode editar o seu site, dentro do próprio site, '."\n";
-		$output.= '		basta inserir da DIV a tag "data-live-editor"'."\n";
-		$output.= '		Por exemplo, o campo que você quer trazer é "titulo_blog",'."\n";
-		$output.= '		Você deverá inserir em sua div isso: data-live-editor="{{titulo_blog_editor}}".'."\n";
-		$output.= '		ATENÇÃO, COLOQUE APENAS NA DIV QUE TIVER O CONTEÚDO COMPLETO, POIS O QUE TIVER NA DIV SERÁ SALVO NA BASE DE DADOS.".'."\n";
-		$output.= '		Por exemplo, se uma div tiver apenas uma prévia do texto, e você salvar, todo conteudo será trocado pela prévia.'."\n";
-		$output.= '#################################################################################'."\n";
-
 		$output .=  '	-->'."\n";
 
 		$fullPages 				= new MySQL();

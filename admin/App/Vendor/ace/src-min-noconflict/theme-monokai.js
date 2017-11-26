@@ -1,16 +1,16 @@
 ace.define("ace/theme/monokai",["require","exports","module","ace/lib/dom"],function(e,t,n){t.isDark=!0,
 	t.cssClass="ace-monokai",
 	t.cssText=''+
-				'.ace-monokai .ace_gutter {background: #19191e; color: #8F908A }'+
+				'.ace-monokai .ace_gutter {background: #1d1d26;color: #6c6c7b;}'+
 				'.ace-monokai .ace_print-margin {width: 1px; background: #555651 }'+
 				'.ace-monokai {background-color: #272822; color: #F8F8F2 }'+
 				'.ace-monokai .ace_cursor {color: #F8F8F0 }'+
-				'.ace-monokai .ace_marker-layer .ace_selection {background: #474b58 }'+
+				'.ace-monokai .ace_marker-layer .ace_selection {background: #33333d }'+
 				'.ace-monokai.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #272822; }'+
 				'.ace-monokai .ace_marker-layer .ace_step {background: rgb(102, 82, 0) }'+
 				'.ace-monokai .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px; border: 1px solid #49483E }'+
-				'.ace-monokai .ace_marker-layer .ace_active-line {background: rgba(255, 255, 255, 0.03137254901960784) }'+
-				'.ace-monokai .ace_gutter-active-line {background-color: #272727 }'+
+				'.ace-monokai .ace_marker-layer .ace_active-line {background: #24242b }'+
+				'.ace-monokai .ace_gutter-active-line {background-color: #13131a }'+
 				'.ace-monokai .ace_marker-layer .ace_selected-word {border: 1px solid #49483E }'+
 				'.ace-monokai .ace_invisible {color: #52524d }'+
 				'.ace-monokai .ace_entity.ace_name.ace_tag, .ace-monokai .ace_keyword, .ace-monokai .ace_meta.ace_tag, .ace-monokai .ace_storage {color: #F92672 }'+
@@ -26,10 +26,10 @@ ace.define("ace/theme/monokai",["require","exports","module","ace/lib/dom"],func
 				'.ace-monokai .ace_string {color: #E6DB74 }'+
 				'.ace-monokai .ace_comment {color: #7c7c81 }'+
 				'.ace-monokai .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ0FD0ZXBzd/wPAAjVAoxeSgNeAAAAAElFTkSuQmCC) right repeat-y }'+
-				'.ace-monokai .ws-tags {background-color: #19191e!important;font-weight:900!important;}'+
+				'.ace-monokai .ws-tags {background-color: #19191e!important;}'+
 				'.ace-monokai .ws-tags .ace_xml {color: #88e0ff!important;}'+
-				// '.ace-monokai .ws-tags .ace_attribute-name {color: #ccefff!important;}'+
-				'.ace-monokai .ws-tags .ace_attribute-value {color: #FFFFFF!important;}'+
+				'.ace-monokai .ws-tags .ace_attribute-name {color: #54666c!important;}'+
+				'.ace-monokai .ws-tags .ace_attribute-value {color: #76878d!important;}'+
 				'';
 
 

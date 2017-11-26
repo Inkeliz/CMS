@@ -670,7 +670,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->COLOR        = str_replace("#", "", $k['color']);
 				$_SET_TEMPLATE_INPUT->CONTEUDO     = str_replace("\n","ws_eol",addslashes(urldecode($produto[$k['coluna_mysql']])));
 				$_SET_TEMPLATE_INPUT->block("BLOCK_TEXTAREA");
-				$_SET_TEMPLATE_INPUT->IF_ORIGINAL 	= $_IF_ORIGINAL;
+				//$_SET_TEMPLATE_INPUT->IF_ORIGINAL 	= $_IF_ORIGINAL;
 
 				$_IPUNT_CAMPOS .= $_SET_TEMPLATE_INPUT->parse();
 			}

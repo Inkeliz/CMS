@@ -197,13 +197,6 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		// CASO ESTEJA OLHANDO  A VERSÃO ORIGINAL DO ÍTEM
-		if({IF_ORIGINAL}==true){
-			$(".txt_ad_{ID} .readyOnly").show();
-		}
-
-
-
 		$val = "{CONTEUDO}";
 		$("#{ID}").val($val.split("ws_eol").join("\n"));
 
@@ -227,8 +220,8 @@
 				entities_greek: false,
 				entities_latin: false,
 				entities_additional: '',
-				toolbarStartupExpanded: 0,
-				toolbarCanCollapse: 1,
+				toolbarStartupExpanded: false,
+				toolbarCanCollapse: true,
 				tabSpaces: 0,
 				entities: 0,
 				forceSimpleAmpersand: 1,
@@ -347,12 +340,16 @@
 				toolbar: 'websheep'
 			});
 			setTimeout(function() {
-				$(".cke_wysiwyg_frame").contents().find("body").css('background', '{BACKGROUND}').css('color', '{COLOR}');
-				$(".cke_button[title='+ ShortCode'] .cke_button_label, .cke_button[title='Biblioteca'] .cke_button_label, .cke_button[title='Ajustar CSS'] .cke_button_label ,.cke_button[title='Ajustar Estilos'] .cke_button_label,.cke_button[title='Upload'] .cke_button_label").show().css({
-					'cursor': 'pointer'
-				}).parent().css({
-					'cursor': 'pointer'
+				{ID}_editor.on('instanceReady',function(){
+					$(".cke_wysiwyg_frame").contents().find("body").css('background', '{BACKGROUND}').css('color', '{COLOR}');
+					$(".cke_button[title='+ ShortCode'] .cke_button_label, .cke_button[title='Biblioteca'] .cke_button_label, .cke_button[title='Ajustar CSS'] .cke_button_label ,.cke_button[title='Ajustar Estilos'] .cke_button_label,.cke_button[title='Upload'] .cke_button_label").show().css({
+						'cursor': 'pointer'
+					}).parent().css({
+						'cursor': 'pointer'
+					});
+					window.verifyCkEditorOriginal();
 				});
+
 			}, 500)
 		}
 
