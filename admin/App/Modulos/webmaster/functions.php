@@ -492,7 +492,7 @@ function InsertCodeCampos(){
 		$output .=  '	<!--'."\n";
 		$output .=  '		OUTRAS TAGS DISPONÍIVEIS:'."\n";
 		$output .=  '		colum=""	distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter=""'."\n";
-		$output .=  "		\n\n";
+		$output .=  "		\n";
 		$output .=  '		Paginação:'."\n";
 		$output .=  '		|	data-paginate="1,2"'."\n";
 		$output .=  '		|	data-paginate="1,2"'."\n";
