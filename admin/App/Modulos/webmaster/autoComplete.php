@@ -70,13 +70,12 @@ $cookie='#Class Cookie
 	echo _erro($erro);';
 
 
-$img='<!-- TAG WS IMG -->
-	<img src="'.ws::rootPath.'ws-img/100/100/100/{colum}"/>';
-$paginate='<!-- TAG WS PAGINATE -->
-	<ws-paginate data-slug="" data-type="" data-max="" data-atual="" data-html="" data-number="" data-active=""></ws-paginate>';
+$img='<img src="'.ws::rootPath.'ws-img/100/100/100/{colum}"/>';
+
+$paginate='<ws-paginate data-slug="" data-type="" data-max="" data-atual="" data-html="" data-number="" data-active=""></ws-paginate>';
 
 $browser='#Class Browser
-# https://github.com/cbschuld/class-browser.php
+	# https://github.com/cbschuld/class-browser.php
 	$browser = new Browser();
 	if( $browser->getBrowser() == Browser::BROWSER_FIREFOX && $browser->getVersion() >= 2 ) {
 	    echo "You have FireFox version 2 or greater";

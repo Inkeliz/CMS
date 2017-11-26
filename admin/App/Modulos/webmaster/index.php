@@ -203,18 +203,6 @@ $(document).ready(function() {
 	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 	$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
 		$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
-
-				
-
-
-
-
-
-
-
-
-
-
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");

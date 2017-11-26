@@ -1,7 +1,7 @@
 ace.define("ace/theme/websheep.0.3",["require","exports","module","ace/lib/dom"],function(e,exports,n){
 	exports.isDark 		=true,
 	exports.cssClass	="ace-websheep",
-	exports.cssText		="\
+	exports.cssText		=''+
 	'.ace-websheep .ace_gutter {background-color: #3d3d3d;background-image: -moz-linear-gradient(left, #3D3D3D, #333);background-image: -ms-linear-gradient(left, #3D3D3D, #333);background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3D3D3D), to(#333));background-image: -webkit-linear-gradient(left, #3D3D3D, #333);background-image: -o-linear-gradient(left, #3D3D3D, #333);background-image: linear-gradient(left, #3D3D3D, #333);background-repeat: repeat-x;border-right: 1px solid #4d4d4d;text-shadow: 0px 1px 1px #4d4d4d;color: #222;}'+
 	'.ace-websheep .ace_gutter-layer {background: repeat left top;}'+
 	'.ace-websheep .ace_gutter-active-line {background-color: #3F3F3F;}'+
