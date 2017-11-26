@@ -168,11 +168,11 @@ function InsertPaginationCampos(){
 	$output .=  '		data-where=""	'."\n";
 	$output .=  '		data-innerItem="" '."\n\n";
 	$output .= '	-->'."\n";
-	$output .=   '<paginate data-slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" data-type="'.$_REQUEST['type'].'" data-max="5" data-atual="url:2" ';
+	$output .=   '<ws-paginate data-slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" data-type="'.$_REQUEST['type'].'" data-max="5" data-atual="url:2" ';
 	$output .=   'data-html="'.(str_replace($isso,$porisso,$_REQUEST['editorHTML'])).'" '; 
 	$output .=   'data-number="'.(str_replace($isso,$porisso,$_REQUEST['editorCOUNT'])).'" ';
 	$output .=   'data-active="'.(str_replace($isso,$porisso,$_REQUEST['editorCOUNTactive'])).'">';
-	$output .=   '</paginate>'."\n";
+	$output .=   '</ws-paginate>'."\n";
 	echo ($output);
 	exit;
 }

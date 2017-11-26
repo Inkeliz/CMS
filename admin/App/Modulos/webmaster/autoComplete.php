@@ -27,7 +27,7 @@ function getSnap($str){return str_replace(array(PHP_EOL,'"',"	"),array('\n','\"'
 	$slugs->select();
 	$tagHTML = array();
 	$tagHTML='<!-- TAG WS HTML5 -->
-				<ws data-slug="" data-type="" data-limit="" data-colum="" data-distinct="" data-utf8="" data-url="" data-order="" data-category="" data-galery="" data-item="" data-where=""		data-innerItem="" 		data-filter="">
+				<ws-tool data-slug="" data-type="" data-limit="" data-colum="" data-distinct="" data-utf8="" data-url="" data-order="" data-category="" data-galery="" data-item="" data-where=""		data-innerItem="" 		data-filter="">
 				<!-- template -->
 				</ws>';
 			$class='#Class WS Tool PHP:
@@ -73,7 +73,7 @@ $cookie='#Class Cookie
 $img='<!-- TAG WS IMG -->
 	<img src="'.ws::rootPath.'ws-img/100/100/100/{colum}"/>';
 $paginate='<!-- TAG WS PAGINATE -->
-	<paginate data-slug="" data-type="" data-max="" data-atual="" data-html="" data-number="" data-active=""></paginate>';
+	<ws-paginate data-slug="" data-type="" data-max="" data-atual="" data-html="" data-number="" data-active=""></ws-paginate>';
 
 $browser='#Class Browser
 # https://github.com/cbschuld/class-browser.php

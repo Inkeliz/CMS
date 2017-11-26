@@ -1,21 +1,20 @@
 <?php 
+
 ############################################################################################################################################
 # DEFINIMOS O ROOT DO SISTEMA
 ############################################################################################################################################
 	if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
+	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
-if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 ############################################################################
 # IMPORTAMOS A CLASSE DO SISTEMA
 ############################################################################
-include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
-// _session(); 
-$session = new session();
-
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+	$session = new session();
 	$session->set('_PATCH_', 'app/modulos/webmaster'); 
 	include("./autoComplete.php");
 
@@ -40,22 +39,8 @@ $session = new session();
 		font-size: 15px;
 		background-color: #292931;
 	}
-	.ace-monokai .ace_support.ace_constant, .ace-monokai .ace_support.ace_function{
-		color: #66efe3;
-	}
-	.ace-monokai .ace_gutter{
-		background: #19191e;
-	}
-	.ace-monokai .ace_marker-layer .ace_active-line{
-		    background: rgba(255, 255, 255, 0.03137254901960784);
-	}
-	.ace-monokai .ace_marker-layer .ace_selection{
-		background: #474b58;
-	}
-	.ace-monokai .ace_comment {
-		color: #7c7c81;
-	}
 
+/* 
 .ace_editor.ace_autocomplete .ace_marker-layer .ace_active-line {
     background-color: #CAD6FA;
     z-index: 1;
@@ -96,7 +81,7 @@ $session = new session();
     box-shadow: 2px 3px 5px rgba(0,0,0,.2);
     line-height: 1.4;
 }
-
+ */
 
 
 
@@ -262,9 +247,20 @@ $session = new session();
 	});
 $(document).ready(function() {
 	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
-
 	$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
 		$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+
+				
+
+
+
+
+
+
+
+
+
+
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");
@@ -398,10 +394,10 @@ $(document).ready(function() {
 				}
 				window.resizeDesktop = function() {
 					window.htmEditor.resize();
-					//	$(".ace_scrollbar").animate({scrollTop: 0}, 200);
 				}
 				ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 				window.htmEditor = ace.edit("divEditor");
+
 				window.htmEditor.setTheme("ace/theme/monokai");
 				// window.htmEditor.setTheme("ace/theme/websheep.0.3");
 				window.htmEditor.getSession().setMode("ace/mode/php");
@@ -414,6 +410,10 @@ $(document).ready(function() {
 				window.htmEditor.setDisplayIndentGuides(true);
 				window.htmEditor.getSession().setUseWrapMode(true);
 				setTimeout(function() {
+
+
+
+
 					var wsCompleter = {
 						getCompletions: function(editor, session, pos, prefix, callback) {
 							if (prefix.length === 0) {
@@ -439,10 +439,19 @@ $(document).ready(function() {
 						enableLiveAutocompletion: true
 					});
 					$('.chosen-results,.nave_folders').perfectScrollbar({suppressScrollX: true});
-					//window.htmEditor.setReadOnly(true); sem editar
-					// var UndoManager = require(["admin/app/modulos/webmaster/src-min-noconflict/ace"]).UndoManager
 					window.htmEditor.getSession().getUndoManager().reset();
-					window.htmEditor.on('change', function() {
+
+					window.htmEditor.initDestaqueWsTags = function(){
+						$('.ace_line:not(.ws-tags):has(.ace_meta.ace_tag.ace_tag-name.ace_xml:contains("ws-"))').addClass('ws-tags');
+						$('.ace_line:not(.ws-tags):has(.ace_support.ace_class:contains("ws"))').addClass('ws-tags');
+					}
+				
+
+					$(".ace_scrollbar.ace_scrollbar-v").scroll(function(){ window.htmEditor.initDestaqueWsTags();})
+					$( "#divEditor" ).mousemove(function( event ) {window.htmEditor.initDestaqueWsTags();})
+
+					window.htmEditor.on('change', function() {	
+						setTimeout(function(){window.htmEditor.initDestaqueWsTags()},20)
 						window.htmEditor.resize();
 						$("#Balao_TollType").remove();
 						if ($(document.activeElement).closest("div").attr("id") == "divEditor") {
@@ -452,6 +461,8 @@ $(document).ready(function() {
 							$('.fileTabContainer .fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').removeClass('saved').addClass('unsave');
 						}
 					})
+
+
 
 					if (!window.listFilesWebmaster) {
 						window.listFilesWebmaster = Object();
