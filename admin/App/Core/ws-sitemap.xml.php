@@ -65,8 +65,8 @@ foreach ($s->fetch_array as $value) {
 				$coluna = 	str_replace(array($tira3), '', $tira2);
 				$valor 	= 	$tool_value[$coluna];	
 				$funcao = 	str_replace('{{'.$coluna.'}}', $valor, $urlPath);
-				eval ('$result='.$funcao.';');
-				$arrayNewURL[]= $result;
+				// eval ('$result='.$funcao.';');
+				$arrayNewURL[]= $funcao();
 			}else{
 				$arrayNewURL[]= $urlPath;
 			}
