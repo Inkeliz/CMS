@@ -1,6 +1,6 @@
 {
-	"version":"0.6.2",
-	"minVersion":"0.6.1",
+	"version":"6.2",
+	"minVersion":"6.1",
 	"license":"https://raw.githubusercontent.com/websheep/CMS/v.6.2/LICENSE.md",
     "alert":"Atenção!",
     "features": []
