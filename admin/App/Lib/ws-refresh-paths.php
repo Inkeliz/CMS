@@ -10,15 +10,16 @@
 	#	VERIFICAMOS SE JÁ EXISTE UMA CONFIGURAÇÃO GLOBAL
 	#######################################################################
 	initRefreshPath:
-	if(!file_exists(INCLUDE_PATH.'website/ws-config.php')) {
+
+
+	if(!file_exists(INCLUDE_PATH.'website') || !file_exists(INCLUDE_PATH.'website/ws-config.php')) {
 			#######################################################################
 			#	CASO EXISTA UM WS-CONFIG NO ROOT, COPIA PRA PASTA WEBSITE
 			#######################################################################
+			if(!file_exists(INCLUDE_PATH.'website')){mkdir(INCLUDE_PATH.'website');}
 			if(file_exists(INCLUDE_PATH.'ws-config.php')){
-				if(file_exists(INCLUDE_PATH.'website')){
 					rename(INCLUDE_PATH.'ws-config.php', INCLUDE_PATH.'website/ws-config.php');
 					goto initRefreshPath;
-				}
 			}
 			refreshPath:
 			#######################################################################
@@ -32,29 +33,17 @@
 			#######################################################################
 				refresh_Path_AllFiles();
 
-			#######################################################################
-			#	DEIXAMOS DORMINDO 0.5 SEGUNDOS APENAS PARA 
-			#	DAR TEMPO DE PROCESSAR OS ARQUIVOS NO SERVIDOR 
-			#######################################################################
-				sleep(0.5);
-
-			#######################################################################
-			#	DAMOS UM REFRESH OU REDIRECT NO PAINEL JÁ COM O PATH CONFIGURADO
-			#######################################################################
-				if(dirname($_SERVER['REQUEST_URI'])=="admin"){
-					header('Refresh:0');
-					exit;
-				}else{
-					header('Location: '.dirname($_SERVER['REQUEST_URI']));
-					exit;
-				}
-
 	}else{
 
 				###################################################################
 				# CASO EXISTA A CONFIGURAÇÃO, IMPORTAMOS A CLASSE PADRÃO DO SISTEMA
 				###################################################################
 				include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+
+				#######################################################################
+				#	EXECUTAMOS A FUNÇÃO QUE GRAVA OS ARQUIVOS NOVAMENTE
+				#######################################################################
+					refresh_Path_AllFiles();
 
 				###################################################################
 				#	VERIFICAMOS A VERSÃO DO SISTEMA

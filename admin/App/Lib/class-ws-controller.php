@@ -42,9 +42,9 @@ class controller{
 		$i 		= 0;
 		$lister = 1;
 
-		$this->URI = substr($this->URI, strlen(ROOT_WEBSHEEP));
+		$this->URI = substr($this->URI, strlen(ws::rootPath));
 		// primeiro verifica se esta vazia 
-		if(ws::urlPath()=="" || ws::urlPath()==ROOT_WEBSHEEP ){
+		if(ws::urlPath()=="" || ws::urlPath()==implode(_array_filter(explode('/', ws::rootPath)),'/') ){
 			//agora verifica se existe caminho default pra ele
 				if(!in_array($this->init, $this->paths)){
 					self::_erro(utf8_decode('Por favor, o caminho Default nao esta definido ou não existe no sistema.'));
@@ -95,8 +95,11 @@ class controller{
 	public function verifyURL(){
 		$i 		= 0;
 		$lister = 1;
+
+
+
 		// primeiro verifica se esta vazia 
-		if(ws::urlPath()==""){
+		if(ws::urlPath()=="" || ws::urlPath()==implode(_array_filter(explode('/', ws::rootPath)),'/')){
 			//agora verifica se existe caminho default pra ele
 			if(!in_array($this->init, $this->paths)){
 				self::_erro(utf8_decode('Por favor, o caminho Default nao esta definido ou não existe no sistema.'));
@@ -183,7 +186,7 @@ class controller{
 	}
 	public function ignoreAdd(){ $this->ignoreAdd = true;}
 	public function get_URI(){
-		$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],(strlen(ROOT_WEBSHEEP)));
+		$_REQUEST_URI = substr($_SERVER['REQUEST_URI'],(strlen(ws::rootPath)));
 		if(substr($_REQUEST_URI,0,1)=="/"){
 			$this->URI = urldecode(substr($_REQUEST_URI,1));
 		}else{
@@ -249,10 +252,12 @@ class controller{
 
 	public function includeFile($file=null,$first=""){
 		if(substr($file,0,1)=='/'){$file = substr($file,1);}
+
 		if($file==null || $file==""){
 			self::_erro(self::GetDebugError(debug_backtrace(),"Erro: Por favor, insira o nome de um arquivo -> ".$file));
+			
 		}elseif(!file_exists($this->Root.'/'.$file)){
-			self::_erro(self::GetDebugError(debug_backtrace(),"Erro: 1 Este arquivo não existe -> ".$file));
+			self::_erro(self::GetDebugError(debug_backtrace(),"Erro: 1 Este arquivo não existe -> ".$this->Root.'/'.$file));
 		}elseif(is_string($file)){
 			ws::wsInclude($this->Root.'/'.$file);
 		}

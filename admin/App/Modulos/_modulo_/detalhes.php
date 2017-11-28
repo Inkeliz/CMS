@@ -351,6 +351,7 @@ if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd
 				$_SET_TEMPLATE_INPUT->HEIGHT        = $k['altura'] + $recuoh;
 				$_SET_TEMPLATE_INPUT->LABELSUP      = $k['labelSup'];
 				if(isset($produto[$k['coluna_mysql']]) && $produto[$k['coluna_mysql']] != "") {
+				
 					$url       = $produto[$k['coluna_mysql']];
 					$options   = array(
 						CURLOPT_SSL_VERIFYHOST 	=> false,

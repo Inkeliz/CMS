@@ -385,7 +385,7 @@ $(document).ready(function() {
 
 					window.htmEditor.initDestaqueWsTags = function(){
 						$('.ace_line:not(.ws-tags):has(.ace_meta.ace_tag.ace_tag-name.ace_xml:contains("ws-"))').addClass('ws-tags');
-						$('.ace_line:not(.ws-tags):has(.ace_support.ace_class:contains("ws"))').addClass('ws-tags');
+						// $('.ace_line:not(.ws-tags):has(.ace_support.ace_class:contains("ws"))').addClass('ws-tags');
 					}
 				
 

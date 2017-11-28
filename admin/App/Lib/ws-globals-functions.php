@@ -102,12 +102,31 @@ function get_caller_info() {
 		copy($pathDestino,$pathDestino.'.bkp');
 		file_put_contents($pathDestino, implode(PHP_EOL,$newClass));
 	}
+#########################################################################
+# REFRESH PATH NO FUNCTION WS EM PHP
+#########################################################################
+	function refresh_Path_functions_PHP(){
+		$pathDestino 	= 	INCLUDE_PATH.'admin/app/lib/class-ws-v1.php';
+		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($pathDestino)));
+		$newClass		=	array();
+		foreach ($htaccess as $key => $line) {
+			if (strpos($line,"const includePath") >= 1) {
+  				$line=  '	const includePath="'.INCLUDE_PATH.'";';
+			}elseif (strpos($line,"const rootPath") >= 1) {
+  				$line=  '	const rootPath="'.ROOT_WEBSHEEP.'";';
+			}
+			$newClass[] =  $line;		
+		}
+		copy($pathDestino,$pathDestino.'.bkp');
+		file_put_contents($pathDestino, implode(PHP_EOL,$newClass));
+	}
 	
 #########################################################################
 # ATUALIZA O PATH
 #########################################################################
     function refresh_Path_AllFiles(){
 		 refresh_Path_functions_JS();
+		 refresh_Path_functions_PHP();
 		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess-admin.txt',	INCLUDE_PATH.'admin/.htaccess');
 		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess.txt',		INCLUDE_PATH.'.htaccess');
     }
