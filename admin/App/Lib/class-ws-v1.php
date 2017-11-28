@@ -1127,9 +1127,9 @@
 		#############################################################################################
 		# RETORNA JSON COM OS COMMITS DO GITHUB
 		#############################################################################################
-		static function get_github_commits() {
+		static function get_github_commits($brance='') {
 			$commits = curl_init();
-			curl_setopt($commits, CURLOPT_URL, 'https://api.github.com/repos/websheep/CMS/commits');
+			curl_setopt($commits, CURLOPT_URL, 'https://api.github.com/repos/websheep/CMS/commits'.$brance);
 			curl_setopt($commits, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($commits, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($commits, CURLOPT_USERAGENT, "https://api.github.com/meta");
