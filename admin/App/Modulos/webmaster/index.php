@@ -112,8 +112,14 @@
 		</div>
 		<div id="formatHTML" class="optEditor">
 			Format HTML 
+		</div>
+		<div id="maximize" class="optEditor">
+			<i class="fa fa-television"></i>
+			FullScreen
 			<span style="color:#60ff00;font-size:10px;margin-top:-15px;position:absolute;float:right;right:-30px;letter-spacing:2px;">New!</span>
 		</div>
+
+
 	 </div>
 	<form>
 		<select id="bkpsFile" style="width:310px;">
@@ -961,38 +967,54 @@ $(document).ready(function() {
 					});
 					$('.nave_folders .file').unbind('tap click').bind('tap click', function() {
 						window.pathFile = $(this).data("file").split("\\").join("/");
-						out(window.pathFile)
 						$("#exclFile").show();
 						$("#palco, #divEditor ,.nave_folders,.nave_menu").addClass("recolhido")
 
 						if (!$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').length) {
-							functions({
-								funcao: "loadFile",
-								vars: "pathFile=" + window.pathFile,
-								patch: "<? echo $session->get('_PATCH_');?>",
-								beforeSend: function() {
-									$(".fileTabContainer").prepend('<div class="tabSortable fileTab loader"></div>');
-								},
-								Sucess: function(e) {
-									eval(e);
-									$(".tabSortable.fileTab.loader").remove();
-									functions({
-										funcao: "returnBKP",
-										vars: "pathFile=" + window.pathFile.replace(window.loadFile, "/") + "&filename=" + window.loadFile,
-										patch: "<? echo $session->get('_PATCH_');?>",
-										Sucess: function(e) {
-											$("#bkpsFile").html(e).trigger("chosen:updated");
-											$("#ws_confirm").remove();
-											$("#body").removeClass("scrollhidden");
-											$("*").removeClass("blur");
-										}
-									})
-								}
-							});
+								$.ajax({
+									type: "POST",
+									url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/webmaster/functions.php",
+									data: {
+										'function': 'loadFile',
+										'pathFile': window.pathFile
+									},
+									beforeSend: function() {
+										$(".fileTabContainer").prepend('<div class="tabSortable fileTab loader"></div>');
+									}
+								}).done(function(data) {
+										eval(data);
+										$("#ws_confirm").remove();
+										$("#body").removeClass("scrollhidden");
+										$("*").removeClass("blur");
+								});
 						} else {
 							$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').click();
 						}
 					});
+					$('#maximize').unbind('tap click').bind('tap click', function() {
+						if($("#container").hasClass("popup")){
+							$("#container").removeClass("popup")
+					    if (document.cancelFullScreen) {  
+					      document.cancelFullScreen();  
+					    } else if (document.mozCancelFullScreen) {  
+					      document.mozCancelFullScreen();  
+					    } else if (document.webkitCancelFullScreen) {  
+					      document.webkitCancelFullScreen();  
+					    }  
+
+						}else{
+							$("#container").addClass("popup")
+							if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+								if (document.documentElement.requestFullScreen) {  
+									document.documentElement.requestFullScreen();  
+								} else if (document.documentElement.mozRequestFullScreen) {  
+									document.documentElement.mozRequestFullScreen();  
+								} else if (document.documentElement.webkitRequestFullScreen) {  
+									document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+								}  
+							} 
+						}
+					})
 					$('#salvarArquivo').unbind('tap click').bind('tap click', function() {
 						//window.newTokenFile	
 						//window.loadFile
