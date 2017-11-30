@@ -2948,7 +2948,7 @@
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"'.ROOT_WEBSHEEP.'ws-img/200/200/null","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
 			} else {
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"' . basename($_POST['avatar']) . '","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
-				$z->addFromString(basename($_POST['avatar']), file_get_contents(ws::protocolURL() . DOMINIO . $_POST['avatar']));
+				$z->addFromString(basename($_POST['avatar']), file_get_contents(ws::includePath.'website/assets/upload-files/thumbnail/170-150-100-'.basename($_POST['avatar'])));
 			}
 			$z->addFromString('ws-setup.sql', $return);
 			$z->addFromString('ws-website.sql', $contentMySQL);

@@ -1024,7 +1024,10 @@ function loadFile($pathFile=null){
 function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
-		$folderFTP 	=  $POST['pathFile'].$POST['filename'];
+		$folderFTP 	=  $POST['pathFile'].'/'.$POST['filename'];
+
+
+
 		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{

@@ -8,7 +8,6 @@
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : trim('/'.$path.'/')));
 	}
 
-
 	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 ############################################################################################################################################
@@ -91,6 +90,41 @@
 		static function getRootPath(){			return ROOT_WEBSHEEP;}
 
 		static function getFullSitePath(){		return ws::getFullPath().'/website/';}
+
+
+		static function create_thumbnail( $file, $w, $h,$q){
+			$newName = $w . '-' . $h . '-' . $q . '-' . basename($file);
+			$saveName = ws::includePath.'website/assets/upload-files/thumbnail/'.$newName;
+
+			
+			if(!file_exists($file)){
+				$array =(object) array(
+								'status' 		=> "fail",
+								'original' 		=> null,
+								'originalPath' => null,
+								'originalName' => null,
+								'newPath' 		=> null,
+								'rootPath' 		=> null,
+								'includePath' 	=> null
+							);
+				return $array;
+			}
+
+			$img = new canvas();
+			if ($img->carrega($file)->redimensiona($w, $h, 'crop')->grava($saveName, $q)) {
+					$array = (object) array(
+						'status' => "sucess",
+						'original' => $file,
+						'originalPath' => dirname($file),
+						'originalName' => basename($file),
+						'newPath' => $newName,
+						'rootPath' 		=> ws::rootPath.'assets/upload-files/thumbnail/'.$newName,
+						'includePath' 	=> ws::includePath.'website/assets/upload-files/thumbnail/'.$newName
+					);
+					return $array;
+			 }
+
+		}
 
 		static function fb_count_comments($domain = null) {
 			if ($domain == null) {
@@ -914,7 +948,11 @@
 			// GUARDA TODO BUFFER EM UMA VARIÁVEL
 			$_outPutCache = ob_get_contents();
 			###################################################################
-			# 
+
+			$_outPutCache = str_replace('{{rootPath}}', 	ws::rootPath, $_outPutCache);
+			$_outPutCache = str_replace('{{includePath}}',	ws::includePath, $_outPutCache);
+			$_outPutCache = str_replace('{{domain}}',		DOMINIO, $_outPutCache);
+
 			###################################################################
 			function ReplaceImages($urlFull) { 
 				$tagIMG      = $urlFull[0];
@@ -988,11 +1026,14 @@
 			
 			// APAGA O BUFFER DE SAÍDA
 			ob_end_clean();
+			
 			// VERIFICA NO SISTEMA SE A PÁGINA EXISTE E SE É PRA GERAR CACHE 
 			if ($setupdata['ws_cache'] == 1 && $controller->createCache == 1 && !file_exists(ws::includePath.'/ws-cache/'.$urlCache)) {
+
 				// SUBSTITUI AS TAGS DE IMAGEM PROCESSADA E RETORNA A URL DIRETA DO ARQUIVO
 				$_outPutCacheHTML = preg_replace_callback('/<*img[^>]*src*=*["\']?([^"\']*)/i', "ReplaceImages", $_outPutCache);
 				$_outPutCacheHTML = preg_replace_callback('/url\([\'\"]?([^\"\'\)]+)([\"\']?\))/i', "ReplaceImages", $_outPutCacheHTML);
+
 				// GRAVA O ARQUIVO COM O NOME CORRETO
 				file_put_contents(ws::includePath.'/ws-cache/'.$urlCache, $_outPutCacheHTML);
 			}
@@ -1036,9 +1077,14 @@
 		#
 		###################################################################################
 		public static function wsInclude($include, $process = 1) {
-			 ob_start();
-			 include($include);
-			 $get_contents = ob_get_clean();
+			ob_start();
+			include($include);
+			$get_contents = ob_get_clean();
+
+			$get_contents = str_replace('{{rootPath}}', 	ws::rootPath, $get_contents);
+			$get_contents = str_replace('{{includePath}}',	ws::includePath, $get_contents);
+			$get_contents = str_replace('{{domain}}',		DOMINIO, $get_contents);
+
 			 echo htmlProcess::processHTML($get_contents);
 		}
 
