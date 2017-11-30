@@ -195,6 +195,16 @@
  	
  	$TEMPLATE->ws_rootPath 			= ws::rootPath;
  	$TEMPLATE->classHTMLtypeAcess 	= ( isset($_num_rows) && $_num_rows>0 ) ? "IframeModel" : "";
+
+	##########################################################################################
+	#  VERIFICA SE É O EDITOR EM POPUP   
+	##########################################################################################
+ 	  $TEMPLATE->CLASS_POPUP 	= (ws::urlPath(2,false)=="popup") ? 'popup' : '';
+ 	  $TEMPLATE->LoadDirectTool = (ws::urlPath(3,false)=="code-editor") ? '/admin/app/modulos/webmaster/index.php' : 'null';
+
+
+
+
 	##########################################################################################
 	#  RETORNA O HTML MONTADO   
 	##########################################################################################

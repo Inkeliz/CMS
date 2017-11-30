@@ -631,10 +631,12 @@
 				_erro(ws::GetDebugError(debug_backtrace(), "Erro: Isso não é um número ->	ws::urlPath('" . $node . "')"));
 				exit;
 			} elseif ($node == null || $node == 0) {
-				$_REQUEST_URI = explode('?', $_REQUEST_URI);
+
+				$_REQUEST_URI = (strpos($_REQUEST_URI,"?")) ? explode('?', $_REQUEST_URI) : array($_REQUEST_URI); 
+
 				 if($type=='array'){
-					return array_filter(explode('/',$_REQUEST_URI[0]),"strlen");
-				 	
+						return array_filter(explode('/',$_REQUEST_URI[0]),"strlen");
+
 				 }elseif($type=='get'){
 				 	if(count($_REQUEST_URI[1])>=1){ 
 				 		parse_str($_REQUEST_URI[1], $parse);
@@ -646,16 +648,17 @@
 				 	return implode(array_filter(explode('/',$_REQUEST_URI[0]),'strlen'),'/');
 				 }
 			} else {
-				$_REQUEST_URI = explode('?', $_REQUEST_URI);
+
+				$_REQUEST_URI = (strpos($_REQUEST_URI,"?")) ? explode('?', $_REQUEST_URI) : array($_REQUEST_URI); 
 				$_URL         = array_filter(explode('/',$_REQUEST_URI[0]),'strlen');
 				if($debug==false){ 
-					if(isset($_URL[($node - 1)])){ 
-						return $_URL[($node - 1)];
+					if(isset($_URL[($node)])){ 
+						return $_URL[($node)];
 					}else{ 
 						return false;
 					}
 				}else{ 
-					return $_URL[($node - 1)];
+					return $_URL[($node)];
 				}
 			}
 		}

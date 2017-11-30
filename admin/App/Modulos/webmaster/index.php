@@ -20,14 +20,14 @@
 
 ?>
 <!-- 
-	<script src="./app/templates/js/formatCode/javascriptobfuscator_unpacker.js"></script>
-	<script src="./app/templates/js/formatCode/urlencode_unpacker.js"></script>
-	<script src="./app/templates/js/formatCode/p_a_c_k_e_r_unpacker.js"></script>
-	<script src="./app/templates/js/formatCode/myobfuscate_unpacker.js"></script>
+	<script src="<?=ws::rootPath?>admin/app/templates/js/formatCode/javascriptobfuscator_unpacker.js"></script>
+	<script src="<?=ws::rootPath?>admin/app/templates/js/formatCode/urlencode_unpacker.js"></script>
+	<script src="<?=ws::rootPath?>admin/app/templates/js/formatCode/p_a_c_k_e_r_unpacker.js"></script>
+	<script src="<?=ws::rootPath?>admin/app/templates/js/formatCode/myobfuscate_unpacker.js"></script>
  -->
 <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
 <script type="text/javascript">
-	include_css('./app/templates/css/websheep/modulos/webmaster/style.min.css?<?=md5(uniqid(rand(), true))?>',  	'css_mod', 'All');
+	include_css('<?=ws::rootPath?>admin/app/templates/css/websheep/modulos/webmaster/style.min.css?<?=md5(uniqid(rand(), true))?>',  	'css_mod', 'All');
 </script>
 <style type="text/css">
 	#container {
@@ -116,10 +116,12 @@
 		<div id="maximize" class="optEditor">
 			<i class="fa fa-television"></i>
 			FullScreen
+		</div>
+		<div id="popup" class="optEditor">
+			<i class="fa fa-television"></i>
+			Nova Janela
 			<span style="color:#60ff00;font-size:10px;margin-top:-15px;position:absolute;float:right;right:-30px;letter-spacing:2px;">New!</span>
 		</div>
-
-
 	 </div>
 	<form>
 		<select id="bkpsFile" style="width:310px;">
@@ -183,6 +185,8 @@
 <div id="palco" class="palco_02 recolhido">
 <div id="divEditor" class="recolhido">&lt;? ?&gt;</div>
 <script type="text/javascript">
+
+
 	$(window).unbind('keydown').bind('keydown', function(event) {
 		if (event.ctrlKey || event.metaKey) {
 			switch (String.fromCharCode(event.which).toLowerCase()) {
@@ -206,19 +210,26 @@
 		}
 	});
 $(document).ready(function() {
+
+
+
 	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
-	$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
-		$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
+
+	$.getScript('<?=ws::rootPath?>admin/app/vendor/ace/src-min-noconflict/ace.js', function() {
+		$.getScript('<?=ws::rootPath?>admin/app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
 				$("#ws_confirm").remove();
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");
 				window.funcTabs = function() {
+
+
 					$(".fileTabContainer .fileTab").unbind("tap click").bind("tap click", function() {
 						$(".fileTab").removeClass("active");
 						$(this).addClass("active");
 						window.pathFile = $(this).attr("data-pathFile");
 						window.loadFile = $(this).attr("data-loadFile");
-						window.htmEditor.setSession(window.listFilesWebmaster[$(this).attr("data-token")].session);
+						window.tokenFile = $(this).attr("data-token");
+						window.htmEditor.setSession(window.listFilesWebmaster[window.tokenFile].session);
 					})
 					$(".fileTabContainer .fileTab .close").unbind("tap click").bind("tap click", function() {
 						var aba = $(this);
@@ -299,12 +310,11 @@ $(document).ready(function() {
 					})
 				};
 				window.addTab = function($newTokenFile, $pathFile, $loadFile, $saved) {
-
-					if (!$('.fileTabContainer .fileTab[data-pathFile="' + $pathFile + '"][data-loadFile="' + $loadFile + '"]').length) {
+					if (!$('.fileTabContainer .fileTab[data-full-path-file="' + $pathFile + $loadFile + '"]').length) {
 						$(".tabSortable.fileTab.loader").remove();
 						$(".fileTab").removeClass("active");
 						$(".fileTabContainer .container").prepend('<div '+
-							'legenda="' +$pathFile.replace("<?=str_replace("\\","/",INCLUDE_PATH.'website')?>", "")+'" '+ 
+							'legenda="' +$pathFile.replace("<?=ws::includePath.'website'?>", "")+'" '+ 
 							'class="tabSortable fileTab active ' + $saved + '" '+
 							'data-token="' + $newTokenFile + '" '+
 							'data-saved="true" '+
@@ -312,9 +322,8 @@ $(document).ready(function() {
 							'data-pathFile="' + $pathFile.replace($loadFile,"") + '" '+
 							'data-loadFile="' + $loadFile + '"> '+
 							'<div class="str">' + 
-							$pathFile.replace("<?=str_replace("\\","/",INCLUDE_PATH.'website')?>", "")+'</div>'+
-							'<div class="close"></div><div class="tab_shadow"></div><textarea style="display:none"></textarea> </div>');
-
+							"/"+$pathFile.replace("<?=ws::includePath.'website/'?>", "")+"/"+$loadFile+
+							'</div><div class="close"></div><div class="tab_shadow"></div><textarea style="display:none"></textarea> </div>');
 						if ($(".fileTabContainer .container.ui-sortable").length) {
 							$(".fileTabContainer .container").sortable("destroy");
 						}
@@ -343,7 +352,7 @@ $(document).ready(function() {
 				window.resizeDesktop = function() {
 					window.htmEditor.resize();
 				}
-				ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
+				ace.config.set('basePath', '<?=ws::rootPath?>admin/app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 				window.htmEditor = ace.edit("divEditor");
 
 				window.htmEditor.setTheme("ace/theme/monokai");
@@ -368,7 +377,7 @@ $(document).ready(function() {
 								callback(null, []);
 								return
 							}
-							$.getJSON("./app/modulos/webmaster/autoComplete.json", function(wordList) {
+							$.getJSON("<?=ws::rootPath?>admin/app/modulos/webmaster/autoComplete.json", function(wordList) {
 								callback(null, wordList.map(function(ea) {
 									return {
 										name: ea.value,
@@ -404,8 +413,10 @@ $(document).ready(function() {
 						$("#Balao_TollType").remove();
 
 						if ($(document.activeElement).closest("div").attr("id") == "divEditor") {
-							if (Object.keys(window.listFilesWebmaster).length) {window.listFilesWebmaster[window.newTokenFile].saved = 'unsave';}
-							$('.fileTabContainer .fileTab[data-token="' + window.newTokenFile + '"]').removeClass('saved').addClass('unsave');
+							if (Object.keys(window.listFilesWebmaster).length) {
+								window.listFilesWebmaster[window.tokenFile].saved = 'unsave';
+							}
+							$('.fileTab[data-full-path-file="' + window.pathFile + window.loadFile + '"]').removeClass('saved').addClass('unsave');
 						}
 					})
 
@@ -560,7 +571,7 @@ $(document).ready(function() {
 
 					$('#formatHTML').unbind('tap press click').bind('tap press click', function() {
 						confirma({
-							conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/formatter/index.php" width="100%" height="100%" scrolling="no"></iframe>',
+							conteudo: '<iframe id="bootstrap" src="<?=ws::rootPath?>admin/app/modulos/webmaster/formatter/index.php" width="100%" height="100%" scrolling="no"></iframe>',
 							width: 600,
 							height:370,
 							bot1: 'Formatar',
@@ -579,7 +590,7 @@ $(document).ready(function() {
 					})
 					$('#templateBootstrap').unbind('tap press click').bind('tap press click', function() {
 						confirma({
-							conteudo: '<iframe id="bootstrap" src="./app/modulos/webmaster/templateBootstrap/index.php" width="100%" height="100%"></iframe>',
+							conteudo: '<iframe id="bootstrap" src="<?=ws::rootPath?>admin/app/modulos/webmaster/templateBootstrap/index.php" width="100%" height="100%"></iframe>',
 							width: 'calc(100% - 100px)',
 							height: 'calc(100% - 100px)',
 							bot1: 'Inserir',
@@ -700,7 +711,7 @@ $(document).ready(function() {
 										var pathPlug = $("#shortcodes").val();
 										$.ajax({
 											type: "POST",
-											url: "./app/modulos/webmaster/functions.php",
+											url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
 											data: {
 												'function': 'getShortCodesPlugin',
 												'path': pathPlug
@@ -973,7 +984,7 @@ $(document).ready(function() {
 						if (!$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').length) {
 								$.ajax({
 									type: "POST",
-									url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/webmaster/functions.php",
+									url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
 									data: {
 										'function': 'loadFile',
 										'pathFile': window.pathFile
@@ -992,8 +1003,8 @@ $(document).ready(function() {
 						}
 					});
 					$('#maximize').unbind('tap click').bind('tap click', function() {
-						if($("#container").hasClass("popup")){
-							$("#container").removeClass("popup")
+						if($("#container").hasClass("fullscreen")){
+							$("#container").removeClass("fullscreen")
 					    if (document.cancelFullScreen) {  
 					      document.cancelFullScreen();  
 					    } else if (document.mozCancelFullScreen) {  
@@ -1001,9 +1012,8 @@ $(document).ready(function() {
 					    } else if (document.webkitCancelFullScreen) {  
 					      document.webkitCancelFullScreen();  
 					    }  
-
 						}else{
-							$("#container").addClass("popup")
+							$("#container").addClass("fullscreen")
 							if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
 								if (document.documentElement.requestFullScreen) {  
 									document.documentElement.requestFullScreen();  
@@ -1015,18 +1025,43 @@ $(document).ready(function() {
 							} 
 						}
 					})
+
+					if(window.location.pathname.split('/').splice(-2).join("/")=="popup/code-editor"){
+						$('#popup').hide();
+					}else{
+						$('#popup').unbind('tap click').bind('tap click', function() {
+							if(!ws.exists.dom(".fileTab.unsave")){
+								$(".fileTab .close").click();
+								var w 			= (screen.width/2);
+								var h 			= (screen.height/2);
+								ws.popup("./popup/code-editor", w, h, 'yes' );
+								document.location.reload(true);
+							}else{
+								confirma({
+									conteudo: "Houve alterações em um ou mais arquivos, salve antes de continuar",
+									width: 500,
+									posFn: function() {},
+									Init: function() {},
+									posClose: function() {},
+									bot1: false,
+									bot2: false,
+									drag: false,
+									botclose: 1,
+									newFun: function() {}
+								})
+
+
+
+							}
+						})	
+					}
+
 					$('#salvarArquivo').unbind('tap click').bind('tap click', function() {
-						//window.newTokenFile	
-						//window.loadFile
-						//window.typeLoaded
 						var ConteudoDoc = encodeURIComponent(window.htmEditor.getValue())
-						//out(ConteudoDoc)
-						//out(window.pathFile)
-						//out(window.loadFile)
 						var GET = "pathFile=" + window.pathFile.replace(window.loadFile,"") + "&filename=" + window.loadFile + "&token=" + window.newTokenFile + "&ConteudoDoc=" + ConteudoDoc;
 						$.ajax({
 							type: "POST",
-							url: "./app/modulos/webmaster/functions.php",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
 							beforeSend:function(){
 									confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 							},
@@ -1042,10 +1077,11 @@ $(document).ready(function() {
 									$("#body").removeClass("scrollhidden");
 									$("*").removeClass("blur");
 									window.listFilesWebmaster[window.newTokenFile].saved = 'saved';
-									$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').removeClass('unsave').addClass('saved')
+									$('.fileTab[data-full-path-file="' + window.pathFile + window.loadFile + '"]').removeClass('unsave').addClass('saved');
+
 									if (window.closeToSave == true) {
 										window.closeToSave = false;
-										$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"] .close').click();
+										$('.fileTab[data-full-path-file="' + window.pathFile+window.loadFile + '"] .close').click();
 									}
 									TopAlert({
 										mensagem: "Arquivo atualizado com sucesso!",

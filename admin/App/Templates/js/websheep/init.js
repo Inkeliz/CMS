@@ -405,7 +405,8 @@ $(document).ready(function(){
 		$('*[legenda]').LegendaOver();
 
 		//############################################################################
-		 if(typeof(directAccess) !== 'undefined' && directAccess != null && typeof directAccess.id_tool == 'number'){
+
+		if(typeof(directAccess) !== 'undefined' && directAccess != null && typeof directAccess.id_tool == 'number' && directAccess.LoadDirectTool != 'null'){
 		 	var linkAccess  = null;
 		 	if(directAccess.type_obj=='item' && directAccess.id_item==0){
 			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/index.php?back=false&ws_id_ferramenta="+directAccess.id_tool;
@@ -441,6 +442,29 @@ $(document).ready(function(){
 		 	}
 
 		 }
+
+
+		if(typeof(directAccess) !== 'undefined' && directAccess.LoadDirectTool != 'null'){
+				confirma({
+					width:"auto",
+					conteudo:"...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+					drag:false,
+					bot1:0,bot2:0,
+					posFn:function(){
+							$("#ws_confirm").css("line-height","20px");
+								$( "#conteudo" ).load(directAccess.LoadDirectTool, function( response, status, xhr ) {
+									$("#ws_confirm").remove(); $("#body").removeClass("scrollhidden"); $("*").removeClass("blur"); window.CloseMenu();
+								});
+					}
+				})
+
+
+
+		}
+
+
+
+
 		//############################################################################
 
 

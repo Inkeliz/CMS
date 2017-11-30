@@ -965,13 +965,16 @@ function loadFile($pathFile=null){
 		if($ext=="js"){$ext="javascript";}
 		$stringFile = mysqli_real_escape_string($_conectMySQLi_,file_get_contents($pathFile));
 
-		echo 'if(!$(\'.fileTabContainer .fileTab[data-pathFile="'.$pathFile.'"][data-loadFile="'.$file.'"]\').length){';
+		echo 'if(!$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.$file.'"]\').length){';
 		echo '$("#nameFile").html("<span class=\'b1 noSelect\'>Nome do arquivo:</span> /'.str_replace('./../../../','', $_REQUEST['pathFile']).'");';
 		echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
 		echo 'window.typeLoaded			= "file";';
-		echo 'window.pathFile 			= "'.$pathFile.'";';
+		echo 'window.pathFile 			= "'.$path.'";';
 		echo 'window.loadFile 			= "'.$file.'";';
 		echo 'window.newTokenFile 		= "'.$newTokenFile.'";';
+
+
+		echo 'window.tokenFile 			= "'.$newTokenFile.'";';
 		echo 'window.htmEditor.setReadOnly(false);';
 		//MONTA O OBJETO COM OS ARQUIVOS E AS SESSÕES 
 		echo 'window.listFilesWebmaster.'.$newTokenFile.' = Object();';
@@ -987,7 +990,7 @@ function loadFile($pathFile=null){
 		echo 'window.htmEditor.setSession(window.listFilesWebmaster.'.$newTokenFile.'.session);';
 		echo 'window.addTab("'.$newTokenFile.'",window.pathFile,window.loadFile,"saved");';
 		echo '}else{
-				$(\'.fileTabContainer .fileTab[data-pathFile="'.$pathFile.'"][data-loadFile="'.$file.'"]\').click();
+				$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.$file.'"]\').click();
 			};';
 
 	}
