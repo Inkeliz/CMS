@@ -111,9 +111,9 @@ class htmlProcess{
 							}
 							if($lenght!= null){
 
-								$porisso[] = substr(str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->setSlug($slug)->setLimit(1)->setType($type)->go()->result[$colum])),0,$lenght);
+								$porisso[] = substr(str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->slug($slug)->limit(1)->type($type)->go()->result[$colum])),0,$lenght);
 								}else{
-								$porisso[] = str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->setSlug($slug)->setLimit(1)->setType($type)->go()->result[$colum]));
+								$porisso[] = str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->slug($slug)->limit(1)->type($type)->go()->result[$colum]));
 							}
 						}elseif(count($ws)==4){	
 							$slug 	= $ws[0];
@@ -133,9 +133,9 @@ class htmlProcess{
 							}
 							$Tool= new WS(); 
 							if($lenght!= null){
-								$porisso[] = substr(str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->setSlug($slug)->setWhere($where)->setLimit(1)->setType($type)->go()->result[0][$colum])),0,$lenght);
+								$porisso[] = substr(str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->slug($slug)->where($where)->limit(1)->type($type)->go()->result[0][$colum])),0,$lenght);
 							}else{
-								$porisso[] = str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->setSlug($slug)->setWhere($where)->setLimit(1)->setType($type)->go()->result[0][$colum]));
+								$porisso[] = str_replace(array('&nbsp;',PHP_EOL,"\n","\r"),'_ws_php_eol_',strip_tags($Tool->slug($slug)->where($where)->limit(1)->type($type)->go()->result[0][$colum]));
 							}
 						}else{	
 							$porisso[] = ws::GetDebugError(debug_backtrace(),"Variável inválida: Use {slug,type,colum,where}");
