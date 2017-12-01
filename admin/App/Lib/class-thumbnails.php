@@ -65,15 +65,15 @@
                 return false;
             }
 
-            if( !$this->showBrowser || $this->showBrowser==false) {
-                $this->save();
-            } else {
-                if( $this->forceDownload ) {
-                    $this->download();
-                } else {
-                    $this->display();
-                }
-            }
+            // if( !$this->showBrowser || $this->showBrowser==false) {
+            //     $this->save();
+            // } else {
+            //     if( $this->forceDownload ) {
+            //         $this->download();
+            //     } else {
+            //         $this->display();
+            //     }
+            // }
         }
         
         private function output( $path ) {

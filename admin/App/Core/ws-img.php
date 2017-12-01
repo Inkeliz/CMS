@@ -3,108 +3,106 @@
 	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
-	if(!defined("ROOT_WEBSHEEP"))	{
-		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-img'));
-		$path = implode(array_filter(explode('/',$path)),"/");
-		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-	}
-
-
-	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+		if(!defined("ROOT_WEBSHEEP"))	{
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'ws-img'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
+		if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
 
 	################################################################################
 	# IMPORTAMOS A CLASSE THUMB CANVAS
 	################################################################################
-	ob_start();
-	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+		ob_start();
+		include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+
 	################################################################################
 	# EXPLODIMOS A URL DA IMAGEM
 	################################################################################
-	$URL = ws::urlPath(0,0,'array');
+		$URL = ws::urlPath(0,0,'array');
 
 	################################################################################
 	# AGORA TRATAMOS A ARRAY COM OS DADOS NECESSÁRIOS
-	################################################################################
-	
-	if (count($URL) >= 5) {
-		$vars['largura'] = $URL[2];
-		$vars['altura']  = $URL[3];
-		$vars['q']       = $URL[4];
-		$vars['imagem']  = $URL[5];
-
-	} elseif (count($URL) == 4) {
-		$vars['largura'] = $URL[2];
-		$vars['altura']  = $URL[3];
-		if (is_numeric($URL[4])) {
-			$vars['q']      = $URL[4];
-			$vars['imagem'] = null;
-		} else {
-			$vars['q']      = null;
-			$vars['imagem'] = $URL[4];
-		}
-	} elseif (count($URL) == 3) {
-		$vars['q']       = null;
-		$vars['largura'] = $URL[2];
-		if (is_numeric($URL[3])) {
-			$vars['altura'] = $URL[3];
-			$vars['imagem'] = null;
-		} else {
-			$vars['altura'] = 0;
-			$vars['imagem'] = $URL[3];
-		}
-	} elseif (count($URL) == 2) {
-		$vars['q']       = null;
-		if (is_numeric($URL[2])) {
+	################################################################################	
+		if (count($URL) >= 5) {
 			$vars['largura'] = $URL[2];
-			$vars['altura']  = 0;
-			$vars['imagem']  = null;
+			$vars['altura']  = $URL[3];
+			$vars['q']       = $URL[4];
+			$vars['imagem']  = $URL[5];
+
+		} elseif (count($URL) == 4) {
+			$vars['largura'] = $URL[2];
+			$vars['altura']  = $URL[3];
+			if (is_numeric($URL[4])) {
+				$vars['q']      = $URL[4];
+				$vars['imagem'] = null;
+			} else {
+				$vars['q']      = null;
+				$vars['imagem'] = $URL[4];
+			}
+		} elseif (count($URL) == 3) {
+			$vars['q']       = null;
+			$vars['largura'] = $URL[2];
+			if (is_numeric($URL[3])) {
+				$vars['altura'] = $URL[3];
+				$vars['imagem'] = null;
+			} else {
+				$vars['altura'] = 0;
+				$vars['imagem'] = $URL[3];
+			}
+		} elseif (count($URL) == 2) {
+			$vars['q']       = null;
+			if (is_numeric($URL[2])) {
+				$vars['largura'] = $URL[2];
+				$vars['altura']  = 0;
+				$vars['imagem']  = null;
+			} else {
+				$vars['imagem']  = $URL[2];
+				$vars['altura']  = 0;
+				$vars['largura'] = 0;
+			}
 		} else {
-			$vars['imagem']  = $URL[2];
+			$vars['imagem']  = null;
 			$vars['altura']  = 0;
 			$vars['largura'] = 0;
+			$vars['q']       = null;
 		}
-	} else {
-		$vars['imagem']  = null;
-		$vars['altura']  = 0;
-		$vars['largura'] = 0;
-		$vars['q']       = null;
-	}
 
 	################################################################################
 	# RETIRAMOS O @2X PARA NÃO DAR CONFLITO COM TEMPLATES RESPONSIVOS
 	################################################################################
-	$vars['imagem'] = str_replace("@2x", "", $vars['imagem']);
-	
+		$vars['imagem'] = str_replace("@2x", "", $vars['imagem']);
+		
 	################################################################################
 	# DEFINE O PATH QUE IRÁ BUSCAR AS IMAGENS
 	################################################################################
-	$pathUpload = INCLUDE_PATH.'website/assets/upload-files/';
-	
+		$pathUpload = INCLUDE_PATH.'website/assets/upload-files/';
+		
 	################################################################################
 	# CASO NÃO EXISTA A IMAGEM, SUBSTITUIMOS PELA IMAGEM PADRÃO DO SISTEMA
 	################################################################################
-	if ($vars['imagem'] == null || !file_exists($pathUpload . $vars['imagem'])) {
-		$OriginalExists=false;
-		$vars['imagem'] = INCLUDE_PATH.'admin/app/templates/img/websheep/no-img.png';
-	} else {
-		$OriginalExists=true;
-		$vars['imagem'] = $pathUpload . $vars['imagem'];
-	}
+		if ($vars['imagem'] == null || !file_exists($pathUpload . $vars['imagem'])) {
+			$OriginalExists=false;
+			$vars['imagem'] = INCLUDE_PATH.'admin/app/templates/img/websheep/no-img.png';
+		} else {
+			$OriginalExists=true;
+			$vars['imagem'] = $pathUpload . $vars['imagem'];
+		}
 
 	################################################################################
 	# DEFINE O TAMANHO DA IMAGEM
 	################################################################################
-	$filesize = getimagesize($vars['imagem']);
-	if ($vars['altura'] == 0 && $vars['largura'] == 0) {
-		$vars['largura'] = $filesize[0];
-		$vars['altura']  = $filesize[1];
-	}
+		$filesize = getimagesize($vars['imagem']);
+		if ($vars['altura'] == 0 && $vars['largura'] == 0) {
+			$vars['largura'] = $filesize[0];
+			$vars['altura']  = $filesize[1];
+		}
 	
 	################################################################################
 	# VERIFICA A EXTENÇÃO DO ARQUIVO
 	################################################################################
-	$extencao = explode(".",$vars['imagem']);
-	$extencao = end($extencao);
+		$extencao = explode(".",$vars['imagem']);
+		$extencao = end($extencao);
 
 	################################################################################
 	# DEFINE A QUALIDADE DA IMAGEM
@@ -128,38 +126,31 @@
 	################################################################################
 	# CAMINHO ROOT DO ARQUIVO TRATADO
 	################################################################################
-
-	$_root = INCLUDE_PATH.'website';
-	$local = $_root.'/assets/upload-files/thumbnail';
-
-
-	if(!file_exists($local)){@mkdir($local);}
-
-	$newName = $local.'/'.$vars['largura'] . '-' . $vars['altura'] . '-' . $vars['q'] . '-' . basename($vars['imagem']);
-
-
+		$_root = INCLUDE_PATH.'website';
+		$local = $_root.'/assets/upload-files/thumbnail';
+		if(!file_exists($local)){@mkdir($local);}
+		$newName = $local.'/'.$vars['largura'] . '-' . $vars['altura'] . '-' . $vars['q'] . '-' . basename($vars['imagem']);
 
 	################################################################################
 	# VERIFICA SE A THUMB NÃO EXISTE  
 	################################################################################
 	if (!file_exists($newName)) {
 		################################################################################
-		# CRIA THUMB
+		# CRIA THUMB E RETORNA
 		################################################################################
-		$thumb = new thumb($vars['imagem']); 								//link ou resource da imagem original
-		$thumb->setDimensions(array($vars['largura'],$vars['altura'])); 	//largura e altura da thumb, aceita arrays multidimensionais
-
+		$thumb = new thumb($vars['imagem']);
+		$thumb->setDimensions(array($vars['largura'],$vars['altura']));
 		if($OriginalExists==false){
 			$thumb->setNewThumb(null);
 		}else{
 			$thumb->setNewThumb($newName);
 		}
-		$thumb->setJpegQuality(100);										//qualidade JPG (0-100)
-		$thumb->setPngQuality(9); 											//qualidade do PNG (0-9)
-		$thumb->setGifQuality(100);											//qualidade do GIF (0-100)
-		$thumb->crop=true;													//se a imagem deverá ser cropada ou não
-		$thumb->forceDownload(false);										//true para setar a thumb para download
-		$thumb->showBrowser(true);											//true para setar a thumb para mostrar no navegador
+		$thumb->setJpegQuality(100);										
+		$thumb->setPngQuality(9);
+		$thumb->setGifQuality(100);
+		$thumb->crop=true;
+		$thumb->forceDownload(false);
+		$thumb->showBrowser(true);
 		$thumb->process();
 
 	} else {
