@@ -29,6 +29,7 @@
 	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-htmlprocess.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/class-lipsum.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/class-mobile-detect.php');
+	include_once(INCLUDE_PATH.'admin/app/lib/class-thumbnails.php');
 	include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
 
 

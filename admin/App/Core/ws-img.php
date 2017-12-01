@@ -137,6 +137,8 @@
 
 	$newName = $local.'/'.$vars['largura'] . '-' . $vars['altura'] . '-' . $vars['q'] . '-' . basename($vars['imagem']);
 
+
+
 	################################################################################
 	# VERIFICA SE A THUMB NÃO EXISTE  
 	################################################################################
@@ -144,34 +146,22 @@
 		################################################################################
 		# CRIA THUMB
 		################################################################################
-		if($OriginalExists==false){
-			################################################################################
-			# EXIBE A THUMB PADRÃO DO SISTEMA (SEM GRAVAR)
-			################################################################################
-				$img = new canvas();
-				$img->carrega($vars['imagem'])->redimensiona($vars['largura'], $vars['altura'], 'crop')->exibe($vars['imagem']);exit;
+		$thumb = new thumb($vars['imagem']); 								//link ou resource da imagem original
+		$thumb->setDimensions(array($vars['largura'],$vars['altura'])); 	//largura e altura da thumb, aceita arrays multidimensionais
 
+		if($OriginalExists==false){
+			$thumb->setNewThumb(null);
 		}else{
-			$img = new canvas();
-			 if ($img->carrega($vars['imagem'])->redimensiona($vars['largura'], $vars['altura'], 'crop')->grava($newName, $vars['q'])) {
-			 	################################################################################
-			 	# MONTA O HEADER
-			 	################################################################################
-					 if ($extencao == 'jpg') {
-					 	header("Content-type: image/jpeg");
-					 } elseif ($extencao == 'png') {
-					 	header("Content-type: image/png");
-					 } elseif ($extencao == 'gif') {
-					 	header("Content-type: image/gif");
-					 }
-				################################################################################
-				# RETTORNA A IMAGEM
-				################################################################################
-				 	$handle = fopen($newName, "rb");
-					echo stream_get_contents($handle);
-					fclose($handle);
-			 }
+			$thumb->setNewThumb($newName);
 		}
+		$thumb->setJpegQuality(100);										//qualidade JPG (0-100)
+		$thumb->setPngQuality(9); 											//qualidade do PNG (0-9)
+		$thumb->setGifQuality(100);											//qualidade do GIF (0-100)
+		$thumb->crop=true;													//se a imagem deverá ser cropada ou não
+		$thumb->forceDownload(false);										//true para setar a thumb para download
+		$thumb->showBrowser(true);											//true para setar a thumb para mostrar no navegador
+		$thumb->process();
+
 	} else {
 		################################################################################
 		# MONTAMOS O HEADER

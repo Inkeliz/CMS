@@ -41,7 +41,11 @@
         private $showBrowser;
         private $forceDownload;
         private $resource;
+        private $NewThumb=null;
         
+        public function setNewThumb($name)          {$this->NewThumb = $name;}
+        public function getNewThumb()               {return $this->NewThumb;}
+
         public function showBrowser( $show ){
             $this->showBrowser = (bool) $show;
         }
@@ -52,14 +56,16 @@
         
         public function prepare( $resource ) {
             $this->resource = $resource;
-                    
-            //Usuário não setou a pasta, mostrar no navegador
-            if( is_null( image::getFolder( ) ) or !is_dir( image::getFolder( ) ) ) {
+
+            if($this->NewThumb!=null) {
+                $this->save($this->getNewThumb());
+                $this->display();
+           }else{
                 $this->display();
                 return false;
             }
-            
-            if( !$this->showBrowser ) {
+
+            if( !$this->showBrowser || $this->showBrowser==false) {
                 $this->save();
             } else {
                 if( $this->forceDownload ) {
@@ -94,8 +100,8 @@
             $this->output( null );
         }
         
-        private function save( ) {
-            $this->output( image::getName() );
+        private function save() {
+            $this->output( $this->getNewThumb() );
         }
         
         public function __destruct( ) {
@@ -224,7 +230,7 @@
                 $this->resource = imagecreatetruecolor( $this->thumbWidth, $this->thumbHeight );
             }
             
-            $this->crop( );
+            $this->crop();
         }
         
         private function crop( ) {
@@ -256,9 +262,8 @@
                     $thumbX         = round( ( $largura_original - ( $largura_original / $proporcaoX * $proporcaoY ) ) / 2 );
 
 
-                } 
                 //Imagem retrato
-                else if( $proporcaoY > $proporcaoX ){
+                }else if( $proporcaoY > $proporcaoX ){
                  //   $thumbLargura = round( $largura_original / $proporcaoX * $proporcaoY );
                     $thumbAltura = round( $altura_original / $proporcaoY * $proporcaoX );
                     $thumbY = round( ( $altura_original - ( $altura_original / $proporcaoY * $proporcaoX ) ) / 2 );
