@@ -1,4 +1,5 @@
 <?php
+
 ############################################################################################################################################
 # DEFINIMOS O ROOT DO SISTEMA
 ############################################################################################################################################
@@ -8,7 +9,7 @@
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : trim('/'.$path.'/')));
 	}
 
-	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 ############################################################################################################################################
 # IMPORTA CLASSES NECESSÁRIAS PARA O SISTEMA
@@ -31,7 +32,6 @@
 	include_once(INCLUDE_PATH.'admin/app/lib/class-mobile-detect.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/class-thumbnails.php');
 	include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
-
 
 	class WS {
    		const includePath 	=  	INCLUDE_PATH;
@@ -96,8 +96,6 @@
 		static function create_thumbnail( $file, $w, $h,$q){
 			$newName = $w . '-' . $h . '-' . $q . '-' . basename($file);
 			$saveName = ws::includePath.'website/assets/upload-files/thumbnail/'.$newName;
-
-			
 			if(!file_exists($file)){
 				$array =(object) array(
 								'status' 		=> "fail",

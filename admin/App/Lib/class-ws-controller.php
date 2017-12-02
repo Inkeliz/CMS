@@ -8,7 +8,7 @@
 	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 }
 
-	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 class controller{
 	static function GetDebugError($dados,$plus="") {return ("<br>".$plus."<br><br><hr style='border-bottom: dashed 1px;'><br><b>Arquivo:</b>".@$dados[0]['file'].'<br><b>Linha</b>: '.$dados[0]['line'].' <br><b>Função:</b>'.$dados[0]['class'].$dados[0]['type'].$dados[0]['function'].'("'.implode($dados[0]['args'],',').'")<br><br><hr style="border-bottom: dashed 1px;"><br>Consulte:	controller::help();<br><hr>' );}

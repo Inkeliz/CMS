@@ -13,7 +13,7 @@
 	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 }
 
-	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 
 	############################################
@@ -199,8 +199,10 @@
 	##########################################################################################
 	#  VERIFICA SE É O EDITOR EM POPUP   
 	##########################################################################################
+
+
  	  $TEMPLATE->CLASS_POPUP 	= (ws::urlPath(2,false)=="popup") ? 'popup' : '';
- 	  $TEMPLATE->LoadDirectTool = (ws::urlPath(3,false)=="code-editor") ? '/admin/app/modulos/webmaster/index.php' : 'null';
+ 	  $TEMPLATE->LoadDirectTool = (ws::urlPath(3,false)=="code-editor") ? ws::rootPath.'admin/app/modulos/webmaster/index.php' : 'null';
 
 
 

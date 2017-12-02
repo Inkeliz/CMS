@@ -740,6 +740,32 @@ ws = {
 			return t;
 		}
 	},
+	preload:{
+		open:function(opcoes){
+			var options = ws.extend({string: '',preload:"modal_preload"}, opcoes);
+			if(options.string==""){
+					var topGif = "35px"
+			}else{
+					var topGif = "53px"
+			}
+
+			ws.confirm({
+				conteudo:options.string+"<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:"+topGif+";background-image:url(\"/admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+				idModal:options.preload,
+				width:250,
+				botclose: false
+			});
+		},
+		close:function(opcoes){
+				var options = ws.extend({preload:"modal_preload"}, opcoes);
+				$("#"+options.preload).remove();
+				if(!ws.exists.dom('.ws_popup_confirm')){
+					$("#ws_confirm").remove();
+					$("#body").removeClass("scrollhidden");
+					$("*").removeClass("blur");
+				}
+		}
+	},
 	alert: {
 		top: function(opcoes) {
 			ws.verify.jquery();
@@ -823,7 +849,7 @@ ws = {
 					}
 					$('#avisoTopo').html("<div class=\"" + options.classText + "\" style=\"" + options.styleText + "\">" + options.mensagem + "</div>");
 				}
-				if(options.botClose != null) {
+				if(options.botClose != null && options.botClose != false) {
 					$(options.botClose).unbind("click").click(function() {
 						$("#avisoTopo").animate({
 							height: 0,
@@ -1262,7 +1288,7 @@ ws = {
 			} else {
 				var botao2 = "<div id='recusar' class='recusar'>" + options.cancel + "</div>"
 			}
-			if(options.botclose == false) {
+			if(options.botClose == null || options.botClose == false) {
 				var BotClose = ""
 			} else {
 				var BotClose = "<div id='close' class='botao close' >x</div>"
@@ -1272,9 +1298,9 @@ ws = {
 			} else {
 				var Botoes = "<div id='bottons' class='bottons'>" + botao1 + botao2 + "</div>";
 			}
-			if(options.bot1 == false && options.cancel == false && options.botclose == false) {
-				var BotClose = "<div id='close' class='botao close' >x</div>";
-			}
+			// if(options.bot1 == false && options.cancel == false && options.botclose == false) {
+			// 	var BotClose = "<div id='close' class='botao close' >x</div>";
+			// }
 		}
 
 		if($.type(options.idModal) === "string") {
@@ -1416,10 +1442,6 @@ ws = {
 			console.warn(message);
 		}
 	}
-
-
-
-
 
 
 

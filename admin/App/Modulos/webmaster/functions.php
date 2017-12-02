@@ -10,7 +10,7 @@ ob_start();
 	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 }
 
-if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 $session = new session();
@@ -147,9 +147,10 @@ function InsertPagination(){
 
 function InsertPaginationCampos(){
 	global $session;
+	parse_str($_POST['form'],$_FORM);
 	$ws_ferramentas 				= new MySQL();
 	$ws_ferramentas->set_table(PREFIX_TABLES.'ws_ferramentas');
-	$ws_ferramentas->set_where('id="'.$_REQUEST['id_toll'].'"');
+	$ws_ferramentas->set_where('id="'.$_FORM['id_toll'].'"');
 	$ws_ferramentas->select();
 	$isso = array('"',"	",PHP_EOL,"\r","\n");
 	$porisso = array("'","","","","");
@@ -168,16 +169,17 @@ function InsertPaginationCampos(){
 	$output .=  '		data-where=""	'."\n";
 	$output .=  '		data-innerItem="" '."\n\n";
 	$output .= '	-->'."\n";
-	$output .=   '<ws-paginate data-slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" data-type="'.$_REQUEST['type'].'" data-max="5" data-atual="url:2" ';
-	$output .=   'data-html="'.(str_replace($isso,$porisso,$_REQUEST['editorHTML'])).'" '; 
-	$output .=   'data-number="'.(str_replace($isso,$porisso,$_REQUEST['editorCOUNT'])).'" ';
-	$output .=   'data-active="'.(str_replace($isso,$porisso,$_REQUEST['editorCOUNTactive'])).'">';
+	$output .=   '<ws-paginate data-slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" data-type="'.$_FORM['type'].'" data-max="5" data-atual="url:2" ';
+	$output .=   'data-html="'.(str_replace($isso,$porisso,$_FORM['editorHTML'])).'" '; 
+	$output .=   'data-number="'.(str_replace($isso,$porisso,$_FORM['editorCOUNT'])).'" ';
+	$output .=   'data-active="'.(str_replace($isso,$porisso,$_FORM['editorCOUNTactive'])).'">';
 	$output .=   '</ws-paginate>'."\n";
 	echo ($output);
 	exit;
 }
 function InsertCodeForm(){
 	global $session;
+
 	echo '<div class="comboShortCode">
 		<form id="formTags" style="height: 200px;">
 			<div style="font-size: 20px;font-weight: bold;padding-bottom: 12px;">Adicionar um formulário de cadastro</div>
@@ -210,11 +212,14 @@ function InsertCodeForm(){
 }
 function InsertCodeFormCampos(){
 	global $session;
+	parse_str($_POST['form'],$_FORM);
 
-	if($_REQUEST['typeCode']=='html'){
-			echo '<form action="'.ws::rootPath.'ws-leads/'.strtolower($_REQUEST['id_toll']).'" method="post">'.PHP_EOL;
+
+
+	if($_FORM['typeCode']=='html'){
+			echo '<form action="'.ws::rootPath.'ws-leads/'.strtolower($_FORM['id_toll']).'" method="post">'.PHP_EOL;
 					$local = new MySQL();
-					$local->set_table(PREFIX_TABLES.'wslead_'.strtolower($_REQUEST['id_toll']));
+					$local->set_table(PREFIX_TABLES.'wslead_'.strtolower($_FORM['id_toll']));
 					$local->show_columns();
 			echo '		<input type="hidden" name="typeSend" value="html">'.PHP_EOL;
 					foreach($local->fetch_array as $coluna){
@@ -225,10 +230,10 @@ function InsertCodeFormCampos(){
 			echo '		<input type="submit" value="Submit">'.PHP_EOL;
 			echo '</form>';
 			exit;    	
-	}elseif($_REQUEST['typeCode']=='ajax'){
+	}elseif($_FORM['typeCode']=='ajax'){
 			echo '<form id="ws_send">'.PHP_EOL;
 					$local = new MySQL();
-					$local->set_table(PREFIX_TABLES.'wslead_'.strtolower($_REQUEST['id_toll']));
+					$local->set_table(PREFIX_TABLES.'wslead_'.strtolower($_FORM['id_toll']));
 					$local->show_columns();
 					echo '		<input type="hidden" name="typeSend" value="ajax">'.PHP_EOL;
 					foreach($local->fetch_array as $coluna){
@@ -244,7 +249,7 @@ function InsertCodeFormCampos(){
 					e.preventDefault();
 					$.ajax({
 						type: "POST",
-						url:"'.ws::rootPath.'ws-leads/'.strtolower($_REQUEST['id_toll']).'",
+						url:"'.ws::rootPath.'ws-leads/'.strtolower($_FORM['id_toll']).'",
 						data: {form:$("#ws_send").serialize()},
 						async: true,
 						beforeSend: function(data) {	console.log("beforeSend");	},
@@ -347,21 +352,23 @@ function InsertCode(){
 
 function InsertCodeCampos(){
 	global $session;
+	parse_str($_POST['form'],$_FORM);
+
 	$ws_ferramentas 				= new MySQL();
 	$ws_ferramentas->set_table(PREFIX_TABLES.'ws_ferramentas');
-	$ws_ferramentas->set_where('id="'.$_REQUEST['id_toll'].'"');
+	$ws_ferramentas->set_where('id="'.$_FORM['id_toll'].'"');
 	$ws_ferramentas->select();
 	$Ferramenta = $ws_ferramentas->fetch_array[0];
 	$prefix 	= $Ferramenta['_prefix_'];
 
-	if(isset($_REQUEST['typeCode']) && $_REQUEST['typeCode']=="classe"){
+	if(isset($_FORM['typeCode']) && $_FORM['typeCode']=="classe"){
 		$output="\n";
 		$output.= '################################### CLASSE PHP ###################################'."\n";
 		$output.= '	//Caso utilize template, utilize as variáveis da mesma forma que as tag HTML5;'."\n";
 		$output.= '	$template="<div>{{coluna}}</div>";'."\n\n";
 		$output.= '	// Chamamos a classe WS'."\n";
 		$output.= '	$Tool= new WS();'."\n";
-		$output.= '	$pesquisa = $Tool->slug("'.$ws_ferramentas->fetch_array[0]['slug'].'")->type("'.$_REQUEST['type'].'")'."\n\n";
+		$output.= '	$pesquisa = $Tool->slug("'.$ws_ferramentas->fetch_array[0]['slug'].'")->type("'.$_FORM['type'].'")'."\n\n";
 		$output.= '##############################################################################'."\n";
 		$output.= '//	Aqui são outras variáveis de pesquisa, para utilizar basta descomentar'."\n";
 		$output.= '##############################################################################'."\n";
@@ -397,12 +404,12 @@ function InsertCodeCampos(){
 		$output.= '	foreach($pesquisa->obj as $data){'."\n";
 		$fullPages 				= new MySQL();
 		$fullPages->set_table(PREFIX_TABLES.'_model_campos');
-		$fullPages->set_where('ws_id_ferramenta="'.$_REQUEST['id_toll'].'"');
+		$fullPages->set_where('ws_id_ferramenta="'.$_FORM['id_toll'].'"');
 		$fullPages->set_where('AND coluna_mysql<>""');
 		$fullPages->select();
 
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='item'){
+		if(isset($_FORM['type']) && $_FORM['type']=='item'){
 			if($fullPages->_num_rows==0){$output .= '	//Nenhum campos específico adicionado'."\n";}
 			foreach ($fullPages->fetch_array as $toll) {
 
@@ -439,7 +446,7 @@ function InsertCodeCampos(){
 			}
 		}
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='gal'){
+		if(isset($_FORM['type']) && $_FORM['type']=='gal'){
 			$output .= '		echo \'<div>\'.$data->img_count.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->texto.\'</div>\';'."\n";
@@ -447,7 +454,7 @@ function InsertCodeCampos(){
 			$output .= '		echo \'<img src="'.ws::rootPath.'ws-img/0/0/\'.$data->avatar.\'"/>\';'."\n";
 		}
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='img_gal'){
+		if(isset($_FORM['type']) && $_FORM['type']=='img_gal'){
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->texto.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->url.\'</div>\';'."\n";
@@ -456,7 +463,7 @@ function InsertCodeCampos(){
 			$output .= '		echo \'<div>\'.$data->posicao.\'</div>\';'."\n";
 			$output .= '		echo \'<img src="'.ws::rootPath.'ws-img/0/0/\'.$data->file.\'"/>\';'."\n";
 		}
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='img'){
+		if(isset($_FORM['type']) && $_FORM['type']=='img'){
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->texto.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->url.\'</div>\';'."\n";
@@ -465,14 +472,14 @@ function InsertCodeCampos(){
 			$output .= '		echo \'<img src="'.ws::rootPath.'ws-img/0/0/\'.$data->imagem.\'"/>\';'."\n";
 		}
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='cat'){
+		if(isset($_FORM['type']) && $_FORM['type']=='cat'){
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->texto.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->avatar.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->token.\'</div>\';'."\n";
 			$output .= '		echo \'<img src="'.ws::rootPath.'ws-img/0/0/\'.$data->avatar.\'"/>\';'."\n";
 		}
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='file'){
+		if(isset($_FORM['type']) && $_FORM['type']=='file'){
 			$output .= '		echo \'<div>\'.$data->posicao.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->uploaded.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
@@ -486,9 +493,9 @@ function InsertCodeCampos(){
 	echo ($output);
 	exit;
 	}
-	if(isset($_REQUEST['typeCode']) && $_REQUEST['typeCode']=="tag"){
+	if(isset($_FORM['typeCode']) && $_FORM['typeCode']=="tag"){
 		$output =  "";
-		$output .= '<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_REQUEST['type'].'">'."\n";
+		$output .= '<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_FORM['type'].'">'."\n";
 		$output .=  '	<!--'."\n";
 		$output .=  '		OUTRAS TAGS DISPONÍIVEIS:'."\n";
 		$output .=  '		colum=""	distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter=""'."\n";
@@ -502,11 +509,11 @@ function InsertCodeCampos(){
 
 		$fullPages 				= new MySQL();
 		$fullPages->set_table(PREFIX_TABLES.'_model_campos');
-		$fullPages->set_where('ws_id_ferramenta="'.$_REQUEST['id_toll'].'"');
+		$fullPages->set_where('ws_id_ferramenta="'.$_FORM['id_toll'].'"');
 		$fullPages->set_where('AND coluna_mysql<>""');
 		$fullPages->select();
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='item'){
+		if(isset($_FORM['type']) && $_FORM['type']=='item'){
 			if($fullPages->_num_rows==0){$output .= '	<!-- Nenhum campos específico adicionado -->'."\n";}
 			foreach ($fullPages->fetch_array as $toll) {
 				if($prefix!="" && substr($toll['coluna_mysql'],0,strlen($prefix))==$prefix) {$toll['coluna_mysql'] = substr($toll['coluna_mysql'],strlen($prefix));}
@@ -527,7 +534,7 @@ function InsertCodeCampos(){
 				}
 			}
 		}
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='gal'){
+		if(isset($_FORM['type']) && $_FORM['type']=='gal'){
 			$output .= '	{{img_count}}'."\n";
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";
@@ -535,7 +542,7 @@ function InsertCodeCampos(){
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{avatar}}"/>'."\n";
 		}
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='img_gal'){
+		if(isset($_FORM['type']) && $_FORM['type']=='img_gal'){
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";
 			$output .= '	{{url}}'."\n";
@@ -544,7 +551,7 @@ function InsertCodeCampos(){
 			$output .= '	{{posicao}}'."\n";
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{file}}"/>'."\n";
 		}
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='img'){
+		if(isset($_FORM['type']) && $_FORM['type']=='img'){
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";
 			$output .= '	{{url}}'."\n";
@@ -553,14 +560,14 @@ function InsertCodeCampos(){
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{imagem}}"/>'."\n";
 		}
 
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='cat'){
+		if(isset($_FORM['type']) && $_FORM['type']=='cat'){
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";
 			$output .= '	{{avatar}}'."\n";
 			$output .= '	{{token}}'."\n";
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{avatar}}"/>'."\n";
 		}
-		if(isset($_REQUEST['type']) && $_REQUEST['type']=='file'){
+		if(isset($_FORM['type']) && $_FORM['type']=='file'){
 			$output .= '	{{posicao}}'."\n";
 			$output .= '	{{uploaded}}'."\n";
 			$output .= '	{{titulo}}'."\n";
@@ -965,7 +972,7 @@ function loadFile($pathFile=null){
 		if($ext=="js"){$ext="javascript";}
 		$stringFile = mysqli_real_escape_string($_conectMySQLi_,file_get_contents($pathFile));
 
-		echo 'if(!$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.$file.'"]\').length){';
+		echo 'if(!$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.'"]\').length){';
 		echo '$("#nameFile").html("<span class=\'b1 noSelect\'>Nome do arquivo:</span> /'.str_replace('./../../../','', $_REQUEST['pathFile']).'");';
 		echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
 		echo 'window.typeLoaded			= "file";';
@@ -990,7 +997,7 @@ function loadFile($pathFile=null){
 		echo 'window.htmEditor.setSession(window.listFilesWebmaster.'.$newTokenFile.'.session);';
 		echo 'window.addTab("'.$newTokenFile.'",window.pathFile,window.loadFile,"saved");';
 		echo '}else{
-				$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.$file.'"]\').click();
+				$(\'.fileTabContainer .fileTab[data-full-path-file="'.$pathFile.'"]\').click();
 			};';
 
 	}

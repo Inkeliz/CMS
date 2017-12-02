@@ -17,7 +17,7 @@
 	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 }
 
-if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 	#####################################################  FUNÇÕES DO MODULO
 	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');

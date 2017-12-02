@@ -8,7 +8,7 @@
 		$path = implode(array_filter(explode('/',$path)),"/");
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 	}
-	if(!defined("INCLUDE_PATH")) {$includePath 	= substr(str_replace("\\","/",getcwd()),0,strpos(str_replace("\\","/",getcwd()),'admin'));define("INCLUDE_PATH",$includePath);}
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 ############################################################################
 # IMPORTAMOS A CLASSE DO SISTEMA
@@ -185,44 +185,51 @@
 <div id="palco" class="palco_02 recolhido">
 <div id="divEditor" class="recolhido">&lt;? ?&gt;</div>
 <script type="text/javascript">
-
-
-	$(window).unbind('keydown').bind('keydown', function(event) {
-		if (event.ctrlKey || event.metaKey) {
-			switch (String.fromCharCode(event.which).toLowerCase()) {
-				case 'à':
-					event.preventDefault();
-					$("#addToll").click();
-					break;
-				case '1':
-					event.preventDefault();
-					$("#plugin").click();
-					break;
-				case 's':
-					event.preventDefault();
-					$("#salvarArquivo").click();
-					break;
-				case 'o':
-					event.preventDefault();
-					$("#loadfile").click();
-					break;
-			}
+$(window).unbind('keydown').bind('keydown', function(event) {
+	if (event.ctrlKey || event.metaKey) {
+		switch (String.fromCharCode(event.which).toLowerCase()) {
+			case 'à':
+				event.preventDefault();
+				$("#addToll").click();
+				break;
+			case '1':
+				event.preventDefault();
+				$("#plugin").click();
+				break;
+			case 's':
+				event.preventDefault();
+				$("#salvarArquivo").click();
+				break;
+			case 'o':
+				event.preventDefault();
+				$("#loadfile").click();
+				break;
 		}
-	});
+	}
+});
 $(document).ready(function() {
-
-
-
-	confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
-
+	ws.preload.open({string:"Carregando API..."})
 	$.getScript('<?=ws::rootPath?>admin/app/vendor/ace/src-min-noconflict/ace.js', function() {
 		$.getScript('<?=ws::rootPath?>admin/app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
-				$("#ws_confirm").remove();
-				$("#body").removeClass("scrollhidden");
-				$("*").removeClass("blur");
+				ws.preload.close();
+				window.refreshFolders = function() {
+					$.ajax({
+						type: "POST",
+						url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+						data: {'function': 'refreshFolders','var':0},
+						beforeSend: function() {
+							ws.preload.open();
+						}
+					}).done(function(data) {
+						$("#nave_folders").html(data)
+						window.refreshClick();
+						ws.preload.close()
+					})
+				}
+
+
+				
 				window.funcTabs = function() {
-
-
 					$(".fileTabContainer .fileTab").unbind("tap click").bind("tap click", function() {
 						$(".fileTab").removeClass("active");
 						$(this).addClass("active");
@@ -449,14 +456,17 @@ $(document).ready(function() {
 				}).change(function(e) {
 					var token = $('#bkpsFile').chosen().val();
 					if (token != "") {
-						functions({
-							funcao: "loadFileBKP",
-							vars: "token=" + token + "&pathFile=" + window.pathFile.replace(window.loadFile, "/") + "&filename=" + window.loadFile,
-							patch: "<? echo $session->get('_PATCH_');?>",
-							Sucess: function(e) {
-								eval(e);
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'loadFileBKP', token:token,pathFile:window.pathFile.replace(window.loadFile, "/") ,filename: window.loadFile},
+							beforeSend: function() {
+								ws.preload.open();
 							}
-						});
+						}).done(function(data) {
+							ws.preload.close()
+							eval(data);
+						})
 					}
 				});
 				//####################################################################################  ALTERANDO O MODO E O ESTILO DO EDITOR
@@ -487,13 +497,17 @@ $(document).ready(function() {
 						$('#novoArquivo').click();
 					})
 					$('#addPagination').unbind('tap press click').bind('tap press click', function() {
-						functions({
-							funcao: "InsertPagination",
-							vars: "",
-							patch: "<?=$session->get('_PATCH_');?>",
-							Sucess: function(e) {
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'InsertPagination'},
+							beforeSend: function() {
+								ws.preload.open()
+							}
+						}).done(function(data) {
+								ws.preload.close()
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 700,
 									height: 500,
 									bot1: 'Inserir Código',
@@ -555,19 +569,36 @@ $(document).ready(function() {
 										});
 									},
 									newFun: function() {
-										functions({
-											funcao: "InsertPaginationCampos",
-											vars: $("#formTags").serialize(),
-											patch: "<?=$session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												window.htmEditor.insert(e)
+										$.ajax({
+											type: "POST",
+											url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+											data: {'function': 'InsertPaginationCampos',form:$("#formTags").serialize()},
+											beforeSend: function() {
+												ws.preload.open()
 											}
+										}).done(function(data) {
+												ws.preload.close()
+												window.htmEditor.insert(data)
+
 										})
+
+
+
+
+
+
+
+
+
+
+
+
 									}
 								})
-							}
 						})
 					})
+
+
 
 					$('#formatHTML').unbind('tap press click').bind('tap press click', function() {
 						confirma({
@@ -611,13 +642,17 @@ $(document).ready(function() {
 						})
 					})
 					$('#addSendForm').unbind('tap press click').bind('tap press click', function() {
-						functions({
-							funcao: "InsertCodeForm",
-							vars: "",
-							patch: "<?=$session->get('_PATCH_');?>",
-							Sucess: function(e) {
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'InsertCodeForm'},
+							beforeSend: function() {
+								ws.preload.open();
+							}
+						}).done(function(data) {
+								ws.preload.close()
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 600,
 									bot1: 'Inserir formulário',
 									bot2: 'Cancelar',
@@ -638,29 +673,33 @@ $(document).ready(function() {
 									},
 									posFn: function() {},
 									newFun: function() {
-										functions({
-											funcao: "InsertCodeFormCampos",
-											vars: $("#formTags").serialize(),
-											patch: "<?=$session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												window.htmEditor.insert(e)
+										$.ajax({
+											type: "POST",
+											url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+											data: {'function': 'InsertCodeFormCampos',form:$("#formTags").serialize()},
+											beforeSend: function() {
+												ws.preload.open()
 											}
+										}).done(function(data) {
+											ws.preload.close()
+											window.htmEditor.insert(data)
 										})
 									}
 								})
-							}
 						})
 					})
-
-
 					$('#addToll').unbind('tap press click').bind('tap press click', function() {
-						functions({
-							funcao: "InsertCode",
-							vars: "",
-							patch: "<?=$session->get('_PATCH_');?>",
-							Sucess: function(e) {
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'InsertCode'},
+							beforeSend: function() {
+								ws.preload.open();
+							}
+						}).done(function(data) {
+								ws.preload.close()
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 600,
 									bot1: 'Inserir Código',
 									bot2: 'Cancelar',
@@ -678,27 +717,33 @@ $(document).ready(function() {
 									},
 									posFn: function() {},
 									newFun: function() {
-										functions({
-											funcao: "InsertCodeCampos",
-											vars: $("#formTags").serialize(),
-											patch: "<?=$session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												window.htmEditor.insert(e)
+										$.ajax({
+											type: "POST",
+											url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+											data: {'function': 'InsertCodeCampos',form:$("#formTags").serialize()},
+											beforeSend: function() {
+												ws.preload.open()
 											}
+										}).done(function(data) {
+											ws.preload.close()
+											window.htmEditor.insert(data)
 										})
 									}
 								})
-							}
-						})
+						});
 					})
 					$('#plugin').unbind('tap press click').bind('tap press click', function() {
-						functions({
-							funcao: "loadShortCodes",
-							vars: "",
-							patch: "<?=$session->get('_PATCH_');?>",
-							Sucess: function(e) {
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'loadShortCodes'},
+							beforeSend: function() {
+								ws.preload.open()
+							}
+						}).done(function(data) {
+								ws.preload.close()
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 600,
 									bot1: 'Inserir shortcode',
 									bot2: 'Cancelar',
@@ -721,10 +766,8 @@ $(document).ready(function() {
 										});
 									}
 								})
-							}
 						})
 					})
-
 					$('#loadfile').unbind('tap click').bind('tap click', function() {
 						if (!$("#palco").hasClass('recolhido')) {
 							$("#palco, #divEditor").addClass("recolhido")
@@ -743,77 +786,72 @@ $(document).ready(function() {
 						}
 					})
 					$('#novoArquivo').unbind('tap click').bind('tap click', function() {
-						confirma({
-							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-							drag: false,
-							bot1: 0,
-							bot2: 0
-						})
+						ws.preload.open({string:"Aguarde..."})
+
 						window.pathFile = $(this).data("file");
 						window.id_file_open = $(this).data("id");
-						functions({
-							funcao: "ListFolderNewFile",
-							vars: "pathFile=0",
-							patch: "<? echo $session->get('_PATCH_');?>",
-							Sucess: function(e) {
-								confirma({
-									conteudo: e,
-									width: 500,
-									bot1: "Criar arquivo",
-									bot2: "Cancelar",
-									drag: false,
-									newFun: function() {
-										var newFile = $("input.path").val();
-										functions({
-											funcao: "createFile",
-											vars: "newFile=" + newFile,
-											patch: "<? echo $session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												if (e != "falha") {
-													eval(e)
-													functions({
-														funcao: "refreshFolders",
-														vars: "folders=1",
-														patch: "<? echo $session->get('_PATCH_');?>",
-														Sucess: function(e) {
-															$("#nave_folders").html(e)
-															window.refreshClick();
-														}
-													})
-												}
-											}
-										});
-									},
-									posFn:function(){
-										sanfona('.folder_alert');
-										$(".nave_folders .folder_alert").bind("click tap press",function(){
-											$(".nave_folders .folder_alert").css({"background-color":"transparent",color:"#9e9e9e","font-weight":500}).removeClass("selectExclude");
-											$(this).css({"background-color":"#d4e1f4",color:"#497bbe","font-weight":600}).addClass("selectExclude")
-											$(".ws_confirm_conteudo .inputText.path").val($(this).data("folder"))
-										})
-									}
-								})
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {
+								'function': 'ListFolderNewFile',
+								'pathFile':0
+							},
+							beforeSend: function() {
+								ws.preload.open();
 							}
+						}).done(function(data) {
+							ws.preload.close();
+							confirma({
+								conteudo: data,
+								width: 500,
+								bot1: "Criar arquivo",
+								bot2: "Cancelar",
+								drag: false,
+								newFun: function() {
+												var newFile = $("input.path").val();
+												$.ajax({
+													type: "POST",
+													url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+													data: {
+														'function': 'createFile',
+														'newFile':newFile
+													},
+													beforeSend: function() {
+														ws.preload.open()
+													}
+												}).done(function(data) {
+													if (data != "falha") {
+														eval(data)
+														window.refreshFolders();
+													}
+												});
+								},
+								posFn:function(){
+									sanfona('.folder_alert');
+									$(".nave_folders .folder_alert").bind("click tap press",function(){
+										$(".nave_folders .folder_alert").css({"background-color":"transparent",color:"#9e9e9e","font-weight":500}).removeClass("selectExclude");
+										$(this).css({"background-color":"#d4e1f4",color:"#497bbe","font-weight":600}).addClass("selectExclude")
+										$(".ws_confirm_conteudo .inputText.path").val($(this).data("folder"))
+									})
+								}
+							})
 						});
 					});
 					$('#novodir').unbind('tap click').bind('tap click', function() {
-						confirma({
-							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-							drag: false,
-							bot1: 0,
-							bot2: 0
-						})
+						ws.preload.open()
 						window.pathFile = $(this).data("file");
 						window.id_file_open = $(this).data("id");
-						functions({
-							funcao: "ListFolderNewFolder",
-							vars: "pathFile=0",
-							patch: "<? echo $session->get('_PATCH_');?>",
-							Sucess: function(e) {
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {'function': 'ListFolderNewFolder','pathFile':0},
+							beforeSend: function() {
+								ws.preload.open()
+							}
+						}).done(function(data) {
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 500,
 									bot1: "Criar arquivo",
 									bot2: "Cancelar",
@@ -825,33 +863,25 @@ $(document).ready(function() {
 									},
 									newFun: function() {
 										var newFile = $("input.path").val();
-										functions({
-											funcao: "createFolder",
-											vars: "newFile=" + newFile,
-											patch: "<? echo $session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												out(e)
-												if (e == "sucesso") {
-													TopAlert({
-														mensagem: "Diretório criado com sucesso!",
-														type: 3
-													});
-													functions({
-														funcao: "refreshFolders",
-														vars: "folders=1",
-														patch: "<? echo $session->get('_PATCH_');?>",
-														Sucess: function(e) {
-															$("#nave_folders").html(e)
-															window.refreshClick();
-														}
-													})
-												}
+										$.ajax({
+											type: "POST",
+											url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+											data: {'function': 'createFolder','newFile':newFile},
+											beforeSend: function() {
+												ws.preload.open()
+											}
+										}).done(function(data) {
+											if (data == "sucesso") {
+												window.refreshFolders();
+												TopAlert({mensagem: "Diretório criado com sucesso!",type: 3});
+											}else{
+												TopAlert({mensagem:data,type: 2});
+												ws.preload.close();
 											}
 										});
 									},
 									onCancel: function() {}
 								})
-							}
 						});
 					});
 
@@ -863,54 +893,46 @@ $(document).ready(function() {
 							bot2: "Cancelar",
 							drag: false,
 							newFun: function() {
-								functions({
-									funcao: "exclui_file",
-									vars: "&pathFile=" + window.pathFile + "&loadFile=" + window.loadFile,
-									patch: "<? echo $session->get('_PATCH_');?>",
-									beforeSend: function() {
-										confirma({
-											width: "auto",
-											conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-											drag: false,
-											bot1: 0,
-											bot2: 0
-										})
+								$.ajax({
+									type: "POST",
+									url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+									data: {
+										'function': 'exclui_file',
+										'pathFile': window.pathFile,
+										'loadFile':window.loadFile
 									},
-									Sucess: function(e) {
-										out(e)
-										eval(e);
-										functions({
-											funcao: "refreshFolders",
-											vars: "folders=1",
-											patch: "<? echo $session->get('_PATCH_');?>",
-											Sucess: function(e) {
-												$("#nave_folders").html(e)
-												window.refreshClick();
-											}
-										})
-//										$(".ferramenta_especial[data-path='<?=ROOT_WEBSHEEP?>admin/app/modulos/webmaster/index.php']").click();
+									beforeSend: function() {
+										ws.preload.open()	
 									}
+								}).done(function(data) {
+									out(data)
+									ws.preload.close()
+									eval(data);
+									window.refreshFolders();
 								});
 							}
 						})
 					});
 					$('#exclFolder').unbind('tap click').bind('tap click', function() {
-						confirma({
-							width: "auto",
-							conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-							drag: false,
-							bot1: 0,
-							bot2: 0
-						})
-						window.pathFile = $(this).data("file");
+						
+						ws.preload.open();
+						window.pathFile 	= $(this).data("file");
 						window.id_file_open = $(this).data("id");
-						functions({
-							funcao: "ListFolderExclFolder",
-							vars: "_excl_dir_=0",
-							patch: "<? echo $session->get('_PATCH_');?>",
-							Sucess: function(e) {
+
+						$.ajax({
+							type: "POST",
+							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+							data: {
+								'function': 'ListFolderExclFolder',
+								'_excl_dir_': 0
+							},
+							beforeSend: function() {
+								ws.preload.open()
+							}
+						}).done(function(data) {
+								ws.preload.close()
 								confirma({
-									conteudo: e,
+									conteudo: data,
 									width: 500,
 									bot1: "Excluir folder",
 									bot2: "Cancelar",
@@ -925,39 +947,25 @@ $(document).ready(function() {
 												bot2: "Cancelar",
 												drag: false,
 												newFun: function() {
-													functions({
-														funcao: "_excl_dir_",
-														vars: "exclFolder=" + excluiFolder,
-														patch: "<? echo $session->get('_PATCH_');?>",
-														beforeSend: function() {
-															confirma({
-																width: "auto",
-																conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-																drag: false,
-																bot1: 0,
-																bot2: 0
-															})
-														},
-														Sucess: function(e) {
-															if(e==1){
-																functions({
-																	funcao: "refreshFolders",
-																	vars: "var=0",
-																	patch: "<? echo $session->get('_PATCH_');?>",
-																	Sucess: function(e) {
-																		$("#nave_folders").html(e)
-																		window.refreshClick();
-																		$("#ws_confirm").remove();
-																		$("#body").removeClass("scrollhidden");
-																		$("*").removeClass("blur");
-																	}
-																})
+														$.ajax({
+															type: "POST",
+															url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
+															data: {
+																'function': '_excl_dir_',
+																'exclFolder': excluiFolder
+															},
+															beforeSend: function() {
+																ws.preload.open()
+															}
+														}).done(function(data) {
+															ws.preload.close()
+															if(data==1){
+																window.refreshFolders();
 																TopAlert({mensagem: "Diretório excluído com sucesso!",type:3});
 															}else{
-																TopAlert({mensagem:e,type:2});
+																TopAlert({mensagem:data,type:2});
 															}
-														}
-													});
+														})
 												},
 												posFn:function() {}
 											})
@@ -973,7 +981,6 @@ $(document).ready(function() {
 										})
 									}
 								})
-							}
 						});
 					});
 					$('.nave_folders .file').unbind('tap click').bind('tap click', function() {
@@ -990,13 +997,12 @@ $(document).ready(function() {
 										'pathFile': window.pathFile
 									},
 									beforeSend: function() {
-										$(".fileTabContainer").prepend('<div class="tabSortable fileTab loader"></div>');
+										ws.preload.open();
 									}
 								}).done(function(data) {
 										eval(data);
-										$("#ws_confirm").remove();
-										$("#body").removeClass("scrollhidden");
-										$("*").removeClass("blur");
+										ws.preload.close();
+
 								});
 						} else {
 							$('.fileTabContainer .fileTab[data-full-path-file="' + window.pathFile + '"]').click();
@@ -1049,9 +1055,6 @@ $(document).ready(function() {
 									botclose: 1,
 									newFun: function() {}
 								})
-
-
-
 							}
 						})	
 					}
@@ -1063,7 +1066,7 @@ $(document).ready(function() {
 							type: "POST",
 							url: "<?=ws::rootPath?>admin/app/modulos/webmaster/functions.php",
 							beforeSend:function(){
-									confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ws::rootPath?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+									ws.preload.open({string:"Salvando..."})
 							},
 							data: {
 								'function'	: 'geraBKPeAplica',
@@ -1072,13 +1075,10 @@ $(document).ready(function() {
 							}
 						}).done(function(e) {
 								out(e);
+								ws.preload.close()
 								if (e == "sucesso") {
-									$("#ws_confirm").remove();
-									$("#body").removeClass("scrollhidden");
-									$("*").removeClass("blur");
 									window.listFilesWebmaster[window.newTokenFile].saved = 'saved';
 									$('.fileTab[data-full-path-file="' + window.pathFile + window.loadFile + '"]').removeClass('unsave').addClass('saved');
-
 									if (window.closeToSave == true) {
 										window.closeToSave = false;
 										$('.fileTab[data-full-path-file="' + window.pathFile+window.loadFile + '"] .close').click();
