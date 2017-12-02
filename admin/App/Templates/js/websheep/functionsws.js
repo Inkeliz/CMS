@@ -742,15 +742,14 @@ ws = {
 	},
 	preload:{
 		open:function(opcoes){
-			var options = ws.extend({string: '',preload:"modal_preload"}, opcoes);
+			var options = ws.extend({string: "",preload:"modal_preload"}, opcoes);
 			if(options.string==""){
-					var topGif = "35px"
+					var topGif = "35px";
 			}else{
-					var topGif = "53px"
+					var topGif = "53px";
 			}
-
 			ws.confirm({
-				conteudo:options.string+"<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:"+topGif+";background-image:url(\"/admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+				conteudo:options.string+"<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:"+topGif+";background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 				idModal:options.preload,
 				width:250,
 				botclose: false
@@ -1211,7 +1210,7 @@ ws = {
 	confirm: function(opcoes) {
 		ws.verify.jquery();
 		var options = ws.extend({
-			conteudo: "Mensagem padrão",
+			conteudo:'',
 			width: 500,
 			height: 'auto',
 			mleft: 0,

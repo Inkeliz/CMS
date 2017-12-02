@@ -155,17 +155,17 @@
 			var SENHA_BD 		=	$("input[name='SENHA_BD']").val();
 			var SERVIDOR_BD 	=	$("input[name='SERVIDOR_BD']").val();
 			$.ajax({
-				type: "POST",cache: false,url: "./app/core/ws-setup.php",
+				type: "POST",cache: false,url: "<?=ROOT_WEBSHEEP?>admin/app/core/ws-setup.php",
 				data: {function:"testMySQL",NOME_BD:NOME_BD,USUARIO_BD:USUARIO_BD,SENHA_BD:SENHA_BD,SERVIDOR_BD:SERVIDOR_BD,},
 				error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 			}).done(function(data) { 
 				if(data=='1'){
 					$("#formulario").removeClass("mysqlFail")
-					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('./app/templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
+					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#b0d000",paddingLeft:33,'background-image':"url('<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/tick-circle.png')",'background-position':10,'background-repeat':"no-repeat"})
 				}else{
 					console.error(data);
 					$("#formulario").addClass("mysqlFail")
-					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#d03b00",paddingLeft:33,'background-image':"url('./app/templates/img/websheep/cross.png')",'background-position':10,'background-repeat':"no-repeat"})
+					$("input[name='NOME_BD'],input[name='USUARIO_BD'],input[name='SENHA_BD'],input[name='SERVIDOR_BD']").css({borderColor:"#d03b00",paddingLeft:33,'background-image':"url('<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/cross.png')",'background-position':10,'background-repeat':"no-repeat"})
 				}
 			});
 		})
@@ -174,8 +174,8 @@
 			$.ajax({
 				type: "POST",
 				cache: false,
-				url: "./app/core/ws-setup.php",
-			    beforeSend:function(){confirma({width:"auto",conteudo:"  Criando ws-config...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				url: "<?=ROOT_WEBSHEEP?>admin/app/core/ws-setup.php",
+			    beforeSend:function(){confirma({width:"auto",conteudo:"  Criando ws-config...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ROOT_WEBSHEEP?>admin/app/templates/img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				data: {function:"createWsConfig", form:formulario},
 			}).done(function(data) {
 						objJSON = JSON.parse(data)
@@ -183,8 +183,8 @@
 							$.ajax({
 									type: "POST",
 									cache: false,
-									beforeSend:function(){confirma({width:"auto",conteudo:"  Configurando MySQL...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-									url: "./app/modulos/_tools_/functions.php",
+									beforeSend:function(){confirma({width:"auto",conteudo:"  Configurando MySQL...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+									url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/_tools_/functions.php",
 									data: {function:"installSQLInit",formulario:formulario},
 									error: function (xhr, ajaxOptions, thrownError) {alert(xhr.status);alert(thrownError);}
 								}).done(function(data) {
@@ -245,7 +245,7 @@
 		<div class="w1" style="border:solid 1px #CCC;position: relative;transform: translate(-50%,0);left: 50%;padding: 30px;width: calc(100% - 100px );float: left;top: 10px;">
 			<div id='step0' style="position: relative;float: left;text-align: center;">
 
-				<img src="./app/templates/img/websheep/logo_ws_install.jpg" style="width: 80px;">
+				<img src="<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/logo_ws_install.jpg" style="width: 80px;">
 
 				<div class="c"></div>
 				<strong style="font-family: 'Titillium Web', sans-serif;font-size: 30px;line-height">Bem-Vindo(a) ao WebSheep!</strong><br>

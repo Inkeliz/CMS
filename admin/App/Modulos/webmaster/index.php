@@ -839,7 +839,6 @@ $(document).ready(function() {
 						});
 					});
 					$('#novodir').unbind('tap click').bind('tap click', function() {
-						ws.preload.open()
 						window.pathFile = $(this).data("file");
 						window.id_file_open = $(this).data("id");
 						$.ajax({
@@ -849,7 +848,8 @@ $(document).ready(function() {
 							beforeSend: function() {
 								ws.preload.open()
 							}
-						}).done(function(data) {
+						}).done(function(data) {							
+								ws.preload.close()
 								confirma({
 									conteudo: data,
 									width: 500,
@@ -871,12 +871,12 @@ $(document).ready(function() {
 												ws.preload.open()
 											}
 										}).done(function(data) {
+												ws.preload.close()
 											if (data == "sucesso") {
 												window.refreshFolders();
 												TopAlert({mensagem: "Diretório criado com sucesso!",type: 3});
 											}else{
 												TopAlert({mensagem:data,type: 2});
-												ws.preload.close();
 											}
 										});
 									},
@@ -884,7 +884,6 @@ $(document).ready(function() {
 								})
 						});
 					});
-
 					$('#exclFile').unbind('tap click').bind('tap click', function() {
 						confirma({
 							conteudo: "Você tem <b>CERTEZA</b> de que gostaria de excluir esse arquivo?<br><div class='bg08' style='position: relative;margin: 10px;padding: 20px;color: #F00;'>1 • Todos os BKPs deste arquivo também serão apagados.<br>2 • E lembre-se, esta ação <b>NÃO</b> terá mais volta.</div>",
@@ -906,9 +905,9 @@ $(document).ready(function() {
 									}
 								}).done(function(data) {
 									out(data)
-									ws.preload.close()
-									eval(data);
-									window.refreshFolders();
+									 eval(data);
+									 window.refreshFolders();
+									 ws.preload.close()
 								});
 							}
 						})

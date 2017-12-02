@@ -199,7 +199,7 @@
 			}
 		});
 		$(document).ready(function() {
-		confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+		confirma({width: "auto",conteudo: "  Carregando API...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 		$.getScript('./app/vendor/ace/src-min-noconflict/ace.js', function() {
 			$.getScript('./app/vendor/ace/src-min-noconflict/ext-language_tools.js', function() {
 		
@@ -713,7 +713,7 @@
 						$('#novoArquivo').unbind('tap click').bind('tap click', function() {
 							confirma({
 								width: "auto",
-								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 								drag: false,
 								bot1: 0,
 								bot2: 0
@@ -761,7 +761,7 @@
 						$('#novodir').unbind('tap click').bind('tap click', function() {
 							confirma({
 								width: "auto",
-								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 								drag: false,
 								bot1: 0,
 								bot2: 0
@@ -820,7 +820,7 @@
 										beforeSend: function() {
 											confirma({
 												width: "auto",
-												conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+												conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 												drag: false,
 												bot1: 0,
 												bot2: 0
@@ -836,7 +836,7 @@
 						$('#exclFolder').unbind('tap click').bind('tap click', function() {
 							confirma({
 								width: "auto",
-								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+								conteudo: "  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 								drag: false,
 								bot1: 0,
 								bot2: 0
@@ -871,7 +871,7 @@
 															beforeSend: function() {
 																confirma({
 																	width: "auto",
-																	conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+																	conteudo: "  Excluindo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 																	drag: false,
 																	bot1: 0,
 																	bot2: 0
@@ -955,7 +955,7 @@
 										type: "POST",
 										url: "./app/modulos/webmaster/functions.php",
 										beforeSend:function(){
-												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 										},
 										data: {
 											'function'	: 'geraBKPeAplica',
@@ -980,59 +980,13 @@
 												});
 											};
 									});
-		
-		
-		
-		
-		
-									// functions({
-									// 	funcao: "geraBKPeAplica",
-									// 	vars: "bkp=true&" + GET,
-									// 	patch: "{PATH}",
-									// 	beforeSend: function() {
-									// 		confirma({
-									// 			width: "auto",
-									// 			conteudo: "  Salvando e gerando BKP...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
-									// 			drag: false,
-									// 			bot1: 0,
-									// 			bot2: 0
-									// 		})
-									// 	},
-									// 	Sucess: function(e) {
-									// 		if (e == "sucesso") {
-									// 			functions({
-									// 				funcao: "returnBKP",
-									// 				vars: "pathFile=" + window.pathFile.replace(window.loadFile, "/") + "&filename=" + window.loadFile,
-									// 				patch: "{PATH}",
-									// 				Sucess: function(e) {
-									// 					$("#bkpsFile").html(e).trigger("chosen:updated");
-									// 					$("#ws_confirm").remove();
-									// 					$("#body").removeClass("scrollhidden");
-									// 					$("*").removeClass("blur");
-									// 				}
-									// 			})
-		
-									// 			window.listFilesWebmaster[window.newTokenFile].saved = 'saved';
-									// 			$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"]').removeClass('unsave').addClass('saved')
-									// 			if (window.closeToSave && window.closeToSave == true) {
-									// 				window.closeToSave = false;
-									// 				$('.fileTab[data-pathFile="' + window.pathFile + '"][data-loadFile="' + window.loadFile + '"] .close').click();
-									// 			}
-		
-									// 			TopAlert({
-									// 				mensagem: "BKP feito e arquivo atualizado com sucesso!",
-									// 				type: 3
-									// 			});
-									// 		};
-									// 	}
-									// });
 								},
 								onCancel: function() {
 									$.ajax({
 										type: "POST",
 										url: "./app/modulos/webmaster/functions.php",
 										beforeSend:function(){
-												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+												confirma({width: "auto", conteudo: "  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 										},
 										data: {
 											'function'	: 'geraBKPeAplica',

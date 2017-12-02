@@ -94,7 +94,7 @@ function get_caller_info() {
 		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($pathDestino)));
 		$newClass		=	array();
 		foreach ($htaccess as $key => $line) {
-			if (strpos($line,"rootPath") >= 1) {
+			if (strpos($line,"rootPath:") >= 1) {
   				$line=  '	rootPath:"'.ROOT_WEBSHEEP.'",';
 			}
 			$newClass[] =  $line;		

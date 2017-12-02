@@ -1181,33 +1181,14 @@ function load_path(){
 	echo 'window.doc_version="'.urlencode($codigo).'";';
 	checkinchekcout($load_path_file->fetch_array[0]['id'], $load_path_file->fetch_array[0]['checkin'],$codigo);}
 function exclui_file(){
-	global $session;
-
-		// $U= new MySQL();
-		// $U->set_table(PREFIX_TABLES.'ws_webmaster');
-		// $U->set_where('path="'.str_replace('./../../..', '',$_REQUEST['pathFile']).'"');
-		// $U->set_where('AND original="'.$_REQUEST['loadFile'].'"');
-		// $U->select();
-		// $qtdd_total = $U->_num_rows;
-		// if($qtdd_total>0){
-		// 	foreach ($U->fetch_array as $value) {
-		// 		$E= new MySQL();
-		// 		$E->set_table(PREFIX_TABLES.'ws_webmaster');
-		// 		$E->set_where('id="'.$value['id'].'"');
-		// 		$E->exclui();
-		// 		$NewFile = './versoes'.$value['path'].'/'.$value['bkpfile'];
-		// 		@unlink($NewFile);
-		// 	}
-		// }
-
-		$PATH = dirname($_POST['pathFile']).'/';
-		$FILE = $_POST['loadFile'];
-		@unlink($_REQUEST['pathFile']);
-		$aba =  '".fileTab[data-pathfile=\''.$PATH.'\'][data-loadfile=\''.$FILE.'\']"';
+		global $session;
+		$FILE = $_POST['pathFile'].$_POST['loadFile'];
+		@unlink($FILE);
+		$aba =  '".fileTab[data-full-path-file=\''.$FILE.'\']"';
 		echo 'var token = $('.$aba.').data("token");'.PHP_EOL;
 		echo 'delete window.listFilesWebmaster[token];'.PHP_EOL;
 		echo '$('.$aba.').remove();'.PHP_EOL;
-		echo 'window.htmEditor.getSession().setMode("ace/mode/text");'.PHP_EOL;
+		echo 'window.htmEditor.getSession().setMode("ace/mode/php");'.PHP_EOL;
 		echo '$("#mode option[value 	=\'Ttext\']").attr("selected","true").trigger("chosen:updated");'.PHP_EOL;
 		echo 'window.newTokenFile		= null;'.PHP_EOL;
 		echo 'window.typeLoaded			= null;'.PHP_EOL;
@@ -1216,12 +1197,14 @@ function exclui_file(){
 		echo 'window.newTokenFile 		= null;'.PHP_EOL;
 		echo '$("#bkpsFile").html("").trigger("chosen:updated");'.PHP_EOL;
 		echo 'window.htmEditor.setValue("");'.PHP_EOL;
+		echo '$(".fileTab:first-child").click();'.PHP_EOL;
+
+
+
 	}
 function saveFileBKP(){
 	global $session;
-
 			if($session->get('id')==""){echo "window.location.reload()";exit;}
-
 			$U					= new MySQL();
 			$U->set_where('id="'.$_REQUEST['id'].'"');
 			$U->set_table(PREFIX_TABLES.'ws_webmaster');

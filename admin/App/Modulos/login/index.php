@@ -21,14 +21,14 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 <meta charset="UTF-8">
 <link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 <meta name="viewport"  content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="./app/templates/css/fontes/fonts.css" 											type="text/css" media="all" />
-<link rel="stylesheet" href="./app/templates/css/websheep/modulos/login/estrutura.css" 						type="text/css" media="all" />
-<link rel="stylesheet" href="./app/templates/css/websheep/modulos/login/desktop.css?v=?<?php echo rand(0,999999)?>" 	type="text/css" media="all" />
-<link rel="stylesheet" href="./app/templates/css/chosen/chosen.css" 											type="text/css" media="all" />
-<link rel="stylesheet" href="./app/templates/css/websheep/theme_blue.min.css" 									type="text/css" media="all" />
-<link rel="stylesheet" href="./app/templates/css/websheep/funcionalidades.css" 								type="text/css" media="all" />
-<script type = 'text/javascript' src="./app/vendor/jquery/2.2.0/jquery.min.js"									id="jquery"></script>
-<script type = 'text/javascript' src="./app/templates/js/websheep/funcionalidades.js" 							id="funcionalidades"></script>
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" 											type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/modulos/login/estrutura.css" 						type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/modulos/login/desktop.css?v=?<?php echo rand(0,999999)?>" 	type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/chosen/chosen.css" 											type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css" 									type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" 								type="text/css" media="all" />
+<script type = 'text/javascript' src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"									id="jquery"></script>
+<script type = 'text/javascript' src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js" 							id="funcionalidades"></script>
 <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700" rel="stylesheet">
 <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
@@ -53,7 +53,7 @@ iframe{
 <div id="login">
 	<div id="logomarca">
         <spam id="h3"><?php echo $licenseData->version?></spam>
-        <img src="./app/templates/img/websheep/logoIcon.png">
+        <img src="<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/logoIcon.png">
     </div>
 	<form  id="formulario">
 		<input 		class="inputText" name="usuario"  		value=""			placeholder="Usuario:"/></input>
@@ -86,12 +86,12 @@ iframe{
 				$.ajax({
 					type: "POST",
 					async: true,
-					url: "./app/modulos/login/functions.php",
+					url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/login/functions.php",
 					data:{'function':'login','form':$("#formulario").serialize()},
 					beforeSend: function() {
 						$("#iniciarsessao").hide('fast')
 						$("#iniciarsessao_disabled").show('fast')
-						confirma({width: "auto", conteudo: " <?=ws::getlang("login>loading");?><div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
+						confirma({width: "auto", conteudo: " <?=ws::getlang("login>loading");?><div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>", drag: false, bot1: 0, bot2: 0 })
 					}
 				}).done(function(e){
 					if(e.indexOf('ok')!= -1){
@@ -128,7 +128,7 @@ iframe{
 
 						$.ajax({
 							type: "POST",
-							url: "./app/modulos/login/functions.php",
+							url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/login/functions.php",
 							data: {
 								'function': 'enviaemail',
 								'mail': $email
@@ -176,7 +176,7 @@ iframe{
 						$.ajax({
 							type: "GET",
 							async: true,
-							url: "./app/modulos/login/functions.php",
+							url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/login/functions.php",
 							data:{'function':'setNewPass','form':formulario}
 						}).done(function(e){
 							if(e==true){
@@ -204,7 +204,7 @@ iframe{
 					$.ajax({
 						type: "GET",
 						async: true,
-						url: "./app/modulos/login/functions.php",
+						url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/login/functions.php",
 						data:{'function':'verifyToken','tokenRequest':'<?=$_GET['tokenRequest']?>'}
 					}).done(function(e){
 						if(e==true){

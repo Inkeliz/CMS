@@ -43,16 +43,16 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 <html lang="pt-br" class='bgradial01' id="html">
 <head>
 <meta charset="UTF-8">
-<link type="image/x-icon" href="/admin/app/templates/img/websheep/favicon.ico" rel="shortcut icon" />
+<link type="image/x-icon" href="<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/websheep/estrutura.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/websheep/desktop.min.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/install.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/funcionalidades.css" />
-<link	type="text/css" media="all"		rel="stylesheet" 						href="./app/templates/css/fontes/fonts.css" />
-<link	type="text/css" media="all"		rel="stylesheet"						href="./app/templates/css/websheep/theme_blue.min.css?v=1" />
-<script type = 'text/javascript' 												src="./app/vendor/jquery/2.2.0/jquery.min.js"></script>
-<script type = 'text/javascript' 												src="./app/templates/js/websheep/funcionalidades.js"></script>
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/estrutura.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/desktop.min.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/install.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" />
+<link	type="text/css" media="all"		rel="stylesheet" 						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" />
+<link	type="text/css" media="all"		rel="stylesheet"						href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css?v=1" />
+<script type = 'text/javascript' 												src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"></script>
+<script type = 'text/javascript' 												src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js"></script>
 
 
 <script type = 'text/javascript'>
@@ -63,7 +63,7 @@ $(document).ready(function(){
 		if($("#eu_aceito").val()=='1'){
 			confirma({
 				width:"auto",
-				conteudo:"  Atualizando o sistema...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+				conteudo:"  Atualizando o sistema...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 				drag:false,
 				bot1:0,
 				bot2:0,
@@ -73,7 +73,7 @@ $(document).ready(function(){
 					$.ajax({
 						type: "POST",
 						cache: false,
-						url: "./app/modulos/_tools_/functions.php",
+						url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/_tools_/functions.php",
 						data: {function:"installSQLInit"},
 						error: function (xhr, ajaxOptions, thrownError) {
 							alert(xhr.status);
@@ -102,7 +102,7 @@ $(document).ready(function(){
 			<div id="palco" class="w1" >
 				<div id='step0' style="position: relative;float: left;text-align: center;">
 					<div id="resposta"></div>
-					<img src="./app/templates/img/websheep/logo_ws_install.jpg" style="">
+					<img src="<?=ROOT_WEBSHEEP?>admin/app/templates/img/websheep/logo_ws_install.jpg" style="">
 					<div class="c"></div>
 					<strong style="font-family: 'Titillium Web', sans-serif;font-size: 30px;line-height;font-weight: 700;margin: 20px 0px;position: relative;float: left;width: 100%;">Bem vindo ao WebSheep <?=$ws_version->version?></strong>
 					<br>

@@ -221,7 +221,7 @@ $(document).ready(function(){
 									if(plugin=="0"){
 										confirma({
 											width:"auto",
-											conteudo:"  {dashboard_loading}<br> <strong>"+titulo+"</strong>...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+											conteudo:"  {dashboard_loading}<br> <strong>"+titulo+"</strong>...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 											drag:false,
 											posFn:function(){
 													$("#ws_confirm").css("line-height","20px");
@@ -429,7 +429,7 @@ $(document).ready(function(){
 		 	if(linkAccess!=null){
 				confirma({
 					width:"auto",
-					conteudo:"...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+					conteudo:"...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 					drag:false,
 					bot1:0,bot2:0,
 					posFn:function(){
@@ -447,7 +447,7 @@ $(document).ready(function(){
 		if(typeof(directAccess) !== 'undefined' && directAccess.LoadDirectTool != 'null'){
 				confirma({
 					width:"auto",
-					conteudo:"...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./img/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+					conteudo:"...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\""+ws.rootPath+"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 					drag:false,
 					bot1:0,bot2:0,
 					posFn:function(){
