@@ -97,7 +97,7 @@ echo PHP_EOL.'<url>'.PHP_EOL;
 echo ' <loc>'.DOMINIO.'</loc>';
 foreach ($s->fetch_array as $value) {
 echo'<image:image>'.PHP_EOL;
-echo '  <image:loc>'.DOMINIO.'/admin/app/modulos/_modulo_/uploads/'.$value['file'].'</image:loc>'.PHP_EOL;
+echo '  <image:loc>'.DOMINIO.'/admin/app/ws-modules/ws-model-tool/uploads/'.$value['file'].'</image:loc>'.PHP_EOL;
 echo '</image:image>'.PHP_EOL;
 }
 	echo '</url>'.PHP_EOL;

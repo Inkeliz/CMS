@@ -101,9 +101,9 @@ botDownload:
 	<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 										type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 										type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 									type="text/css" media="all" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 						type="text/css" media="all" />
 	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"							id="jquery"></script>
@@ -192,9 +192,9 @@ arquivoNull:
 		<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 								type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
 	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
 	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
@@ -246,9 +246,9 @@ getPass:
 <link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/login/reset.css" 								type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/login/estrutura.css" 							type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
 <link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
 <link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
 <script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>

@@ -40,7 +40,7 @@
 				"theme_blue.less"
 			]
 		},
-		"modulos/_tools_/style.less": {
+		"modulos/ws-tools/style.less": {
 			"engines": [
 				{
 					"compiler": "less",
@@ -59,7 +59,7 @@
 				"style.less"
 			]
 		},
-		"modulos/_modulo_/metaTags.less": {
+		"modulos/ws-model-tool/metaTags.less": {
 			"engines": [
 				{
 					"compiler": "less",
@@ -79,7 +79,7 @@
 				"../../../../../../../../localhost/data/localweb/less/vars.less"
 			]
 		},
-		"modulos/_tools_/detalhes.less": {
+		"modulos/ws-tools/detalhes.less": {
 			"engines": [
 				{
 					"compiler": "less",
@@ -98,7 +98,7 @@
 				"detalhes.less"
 			]
 		},
-		"modulos/_modulo_/detalhes.less": {
+		"modulos/ws-model-tool/detalhes.less": {
 			"engines": [
 				{
 					"compiler": "less",
@@ -118,7 +118,7 @@
 				"detalhes.less"
 			]
 		},
-		"modulos/_modulo_/style.less": {
+		"modulos/ws-model-tool/style.less": {
 			"engines": [
 				{
 					"compiler": "less",
@@ -137,7 +137,7 @@
 				"style.less"
 			]
 		},
-		"modulos/_modulo_/templates.less": {
+		"modulos/ws-model-tool/templates.less": {
 			"engines": [
 				{
 					"compiler": "less",

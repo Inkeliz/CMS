@@ -103,7 +103,7 @@
 }
 </style>
 
-<script>include_css ('./app/templates/css/websheep/modulos/_hd_/style.css','css_mod','All');</script>
+<script>include_css ('./app/templates/css/websheep/ws-modules/ws-hd-management/style.css','css_mod','All');</script>
 <div id="topoModulo" class="TitTop bg05 w1b">{hdPanel_title}</div>
 <div class='palco_01' id="palco">
   <div class="c"/>
@@ -157,7 +157,7 @@ $(function () {
 
 //################################################################################################## PIE
 
-$.getJSON('./app/modulos/_hd_/functions.php?function=returnFerramentas', function (data) {
+$.getJSON('./app/ws-modules/ws-hd-management/functions.php?function=returnFerramentas', function (data) {
 	Highcharts.getOptions().plotOptions.pie.colors = (function () {var colors = [],base = Highcharts.getOptions().colors[0],i; for (i = 0; i < 10; i += 1) {colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());} return colors; }());
 	
 	$('#ferramentas_pie').highcharts({

@@ -1,6 +1,6 @@
 var _window 		= window;
 var _console 		= console;
-var _url_ws_rec 	= "/admin/app/modulos/ws_log/functions.php";
+var _url_ws_rec 	= "/admin/app/ws-modules/ws-logs/functions.php";
 
 _window.onerror 	= function (msg, url, lineNo, columnNo, error) {
 	_console.error("\nURL: "+url+":"+lineNo+" \nLINHA: "+lineNo+"\nPOSIÇÃO : "+columnNo+"\nERRO: "+error+"\n");

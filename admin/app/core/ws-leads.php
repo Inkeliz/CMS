@@ -149,7 +149,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 					$ext		= str_replace(array("jpeg"),array("jpg"),$ext);
 					$token 		= md5(uniqid(rand(), true));
 					 if(move_uploaded_file( $tmp_name ,$_SERVER['DOCUMENT_ROOT']."/website/assets/upload-leads-files/".$token.'.'.$ext)){
-					 	$linkName[] ="<a class='downloadFile' href='".$_SERVER['HTTP_HOST']."/admin/modulos/_leads_/download.php?filename=".$token.".".$ext."&newname=".$nome."' target='_blank'>".$nome."</a>";
+					 	$linkName[] ="<a class='downloadFile' href='".$_SERVER['HTTP_HOST']."/admin/ws-modules/ws-register-leads/download.php?filename=".$token.".".$ext."&newname=".$nome."' target='_blank'>".$nome."</a>";
 					}						
 				}
 				$TYPE_SEND[$key] = implode($linkName,'<br>');
@@ -162,7 +162,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 				$ext		= str_replace(array("jpeg"),array("jpg"),$ext);
 				$token 		= md5(uniqid(rand(), true));
 				 if(move_uploaded_file( $tmp_name ,$_SERVER['DOCUMENT_ROOT']."/website/assets/upload-leads-files/".$token.'.'.$ext)){
-				 	$TYPE_SEND[$key] ="<a class='downloadFile' href='/admin/modulos/_leads_/download.php?filename=".$token.".".$ext."&newname=".$nome."' target='_blank'>".$nome."</a>";
+				 	$TYPE_SEND[$key] ="<a class='downloadFile' href='/admin/ws-modules/ws-register-leads/download.php?filename=".$token.".".$ext."&newname=".$nome."' target='_blank'>".$nome."</a>";
 				}
 			}
 		}

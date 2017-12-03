@@ -34,7 +34,7 @@
                         console.log("Live Editor:")
                         jQuery.ajax({
                             type: "POST",
-                            url: "./app/modulos/_modulo_/functions.php",
+                            url: "./app/ws-modules/ws-model-tool/functions.php",
                             data: {
                                 "function": "SaveLiveEditor",
                                 "colum": LiveEditorColum,
@@ -112,7 +112,7 @@
         jQuery("#closeLiveEditor").bind("click tap press", function() {
             $.ajax({
                 type: "POST",
-                url: "./app/modulos/_tools_/functions.php",
+                url: "./app/ws-modules/ws-tools/functions.php",
                 data: {"function": "detroyEditorActive"},
                 async: true,
                 success: function(data) {location.reload();}

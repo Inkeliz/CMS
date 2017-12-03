@@ -145,7 +145,7 @@ $(document).ready(function(){
 						$("#menu_tools").html("").css({"backgroundImage":'url('+ws.rootPath+'admin/app/templates/img/websheep/preloaderMenuLeft.png")'});
 					},
 					type: "POST",
-					url: ws.rootPath+"admin/app/modulos/_tools_/functions.php",
+					url: ws.rootPath+"admin/app/ws-modules/ws-tools/functions.php",
 					data:{"function":"refreshMenuDesktop"}
 				}).done(function(data) {
 					$("#menu_tools").html(data).css({"backgroundImage":"none"});
@@ -275,7 +275,7 @@ $(document).ready(function(){
 							divBlur:"body #container",
 							Callback:function(){
 								functions({
-									patch:ws.rootPath+"admin/app/modulos/_tools_",
+									patch:ws.rootPath+"admin/app/ws-modules/ws-tools",
 									funcao:"bkpWS",
 									Sucess:function(e){
 										var setBkpWS = setInterval(function(){
@@ -333,7 +333,7 @@ $(document).ready(function(){
 									$.ajax({
 										type: "POST",
 										async: true,
-										url: ws.rootPath+"admin/app/modulos/login/functions.php",
+										url: ws.rootPath+"admin/app/ws-modules/ws-login/functions.php",
 										data:{'function':'logout'},
 										beforeSend: function() {
 											$("#iniciarsessao").hide('fast')
@@ -409,22 +409,22 @@ $(document).ready(function(){
 		if(typeof(directAccess) !== 'undefined' && directAccess != null && typeof directAccess.id_tool == 'number' && directAccess.LoadDirectTool != 'null'){
 		 	var linkAccess  = null;
 		 	if(directAccess.type_obj=='item' && directAccess.id_item==0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/index.php?back=false&ws_id_ferramenta="+directAccess.id_tool;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/index.php?back=false&ws_id_ferramenta="+directAccess.id_tool;
 		 	}
 		 	if(directAccess.type_obj=='detail' && directAccess.id_item>0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/detalhes.php?back=false&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/detalhes.php?back=false&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
 		 	}
 		 	if(directAccess.type_obj=='img' && directAccess.id_item>0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/imagens.php?back=false&ws_nivel=-1&id_cat=0&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/imagens.php?back=false&ws_nivel=-1&id_cat=0&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
 		 	}
 		 	if(directAccess.type_obj=='gal' && directAccess.id_item>0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/galerias.php?back=false&ws_nivel=-1&id_cat=0&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/galerias.php?back=false&ws_nivel=-1&id_cat=0&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
 		 	}
 		 	if(directAccess.type_obj=='img_gal' && directAccess.id_item>0 && directAccess.id_gal>0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/galeria_fotos.php?back=false&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item+"&id_galeria="+directAccess.id_gal;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/galeria_fotos.php?back=false&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item+"&id_galeria="+directAccess.id_gal;
 		 	}
 		 	if(directAccess.type_obj=='files' && directAccess.id_item>0){
-			 	var linkAccess = ws.rootPath+"admin/app/modulos/_modulo_/files.php?direct=true&ws_nivel=-1&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
+			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/files.php?direct=true&ws_nivel=-1&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
 		 	}
 		 	if(linkAccess!=null){
 				confirma({

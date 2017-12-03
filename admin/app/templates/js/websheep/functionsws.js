@@ -130,7 +130,7 @@ ws = {
 		},
 		log:function(opcoes){
 			var options = ws.extend({
-				url: '/admin/app/modulos/ws_log/functions.php',
+				url: '/admin/app/ws-modules/ws-logs/functions.php',
 				function: 'addLog',
 				ws_author: 0,
 				id_user: 2,
@@ -447,7 +447,7 @@ ws = {
 
 					if(window.ajaxFormInclude != true) {
 						ws.load.script({
-							file: '/admin/modulos/_leads_/AjaxForm.min.js',
+							file: '/admin/ws-modules/ws-register-leads/AjaxForm.min.js',
 							return: function() {
 								if(escope_this.thisCaptcha != null) {veryFyCaptcha();}else{goForm(false);}
 							}

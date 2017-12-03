@@ -514,7 +514,7 @@
 			##################################################################################
 			# INCLUIMOS O SCRIPT DE UPDATE DI MYSQL...
 			##################################################################################
-			include(INCLUDE_PATH.'admin/app/modulos/update/ws_update.php');
+			include(INCLUDE_PATH.'admin/app/ws-modules/ws-update/ws_update.php');
 
 			##################################################################################
 			# EXECUTAMOS O MYSQLI
@@ -601,7 +601,7 @@
 			##################################################################################
 			# grava na sessão o PATH da ferramenta
 			##################################################################################
-			$session->set('PATCH','app/modulos/_modulo_');
+			$session->set('PATCH','app/ws-modules/ws-model-tool');
 			
 			##################################################################################
 			# SELECT NA TABELA DAS FERRAMENTAS
@@ -1274,9 +1274,9 @@
 						$h     = (isset($value[3])) ? $value[3] : 0;
 						$q     = (isset($value[4])) ? "&q=" . $value[4] : '';
 						if ($w == "0" && $h == "0") {
-							$img = ws::includePath.'/admin/app/modulos/_modulo_/uploads/' . $img;
+							$img = ws::includePath.'/admin/app/ws-modules/ws-model-tool/uploads/' . $img;
 						} else {
-							$img = ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/modulos/_modulo_/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
+							$img = ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
 						}
 						$arrayIMG[] = $media . ':' . $img;
 					}
@@ -1294,9 +1294,9 @@
 				}
 				if ($newPath == null) {
 					if ($w == "0" && $h == "0") {
-						return ws::includePath.'/admin/app/modulos/_modulo_/uploads/' . $imagem;
+						return ws::includePath.'/admin/app/ws-modules/ws-model-tool/uploads/' . $imagem;
 					} else {
-						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/modulos/_modulo_/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
+						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
 					}
 				} else {
 					if ($w == "0" && $h == "0") {

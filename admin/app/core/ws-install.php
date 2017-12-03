@@ -73,7 +73,7 @@ $(document).ready(function(){
 					$.ajax({
 						type: "POST",
 						cache: false,
-						url: "<?=ROOT_WEBSHEEP?>admin/app/modulos/_tools_/functions.php",
+						url: "<?=ROOT_WEBSHEEP?>admin/app/ws-modules/ws-tools/functions.php",
 						data: {function:"installSQLInit"},
 						error: function (xhr, ajaxOptions, thrownError) {
 							alert(xhr.status);

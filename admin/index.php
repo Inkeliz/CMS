@@ -19,9 +19,7 @@
 			com este programa, Se não, veja <http://www.gnu.org/licenses/>.
 	*/
 
-		// date_default_timezone_set('America/Sao_Paulo');
-
-		ob_start();	
+		ob_start();
 
 	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
@@ -114,4 +112,4 @@
 	############################################################################################################################
 	#	CASO ESTEJA OFFLINE JÁ DIRECIONA PRO LOGIN
 	############################################################################################################################
-		include(INCLUDE_PATH.'admin/app/modulos/login/index.php');
+		include(INCLUDE_PATH.'admin/app/ws-modules/ws-login/index.php');

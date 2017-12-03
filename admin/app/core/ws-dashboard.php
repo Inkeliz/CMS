@@ -202,7 +202,7 @@
 
 
  	  $TEMPLATE->CLASS_POPUP 	= (ws::urlPath(2,false)=="popup") ? 'popup' : '';
- 	  $TEMPLATE->LoadDirectTool = (ws::urlPath(3,false)=="code-editor") ? ws::rootPath.'admin/app/modulos/webmaster/index.php' : 'null';
+ 	  $TEMPLATE->LoadDirectTool = (ws::urlPath(3,false)=="code-editor") ? ws::rootPath.'admin/app/ws-modules/ws-webmaster/index.php' : 'null';
 
 
 
