@@ -1016,11 +1016,8 @@ function loadFile($pathFile=null){
 		$count =$file_exists_dir->fetch_array[0];
 		$ext = explode('.',$count['bkpfile']);
 		$ext = end($ext);
-
 		if($ext=="txt")$ext="text";
 		if($ext=="js")$ext="javascript";
-
-
 		echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
 		echo 'window.typeLoaded			= "bkp";';
 		echo 'window.htmEditor.setReadOnly(true);';
@@ -1032,7 +1029,6 @@ function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
 		$folderFTP 	=  '/'.$POST['pathFile'].'/'.$POST['filename'];
-
 		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{
@@ -1077,7 +1073,6 @@ function getVersionsFile(){
 							$resposta .=  '<div style="position: absolute;right: 0;padding: 6px 30px;color: #A41500;">Sendo editado por '.$ws_usuarios->fetch_array[0]['nome'].'</div>';
 						}else{
 							$resposta .=  '<div style="position: absolute;right: 0;padding: 6px 30px;color: #A41500;">Já está sendo editado.</div>';
-
 						}
 					}
 			}else{

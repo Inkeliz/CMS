@@ -33,6 +33,9 @@
 	include_once(INCLUDE_PATH.'admin/app/lib/class-thumbnails.php');
 	include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
 
+############################################################################################################################################
+# INICIAMOS A CLASSE BASE DO SISTEMA
+############################################################################################################################################
 	class WS {
    		const includePath 	=  	INCLUDE_PATH;
    		const rootPath 		= 	ROOT_WEBSHEEP;

@@ -8,37 +8,30 @@
 		RewriteEngine On
 
 	#########################################################################################
-	# 	VERIFICAMOS SE A URL SETADA É UM ARQUIVO EXISTENTE
-	#########################################################################################
-		RewriteCond %{SCRIPT_FILENAME}/admin/$1 -f			
-		RewriteCond %{SCRIPT_FILENAME}/admin/$1 !-d
-		RewriteRule ^(.*)$		./admin/$1		[L]
-
-	#########################################################################################
-	# 	URL'S GLOBAIS DO SISTEMA
-	#########################################################################################
-		RewriteCond %{SCRIPT_FILENAME} !-f
-		RewriteCond	%{SCRIPT_FILENAME} !-d
-		{{INCLUDES}}
-		
-	#########################################################################################
-	# 	SETAMOS A BASE DOS ARQUIVOS 
+	# 	PRIMEIRO VERIFICAMOS SE O ARQUIVO EXISTE DENTRO DA PASTA WEBSITE
 	#########################################################################################
 		RewriteBase /website/
+		RewriteCond %{DOCUMENT_ROOT}/website/$1 -f
+		RewriteRule ^(.*)$ $1 [L]
 
 	#########################################################################################
-	# 	VERIFICAMOS SE A URL SETADA É UM ARQUIVO EXISTENTE
+	# 	AGORA VERIFICA SE É UMA URL GLOBAL 
 	#########################################################################################
-		RewriteCond %{SCRIPT_FILENAME}/../website/$1 -f			
-		RewriteCond %{SCRIPT_FILENAME}/../website/$1 !-d
-		RewriteRule ^(.*)$		$1		[L]
+		RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+		RewriteCond	%{DOCUMENT_ROOT}/$1 !-d
+		{{INCLUDES}}
 
 	#########################################################################################
-	# 	QUALQUER OUTRA URL 
+	# 	AGORA DIRECIONA OS ACESSOS AO PAINEL ADMIN
 	#########################################################################################
-		RewriteCond %{SCRIPT_FILENAME} !-f
-		RewriteCond %{SCRIPT_FILENAME} !-d
-		RewriteRule ^$			./../admin/app/core/ws-website.php		[L]
-		RewriteRule ^(.*)$		./../admin/app/core/ws-website.php		[L]
-
+		 RewriteCond %{DOCUMENT_ROOT}admin/$1 -f			
+		 RewriteRule ^((.*/)*[^./]+)/*$	./../admin/$1		[L]
+		
+	#########################################################################################
+	# 	QUALQUER OUTRA URL DIGITADA DIRECIONA PARA O PROCESSADOR CENTRAL
+	#########################################################################################
+		RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+		RewriteCond %{DOCUMENT_ROOT}/$1 !-d
+		RewriteRule ^((.*/)*[^./]+)/*$	./../admin/app/core/ws-website.php		[L]
+		RewriteRule ^$					./../admin/app/core/ws-website.php		[L]
 </IfModule>
