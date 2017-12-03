@@ -1031,28 +1031,13 @@ function loadFile($pathFile=null){
 function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
-		$folderFTP 	=  $POST['pathFile'].'/'.$POST['filename'];
-
-
+		$folderFTP 	=  '/'.$POST['pathFile'].'/'.$POST['filename'];
 
 		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{
 			echo "fail";
 		};
-		// $fileBKP 	= 'bkp_'.date('d-m-y_H-i-s').'_'.$file;
-		// $folderBKP 	= INCLUDE_PATH.'admin/app/ws-modules/ws-webmaster/versoes/'.$pathFile.'/'.$fileBKP;
-		// if($_POST['bkp']=='true'){
-		// 	file_put_contents($folderBKP, file_get_contents($folderFTP));
-		// 	$file_exists_dir 				= new MySQL();
-		// 	$file_exists_dir->set_table(PREFIX_TABLES.'ws_webmaster');
-		// 	$file_exists_dir->set_insert('path',$pathFile);
-		// 	$file_exists_dir->set_insert('original',$file);
-		// 	$file_exists_dir->set_insert('bkpfile',$fileBKP);
-		// 	$file_exists_dir->set_insert('responsavel',$session->get('id'));
-		// 	$file_exists_dir->set_insert('token',_token(PREFIX_TABLES.'ws_webmaster','token'));
-		// 	$file_exists_dir->insert();
-		// }
 		exit;
 	}
 function getVersionsFile(){
