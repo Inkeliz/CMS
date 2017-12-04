@@ -257,7 +257,7 @@
 		#
 		###################################################################################
 		static function getlang($path = null, $isso = "", $porisso = "") {
-			$json  = str_replace(array(PHP_EOL, "\n", "\r"), "", file_get_contents(ws::includePath.'/admin/app/config/lang/' . LANG . '.json'));
+			$json  = str_replace(array(PHP_EOL, "\n", "\r"), "", file_get_contents(ws::includePath.'admin/app/config/lang/' . LANG . '.json'));
 			$obj   = json_decode($json, TRUE);
 			$paths = explode(">", $path);
 			if ($path == null) {
@@ -759,20 +759,22 @@
 			$urlCache  = ($_SERVER['REQUEST_URI']=='/') ? $setupdata['url_initPath'].'.php' : str_replace("/", "-", $_SERVER['REQUEST_URI']).'.php';
 
 			// VERIFICA NO SISTEMA SE O CACHE ESTÁ HABILITADO  E QUE CACHE EXISTA O ARQUIVO E INSERE
-			if ($setupdata['ws_cache'] == '1' && file_exists(ws::includePath.'/ws-cache/'.$urlCache)) {
+			if ($setupdata['ws_cache'] == '1' && file_exists(ws::includePath.'ws-cache/'.$urlCache)) {
 				ob_end_clean();
 				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/app/templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
-				include(ws::includePath.'/ws-cache/'.$urlCache);
+				include(ws::includePath.'ws-cache/'.$urlCache);
 				exit;
 			}
 			
 			ob_start();
 			$setupdata['url_plugin'] = $setupdata['url_plugin'];
-			$dh                      = opendir(ws::includePath.'/website/' . $setupdata['url_plugin']);
+			$dh                      = opendir(ws::includePath.'website/' . $setupdata['url_plugin']);
+
+
 			while ($diretorio = readdir($dh)) {
 				if ($diretorio != '..' && $diretorio != '.' && $diretorio != '.htaccess') {
-					if (file_exists(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/active')) {
-						$phpConfig = ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/plugin.config.php';
+					if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/active')) {
+						$phpConfig = ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/plugin.config.php';
 						if (file_exists($phpConfig)) {
 							ob_start();
 							@include($phpConfig);
@@ -781,21 +783,21 @@
 						}
 						if (isset($contents->globalphp) && $contents->globalphp != "") {
 							if (is_string($contents->globalphp)) {
-								if (file_exists(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp)) {
-									include(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp);
+								if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp)) {
+									include(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp);
 								} else {
 									_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp . '</i>');
 								}
 							} elseif (is_array($contents->globalphp)) {
 								if (count($contents->globalphp) == 1) {
-									if (file_exists(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0])) {
-										include(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0]);
+									if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0])) {
+										include(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0]);
 									} else {
 										_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0] . '</i>');
 									}
 								} elseif (count($contents->globalphp) == 2 && $contents->globalphp[1] == "before") {
-									if (file_exists(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0])) {
-										include(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0]);
+									if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0])) {
+										include(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0]);
 									} else {
 										_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0] . '</i>');
 									}
@@ -807,8 +809,8 @@
 											$file = $value[0];
 										}
 										if (is_string($value) || empty($value[1]) || $value[1] == 'before') {
-											if (file_exists(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file)) {
-												include(ws::includePath.'/website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file);
+											if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file)) {
+												include(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file);
 											} else {
 												_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file . '</i>');
 											}
@@ -895,12 +897,12 @@
 			
 
 
-			$dh        = opendir(ws::includePath.'/website/' . $setupdata['url_plugin']);
+			$dh        = opendir(ws::includePath.'website/' . $setupdata['url_plugin']);
 			while ($diretorio = readdir($dh)) {
 				if ($diretorio != '..' && $diretorio != '.' && $diretorio != '.htaccess') {
 					if (file_exists('./../' . $path . '/' . $diretorio . '/active')) {
-						$jsonConfig = ws::includePath.'/website/' . $path . '/' . $diretorio . '/plugin.config.json';
-						$phpConfig  = ws::includePath.'/website/' . $path . '/' . $diretorio . '/plugin.config.php';
+						$jsonConfig = ws::includePath.'website/' . $path . '/' . $diretorio . '/plugin.config.json';
+						$phpConfig  = ws::includePath.'website/' . $path . '/' . $diretorio . '/plugin.config.php';
 						if (file_exists($phpConfig)) {
 							ob_start();
 							@include($phpConfig);
@@ -912,14 +914,14 @@
 						if (isset($contents->globalphp) && $contents->globalphp != "") {
 							if (is_array($contents->globalphp)) {
 								if (count($contents->globalphp) == 1) {
-									if (file_exists(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $contents->globalphp)) {
-										include(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $contents->globalphp);
+									if (file_exists(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $contents->globalphp)) {
+										include(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $contents->globalphp);
 									} else {
 										_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp . '</i>');
 									}
 								} elseif (count($contents->globalphp) == 2 && /*$contents->globalphp[1]=="before" ||*/ $contents->globalphp[1] == "after") {
-									if (file_exists(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $contents->globalphp[0])) {
-										include(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $contents->globalphp[0]);
+									if (file_exists(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $contents->globalphp[0])) {
+										include(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $contents->globalphp[0]);
 									} else {
 										_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->globalphp[0] . '</i>');
 									}
@@ -931,8 +933,8 @@
 											$file = $value[0];
 										}
 										if (is_array($value) && count($value) == 2 && $value[1] == 'after') {
-											if (file_exists(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $file)) {
-												include(ws::includePath.'/website/' . $path . '/' . $diretorio . '/' . $file);
+											if (file_exists(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $file)) {
+												include(ws::includePath.'website/' . $path . '/' . $diretorio . '/' . $file);
 											} else {
 												_erro('Um plugin chamado "' . $contents->pluginName . '" está tentando inserir um arquivo inexistente:<br><i>/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $file . '</i>');
 											}
@@ -964,7 +966,7 @@
 					$urlOriginalSubs = substr($urlOriginal, 8);
 					$arrauURL        = explode("/", $urlOriginalSubs);
 					if (count($arrauURL) == 4) {
-						$fileInfo = getimagesize(ws::includePath.'/website/assets/upload-files/' . $arrauURL[3]);
+						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[3]);
 
 						if ($arrauURL[0] == '0') {
 							$arrauURL[0] = $fileInfo[0];
@@ -983,7 +985,7 @@
 						$newURL = $fileInfo[0] . '-' . $fileInfo[1] . '-' . $fileInfo[2] . '-' . $arrauURL[3];
 
 					} elseif (count($arrauURL) == 3) {
-						$fileInfo = getimagesize(ws::includePath.'/website/assets/upload-files/' . $arrauURL[2]);
+						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[2]);
 						if ($arrauURL[0] == '0') {
 							$arrauURL[0] = $fileInfo[0];
 						}
@@ -999,7 +1001,7 @@
 
 						$newURL = $arrauURL[0] . '-' . $arrauURL[1] . '-'.$qldd.'-' . $arrauURL[2];
 					} elseif (count($arrauURL) == 2) {
-						$fileInfo = getimagesize(ws::includePath.'/website/assets/upload-files/' . $arrauURL[1]);
+						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[1]);
 						if ($arrauURL[0] == '0') {
 							$arrauURL[0] = $fileInfo[0];
 						}
@@ -1015,7 +1017,7 @@
 
 						$ext = substr($arrauURL[0],-3);
 						if($ext== "jpg" || $ext== "jpeg" || $ext== "gif"){$qldd = "100";}elseif($ext== "png"){$qldd = "9";}
-						$fileInfo = getimagesize(ws::includePath.'/website/assets/upload-files/' . $arrauURL[0]);
+						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[0]);
 						$newURL   = $fileInfo[0] . '-' . $fileInfo[1] . '-'.$qldd.'-' . $arrauURL[0];
 					}
 
@@ -1030,14 +1032,14 @@
 			ob_end_clean();
 			
 			// VERIFICA NO SISTEMA SE A PÁGINA EXISTE E SE É PRA GERAR CACHE 
-			if ($setupdata['ws_cache'] == 1 && $controller->createCache == 1 && !file_exists(ws::includePath.'/ws-cache/'.$urlCache)) {
+			if ($setupdata['ws_cache'] == 1 && $controller->createCache == 1 && !file_exists(ws::includePath.'ws-cache/'.$urlCache)) {
 
 				// SUBSTITUI AS TAGS DE IMAGEM PROCESSADA E RETORNA A URL DIRETA DO ARQUIVO
 				$_outPutCacheHTML = preg_replace_callback('/<*img[^>]*src*=*["\']?([^"\']*)/i', "ReplaceImages", $_outPutCache);
 				$_outPutCacheHTML = preg_replace_callback('/url\([\'\"]?([^\"\'\)]+)([\"\']?\))/i', "ReplaceImages", $_outPutCacheHTML);
 
 				// GRAVA O ARQUIVO COM O NOME CORRETO
-				file_put_contents(ws::includePath.'/ws-cache/'.$urlCache, $_outPutCacheHTML);
+				file_put_contents(ws::includePath.'ws-cache/'.$urlCache, $_outPutCacheHTML);
 			}
 				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/app/templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
 				echo $_outPutCache;
@@ -1277,9 +1279,9 @@
 						$h     = (isset($value[3])) ? $value[3] : 0;
 						$q     = (isset($value[4])) ? "&q=" . $value[4] : '';
 						if ($w == "0" && $h == "0") {
-							$img = ws::includePath.'/admin/app/ws-modules/ws-model-tool/uploads/' . $img;
+							$img = ws::includePath.'admin/app/ws-modules/ws-model-tool/uploads/' . $img;
 						} else {
-							$img = ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
+							$img = ws::includePath.'admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $img . "&w=" . $w . "&h=" . $h . $q;
 						}
 						$arrayIMG[] = $media . ':' . $img;
 					}
@@ -1297,15 +1299,15 @@
 				}
 				if ($newPath == null) {
 					if ($w == "0" && $h == "0") {
-						return ws::includePath.'/admin/app/ws-modules/ws-model-tool/uploads/' . $imagem;
+						return ws::includePath.'admin/app/ws-modules/ws-model-tool/uploads/' . $imagem;
 					} else {
-						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
+						return ws::includePath.'admin/app/core/ws-thumb-crop.php?img=../app/ws-modules/ws-model-tool/uploads/' . $imagem . "&w=" . $w . "&h=" . $h;
 					}
 				} else {
 					if ($w == "0" && $h == "0") {
 						return $newPath . $imagem;
 					} else {
-						return ws::includePath.'/admin/app/core/ws-thumb-crop.php?img=../../' . $newPath . '/' . $imagem . "&w=" . $w . "&h=" . $h;
+						return ws::includePath.'admin/app/core/ws-thumb-crop.php?img=../../' . $newPath . '/' . $imagem . "&w=" . $w . "&h=" . $h;
 					}
 				}
 				
