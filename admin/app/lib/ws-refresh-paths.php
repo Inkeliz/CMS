@@ -48,6 +48,5 @@
 			$I->set_update('id', 1);
 			$I->set_update('system_version',$NEW_VERSION->version);
 			$I->salvar();
-			goto refreshPath;
 		}
 	
