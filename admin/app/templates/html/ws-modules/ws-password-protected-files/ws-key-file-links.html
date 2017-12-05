@@ -3,7 +3,7 @@
 window.id_item_selected		='';
 var barra_progresso 		= '';
 var canvas_barra_progresso 	= '';
-include_css ('./app/templates/css/websheep/ws-modules/ws-password-protected-files/style.min.css','css_mod','All');
+include_css ('{ROOT_PATH}admin/app/templates/css/websheep/ws-modules/ws-password-protected-files/style.min.css','css_mod','All');
 </script>
 <div id="topoModulo" class="TitTop bg05 w1b">{keyFile_links_mainTitle}<span style="color:#FFF;">{FILENAME}</span></div>
 	<div id="topo_upload" class="bg01" >
@@ -19,7 +19,7 @@ include_css ('./app/templates/css/websheep/ws-modules/ws-password-protected-file
 					<li id='{LI_ID_LINK}' class='bg06'>
 						<spam class='desc_item w2'>
 								<i class='icon-link'></i>
-								<a href='http://{DOMINIO}/ws-download/{LI_TOKEN_FILE}!{LI_LEY_ACCESS}' target='_blank' >{FILENAME}</a>
+								<a href='http://{DOMINIO}{ROOT_PATH}ws-download/{LI_TOKEN_FILE}!{LI_LEY_ACCESS}' target='_blank' >{FILENAME}</a>
 						</spam>
 						<div class='combo'>
 							<div 
@@ -60,7 +60,7 @@ function reloadFunctions(){
 
 		$.ajax({
 			beforeSend: function() {}
-			,cache: false, type: "POST", url: "./app/ws-modules/ws-password-protected-files/functions.php",
+			,cache: false, type: "POST", url: "{ROOT_PATH}admin/app/ws-modules/ws-password-protected-files/functions.php",
 			data: {'function': "getInfoLink", idLink: idLink, }
 		}).done(function(e) {
 			confirma({
@@ -69,14 +69,13 @@ function reloadFunctions(){
 				drag: false,bot1:'Salvar',bot2: 'Cancelar',
 				posFn:function(){
 					$( "*[legenda]" )						.LegendaOver();
-					$( "input[name='expire']" )				.mask("9999-99-99");
 					$( "input[name='disableToDown']" )		.change(	function(){$( "input[name='refreshToAllDown']:checked, 	input[name='refreshToFirstDown']:checked" )	.click() })
 					$( "input[name='refreshToFirstDown']" )	.change(	function(){$( "input[name='refreshToAllDown']:checked, 	input[name='disableToDown']:checked" )		.click() })
 					$( "input[name='refreshToAllDown']" )	.change(	function(){$( "input[name='disableToDown']:checked, 	input[name='refreshToFirstDown']:checked" )	.click() })
 					$(".icon-refresh")						.unbind("click tap press").bind('click tap press',function(){
 							$.ajax({
 								beforeSend: function() {}
-								,cache: false, type: "POST", url: "./app/ws-modules/ws-password-protected-files/functions.php",
+								,cache: false, type: "POST", url: "{ROOT_PATH}admin/app/ws-modules/ws-password-protected-files/functions.php",
 								data: {'function': "AtualizaKey", idLink: idLink, }
 							}).done(function(e) {
 								if(e=="falha"){
@@ -97,10 +96,10 @@ function reloadFunctions(){
 					$.ajax({
 						beforeSend: function() {
 							setTimeout(function(){
-								confirma({width: "auto", conteudo: "  {keyFile_links_modal_save_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) 
+								confirma({width: "auto", conteudo: "  {keyFile_links_modal_save_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_PATH}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) 
 							},500)
 						},
-						cache: false, type: "POST", url: "./app/ws-modules/ws-password-protected-files/functions.php",
+						cache: false, type: "POST", url: "{ROOT_PATH}admin/app/ws-modules/ws-password-protected-files/functions.php",
 						data: {
 							function: "salvaLink",
 							form: $("#formLink").serialize(),
@@ -138,8 +137,8 @@ function reloadFunctions(){
 				posFn:function(){},
 				newFun:function(){
 					$.ajax({
-						beforeSend: function() {confirma({width: "auto", conteudo: "  {keyFile_links_modal_delete_before}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) },
-						cache: false, type: "POST", url: "app/ws-modules/ws-password-protected-files/functions.php",
+						beforeSend: function() {confirma({width: "auto", conteudo: "  {keyFile_links_modal_delete_before}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_PATH}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) },
+						cache: false, type: "POST", url: "{ROOT_PATH}admin/app/ws-modules/ws-password-protected-files/functions.php",
 						data: {
 							function: "exclLink",
 							idLink: idLink,
@@ -157,8 +156,8 @@ function reloadFunctions(){
 
 	$("#bt_Add_Galeria").unbind('click').click(function(){
 		$.ajax({
-			beforeSend: function() {confirma({width: "auto", conteudo: "  {keyFile_links_modal_addLink_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) },
-			cache: false, type: "POST", url: "app/ws-modules/ws-password-protected-files/functions.php",
+			beforeSend: function() {confirma({width: "auto", conteudo: "  {keyFile_links_modal_addLink_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_PATH}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0}) },
+			cache: false, type: "POST", url: "{ROOT_PATH}admin/app/ws-modules/ws-password-protected-files/functions.php",
 			data: {
 				function: "AddLink",
 				tokenFile: '{TOKEN_FILE}',
@@ -175,7 +174,7 @@ function reloadFunctions(){
 
 
 	$("#bt_Voltar_Galeria").unbind('click').click(function(){
-		confirma({width: "auto", conteudo: "  {keyFile_links_backButtonBefore}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0})
+		confirma({width: "auto", conteudo: "  {keyFile_links_backButtonBefore}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_PATH}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag: false,bot1: 0,bot2: 0})
 		$("#conteudo").load("{PATH}/index.php",function(){$("#ws_confirm").remove(); $("#body").removeClass("scrollhidden"); $("*").removeClass("blur"); });
 	});
 	setTimeout(function(){

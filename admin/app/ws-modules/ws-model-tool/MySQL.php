@@ -11,6 +11,6 @@
 	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 ############################################################################################################################################
-	include_once(INCLUDE_PATH.'website/ws-config.php');
+	include_once(INCLUDE_PATH.'ws-config.php');
 ?>
 <iframe id="painelMySQL" src="<?=ROOT_WEBSHEEP.'admin/app/ws-modules/phpMyAdmin/index.php'?>" style="top: 0;position: relative; width: 100%;height: calc(100% - 56px);"></iframe>

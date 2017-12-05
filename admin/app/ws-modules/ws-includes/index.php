@@ -3,11 +3,11 @@
 	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
-		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
 
 if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 	
@@ -72,7 +72,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->url_plugin 										= $setupdata["url_plugin"];
 	$template->url_ignore_add 									= ($setupdata['url_ignore_add']=='1') ? "checked" : "";
 	$template->PATH 											= PATH;
-	$template->urlIncludes_TopTitle 								= ws::getlang('urlIncludes>topTitle');
+	$template->urlIncludes_TopTitle 							= ws::getlang('urlIncludes>topTitle');
 	$template->urlIncludes_save 								= ws::getlang('urlIncludes>save');
 	$template->urlIncludes_configuration_data 					= ws::getlang('urlIncludes>configuration_data');
 	$template->urlIncludes_add_an_include 						= ws::getlang('urlIncludes>add_an_include');
@@ -134,10 +134,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$LI_OPT->urlIncludes_include_edit 		= ws::getlang('urlIncludes>include>edit');
 	$LI_OPT->urlIncludes_include_delete 	= ws::getlang('urlIncludes>include>delete');
 	$LI_OPT->urlIncludes_process_nav 		= ws::getlang('urlIncludes>processNav');
-
-
-
-
 
 
 	if($setupdata["processoURL"]==0 ){

@@ -14,7 +14,7 @@
 ############################################################################################################################################
 # IMPORTA CLASSES NECESSÁRIAS PARA O SISTEMA
 ############################################################################################################################################
-	include_once(INCLUDE_PATH.'website/ws-config.php');
+	include_once(INCLUDE_PATH.'ws-config.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/ws-connect-mysql.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-mysql.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');

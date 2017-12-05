@@ -1,9 +1,9 @@
 <!-- BEGIN BLOCK_CENTRAL_BKP -->
 <script type="text/javascript">
-include_css("./app/templates/css/websheep/ws-modules/ws-model-tool/templates.min.css","css_mod","All");
+include_css("{ROOT_WEBSHEEP}admin/app/templates/css/websheep/ws-modules/ws-model-tool/templates.min.css","css_mod","All");
 </script>
 	<div id="topo_upload" class="bg01">
-		<form id="UploadBKP" style="display:none" action="./app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+		<form id="UploadBKP" style="display:none" action="{ROOT_WEBSHEEP}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 			<input name="file" id="myfile" type="file" style="display:none" />
 			<input type="hidden" name="type" 			value="uploadBKP" />
 			<input type="hidden" name="newName" 		value="uploadBKP.zip" />
@@ -75,7 +75,7 @@ $(function(){
 			var dataFile = $(this).data('href');
 			confirma({
 			width:"auto",
-			conteudo:"  {centralBkp_loading}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
+			conteudo:"  {centralBkp_loading}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
 			drag:false,
 			posFn:function(){
 				$("#ws_confirm").css("line-height","20px");
@@ -144,7 +144,7 @@ $(function(){
 								},
 								beforeSend:function(){
 									$("#bot_importar,#bot_cancelar,#importTemplateInput").hide();
-									$("#importTemplateTitle").html("{centralBkp_importing}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:62px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>");
+									$("#importTemplateTitle").html("{centralBkp_importing}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:62px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>");
 								},
 								cache: false,
 							}).done(function(e) {
@@ -195,9 +195,9 @@ $(function(){
 			<div class='c'></div>\
 			<div class='thumbmail' style='border: solid 5px #3f6daa;background-color: #FFF;width: 200px;height:200px;position: relative;float: left;'>\
 				<div class='combo_upload' style='display: none; opacity: 1;'>\
-					<div class='pc' legenda='{centralBkp_mycomputer}'>	<img src='./app/templates/img/websheep/up_m.png'></div>\
-					<div class='bb' legenda='{centralBkp_library}'>	<img src='./app/templates/img/websheep/folder_m.png'></div>\
-					<div class='excl' legenda='{centralBkp_delete}'>		<img src='./app/templates/img/websheep/delete.png' style='width:25px;margin-top:-1px;'></div>\
+					<div class='pc' legenda='{centralBkp_mycomputer}'>	<img src='{ROOT_WEBSHEEP}admin/app/templates/img/websheep/up_m.png'></div>\
+					<div class='bb' legenda='{centralBkp_library}'>	<img src='{ROOT_WEBSHEEP}admin/app/templates/img/websheep/folder_m.png'></div>\
+					<div class='excl' legenda='{centralBkp_delete}'>		<img src='{ROOT_WEBSHEEP}admin/app/templates/img/websheep/delete.png' style='width:25px;margin-top:-1px;'></div>\
 				</div>\
 			<img class='avatarBKP' src='{ws_rootPath}ws-img/200/200/null'></div>\
 			<input type='hidden' class='avatar' >\
@@ -264,11 +264,10 @@ $(function(){
 			newFun:function(){
 						$.ajax({
 						  type: "POST",
-						  url: "./app/ws-modules/ws-tools/functions.php",
+						  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 						  beforeSend:function(){
-						  	setTimeout(function(){
-						  		confirma({width:"auto",conteudo:"{centralBkp_creating}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})
-						  	},1000)
+							out("é pra criar sáparada")
+						  	ws.preload.open({string:"{centralBkp_creating}"});
 						  },
 						  cache: false,
 						  data: {
@@ -279,8 +278,9 @@ $(function(){
 						  },
 						}).done(function(e) {
 							out(e)
+							 ws.preload.close()
 							$("#ws_confirm").css("line-height","20px");
-							$( "#conteudo" ).load( './{PATH}/ws-central-bkps.php' , function( response, status, xhr ) {
+							$( "#conteudo" ).load('{ROOT_WEBSHEEP}admin/app/ws-modules/ws-model-tool/ws-central-bkps.php' , function( response, status, xhr ) {
 								$("#ws_confirm").remove();
 								$("#body").removeClass("scrollhidden");
 								$("*").removeClass("blur");
@@ -296,7 +296,7 @@ $(function(){
 	$('.pluginItem .botao.exportar').unbind('click tap press').bind('click tap press', function(e){
 			e.preventDefault();
 			
-			var preload 	= '<div class="preloaderupdate" style="left: 50%;margin-left: -15px;position: absolute;width: 30px;height: 18px;top: 13px;background-image:url(./app/templates/img/websheep/loader_thumb.gif);background-repeat:no-repeat;background-position: top center;"></div>';
+			var preload 	= '<div class="preloaderupdate" style="left: 50%;margin-left: -15px;position: absolute;width: 30px;height: 18px;top: 13px;background-image:url({ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif);background-repeat:no-repeat;background-position: top center;"></div>';
 			var Filename 	= $(this).parent().parent().parent().data('file');
 			var content 	= '<div  class="w1" id="titleModal" style="font-size: 22px;margin-bottom: 10px;margin-left: 10px;font-weight: 600;">Gerando link válido:</div>'
 							+ '<div id="getLink"><div id="ashString"></div>O link deverá expirar em <input value="5" min="0" step="5" max="60" class="inputText" id="ashUser" type="number" style="padding: 10px 3px;width: 50px;"> minutos</div>';
@@ -401,12 +401,8 @@ $(function(){
 				var DataBaseOption	= $("input[name='dataBase']:checked").val();
 				$.ajax({
 				  type: "POST",
-				  url: "./app/ws-modules/ws-tools/functions.php",
-				  beforeSend:function(){
-				  	setTimeout(function(){
-				  		confirma({width:"auto",conteudo:"{centralBkp_restoration}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})
-				  	},1000)
-				  },
+				  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
+				  beforeSend:function(){ws.preload.open({string:'{centralBkp_restoration}'})},
 				  cache: false,
 				  data: {
 				  	"function"	:	"apliqueTheme",
@@ -415,22 +411,21 @@ $(function(){
 				  	"dataBase"	: 	DataBaseOption,
 				  },
 				}).done(function(e) {
-					out(e)
-					if(FileOption=='tools'){
-						window.bkp_tool = e;
-						$( "#conteudo" ).load( './app/ws-modules/ws-tools/tools.php?install=true' , function( response, status, xhr ) {
+				  	ws.preload.close()
+					 if(FileOption=='tools'){
+						window.bkp_tool = e.trim();
+						$( "#conteudo" ).load('{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/tools.php?install=true' , function( response, status, xhr ) {
 						});
-					}else if(e=='true'){
-						confirma({
+					 } else if(e.trim()=='1'){
+						ws.confirm({
 							conteudo	: 	'<strong>{centralBkp_update}</strong><br>{centralBkp_refresh}',
 							bot1		: 	"{centralBkp_recharge}",
+							idModal		: 	'refreshFolder',
 							bot2		: 	0,
 							drag		: 	0,
 							botclose	: 	0,
 							posFn		: 	function() {},
-							newFun		: 	function() {
-												window.location.reload()
-											}
+							newFun		: 	function() {window.location.reload()}
 						})
 					}
 				})

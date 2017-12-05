@@ -311,7 +311,7 @@
 			$.ajax({
 			  type: "POST",
 			  url: "./app/ws-modules/ws-tools/functions.php",
-			  data: { "function":"exportToolFile","id_tool":id}
+			  data: { "function":"exportToolFile","id_tool":id, type:"echo"}
 			}).done(function(data) {
 					var pom = document.createElement('a');
 						// pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + data);

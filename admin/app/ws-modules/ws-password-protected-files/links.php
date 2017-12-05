@@ -55,6 +55,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	############################################################################################################
 	$template           												= new Template(TEMPLATE_LINK, true);
 	$template->PATH 													= PATH;
+	$template->ROOT_PATH												= ws::rootPath;
 	$template->TOKEN_FILE 												= $_GET['tokenfile'];
 	$template->DOMINIO  												= DOMINIO;
 	$template->keyFile_links_mainTitle 									= ws::getLang("keyFile>links>mainTitle");

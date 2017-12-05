@@ -50,7 +50,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		$ws_auth_template->set_insert('ws_timestamp', 	$now);
 		$ws_auth_template->set_insert('expire', 		$timeout);		
 		$ws_auth_template->insert();
-		echo ws::protocolURL().DOMINIO.'/ws-bkp/'.$getTokenRest;
+		echo ws::protocolURL().DOMINIO.ROOT_WEBSHEEP.'ws-bkp/'.$getTokenRest;
 		exit;
 	}
 	

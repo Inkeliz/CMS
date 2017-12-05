@@ -32,9 +32,6 @@
 		
 		if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
-
-
-
 	############################################################################################################################
 	# CASO NÃO TENHA SIDO VERIFICADO OU SEJA UMA NOVA INSTALAÇÃO/UPDATE IMPORTA VERIFICAÇÃO DO SERVIDOR
 	############################################################################################################################
@@ -57,7 +54,7 @@
 	############################################################################################################################
 	# CASO NÃO EXISTA O 'ws-config.php' IMPORTA A TELA DE SETUP
 	############################################################################################################################
-	if(!file_exists(INCLUDE_PATH.'website/ws-config.php')) {
+	if(!file_exists(INCLUDE_PATH.'ws-config.php')) {
 		include_once(INCLUDE_PATH.'admin/app/core/ws-setup.php');
 		exit;
 	}

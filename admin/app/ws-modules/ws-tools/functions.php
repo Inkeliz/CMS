@@ -93,7 +93,8 @@
 		exit;
 	}
 
-	function exportToolFile($ID_TOOL = null, $multiple = false, $encode = false) {
+	function exportToolFile($ID_TOOL = null, $multiple = false, $encode = false, $type='echo') {
+		if(isset($_REQUEST['type'])) $type=$_REQUEST['type'];
 		if (empty($_REQUEST['toolToPlugin']))
 			$_REQUEST['toolToPlugin'] = "off";
 		if ($ID_TOOL == null) {
@@ -262,11 +263,21 @@
 				$binary = new Base2n(6);
 				$json   = $binary->encode(json_encode($SQL, JSON_PRETTY_PRINT));
 				$json   = wordwrap($json, 60, PHP_EOL, true);
-				echo $json;
+
+				if($type=="return") {
+					return $json;
+				}else{
+					echo $json;
+				}
+
 			} else {
 				$jsonName = 'importedTools/' . $TOOL->fetch_array[0]['slug'] . '.json';
 				$json     = json_encode($SQL, JSON_PRETTY_PRINT);
-				echo $json;
+				if($type=="return") {
+					return $json;
+				}else{
+					echo $json;
+				}
 			}
 			exit;
 		}
@@ -278,7 +289,7 @@
 		$ferramentas = $_REQUEST['tools'];
 		$newTool     = Array();
 		foreach ($ferramentas as $value) {
-			$newTool[] = exportToolFile($value, true);
+			$newTool[] = exportToolFile($value, true,false,"return");
 		}
 		echo json_encode($newTool, JSON_PRETTY_PRINT);
 		exit;
@@ -2739,7 +2750,7 @@
 	
 	/*######################################################################################## BKP ############################################################## */
 	function apliqueTheme() {
-		$extractPath = INCLUDE_PATH.'admin/..';
+		$extractPath = INCLUDE_PATH;
 		$_root       = $extractPath;
 		$arquivo     = INCLUDE_PATH.'ws-bkp/' . $_REQUEST['dataFile'];
 		$website     = $extractPath . "/website";
@@ -2793,7 +2804,6 @@
 				exit;
 			}
 		}
-		
 		$zip = new ZipArchive();
 		if ($zip->open($arquivo)) {
 			$setup     = $zip->getFromName('ws-setup.sql');
@@ -2801,8 +2811,6 @@
 			$website   = $zip->getFromName('ws-website.sql');
 			$zip->close();
 		}
-		
-
 		if ($_REQUEST['dataBase'] == 'none') {
 			echo 'none...' . PHP_EOL;
 		} elseif ($_REQUEST['dataBase'] == 'basic') {
@@ -2822,7 +2830,7 @@
 		}
 		
 		ob_end_clean();
-		echo 'true';
+		echo 1;
 		exit;
 	}
 	
@@ -2840,7 +2848,7 @@
 		
 		$newTool = Array();
 		foreach ($TOOL->fetch_array as $key) {
-			$newTool[] = exportToolFile($key['id'], true, true);
+			$newTool[] = exportToolFile($key['id'], true,false,"return");
 		}
 		$return         = "";
 		$contentMySQL   = "";
@@ -2917,11 +2925,16 @@
 			}
 		}
 		
-		$z = new ZipArchive();
 		if (!file_exists(INCLUDE_PATH.'ws-bkp')) {
 			mkdir(INCLUDE_PATH.'ws-bkp');
 		}
-		$criou = $z->open(INCLUDE_PATH.'ws-bkp/bkp_(' . count($_files_theme_) . '_files)_' . date("Y-m-d_H-i-s") . '.zip', ZipArchive::CREATE);
+		$fileNameZipBKP = INCLUDE_PATH.'ws-bkp/bkp_(' . count($_files_theme_) . '_files)_' . date("Y-m-d_H-i-s") . '.zip';
+		echo $fileNameZipBKP.PHP_EOL;
+
+
+
+		$z = new ZipArchive();
+		$criou = $z->open($fileNameZipBKP, ZipArchive::CREATE);
 		if ($criou === true) {
 			foreach ($_dir_theme_ as $dir) {
 				$z->addEmptyDir('website/' . $dir);
@@ -2940,11 +2953,11 @@
 			$z->addFromString('ws-structure.sql', $MySQLStructure);
 			$z->addFromString('ws-tools.ws', base64_encode(json_encode($newTool, JSON_PRETTY_PRINT)));
 			$z->addFromString('ws-info.json', $contens);
+			$z->close();
 			echo "sucesso!";
 		} else {
 			echo "erro!";
 		}
-		$z->close();
 	}
 	function lista_Dir_theme($diretorio) {
 		global $_dir_theme_;

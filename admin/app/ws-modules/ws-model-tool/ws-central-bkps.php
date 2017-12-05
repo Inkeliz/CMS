@@ -43,6 +43,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# DEFINIMOS AS STRINGS PRINCIPAIS PUXANDO DO JSON
 	##########################################################################################################
 	$template->PATH												=	PATH;
+	$template->ROOT_WEBSHEEP									=	ROOT_WEBSHEEP;
 	$template->centralBkp_download								=	ws::getlang('centralBkp>download');
 	$template->centralBkp_title									=	ws::getlang('centralBkp>title');
 	$template->centralBkp_exportBackup							= 	ws::getlang('centralBkp>exportBackup');;

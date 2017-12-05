@@ -100,15 +100,15 @@ botDownload:
 	<meta charset="UTF-8">
 	<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 										type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 						type="text/css" media="all" />
-	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"							id="jquery"></script>
-	<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 				id="funcionalidades"></script>
-	<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/reset.css" 										type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 				type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/estrutura.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" 						type="text/css" media="all" />
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"							id="jquery"></script>
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js" 				id="funcionalidades"></script>
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/functionsws.js" 					id="functionsws"></script>
 	<style>
 		.formularioDownload{
 			margin-left:0!important;
@@ -161,9 +161,9 @@ botDownload:
 <script type="application/javascript">
 		$("#downloadFileBtn").click(function(e){
 			e.preventDefault();
-			var locationFile ='http://<?=DOMINIO?>/ws-secure-download/<?=$_url_[0]?>!<?=@$_url_[1]?>!direct=true';
-			$("#downloadFileBtn").hide()
-			$(".preloader").show()
+			var locationFile ='<?=ROOT_WEBSHEEP?>ws-download/<?=$_url_[0]?>!<?=@$_url_[1]?>!direct=true';
+			$("#downloadFileBtn").hide();
+			$(".preloader").show();
 			ws.downloadFile({
 				typeSend 	:"GET",
 				file 		:locationFile,
@@ -191,15 +191,15 @@ arquivoNull:
 		<meta charset="UTF-8">
 		<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-	<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
-	<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
-	<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
-	<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js" 						id="funcionalidades"></script>
+	<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/functionsws.js" 					id="functionsws"></script>
 
 		<style>
 			.formularioDownload{
@@ -245,15 +245,15 @@ getPass:
 <meta charset="UTF-8">
 <link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="./../admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
-<link rel="stylesheet" href="./../admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
-<script type="text/javascript" src="./../admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
-<script type="text/javascript" src="./../admin/app/templates/js/websheep/funcionalidades.min.js" 						id="funcionalidades"></script>
-<script type="text/javascript" src="./../admin/app/templates/js/websheep/functionsws.min.js" 					id="functionsws"></script>
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/fontes/fonts.css" 									type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/reset.css" 								type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/desktop.css?<?=rand(0,999999)?>" 			type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/ws-login/estrutura.css" 							type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/theme_blue.min.css" 							type="text/css" media="all" />
+<link rel="stylesheet" href="<?=ROOT_WEBSHEEP?>admin/app/templates/css/websheep/funcionalidades.css" 							type="text/css" media="all" />
+<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/vendor/jquery/2.2.0/jquery.min.js"						id="jquery"></script>
+<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/funcionalidades.js" 						id="funcionalidades"></script>
+<script type="text/javascript" src="<?=ROOT_WEBSHEEP?>admin/app/templates/js/websheep/functionsws.js" 					id="functionsws"></script>
 <style>
 	.formularioDownload{
 		margin-left:0!important;
@@ -291,7 +291,7 @@ getPass:
 <script type="application/javascript">
 	$("#downloadFileBtn").click(function(e){
 			e.preventDefault();
-			var locationFile ='/ws-secure-download/<?=$_url_[0]?>!'+$("#serialKey").val().replace("!","")+'!direct=true';
+			var locationFile ='<?=ROOT_WEBSHEEP?>ws-download/<?=$_url_[0]?>!'+$("#serialKey").val().replace("!","")+'!direct=true';
 			$("#downloadFileBtn").hide()
 			$(".preloader").show()
 			ws.downloadFile({
