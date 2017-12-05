@@ -28,10 +28,10 @@
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
 		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
 
 if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 	
@@ -71,6 +71,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# MONTAMOS A CLASSE DOS TEMPLATES 
 	#####################################################
 	$template           							= new Template(TEMPLATE_LINK, true);
+	$template->ROOT_WEBSHEEP						= ROOT_WEBSHEEP;
 	$template->ToolsManager_Title					= ws::getLang('ToolsManager>Title');
 	$template->ToolsManager_Back					= ws::getLang('ToolsManager>Back');
 	$template->ToolsManager_ImportTool				= ws::getLang('ToolsManager>ImportTool');
@@ -81,6 +82,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ToolsManager_Export					= ws::getLang('ToolsManager>Export');
 	$template->ToolsManager_Move					= ws::getLang('ToolsManager>Move');
 	$template->ToolsManager_Access					= ws::getLang('ToolsManager>Access');
+	$template->ToolsManager_Inputs					= ws::getLang('ToolsManager>Inputs');
 	$template->ToolsManager_Select					= ws::getLang('ToolsManager>Select');
 	$template->ToolsManager_Modal_Backing			= ws::getLang('ToolsManager>Modal>Backing');
 	$template->ToolsManager_Modal_RepoTool			= ws::getLang('ToolsManager>Modal>RepoTool');
@@ -149,9 +151,9 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		$template->GOBACK = $_GET['goback'];
 		$template->block("GOBACKBT");
 		$template->block("GOBACKJS");
-		$template->LINK_DETALHES = './'.PATH.'/detalhes.php?ws_id_ferramenta="+id+"&goback=./'.PATH.'/tools.php'.urlencode("?").'plugin=true'.urlencode("&").'goback='.$_GET['goback'];
+		$template->LINK_DETALHES = '?ws_id_ferramenta="+id+"&goback='.ROOT_WEBSHEEP.'admin/app/ws-modules/ws-tools/tools.php'.urlencode("?").'plugin=true'.urlencode("&").'goback='.$_GET['goback'];
 	}else{
-		$template->LINK_DETALHES = './'.PATH.'/detalhes.php?ws_id_ferramenta="+id+"&goback=./'.PATH.'/tools.php';
+		$template->LINK_DETALHES = '?ws_id_ferramenta="+id+"';
 		$template->clear("GOBACKBT");
 		$template->clear("GOBACKJS");
 	}

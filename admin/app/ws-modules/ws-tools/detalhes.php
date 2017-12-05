@@ -3,10 +3,10 @@
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
 		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
 
 if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 	
@@ -84,6 +84,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template           										=	new Template(TEMPLATE_LINK, true);
 	$template->PATCH 											=	"app/ws-modules/ws-tools";
 	$template->WS_ID_FERRAMENTA 								=	ws_id_ferramenta;
+	$template->ROOT_WEBSHEEP 									=	ROOT_WEBSHEEP;
 	$template->ToolsManager_ToolDetails_mainTitle				=	ws::getLang("ToolsManager>ToolDetails>mainTitle");
 	$template->ToolsManager_ToolDetails_BackToPluginsButton		=	ws::getLang("ToolsManager>ToolDetails>BackToPluginsButton");
 	$template->ToolsManager_ToolDetails_BackToToolsButton		=	ws::getLang("ToolsManager>ToolDetails>BackToToolsButton");
@@ -103,7 +104,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ToolsManager_ToolDetails_AddJs_opt2				=	ws::getLang("ToolsManager>ToolDetails>AddJs>opt2");
 	$template->ToolsManager_ToolDetails_AddJs_opt3				=	ws::getLang("ToolsManager>ToolDetails>AddJs>opt3");
 	$template->ToolsManager_ToolDetails_AddJs_opt4				=	ws::getLang("ToolsManager>ToolDetails>AddJs>opt4");
-	$template->ToolsManager_ToolDetails_editButtom				=	ws::getLang("ToolsManager>ToolDetails>editButtom");
 	$template->ToolsManager_ToolDetails_chosen_maxSelect		=	ws::getLang("ToolsManager>ToolDetails>chosen>maxSelect");
 	$template->ToolsManager_ToolDetails_modal_back				=	ws::getLang("ToolsManager>ToolDetails>modal>back");
 	$template->ToolsManager_ToolDetails_modal_loading			=	ws::getLang("ToolsManager>ToolDetails>modal>loading");

@@ -86,6 +86,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# SETAMOS AS VARIÁVEIS NECESSÁRIAS PARA O FUNCIONAMENTO DO MODULO 
 	######################################################################
 	$template->WS_ID_FERRAMENTA = ws_id_ferramenta;
+	$template->ROOT_WEBSHEEP 	= ROOT_WEBSHEEP;
 	$template->_tit_topo_ 		= $FERRAMENTA['_tit_topo_'];
 	$template->PREFIX 			= $FERRAMENTA['_prefix_'];
 	$template->PATH 			= PATH;
@@ -95,7 +96,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->class_1 			= ($FERRAMENTA['_fotos_']=='1') 		? 	"disabled" 	: 	"";
 	$template->class_2 			= ($FERRAMENTA['_galerias_']=='1')		? 	"disabled" 	:	"";
 	$template->class_3 			= ($FERRAMENTA['_files_']=='1')			? 	"disabled" 	:	"";
-	$template->ENCODE_GOBACK 	= urlencode($_GET['goback']);
+	$template->ENCODE_GOBACK 	= (isset($_GET['goback']) && $_GET['goback']!="") ? 'goback='.urlencode($_GET['goback']).'&' : null;
 
 	######################################################################
 	# SETAMOS O BLOCK E RETORNAMOS O HTML 

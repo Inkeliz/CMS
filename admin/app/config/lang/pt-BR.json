@@ -561,7 +561,8 @@
 		"Clear": "Limpar",
 		"Export": "Exportar",
 		"Move": "Mover",
-		"Access": "Acessar",
+		"Access": "Configurações",
+		"Inputs": "Editar campos",
 		"Select": "Selecionar",
 		"Modal": {
 			"Backing": "Voltando",

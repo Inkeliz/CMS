@@ -8,7 +8,7 @@
 		$path = implode(array_filter(explode('/',$path),'strlen'),"/");
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : trim('/'.$path.'/')));
 	}
-
+	
 	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 ############################################################################################################################################

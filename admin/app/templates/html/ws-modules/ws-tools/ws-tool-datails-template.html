@@ -3,7 +3,7 @@
 	var barra_progresso = '';
 	var canvas_barra_progresso = '';
 	window.id_item_selected='';
-	include_css ('./app/templates/css/websheep/ws-modules/ws-tools/detalhes.min.css','css_mod','All');
+	include_css ('{ROOT_WEBSHEEP}admin/app/templates/css/websheep/ws-modules/ws-tools/detalhes.min.css','css_mod','All');
 </script>
 <div id="topoModulo" class="TitTop bg05 w1b">{ToolsManager_ToolDetails_mainTitle}</div>
 	<div id="topo_basico" class="bg01 editor_basico" style="display:block">
@@ -11,7 +11,7 @@
 				<div id="voltar" data-goback="{goback}" class="botao">{ToolsManager_ToolDetails_BackToPluginsButton}</div>
 		<!-- END GOBACK -->
 		<!-- BEGIN VOLTAR -->
-			<div id="voltar" data-goback="./app/ws-modules/ws-tools/tools.php" class="botao">{ToolsManager_ToolDetails_BackToToolsButton}</div>
+			<div id="voltar" data-goback="{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/tools.php" class="botao">{ToolsManager_ToolDetails_BackToToolsButton}</div>
 		<!-- END VOLTAR -->
 		<div id="salvar_basico" class="botao">{ToolsManager_ToolDetails_saveTool}</div>
 	</div>
@@ -78,11 +78,6 @@
 				<div class="c" id="ace_editor" style="position: relative;width: 574px;height:270px;margin:10px;font-size: 16px;">{_js_}</div>
 				<input  id="codigo_textarea" name="_js_" value="{_js_}" type="hidden"/>
 				<div class="c"></div>
-					<div id="editar_campos_item" class="botao _menu_popup_" style="position: relative;	width:520px;	text-align: center;padding: 20px;margin: 20px;float: left;margin-left: 20px;">{ToolsManager_ToolDetails_editButtom}</div>
-				<div class="c"></div>
-
-
-
 		</div>
 		</form>
 	</div>
@@ -99,14 +94,14 @@ _root.reloadFunctions = function(){
 		out("reload functions");
 		$("#voltar").unbind('click').click(function(){
 			var url = $(this).data("goback");
-			confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_back}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+			confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_back}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 
 			$("#conteudo").load(url,function(){
 				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 			});
 		})
 		$("#editar_campos_item").unbind('click').click(function(){
-			confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_loading}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+			confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_loading}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 			if(_root.form_preenchido!= $("#form_basico").serialize()){
 
 				confirma({
@@ -126,7 +121,7 @@ _root.reloadFunctions = function(){
 
 			}else{
 
-				$("#conteudo").load("./app/ws-modules/ws-tools/campos.php?goback={GOBACK_ENCODE}&ws_id_ferramenta={WS_ID_FERRAMENTA}",function(){
+				$("#conteudo").load("{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/campos.php?goback={GOBACK_ENCODE}&ws_id_ferramenta={WS_ID_FERRAMENTA}",function(){
 					$("#ws_confirm").remove();
 					$("#body").removeClass("scrollhidden");
 					$("*").removeClass("blur");
@@ -173,8 +168,8 @@ _root.reloadFunctions = function(){
 				$.ajax({
 				  type: "POST",
 				  cache: false,
-				  url: "./app/ws-modules/ws-tools/functions.php",
-				  beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
+				  beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				  data: {_js_:window.htmEditor.getSession().getValue(), function:"salvaFerramenta", ws_id_ferramenta: "{WS_ID_FERRAMENTA}",inputs:inputs+chos}
 				}).done(function(e) {
 					if(e=="sucesso"){
@@ -209,8 +204,8 @@ _root.reloadFunctions = function(){
 	if($('#Balao_ToolType').length){$('#Balao_ToolType').remove();}
 	_root.reloadFunctions();
 
-	$.getScript("./app/vendor/ace/src-min-noconflict/ace.js", function(wordList) {
-		ace.config.set('basePath', './app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
+	$.getScript("{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict/ace.js", function(wordList) {
+		ace.config.set('basePath', '{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
 		window.htmEditor = ace.edit("ace_editor");
 		window.htmEditor.setTheme("ace/theme/websheep.0.3");
 		window.htmEditor.getSession().setMode("ace/mode/javascript");
@@ -221,7 +216,7 @@ _root.reloadFunctions = function(){
 	    window.htmEditor.setDisplayIndentGuides(true);
 	    window.htmEditor.getSession().setUseWrapMode(true);  
 	    
-		$.getScript("./app/vendor/ace/src-min-noconflict/ext-language_tools.js", function(wordList) {
+		$.getScript("{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict/ext-language_tools.js", function(wordList) {
 			setTimeout(function(){
 				var wsCompleter = {
 				    getCompletions: function(editor, session, pos, prefix, callback) {
@@ -231,7 +226,7 @@ _root.reloadFunctions = function(){
 						out(prefix)
 						out(callback)
 				        if (prefix.length === 0) { callback(null, []); return }
-				        $.getJSON("./app/ws-modules/ws-webmaster/autoComplete.json", function(wordList) {
+				        $.getJSON("{ROOT_WEBSHEEP}admin/app/ws-modules/ws-webmaster/autoComplete.json", function(wordList) {
 				            callback(null, wordList.map(function(ea)  {return {name: ea.value, value: ea.value, meta: ea.meta}}));
 				        })
 				    }

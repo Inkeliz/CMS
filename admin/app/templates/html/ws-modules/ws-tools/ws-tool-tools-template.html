@@ -102,7 +102,8 @@
 							<div style='display:none; padding:0 9px; position:relative; float:left; width:25px; height:25px; top:2px;'>
                             <img style='cursor:pointer; position:relative; float:left; top:4px; left:5px;' class='exportar legenda' legenda='{ToolsManager_Export}' src='./app/templates/img/websheep/export_toll.png'></div>
 							<div style='padding:0 9px;	position:relative; float:left; width:25px; height:25px; top:2px;'><img style='cursor:pointer; position:relative; float:left; top:4px; left:5px;' 	class='mover_item legenda' legenda='{ToolsManager_Move}' src='./app/templates/img/websheep/arrow-move.png'></div>
-							<div style='padding:0 9px; 	position:relative; float:left; width:25px; height:25px; top:2px;'><img style='cursor:pointer; position:relative; float:left; top:4px; left:5px;' 	class='editar legenda' legenda='{ToolsManager_Access}' src='./app/templates/img/websheep/magnifier.png'></div> 
+							<div style='padding:0 9px; 	position:relative; float:left; width:25px; height:25px; top:2px;'><img style='cursor:pointer; position:relative; float:left; top:4px; left:5px;' 	class='editar legenda' legenda='{ToolsManager_Access}' src='./app/templates/img/websheep/engrenagem.png'></div> 
+							<div style='padding:0 9px; 	position:relative; float:left; width:25px; height:25px; top:2px;'><img style='cursor:pointer; position:relative; float:left; top:4px; left:5px;' 	class='campos legenda' legenda='{ToolsManager_Inputs}' src='./app/templates/img/websheep/category-group.png'></div> 
                             <div style='display:none;	padding:0 9px; position:relative; float:left; width:25px; height:25px; top:2px;'><img style='cursor:pointer; position:relative; float:left; top:4px; left:5px' 	class='excluir legenda' legenda='<img class=\"editar\" src=\"./app/templates/img/websheep/exclamation.png\" style=\"position: absolute;margin-top: -2px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Excluir' src='./app/templates/img/websheep/cross-button.png'></div>
 						</div>
 					</div>
@@ -334,11 +335,20 @@
 		var li	= $(this).parent().parent().parent().parent();
 		var id	= $(this).parent().parent().parent().parent().data("id");
 		confirma({width:"auto",conteudo:"  {ToolsManager_Modal_Loading}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
-		 $("#conteudo").load("{LINK_DETALHES}",function(){
+		 $("#conteudo").load("{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/detalhes.php{LINK_DETALHES}",function(){
 		 	$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 		});
 	})
 
+	$(".campos").unbind('click').click(function(){
+		var li	= $(this).parent().parent().parent().parent();
+		var id	= $(this).parent().parent().parent().parent().data("id");
+		confirma({width:"auto",conteudo:"  {ToolsManager_Modal_Loading}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+		 $("#conteudo").load("{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/campos.php{LINK_DETALHES}",function(){
+		 	$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
+		});
+	})
+	
 	$("#combo_folder .editar ").unbind('click').click(function(){
 			var li		= $(this).parent().parent().parent().parent().parent();
 			var id		= $(li).data('id');
@@ -421,11 +431,8 @@
 											campos +='<option value="file">file</option>';
 											campos +='<option value="uploaded">{ToolsManager_Modal_Uploaded}</option>';
 											$("select#campos").html(campos);
-
 										}
-
 							});
-
 							
 						},
 						newFun:function(){
@@ -453,7 +460,6 @@
 			var li			= $(this).parent().parent().parent().parent().parent();
 			var id			= $(li).data('id');
 			var titulo		= $(li).find('.titulo_folder').text();
-
 			var conteudo = "	<style>";
 				conteudo += "		.chosen-container{margin:10px;}";
 				conteudo += "		.chosen-container .chosen-results li{color: #000000;}";
@@ -515,7 +521,6 @@
 				}
 			});
 	})
-
 
 
 	$(".limpar").unbind('click').click(function(e){
