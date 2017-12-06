@@ -75,15 +75,7 @@ function get_caller_info() {
 # CRIAMOS O HTACCESS DO PAINEL
 #########################################################################
 	function refresh_Path_htaccess($get, $set){
-		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($get)));
-		$newClass		=	array();
-		 foreach ($htaccess as $key => $line) {
-			if (strpos($line,"RewriteBase") >= 1) {
- 		 		$line=  '		RewriteBase '.ROOT_WEBSHEEP.'website/';
-			}
-			$newClass[] =  $line;		
-		}
-		file_put_contents($set, implode(PHP_EOL,array_filter($newClass)));
+		file_put_contents($set,str_replace("{{ROOT_WEBSHEEP}}",ROOT_WEBSHEEP,file_get_contents($get)));
 	}
 
 #########################################################################

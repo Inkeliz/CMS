@@ -2098,11 +2098,14 @@
 		
 		configPaths($RewriteRule);
 		
-		
+		##########################################################################################
+		#  VERSÃO DO SISTEMA   
+		##########################################################################################
+		$localVersion  = json_decode(file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
 		$I = new MySQL();
 		$I->set_table(PREFIX_TABLES . 'setupdata');
 		$I->set_insert('id', 1);
-		$I->set_insert('system_version', file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-version.txt'));
+		$I->set_insert('system_version',$localVersion->version);
 		//####################################### apenas se for o setup inicial
 		
 		if (isset($_REQUEST['formulario'])) {
@@ -2728,6 +2731,17 @@
 		$Salva->set_update('_exec_js_', $_getInput['_exec_js_']);
 		$Salva->set_update('_desc_', $_getInput['_desc_']);
 		$Salva->set_update('_js_', mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['_js_']));
+
+
+		$Salva->set_update('html_item', 	mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_item']));
+		$Salva->set_update('html_cat', 		mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_cat']));
+		$Salva->set_update('html_img', 		mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_img']));
+		$Salva->set_update('html_gal', 		mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_gal']));
+		$Salva->set_update('html_img_gal', 	mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_img_gal']));
+		$Salva->set_update('html_file', 	mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['html_file']));
+
+
+
 		if ($Salva->salvar()) {
 			// DEPOIS QUE GRAVA, CRIA-SE TODAS AS TABELAS MYSQL DA FERRAMENTA
 			$t_ferramentas = new MySQL();
@@ -2946,7 +2960,7 @@
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"'.ROOT_WEBSHEEP.'ws-img/200/200/null","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
 			} else {
 				$contens = '{"title":"' . $_POST['title'] . '","content":"' . $_POST['content'] . '","thumb":"' . basename($_POST['avatar']) . '","files":"' . count($_files_theme_) . '","type":"files,tools,content"}';
-				$z->addFromString(basename($_POST['avatar']), file_get_contents(ws::includePath.'website/assets/upload-files/thumbnail/170-150-100-'.basename($_POST['avatar'])));
+				$z->addFromString(basename($_POST['avatar']), file_get_contents(INCLUDE_PATH.'website/assets/upload-files/thumbnail/'.basename($_POST['avatar'])));
 			}
 			$z->addFromString('ws-setup.sql', $return);
 			$z->addFromString('ws-website.sql', $contentMySQL);

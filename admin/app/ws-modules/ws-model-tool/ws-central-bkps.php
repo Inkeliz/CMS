@@ -3,14 +3,14 @@
 	############################################################################################################################################
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
-		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
 
-if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
-	
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
+		
 	############################################################################################################################################
 	# IMPORTA CLASSE PADRÃO DO SISTEMA
 	##########################################################################################################
@@ -22,7 +22,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# DEFINE O PATH DO MÓDULO
 	##########################################################################################################
 	define("PATH",'app/ws-modules/ws-model-tool');
-
 
 	#####################################################  
 	# PEGA O SETUP DATA
@@ -68,7 +67,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->centralBkp_creatingatemplate						=	ws::getlang('centralBkp>creatingatemplate');
 	$template->centralBkp_importing								=	ws::getlang('centralBkp>importing');
 	$template->centralBkp_invalidLink							=	ws::getlang('centralBkp>invalidLink');
-
 	$template->centralBkp_restoreModal_aboutTheFiles			=	ws::getlang('centralBkp>restoreModal>aboutTheFiles');
 	$template->centralBkp_restoreModal_restore100				=	ws::getlang('centralBkp>restoreModal>restore100');
 	$template->centralBkp_restoreModal_applyReplace				=	ws::getlang('centralBkp>restoreModal>applyReplace');
@@ -78,17 +76,14 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->centralBkp_restoreModal_dontTouchDataBase		=	ws::getlang('centralBkp>restoreModal>dontTouchDataBase');
 	$template->centralBkp_restoreModal_basicStructure			=	ws::getlang('centralBkp>restoreModal>basicStructure');
 	$template->centralBkp_restoreModal_rememberIf				=	ws::getlang('centralBkp>restoreModal>rememberIf');
-
 	$template->centralBkp_importModal_title						=	ws::getlang('centralBkp>importModal>title');
 	$template->centralBkp_importModal_bots_cancel				=	ws::getlang('centralBkp>importModal>bots>cancel');
 	$template->centralBkp_importModal_bots_import				=	ws::getlang('centralBkp>importModal>bots>import');
-
 	$template->centralBkp_exportModal_title						=	ws::getlang('centralBkp>exportModal>title');
 	$template->centralBkp_exportModal_sucessCopy				=	ws::getlang('centralBkp>exportModal>sucessCopy');
 	$template->centralBkp_exportModal_bots_createCode			=	ws::getlang('centralBkp>exportModal>bots>createCode');
 	$template->centralBkp_exportModal_bots_cancel				=	ws::getlang('centralBkp>exportModal>bots>cancel');
 	$template->centralBkp_exportModal_bots_copyCode				=	ws::getlang('centralBkp>exportModal>bots>copyCode');
-
 
 	##########################################################################################################
 	# CASO NÃO TENHA O DIRETÓRIO, CRIA A PASTA PADRÃO DE BKP
@@ -100,28 +95,30 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	##########################################################################################################
 	$dh = opendir(INCLUDE_PATH.'ws-bkp');
 	while($diretorio = readdir($dh)){
-		if($diretorio != '..' && $diretorio != '.' && substr($diretorio,-3)=="zip"){
-			$newSplashScreen= "";			
-			$template->dataFILE			=	$diretorio;
-			$newSplashScreen= "";			
-			$template->titulo			=	$diretorio;
-			$template->label			=	ws::getlang('centralBkp>restore');
+		if($diretorio != '..' && $diretorio != '.' && substr($diretorio,-3)=="zip"){		
+			$newSplashScreen 			= "";
+			$template->dataFILE			= $diretorio;
+			$newSplashScreen 			= "";
+			$template->titulo			= $diretorio;
+			$template->label			= ws::getlang('centralBkp>restore');
 			##########################################################################################################
 			# ABRIMOS O ZIP PARA VERIFICAR O CONTEÚDO
 			##########################################################################################################
 				$fileZip = INCLUDE_PATH.'ws-bkp/'.$diretorio;
 				$zip = new ZipArchive();
-				if($zip->open($fileZip) === TRUE ){
+				if($zip->open($fileZip, ZipArchive::CHECKCONS) === TRUE ){
+
 					##########################################################################################################
 					# VERIFICA SE EXISTE O ws-info.json
 					##########################################################################################################
 					if(strlen($zip->getFromName('ws-info.json'))){
+							######################################################################################
 					  		$contents 				= json_decode(trim($zip->getFromName('ws-info.json')),true);
 					  		$thumb 					= base64_encode(@$zip->getFromName(@$contents['thumb']));
 					  		$template->titulo 		= $contents['title'];
 					    	$template->description 	= $contents['content'];
-
 							########################################################### pega a miniatura do zip
+							
 						    if($contents['thumb']!='ws-img/200/200/null'){
 								$template->ClasseThumb		= 'minThumb';
 								$template->newSplashScreen	= 'data:image/jpeg;base64,'.$thumb;
@@ -132,6 +129,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 								$template->block("avatarTemplate");
 								$template->clear("newSplashScreen");
 							}
+
 				    }else{
 						$template->clear("ClasseThumb");
 						$template->clear("description");
@@ -144,8 +142,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 					$template->clear("newSplashScreen");
 				}
 			########################################################### GERA A ASH DE TRANSFERENCIA
-
-
 			$template->block("BLOCK_TEMPLATES");
 		}
 	}
@@ -154,7 +150,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# RETORNA O HTML DO TEMPLATE NA TELA
 	##########################################################################################################
 	$template->block("BLOCK_CENTRAL_BKP");
-	$template->show();
+	 $template->show();
 
 
 

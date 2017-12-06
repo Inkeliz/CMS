@@ -10,15 +10,15 @@
 	#########################################################################################
 	# 	PRIMEIRO VERIFICAMOS SE O ARQUIVO EXISTE DENTRO DA PASTA WEBSITE
 	#########################################################################################
-		RewriteBase /website/
-		RewriteCond %{DOCUMENT_ROOT}/website/$1 -f
+		RewriteBase {{ROOT_WEBSHEEP}}website/
+		RewriteCond %{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}website/$1 -f
 		RewriteRule ^(.*)$ $1 [L]
 
 	#########################################################################################
 	# 	AGORA VERIFICA SE É UMA URL GLOBAL 
 	#########################################################################################
-		RewriteCond %{DOCUMENT_ROOT}/$1 !-f
-		RewriteCond	%{DOCUMENT_ROOT}/$1 !-d
+		RewriteCond %{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}$1 !-f
+		RewriteCond	%{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}$1 !-d
 		RewriteRule	^ws-img/(.*)$ 			./../admin/app/core/ws-img.php 							[L]	
 		RewriteRule	^ws-leads/(.*)$ 		./../admin/app/core/ws-leads.php 						[L]
 		RewriteRule	^ws-class.php$ 			./../admin/app/lib/class-ws-v1.php						[L]
@@ -35,14 +35,14 @@
 	#########################################################################################
 	# 	AGORA DIRECIONA OS ACESSOS AO PAINEL ADMIN
 	#########################################################################################
-		 RewriteCond %{DOCUMENT_ROOT}admin/$1 -f			
+		 RewriteCond %{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}admin/$1 -f			
 		 RewriteRule ^((.*/)*[^./]+)/*$	./../admin/$1		[L]
 		
 	#########################################################################################
 	# 	QUALQUER OUTRA URL DIGITADA DIRECIONA PARA O PROCESSADOR CENTRAL
 	#########################################################################################
-		RewriteCond %{DOCUMENT_ROOT}/$1 !-f
-		RewriteCond %{DOCUMENT_ROOT}/$1 !-d
+		RewriteCond %{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}$1 !-f
+		RewriteCond %{DOCUMENT_ROOT}{{ROOT_WEBSHEEP}}$1 !-d
 		RewriteRule ^((.*/)*[^./]+)/*$	./../admin/app/core/ws-website.php		[L]
 		RewriteRule ^$					./../admin/app/core/ws-website.php		[L]
 

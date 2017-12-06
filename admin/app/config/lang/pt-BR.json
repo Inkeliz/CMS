@@ -648,6 +648,7 @@
 			"chosen": {
 				"maxSelect": "Desculpe, escolha apenas 8 opções.    =("
 			},
+			"AddHTML":"Template HTML",
 			"AddJs": {
 				"title": "Javascript auxiliar",
 				"opt1": "Executar código ao abrir e ao salvar o ítem da ferramenta",

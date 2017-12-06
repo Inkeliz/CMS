@@ -3,37 +3,26 @@
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
 		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
 
-if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
+		if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
 	###############################################################################################################################
 	#  GERANDO ASH PARA DOWNLOAD DE TEMPLATE
 	###############################################################################################################################
 	function importTemplate() {
+		$remote_file = trim($_REQUEST['urlFile']);
+		$local_file = INCLUDE_PATH."ws-bkp/".basename($remote_file).".zip";
+		if(file_put_contents($local_file, file_get_contents($remote_file))){
+			echo (filesize($local_file) > 0)? 1 : 0;
+		}else{
+			echo 0;				
+		}
+	 }
 
-			$remote_file =$_POST['urlFile'];
-			$local_file = INCLUDE_PATH."ws-bkp/".basename($remote_file).".zip";
-
-			if(remoteFileExists($remote_file)){
-				$ch = curl_init();
-				$fp = fopen ($local_file, 'w+');
-				$ch = curl_init($remote_file);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 50);
-				curl_setopt($ch, CURLOPT_FILE, $fp);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-				curl_setopt($ch, CURLOPT_ENCODING, "");
-				curl_exec($ch);
-				curl_close($ch);
-				fclose($fp);
-				die("1");
-			}else{
-				die("0");
-			}
-	}
 	###############################################################################################################################
 	#  GERANDO ASH PARA DOWNLOAD DE TEMPLATE
 	###############################################################################################################################
@@ -85,8 +74,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 			echo "on";
 			exit;
 		}
-
-
 	}
 	
 	###############################################################################################################################

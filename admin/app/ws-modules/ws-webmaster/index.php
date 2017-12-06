@@ -515,14 +515,36 @@ $(document).ready(function() {
 									drag: 0,
 									botclose: 0,
 									Check: function() {
-										if (!$("#formTags input[type='radio']:checked") || $("#shortcodes").val() == "") {
+										if( $("#formTags input[name='typeCode'][type='radio']:checked").length==0 || $("#formTags input[type='radio']:checked").length==0 || $("#shortcodes").val() == "") {
 											return false;
 										} else {
 											return true;
 										}
 									},
 									ErrorCheck: function() {
-										alert("Preencha tipo e ferramenta desejados");
+											ws.confirm({
+												conteudo:'<span style="color:#cd3333">Preencha tipo e ferramenta desejados</span>',
+												width: 500,
+												height: 'auto',
+												posFn: function() {},
+												Init: function() {},
+												posClose: function() {},
+												bots: [
+													{
+															id			: "aceitar",
+															label		: "Ok",
+															class		: "",
+															style 		: "",
+															css 		: {"color":"#FFF","backgroundColor":"#cd3333"},
+															ErrorCheck	: function() {},
+															Check 		: function() {return true},
+															action		: function(){},
+													}
+												],
+												idModal: "ws_error_confirm",
+												divScroll: "body",
+												divBlur: "#menu_tools,#container,#header",
+											})
 									},
 									posFn: function() {
 										window.htmEditorPagination = ace.edit("editorHTML");
@@ -579,6 +601,9 @@ $(document).ready(function() {
 										}).done(function(data) {
 												ws.preload.close()
 												window.htmEditor.insert(data)
+												$("#ws_confirm").remove();
+												$("#body").removeClass("scrollhidden");
+												$("*").removeClass("blur");
 
 										})
 
@@ -638,6 +663,9 @@ $(document).ready(function() {
 								} else {
 									window.htmEditor.insert($code);
 								}
+								$("#ws_confirm").remove();
+								$("#body").removeClass("scrollhidden");
+								$("*").removeClass("blur");
 							}
 						})
 					})
@@ -683,6 +711,9 @@ $(document).ready(function() {
 										}).done(function(data) {
 											ws.preload.close()
 											window.htmEditor.insert(data)
+											$("#ws_confirm").remove();
+											$("#body").removeClass("scrollhidden");
+											$("*").removeClass("blur");
 										})
 									}
 								})
@@ -706,14 +737,38 @@ $(document).ready(function() {
 									drag: 0,
 									botclose: 0,
 									Check: function() {
-										if (!$("#formTags input[type='radio']:checked") || $("#shortcodes").val() == "") {
+										if( $("#formTags input[name='typeCode'][type='radio']:checked").length==0 || $("#formTags input[type='radio']:checked").length==0 || $("#shortcodes").val() == "") {
 											return false;
 										} else {
 											return true;
 										}
 									},
 									ErrorCheck: function() {
-										alert("Preencha tipo e ferramenta desejados");
+													ws.confirm({
+														conteudo:'<span style="color:#cd3333">Preencha tipo e ferramenta desejados</span>',
+														width: 500,
+														height: 'auto',
+														posFn: function() {},
+														Init: function() {},
+														posClose: function() {},
+														bots: [
+															{
+																	id			: "aceitar",
+																	label		: "Ok",
+																	class		: "",
+																	style 		: "",
+																	css 		: {"color":"#FFF","backgroundColor":"#cd3333"},
+																	ErrorCheck	: function() {},
+																	Check 		: function() {return true},
+																	action		: function(){},
+															}
+														],
+														idModal: "ws_error_confirm",
+														divScroll: "body",
+														divBlur: "#menu_tools,#container,#header",
+													})
+
+
 									},
 									posFn: function() {},
 									newFun: function() {
@@ -727,6 +782,13 @@ $(document).ready(function() {
 										}).done(function(data) {
 											ws.preload.close()
 											window.htmEditor.insert(data)
+											$("#ws_confirm").remove();
+											$("#body").removeClass("scrollhidden");
+											$("*").removeClass("blur");
+											
+
+
+
 										})
 									}
 								})
@@ -763,6 +825,9 @@ $(document).ready(function() {
 											}
 										}).done(function(data) {
 											window.htmEditor.insert(data)
+											$("#ws_confirm").remove();
+											$("#body").removeClass("scrollhidden");
+											$("*").removeClass("blur");
 										});
 									}
 								})

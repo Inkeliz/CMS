@@ -97,6 +97,10 @@
 
 
 		static function create_thumbnail( $file, $w, $h,$q){
+			$extensao 	= explode(".",basename($file));
+			$ext 		= end($extensao);	
+			if($ext=='png' && $q>9){$q=9;}
+			if($q>100){$q=100;}
 			$newName = $w . '-' . $h . '-' . $q . '-' . basename($file);
 			$saveName = ws::includePath.'website/assets/upload-files/thumbnail/'.$newName;
 			if(!file_exists($file)){

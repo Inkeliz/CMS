@@ -211,6 +211,14 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	add_if_not_exist('ws_ferramentas'		,'_prefix_', 			'varchar(200) 				NULL default ""');
 	add_if_not_exist('ws_ferramentas'		,'_exec_js_', 			'varchar(100) 			NOT NULL default "nada"');
 	add_if_not_exist('ws_ferramentas'		,'_js_', 				'LONGTEXT 				NULL default NULL');
+
+	add_if_not_exist('ws_ferramentas'		,'html_item', 				'LONGTEXT 				NULL default NULL');
+	add_if_not_exist('ws_ferramentas'		,'html_cat', 				'LONGTEXT 				NULL default NULL');
+	add_if_not_exist('ws_ferramentas'		,'html_img', 				'LONGTEXT 				NULL default NULL');
+	add_if_not_exist('ws_ferramentas'		,'html_gal', 				'LONGTEXT 				NULL default NULL');
+	add_if_not_exist('ws_ferramentas'		,'html_img_gal', 			'LONGTEXT 				NULL default NULL');
+	add_if_not_exist('ws_ferramentas'		,'html_file', 				'LONGTEXT 				NULL default NULL');
+
 	add_if_not_exist('ws_ferramentas'		,'slug', 				'varchar(100) 				NULL default ""');
 	add_if_not_exist('ws_ferramentas'		,'App_Type', 			'int(11) 				NOT NULL default FALSE');
 	add_if_not_exist('ws_ferramentas'		,'item_type', 			'varchar(50) 				NULL default ""');

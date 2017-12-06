@@ -471,14 +471,39 @@
 										drag: 0,
 										botclose: 0,
 										Check: function() {
-											if (!$("#formTags input[type='radio']:checked") || $("#shortcodes").val() == "") {
+											$("#formTags input[name='typeCode'][type='radio']:checked").length==0 || 
+												$("#formTags input[type='radio']:checked").length==0 || 
+												$("#shortcodes").val() == "") {
 												return false;
 											} else {
 												return true;
 											}
 										},
 										ErrorCheck: function() {
-											alert("Preencha tipo e ferramenta desejados");
+											ws.confirm({
+														conteudo:'<span style="color:#cd3333">Preencha tipo e ferramenta desejados</span>',
+														width: 500,
+														height: 'auto',
+														posFn: function() {},
+														Init: function() {},
+														posClose: function() {},
+														bots: [
+															{
+																	id			: "aceitar",
+																	label		: "Ok",
+																	class		: "",
+																	style 		: "",
+																	css 		: {"color":"#FFF","backgroundColor":"#cd3333"},
+																	ErrorCheck	: function() {},
+																	Check 		: function() {return true},
+																	action		: function(){},
+															}
+														],
+														idModal: "ws_error_confirm",
+														divScroll: "body",
+														divBlur: "#menu_tools,#container,#header",
+													})
+
 										},
 										posFn: function() {
 											window.htmEditorPagination = ace.edit("editorHTML");
@@ -635,17 +660,44 @@
 										drag: 0,
 										botclose: 0,
 										Check: function() {
-											if (!$("#formTags input[type='radio']:checked") || $("#shortcodes").val() == "") {
+											if (
+												$("#formTags input[name='typeCode'][type='radio']:checked").length==0 || 
+												$("#formTags input[type='radio']:checked").length==0 || 
+												$("#shortcodes").val() == "") {
 												return false;
 											} else {
 												return true;
 											}
 										},
 										ErrorCheck: function() {
-											alert("Preencha tipo e ferramenta desejados");
+													ws.confirm({
+														conteudo:'<span style="color:#cd3333">Ops, preencha todos os campos do modal</span>',
+														width: 500,
+														height: 'auto',
+														posFn: function() {},
+														Init: function() {},
+														posClose: function() {},
+														bots: [
+															{
+																	id			: "aceitar",
+																	label		: "Ok",
+																	class		: "",
+																	style 		: "",
+																	css 		: {"color":"#FFF","backgroundColor":"#cd3333"},
+																	ErrorCheck	: function() {},
+																	Check 		: function() {return true},
+																	action		: function(){},
+															}
+														],
+														idModal: "ws_error_confirm",
+														divScroll: "body",
+														divBlur: "#menu_tools,#container,#header",
+													})
+
 										},
 										posFn: function() {},
 										newFun: function() {
+
 											functions({
 												funcao: "InsertCodeCampos",
 												vars: $("#formTags").serialize(),

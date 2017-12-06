@@ -348,8 +348,7 @@
 		 	$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 		});
 	})
-	
-	$("#combo_folder .editar ").unbind('click').click(function(){
+$("#combo_folder .editar ").unbind('click').click(function(){
 			var li		= $(this).parent().parent().parent().parent().parent();
 			var id		= $(li).data('id');
 			var titulo	= $(li).find('.titulo_folder').text();
@@ -357,7 +356,7 @@
 				funcao:"returnPaths",
 				vars:"id="+id,
 				patch:"{PATH}",
-				beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_Modal_Verifying}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_Modal_Verifying}...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./App/Templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				Sucess:function(e){
 					confirma({				
 						width:"auto",
@@ -440,7 +439,7 @@
 							var newName 	= $("#form_new_name input[name='titulo_page']").val();
 							$.ajax({
 							  type: "POST",
-							  url: "./app/ws-modules/ws-tools/functions.php",
+							  url: "./App/Modulos/_tools_/functions.php",
 							  data: { function:"salvaNomeFolder",id:id,formulario:formulario}
 							}).done(function(data) {
 								out(data)
@@ -456,6 +455,17 @@
 				}
 			})
 	})
+
+
+
+
+
+
+
+
+
+
+
 	$("#bt_Add_Grupo").unbind('click').click(function(){
 			var li			= $(this).parent().parent().parent().parent().parent();
 			var id			= $(li).data('id');

@@ -148,6 +148,9 @@ $(function(){
 								},
 								cache: false,
 							}).done(function(e) {
+								out("Retorno:")
+								out(e)
+								out("-----------------")
 								if(e=='0'){
 									 $("#importTemplateTitle").html("<span style='color:#FF0000'>{centralBkp_invalidLink}<span>");
 									 $("#bot_importar,#bot_cancelar,#importTemplateInput").show();
@@ -222,8 +225,8 @@ $(function(){
 							}, 50);
 						},
 						complete: function(e) {
-							$('.avatar').val(ws.rootPath+'ws-img/200/200/100/'+e.responseText)			
-							$('.avatarBKP').attr('src',ws.rootPath+'ws-img/200/200/100/'+e.responseText)			
+							$('.avatar').val(e.responseText)			
+							$('.avatarBKP').attr('src',e.responseText)			
 							$('.tapa_upload').find('.bar').animate({
 								width: 0
 							}, 500, function() {
@@ -266,7 +269,6 @@ $(function(){
 						  type: "POST",
 						  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 						  beforeSend:function(){
-							out("é pra criar sáparada")
 						  	ws.preload.open({string:"{centralBkp_creating}"});
 						  },
 						  cache: false,
@@ -277,7 +279,6 @@ $(function(){
 						  	"content":	$('.contentTemplate').val(),
 						  },
 						}).done(function(e) {
-							out(e)
 							 ws.preload.close()
 							$("#ws_confirm").css("line-height","20px");
 							$( "#conteudo" ).load('{ROOT_WEBSHEEP}admin/app/ws-modules/ws-model-tool/ws-central-bkps.php' , function( response, status, xhr ) {

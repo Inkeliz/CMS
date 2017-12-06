@@ -252,8 +252,10 @@ _root.reloadFunctions = function(){
 	$.ajax({
 		type: "POST",
 		cache: false,
-		beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-		url: "./{PATH}/functions.php",
+		beforeSend:function(){
+			confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})
+		},
+		url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 		data: {function:"salvaFerramenta", ws_id_ferramenta:"{WS_ID_FERRAMENTA}",inputs:inputs }
 		}).done(function(e) {
 				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
@@ -268,12 +270,12 @@ _root.reloadFunctions = function(){
 			  type: "POST",
 			  cache: false,
 			  beforeSend:function(){confirma({width:"auto",conteudo:"  Excluíndo...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-			  url: "./{PATH}/functions.php",
+			  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 			  data: {function:"excluicampo", ws_id_ferramenta: "{WS_ID_FERRAMENTA}",token:token }
 			}).done(function(e) {
 				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 				if(e=="sucesso"){
-					// $("#getThumb").attr("src","./{PATH}/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
+					// $("#getThumb").attr("src","{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
 					$(div).remove();
 				}else{
 					out(e)
@@ -285,7 +287,7 @@ _root.reloadFunctions = function(){
 		var _prefix_ 	= $("#_prefix_").data("prefix");
 		$.ajax({
 			  type: "POST",
-			  url: "./{PATH}/detalhes_campo.php",
+			  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/detalhes_campo.php",
 				beforeSend:function(){confirma({width:"auto",conteudo:" Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})
 			},
 			  data: { ws_id_ferramenta: "{WS_ID_FERRAMENTA}",token:token,prefix:_prefix_ }
@@ -308,7 +310,7 @@ _root.reloadFunctions = function(){
 						// AQUI AGORA SALVAMOS O CAMPO =================================================
 						$.ajax({
 							type: "POST",
-							url: "./{PATH}/functions.php",
+							url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 							beforeSend:function(){confirma({width:"auto",conteudo:"  Salvando...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 							data: {function:"salvaCampo",inputs:Conteudo,ws_id_ferramenta:"{WS_ID_FERRAMENTA}" }
 						}).done(function(e) {
@@ -336,7 +338,7 @@ _root.reloadFunctions = function(){
 		if(dataType=="imagens_internas"){
 			$.ajax({
 				type: "POST",
-				url: "./{PATH}/functions.php",
+				url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 				beforeSend:function(){confirma({width:"auto",conteudo:"  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				data: {function:"habilita_img_interna",ws_id_ferramenta:"{WS_ID_FERRAMENTA}"}
 			}).done(function(data) {
@@ -357,7 +359,7 @@ _root.reloadFunctions = function(){
 		}else if(dataType=="galerias_internas"){
 			$.ajax({
 				type: "POST",
-				url: "./{PATH}/functions.php",
+				url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 				beforeSend:function(){confirma({width:"auto",conteudo:"  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				data: {function:"habilita_gal_interna",ws_id_ferramenta:"{WS_ID_FERRAMENTA}"}
 			}).done(function(data) {
@@ -378,7 +380,7 @@ _root.reloadFunctions = function(){
 				out("arquivos_internos");
 				$.ajax({
 					type: "POST",
-					url: "./{PATH}/functions.php",
+					url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 					beforeSend:function(){confirma({width:"auto",conteudo:"  Aguarde...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 					data: {function:"habilita_files_interna",ws_id_ferramenta:"{WS_ID_FERRAMENTA}"}
 				}).done(function(data) {
@@ -398,11 +400,11 @@ _root.reloadFunctions = function(){
 		}else{
 			$.ajax({
 				type: "POST",
-				url: "./{PATH}/functions.php",
+				url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 				beforeSend:function(){confirma({width:"auto",conteudo:"  Adicionando elemento...<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
 				data: {function:"addCampo",type:dataType,ws_id_ferramenta:"{WS_ID_FERRAMENTA}"}
 			}).done(function(data) {
-				// $("#getThumb").attr("src","./{PATH}/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
+				// $("#getThumb").attr("src","{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
 
 				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 				var json = jQuery.parseJSON(data);
@@ -426,7 +428,7 @@ _root.resize = function(_token_,_largura_,_altura_,dataid){
 			out(_largura_+"x"+_altura_)
 			$.ajax({
 			  type: "POST",
-			  url: "./{PATH}/functions.php",
+			  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 			  data: {
 			  	function:"resizeCampos",
 			  	token:_token_,
@@ -436,7 +438,7 @@ _root.resize = function(_token_,_largura_,_altura_,dataid){
 			  	ws_id_ferramenta:"{WS_ID_FERRAMENTA}"
 			  }
 			}).done(function(data) {
-				// $("#getThumb").attr("src","./{PATH}/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
+				// $("#getThumb").attr("src","{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
 				if(data=="sucesso"){
 					TopAlert({mensagem: "Campo redimencionado com sucesso!",type: 3})
 				}else{
@@ -464,7 +466,7 @@ _root.resize = function(_token_,_largura_,_altura_,dataid){
 		
 		$.ajax({
 			type: "POST",
-			url: "./{PATH}/functions.php",
+			url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 			data: {
 				function:"ordenaCampos",
 				posicoes:posicoes,
@@ -474,7 +476,7 @@ _root.resize = function(_token_,_largura_,_altura_,dataid){
 			if(retorno==true){
 				if(data=="sucesso"){
 					TopAlert({mensagem: "Campo reposicionado com sucesso!",type: 3})
-					// $("#getThumb").attr("src","./{PATH}/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
+					// $("#getThumb").attr("src","{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/print_campos.php?ws_id_ferramenta={WS_ID_FERRAMENTA}")
 				}else{
 					TopAlert({mensagem: "Ops, houve uma falha ao reposicionar um campo!",type: 2})
 				}
@@ -487,7 +489,7 @@ _root.resize = function(_token_,_largura_,_altura_,dataid){
 	_root.reloadFunctions();
 	$.ajax({
 		type: "POST",
-		url: "./{PATH}/functions.php",
+		url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
 		data: {
 				function:"listaCampos",
 				ws_id_ferramenta:"{WS_ID_FERRAMENTA}"

@@ -115,7 +115,17 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ToolsManager_ToolDetails_TopAlert_setMySQL		=	ws::getLang("ToolsManager>ToolDetails>TopAlert>setMySQL");
 	$template->ToolsManager_ToolDetails_modal_saving			=	ws::getLang("ToolsManager>ToolDetails>modal>saving");
 	$template->ToolsManager_ToolDetails_modal_save_sucess		=	ws::getLang("ToolsManager>ToolDetails>modal>save>sucess");
+	$template->ToolsManager_ToolDetails_AddHTML					=	ws::getLang("ToolsManager>ToolDetails>AddHTML");
+	
 	$template->_js_ 											=	stripcslashes($FERRAMENTA['_js_']);
+
+	$template->html_item										=	stripcslashes($FERRAMENTA['html_item']);
+	$template->html_img											=	stripcslashes($FERRAMENTA['html_img']);
+	$template->html_gal											=	stripcslashes($FERRAMENTA['html_gal']);
+	$template->html_img_gal										=	stripcslashes($FERRAMENTA['html_img_gal']);
+	$template->html_cat											=	stripcslashes($FERRAMENTA['html_cat']);
+	$template->html_file										=	stripcslashes($FERRAMENTA['html_file']);
+
 
 	$template->SLUG 											=	$FERRAMENTA['slug'];
 	$template->_prefix_ 										=	$FERRAMENTA['_prefix_'];
@@ -160,14 +170,23 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	#########################################################################  
 	# VARREMOS OS CAMPOS, E RETORNAMOS O TEMPLATE COM OS CAMPOS SELECIONADOS 
 	#########################################################################
+
+	$camposAutoComplete = array();
+
 	foreach($detalhes->fetch_array as $return){
 		$teste = explode(',',$FERRAMENTA['det_listagem_item']);
 		$return['selectmulti']		=	in_array($return['coluna_mysql'],$teste) ? "selected" : "";
 		$template->coluna_mysql		=	$return['coluna_mysql'];
 		$template->selectmulti		=	$return['selectmulti'];
 		$template->listaTabela 		=	$return['listaTabela'];
+		$camposAutoComplete[] 		= substr($return['coluna_mysql'],strlen($FERRAMENTA['_prefix_'])) ;
 		$template->block('OPT_LIST_TABLE');
 	}
+
+
+	$template->coluna_mysql_auto_complete		= '"'.implode($camposAutoComplete, '","').'"';
+	$template->block('CAMPOSTOOL');
+	
 
 	#########################################################################  
 	# FINALIZA ARQUIVO, SELECIONA O BLOCO E RETORNA O HTML 

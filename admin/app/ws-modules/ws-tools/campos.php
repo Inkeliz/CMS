@@ -89,7 +89,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ROOT_WEBSHEEP 	= ROOT_WEBSHEEP;
 	$template->_tit_topo_ 		= $FERRAMENTA['_tit_topo_'];
 	$template->PREFIX 			= $FERRAMENTA['_prefix_'];
-	$template->PATH 			= PATH;
+	// $template->PATH 			= PATH;
 	$template->legenda_1 		= ($FERRAMENTA['_fotos_']		=='1')	?	"legenda='Desabilitar imagens internas'" 		:"legenda='Habilitar imagens internas'" ;
 	$template->legenda_2 		= ($FERRAMENTA['_galerias_']	=='1')	?	"legenda='Desabilitar galerias internas'" 		:"legenda='Habilitar galerias internas'";
 	$template->legenda_3 		= ($FERRAMENTA['_files_']		=='1')	?	"legenda='Desabilitar listagem de arquivos'" 	:"legenda='Habilitar listagem de arquivos'";

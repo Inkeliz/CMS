@@ -358,6 +358,8 @@ function InsertCodeCampos(){
 	$ws_ferramentas->set_table(PREFIX_TABLES.'ws_ferramentas');
 	$ws_ferramentas->set_where('id="'.$_FORM['id_toll'].'"');
 	$ws_ferramentas->select();
+
+
 	$Ferramenta = $ws_ferramentas->fetch_array[0];
 	$prefix 	= $Ferramenta['_prefix_'];
 
@@ -493,12 +495,35 @@ function InsertCodeCampos(){
 	echo ($output);
 	exit;
 	}
+
+	#####################################################################################################################
+	# TEMPLATE PRÉ DEFINIDO
+	#####################################################################################################################
+	if($_FORM['typeCode']=="tag" && $Ferramenta['html_item']!=""){
+		echo  "\n".'<!-- FERRAMENTA: '.$Ferramenta['_tit_topo_'].' -->'."\n";
+		echo  '<!-- OUTRAS TAGS DISPONÍIVEIS (Consulte a documentação em http://docs.websheep.com.br): -->'."\n";
+		echo  '<!--colum="" data-paginate="" linker="" linked="" distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter="" -->'."\n\n";
+	
+		echo 	'<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_FORM['type'].'">'."\n";
+		if((isset($_FORM['type']) && $_FORM['type']=='item')){		echo $Ferramenta['html_item'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='cat')){		echo $Ferramenta['html_cat'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='img')){		echo $Ferramenta['html_img'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='gal')){		echo $Ferramenta['html_gal'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='img_gal')){	echo $Ferramenta['html_img_gal'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='file')){		echo $Ferramenta['html_file'];}
+		echo "\n".'</ws-tool>'."\n";
+		exit;
+	}
+
+	#####################################################################################################################
+	# TEMPLATE PADRÃO
+	#####################################################################################################################
 	if(isset($_FORM['typeCode']) && $_FORM['typeCode']=="tag"){
 		$output =  "";
-		$output .= '<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_FORM['type'].'">'."\n";
+		$output .= "\n".'<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_FORM['type'].'">'."\n";
 		$output .=  '	<!--'."\n";
 		$output .=  '		OUTRAS TAGS DISPONÍIVEIS:'."\n";
-		$output .=  '		colum=""	distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter=""'."\n";
+		$output .=  '		colum=""	linker="" linked="" distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter=""'."\n";
 		$output .=  "		\n";
 		$output .=  '		Paginação:'."\n";
 		$output .=  '		|	data-paginate="1,2"'."\n";
@@ -541,7 +566,6 @@ function InsertCodeCampos(){
 			$output .= '	{{url}}'."\n";
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{avatar}}"/>'."\n";
 		}
-
 		if(isset($_FORM['type']) && $_FORM['type']=='img_gal'){
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";
@@ -559,7 +583,6 @@ function InsertCodeCampos(){
 			$output .= '	{{token}}'."\n";
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{imagem}}"/>'."\n";
 		}
-
 		if(isset($_FORM['type']) && $_FORM['type']=='cat'){
 			$output .= '	{{titulo}}'."\n";
 			$output .= '	{{texto}}'."\n";

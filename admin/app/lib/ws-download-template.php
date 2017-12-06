@@ -12,7 +12,8 @@
 	############################################################################################################################
 	# SEPARAMOS O TOKEN DE AUTENTICAÇÃO
 	############################################################################################################################
-	$_URL_TOKEN =end(explode("/",ws::urlPath()));
+	$_URL_TOKEN =explode("/",ws::urlPath());
+	$_URL_TOKEN =end($_URL_TOKEN);
 
 
 	###################################################################################
@@ -36,20 +37,21 @@
 		# E VERIFICAMOS SE ELE É VÁLIDO NO SISTEMA E SE O TOKEN EXISTE NA TABELA DOS ARQUIVOS
 		########################################################################################
 		if(ws::getTokenRest($_URL_TOKEN,false,false) && $_VERIFY_->_num_rows == 1){
-			$file_url = './'.$_VERIFY_->fetch_array[0]['filename'];
-
+			$file_url = INCLUDE_PATH.'ws-bkp/'.$_VERIFY_->fetch_array[0]['filename'];
 			###################################################################################
 			# LIBERA O ARQUIVO PARA DOWNLOAD
 			###################################################################################
-			header('Content-Description: File Transfer');
 			header('Content-Type: application/zip');
 			header('Content-Disposition: attachment; filename="'.basename($file_url).'"');
 			header('Content-Transfer-Encoding: binary');
-			header('Expires: 0');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Pragma: public');
 			header('Content-Length: '.filesize($file_url));
-			readfile($file_url); 
+			header('Accept-Ranges: bytes');
+			header('Connection: Keep-Alive');
+			header('Expires: 0');
+			header('Pragma: public');
+			header('Cache-Control:');
+			readfile($file_url);
+			exit;
 		}else{
 			###################################################################################
 			# RETORNA O ERRO
