@@ -118,7 +118,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ToolsManager_ToolDetails_AddHTML					=	ws::getLang("ToolsManager>ToolDetails>AddHTML");
 	
 	$template->_js_ 											=	stripcslashes($FERRAMENTA['_js_']);
-
 	$template->html_item										=	stripcslashes($FERRAMENTA['html_item']);
 	$template->html_img											=	stripcslashes($FERRAMENTA['html_img']);
 	$template->html_gal											=	stripcslashes($FERRAMENTA['html_gal']);

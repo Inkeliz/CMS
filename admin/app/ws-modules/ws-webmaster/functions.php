@@ -505,12 +505,12 @@ function InsertCodeCampos(){
 		echo  '<!--colum="" data-paginate="" linker="" linked="" distinct=""	utf8=""	url=""	order=""	category=""	 galery=""	 item="" 	 where=""	 innerItem=""  filter="" -->'."\n\n";
 	
 		echo 	'<ws-tool slug="'.$ws_ferramentas->fetch_array[0]['slug'].'" type="'.$_FORM['type'].'">'."\n";
-		if((isset($_FORM['type']) && $_FORM['type']=='item')){		echo $Ferramenta['html_item'];}
-		if((isset($_FORM['type']) && $_FORM['type']=='cat')){		echo $Ferramenta['html_cat'];}
-		if((isset($_FORM['type']) && $_FORM['type']=='img')){		echo $Ferramenta['html_img'];}
-		if((isset($_FORM['type']) && $_FORM['type']=='gal')){		echo $Ferramenta['html_gal'];}
-		if((isset($_FORM['type']) && $_FORM['type']=='img_gal')){	echo $Ferramenta['html_img_gal'];}
-		if((isset($_FORM['type']) && $_FORM['type']=='file')){		echo $Ferramenta['html_file'];}
+		if((isset($_FORM['type']) && $_FORM['type']=='item')){		echo str_replace("{{{_}","{{",$Ferramenta['html_item']);}
+		if((isset($_FORM['type']) && $_FORM['type']=='cat')){		echo str_replace("{{{_}","{{",$Ferramenta['html_cat']);}
+		if((isset($_FORM['type']) && $_FORM['type']=='img')){		echo str_replace("{{{_}","{{",$Ferramenta['html_img']);}
+		if((isset($_FORM['type']) && $_FORM['type']=='gal')){		echo str_replace("{{{_}","{{",$Ferramenta['html_gal']);}
+		if((isset($_FORM['type']) && $_FORM['type']=='img_gal')){	echo str_replace("{{{_}","{{",$Ferramenta['html_img_gal']);}
+		if((isset($_FORM['type']) && $_FORM['type']=='file')){		echo str_replace("{{{_}","{{",$Ferramenta['html_file']);}
 		echo "\n".'</ws-tool>'."\n";
 		exit;
 	}
