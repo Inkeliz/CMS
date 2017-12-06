@@ -1,5 +1,5 @@
 <!-- BEGIN BLOCK_DOMAIN -->
-<script>include_css(ws.rootPath+'admin/app/templates/css/websheep/ws-modules/ws-domain/style.min.css','css_mod','All');</script>
+<script>include_css('{ROOT_WEBSHEEP}admin/app/templates/css/websheep/ws-modules/ws-domain/style.min.css','css_mod','All');</script>
 <div id="topoModulo" class="TitTop bg05 w1b">{domainPanel_AccountDetails}</div>
 <div class='palco_01' id="palco">
 <form id="detalhes_domain">
@@ -58,22 +58,22 @@
 		<div id="metaTags" class="botao" style="position: relative;padding: 10px;text-align: center;width: calc(100% - 40px);left: 50%;transform: translateX(-50%); min-width: 200px;margin: 20px 0;">{domainPanel_ConfigureMetaTags}</div>
 		<div class="c"></div>
 		<div class="tituloLabel w1" style="margin-bottom:30px;">{domainPanel_SplashScreen}:</div>
-		<div id="splash_ws_img" style="  background-repeat: no-repeat;background-image:url('./../ws-img/395/325/100/{splash_img}')">
+		<div id="splash_ws_img" style="  background-repeat: no-repeat;background-image:url('{ROOT_WEBSHEEP}ws-img/395/325/100/{splash_img}')">
 			<div class="combo_upload">
-				<div class="pc" legenda="Meu computador"><img  src="{ws_rootPath}admin/app/templates/img/websheep/up_m.png"/></div>
-				<div class="bb" legenda="Na biblioteca"><img  src="{ws_rootPath}admin/app/templates/img/websheep/folder_m.png"/></div>
+				<div class="pc" legenda="Meu computador"><img  src="{ROOT_WEBSHEEP}admin/app/templates/img/websheep/up_m.png"/></div>
+				<div class="bb" legenda="Na biblioteca"><img  src="{ROOT_WEBSHEEP}admin/app/templates/img/websheep/folder_m.png"/></div>
 			</div>
 		</div>
 		<div class="c"></div>
 		<div class="botao"  id="salvar">{domainPanel_UpdateData}</div>
 </form>
 </div>
-<form id="Upload_File_topo"     style="display:none" action="{ws_rootPath}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+<form id="Upload_File_topo"     style="display:none" action="{ROOT_WEBSHEEP}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 	<input name="arquivo"     id="myfile" type="file"   />
 	<button type="submit"     id="enviar_arquivos"></button>
 	<div id="bt_search_files"   style="dispaly:none;position: absolute;cursor: pointer;"></div>
 </form>
-<form id="Upload_File_Splash"   style="display:none" action="{ws_rootPath}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
+<form id="Upload_File_Splash"   style="display:none" action="{ROOT_WEBSHEEP}admin/app/core/ws-upload-files.php" method="post" enctype="multipart/form-data" name="formUpload">
 	<input name="type"     		type="hidden" value="splashScreen"   />
 	<input name="arquivo"     	id="myfile" type="file"   />
 	<button type="submit"     id="enviar_arquivos"></button>
@@ -84,7 +84,7 @@
 
 		$('#ws_lang option[value={ATUAL_LANG}]').attr('selected','selected');
 		$('#metaTags').bind('tap click press',function(){
-			$("#conteudo").load(ws.rootPath+"admin/app/ws-modules/ws-model-tool/metaTags.php?id_page=0");
+			$("#conteudo").load("{ROOT_WEBSHEEP}admin/app/ws-modules/ws-model-tool/metaTags.php?id_page=0");
 		})
 		$('*[legenda]').LegendaOver();
 		$(document).off("mouseenter").off("mouseleave");
@@ -101,8 +101,8 @@
 				},
 				complete: function(e){
 					var json = jQuery.parseJSON(e.responseText);
-					$("#topo_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("/ws-img/1000/50/100/'+json.thumb+'")');
-					$("#header #logomarca img").attr('src','/ws-img/1000/50/100/'+json.thumb);
+					$("#topo_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("{ROOT_WEBSHEEP}ws-img/1000/50/100/'+json.thumb+'")');
+					$("#header #logomarca img").attr('src','{ROOT_WEBSHEEP}ws-img/1000/50/100/'+json.thumb);
 					$('.tapa_upload').find('.bar').animate({width:0},500,function(){
 						$('.tapa_upload').hide("fade", {}, 'fast');
 					});
@@ -124,8 +124,8 @@
 								$("#ws_confirm").remove();
 								$("#body").removeClass("scrollhidden");
 								$("*").removeClass("blur");
-								 $("#topo_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("/ws-img/50/1000/100/'+e+'")');
-								$("#header #logomarca img").attr('src','/ws-img/1000/50/'+e);
+								 $("#topo_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("{ROOT_WEBSHEEP}ws-img/50/1000/100/'+e+'")');
+								$("#header #logomarca img").attr('src','{ROOT_WEBSHEEP}ws-img/1000/50/'+e);
 					})
 				}
 			})
@@ -140,7 +140,7 @@
 				complete: function(e){
 					var json = jQuery.parseJSON(e.responseText);
 					out(json)
-					$("#splash_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("/{ROOT_WEBSHEEP}/ws-img/460/395/'+json.thumb+'")');
+					$("#splash_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("{ROOT_WEBSHEEP}ws-img/460/395/'+json.thumb+'")');
 					$('.tapa_upload').find('.bar').animate({width:0},500,function(){$('.tapa_upload').hide("fade", {}, 'fast');});
 				}
 			})
@@ -161,7 +161,7 @@
 						$("#ws_confirm").remove();
 						$("#body").removeClass("scrollhidden");
 						$("*").removeClass("blur");
-						$("#splash_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("/ws-img/460/395/'+e+'")');
+						$("#splash_ws_img").attr('style','  background-repeat: no-repeat;background-image:url("{ROOT_WEBSHEEP}ws-img/460/395/'+e+'")');
 					})
 				}
 			})

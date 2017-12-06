@@ -53,7 +53,7 @@
 	$_TEMPLATE->hd 					= $domain->fetch_array[0]['hd'];
 	$_TEMPLATE->smtp_host 			= $domain->fetch_array[0]['smtp_host'];
 	$_TEMPLATE->smtp_port 			= $domain->fetch_array[0]['smtp_port'];
-	$_TEMPLATE->smtp_auth 			= ($domain->fetch_array[0]['smtp_auth']==1) 	? 'checked="checked"' :'';
+	$_TEMPLATE->smtp_auth 			= ($domain->fetch_array[0]['smtp_auth']==1) 		? 'checked="checked"' :'';
 	$_TEMPLATE->smtp_secure 		= $domain->fetch_array[0]['smtp_secure'];
 	$_TEMPLATE->smtp_email 			= $domain->fetch_array[0]['smtp_email'];
 	$_TEMPLATE->smtp_senha 			= $domain->fetch_array[0]['smtp_senha'];
@@ -137,7 +137,8 @@
 		}
 	}
 
-				$_TEMPLATE->ATUAL_LANG = LANG;
+
+	$_TEMPLATE->ATUAL_LANG = LANG;
 
 	#####################################################  
 	# RETIRNAMOS A STRING DO HTML 
