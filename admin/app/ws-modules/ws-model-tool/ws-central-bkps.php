@@ -106,7 +106,7 @@
 			##########################################################################################################
 				$fileZip = INCLUDE_PATH.'ws-bkp/'.$diretorio;
 				$zip = new ZipArchive();
-				if($zip->open($fileZip, ZipArchive::CHECKCONS) === TRUE ){
+				if($zip->open($fileZip) === TRUE ){
 
 					##########################################################################################################
 					# VERIFICA SE EXISTE O ws-info.json
