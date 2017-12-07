@@ -5,16 +5,24 @@ ob_start();
 # DEFINIMOS O ROOT DO SISTEMA
 ############################################################################################################################################
 	if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
 
-if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
+	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
-include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
-$session = new session();
-ob_end_clean();
+	include_once(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
+	$session = new session();
+	ob_end_clean();
+
+	$_SETUPDATA 	= new MySQL();
+	$_SETUPDATA->set_table(PREFIX_TABLES.'setupdata');
+	$_SETUPDATA->set_order('id','DESC');
+	$_SETUPDATA->set_limit(1);
+	$_SETUPDATA->debug(0);
+	$_SETUPDATA->select();
+	$_SETUPDATA 	= $_SETUPDATA->fetch_array[0];
 
 
 function InsertPagination(){
@@ -608,152 +616,230 @@ function InsertCodeCampos(){
 
 function getShortCodesPlugin (){
 	global $session;
-	$jsonConfig = $_REQUEST['path'].'/plugin.config.json';
+	global $_SETUPDATA;
+
+
 	$phpConfig 	= $_REQUEST['path'].'/plugin.config.php';
-	$path 		= $_REQUEST['path'];
+	$path 		= implode(_array_filter(explode('/',$_REQUEST['path'])),'/');
+
 	if(file_exists($phpConfig)){
 			ob_start(); @include($phpConfig); $jsonRanderizado=ob_get_clean();
 			$contents 		=	$plugin;
-	}elseif(file_exists($jsonConfig)){
-			$contents 		=	json_decode(file_get_contents($jsonConfig));
 	}
 
 	if(empty($contents->shortcode) || $contents->shortcode==1 ){
-			######################################################## SHORTCODE ##########################################################################################
-			#############################################################################################################################################################
-			if(isset($contents->style) && count($contents->style)>=1){
-				echo PHP_EOL.'<!-- '.PHP_EOL.PHP_EOL.'	Inclua esses styles entre as tags <head></head> :'.PHP_EOL;
-				foreach ($contents->style as $value) {
-					if(is_array($value) && count($value)==1){
-						$link = $value[0];
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<link rel="stylesheet" type="text/css" href="'.$link.'">'.PHP_EOL;
-						}else{
-							echo '	<link rel="stylesheet" type="text/css" href="/'.basename($path).'/'.$link.'">'.PHP_EOL;
-						}
-					}elseif(is_array($value) && count($value)==2){
-						$link = $value[0];
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<link rel="stylesheet" type="text/css" href="'.$link.'" '.$value[1].'>'.PHP_EOL;
-						}else{
-							echo '	<link rel="stylesheet" type="text/css" href="/'.basename($path).'/'.$link.'" '.$value[1].'>'.PHP_EOL;
-						}
-					}else{
-						$link = $value;
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<link rel="stylesheet" type="text/css" href="'.$link.'" >'.PHP_EOL;
-						}else{
-							echo '	<link rel="stylesheet" type="text/css" href="/'.basename($path).'/'.$link.'" >'.PHP_EOL;
-						}
-					}
-				}
-				echo PHP_EOL.'-->'.PHP_EOL.PHP_EOL;
-			}
+
+			###########################################################################
+			# RETORNA OS ARQUIVOS CSS
+			###########################################################################
+			echo  getListStylePlugin($contents->style);
+
 			$arrReq   = array();
 			if(isset($contents->requiredData) && is_array($contents->requiredData) && $contents->requiredData!="" && count($contents->requiredData)>1){
-				foreach($contents->requiredData as $req){
-					if(is_array($req)){
-							$r = array_slice($req,1);
-							$data = array();
-							foreach($r as $d){ $data[] = $d;}
-
-							if(count($data)>1){
-								$data = "array('".(implode($data,"','"))."')";
-							}else{
-								$data = implode($data);
-							}
-						$arrReq[]=  $req[0].'="'.$data.'" ';
-					}else{
-						$arrReq[]= $req.'="" ';
-					}
-				}
+				###########################################################################
+				# RETORNA A TAG HTML DO PLUGIN
+				###########################################################################
+				echo returnTagHTMLPlugin(basename($path),$contents->requiredData);
 			}
-			echo '<ws-plugin path="'.basename($path).'" '.implode($arrReq," ").'></ws-plugin>'.PHP_EOL;
+			###########################################################################
+			# RETORNA OS JAVASCRIPTS
+			###########################################################################
+				echo getListScriptPlugin($contents->script);
 
-
-			if(isset($contents->script) && count($contents->script)>=1){
-				echo PHP_EOL.'<!-- '.PHP_EOL.PHP_EOL.'	Para esse plugin funcionar corretamente, é necessário incluir esses arquivos ao final da página:'.PHP_EOL;
-				foreach ($contents->script as $value) {
-					if(is_array($value) && count($value)==1){
-						$link = $value[0];
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<script 	type="text/javascript" src="'.$link.'"></script>'.PHP_EOL;
-						}else{
-							echo '	<script 	type="text/javascript" src="/'.basename($path).'/'.$link.'"></script>'.PHP_EOL;
-						}
-					}elseif(is_array($value) && count($value)==2){
-						$link = $value[0];
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<script 	type="text/javascript" src="'.$link.'" id="'.$value[1].'"></script>'.PHP_EOL;
-						}else{
-							echo '	<script 	type="text/javascript" src="/'.basename($path).'/'.$link.'"  id="'.$value[1].'"></script>'.PHP_EOL;
-						}
-					}else{
-						$link = $value;
-						$link = filter_var($link, FILTER_SANITIZE_URL);
-						if (!filter_var($link, FILTER_VALIDATE_URL) === false){
-							echo '	<script 	type="text/javascript" src="'.$link.'"></script>'.PHP_EOL;
-						}else{
-							echo '	<script 	type="text/javascript" src="/'.basename($path).'/'.$link.'"></script>'.PHP_EOL;
-						}
-					}
-				}
-				echo PHP_EOL.'-->';
-			}
 		#############################################################################################################################################################
 		#############################################################################################################################################################
 	}elseif($contents->shortcode==2){
-			echo file_get_contents($path.'/'.$contents->plugin);
-	}elseif($contents->shortcode==3){
-			$arrReq = array();
-			$shortCode =  '[ws]{"slug":"'.@$contents->slug.'"';
+			###########################################################################
+			# RETORNA O ARQUIVO PHP CRU
+			###########################################################################
+
+
+			###########################################################################
+			# RETORNA O PHP PROCESSADO
+			###########################################################################
 			if(isset($contents->requiredData) && is_array($contents->requiredData) && $contents->requiredData!="" && count($contents->requiredData)>1){
-				foreach($contents->requiredData as $req){
-					if(is_array($req)){
-							$r = array_slice($req,1);
-							$data = array();
-							foreach($r as $d){
-									if(is_string($d)){
-										$data[] = '"'.$d.'"';
-									}else{
-										$data[] = $d;
-									}
-							}
-							if(count($data)>1){
-								$data = '['.implode($data,',').']';
-							}else{
-								$data = implode($data);
-							}
-						$arrReq[]= '"'.$req[0].'":'.$data;
-					}else{
-						$arrReq[]= '"'.$req.'":""';
-					}
-				}
+				$shortCode = str_replace(array('<','>'),array('&lt;','&gt;'),returnTagHTMLPlugin(basename($path),$contents->requiredData));
+			}else{
+				$shortCode = str_replace(array('<','>'),array('&lt;','&gt;'),returnTagHTMLPlugin(basename($path)));
 			}
-			if(count($arrReq)>1){$shortCode .=   ','.implode($arrReq,","); }
-			$shortCode .=   '}[/ws] '.PHP_EOL;
-			$ws =  (object) array('rootPath'=>str_replace('./../../../website/','/',$_REQUEST['path']),'shortcode'=>$shortCode,'vars' =>(object)$contents->requiredData,'json' => $contents);
-			ob_start(); @include($path.'/'.$contents->plugin); $jsonRanderizado=ob_get_clean();
-			echo $jsonRanderizado;
+
+			echo '<?'.PHP_EOL;
+			echo '####################################################################################################'.PHP_EOL;
+			echo '# importamos a configuração do plugin'.PHP_EOL;
+			echo '####################################################################################################'.PHP_EOL;
+			echo '	include(ws::includePath."'.str_replace(INCLUDE_PATH,"", $phpConfig).'");'.PHP_EOL;
+			echo '	$ws =  (object) array('.PHP_EOL;
+			echo '					 "pathPlugin"		=>	"'.str_replace(INCLUDE_PATH."website/","",$path).'"'.PHP_EOL;
+			echo '					,"rootPath"			=>	ws::rootPath'.PHP_EOL;
+			echo '					,"includePath"		=>	ws::includePath'.PHP_EOL;
+			echo '					,"shortcode"		=>	\''.str_replace("'","\'",$shortCode).'\''.PHP_EOL;
+			echo '					,"vars" 			=>	(object)$plugin->requiredData'.PHP_EOL;
+			echo '					,"json" 			=> 	$plugin'.PHP_EOL;
+			echo '				);'.PHP_EOL.PHP_EOL;
+			echo '####################################################################################################'.PHP_EOL;
+			echo '?>'.PHP_EOL.PHP_EOL;
+
+			###########################################################################
+			# RETORNA OS ARQUIVOS CSS
+			###########################################################################
+			echo  getListStylePlugin($contents->style);
+
+			###########################################################################
+			# IMPORTA O ARQUIVO DO PLUGIN
+			###########################################################################
+			echo file_get_contents($path.'/'.$contents->plugin);
+
+			###########################################################################
+			# RETORNA OS JAVASCRIPTS
+			###########################################################################
+				echo getListScriptPlugin($contents->script);
+
+	}elseif($contents->shortcode==3){
+
+			###########################################################################
+			# RETORNA O PHP PROCESSADO
+			###########################################################################
+			if(isset($contents->requiredData) && is_array($contents->requiredData) && $contents->requiredData!="" && count($contents->requiredData)>1){
+				$shortCode = returnTagHTMLPlugin(basename($path),$contents->requiredData);
+			}else{
+				$shortCode = returnTagHTMLPlugin(basename($path));
+			}
+			$ws =  (object) array(
+								'pathPlugin'		=>	str_replace(INCLUDE_PATH.'website/',"",$path)
+								,'rootPath'			=>	ROOT_WEBSHEEP
+								,'includePath'		=>	INCLUDE_PATH
+								,'shortcode'		=>	$shortCode
+								,'vars' 			=>	(object)$contents->requiredData
+								,'json' 			=> 	$contents
+							);
+			ob_start(); 
+				###########################################################################
+				# RETORNA OS ARQUIVOS CSS
+				###########################################################################
+				echo  getListStylePlugin($contents->style);
+
+				include($path.'/'.$contents->plugin); 
+				
+				###########################################################################
+				# RETORNA OS JAVASCRIPTS
+				###########################################################################
+				echo getListScriptPlugin($contents->script);
+
+
+			echo ob_get_clean();
 	}
 	exit;
 }
+
+function getListStylePlugin($style){
+	global $_SETUPDATA;
+	$stringStyle = '';
+	if(isset($style) && count($style)>=1){
+		$stringStyle .=  PHP_EOL.'<!-- '.PHP_EOL.PHP_EOL.'	Inclua esses styles entre as tags <head></head> :'.PHP_EOL;
+		foreach ($style as $value) {
+			if(is_array($value) && count($value)==1){
+				$link = $value[0];
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.$link.'">'.PHP_EOL;
+				}else{
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'">'.PHP_EOL;
+				}
+			}elseif(is_array($value) && count($value)==2){
+				$link = $value[0];
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.$link.'" '.$value[1].'>'.PHP_EOL;
+				}else{
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'" '.$value[1].'>'.PHP_EOL;
+				}
+			}else{
+				$link = $value;
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.$link.'" >'.PHP_EOL;
+				}else{
+					$stringStyle .=  '	<link rel="stylesheet" type="text/css" href="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'" >'.PHP_EOL;
+				}
+			}
+		}
+		$stringStyle .= PHP_EOL.'-->'.PHP_EOL.PHP_EOL;
+	}
+	echo $stringStyle;
+}
+
+
+function  getListScriptPlugin($script){
+	global $_SETUPDATA;
+	$stringScript = '';
+	if(isset($script) && count($script)>=1){
+		$stringScript .=  PHP_EOL.'<!-- '.PHP_EOL.PHP_EOL.'	Para esse plugin funcionar corretamente, é necessário incluir esses arquivos ao final da página:'.PHP_EOL;
+		foreach ($script as $value) {
+			if(is_array($value) && count($value)==1){
+				$link = $value[0];
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringScript .= '	<script 	type="text/javascript" src="'.$link.'"></script>'.PHP_EOL;
+				}else{
+					$stringScript .= '	<script 	type="text/javascript" src="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'"></script>'.PHP_EOL;
+				}
+			}elseif(is_array($value) && count($value)==2){
+				$link = $value[0];
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringScript .= '	<script 	type="text/javascript" src="'.$link.'" id="'.$value[1].'"></script>'.PHP_EOL;
+				}else{
+					$stringScript .= '	<script 	type="text/javascript" src="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'"  id="'.$value[1].'"></script>'.PHP_EOL;
+				}
+			}else{
+				$link = $value;
+				$link = filter_var($link, FILTER_SANITIZE_URL);
+				if (!filter_var($link, FILTER_VALIDATE_URL) === false){
+					$stringScript .= '	<script 	type="text/javascript" src="'.$link.'"></script>'.PHP_EOL;
+				}else{
+					$stringScript .= '	<script 	type="text/javascript" src="'.ROOT_WEBSHEEP.$_SETUPDATA['url_plugin'].'/'.$link.'"></script>'.PHP_EOL;
+				}
+			}
+		}
+		$stringScript .= PHP_EOL.'-->';
+	}
+	return $stringScript;
+}
+
+function returnTagHTMLPlugin ($path=null,$requiredData=array()){
+	if(is_array($requiredData)){
+		foreach ($requiredData as $key => $value) {
+			if(is_array($value)){
+						if(count($value)>1){
+							$arr = array();
+							foreach ($value as $itensInnerArray) {
+								if(is_numeric($itensInnerArray)){
+									$arr[] = $itensInnerArray;
+								}else{
+									$arr[] ="'".$itensInnerArray."'";
+								}
+							}
+							$value = 'array('.implode($arr,',').')';
+						}else{
+							$value = implode($value);
+						}
+				$arrReq[]= $key.'="'.$value.'"';
+			}else{
+				$arrReq[]= $key.'="'.$value.'"';
+			}
+		}
+		return '<ws-plugin path="'.$path.'" '.implode($arrReq," ").'></ws-plugin>';
+	}else{
+		return '<ws-plugin path="'.$path.'"></ws-plugin>';
+	}
+}
+
+
 function loadShortCodes (){
 	global $session;
-	$setupdata 	= new MySQL();
-	$setupdata->set_table(PREFIX_TABLES.'setupdata');
-	$setupdata->set_order('id','DESC');
-	$setupdata->set_limit(1);
-	$setupdata->debug(0);
-	$setupdata->select();
-	$setupdata = $setupdata->fetch_array[0];
-	$path = 'website/'.$setupdata['url_plugin'];
+	global $_SETUPDATA;
 
+	$path = INCLUDE_PATH.'website/'.$_SETUPDATA['url_plugin'];
 	echo '<div style="comboShortCode">
 		<div style="font-size: 20px;font-weight: bold;padding-bottom: 12px;">Adicionar um plugin</div>
 		<div class="descricao">Escolha um dos plugins instalados e adicione em seu conteudo</div>
@@ -762,19 +848,22 @@ function loadShortCodes (){
 			<select id="shortcodes" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;">
 				<option value="">Selecione uma popção</option>
 			';
-			$dh = opendir('./../../../'.$path);
+			$dh = opendir($path);
+
+
 			while($diretorio = readdir($dh)){
 				if($diretorio != '..' && $diretorio != '.' && $diretorio != '.htaccess'){
-					if(file_exists('./../../../'.$path.'/'.$diretorio.'/active')){
-						$jsonConfig = './../../../'.$path.'/'.$diretorio.'/plugin.config.json';
-						$phpConfig 	= './../../../'.$path.'/'.$diretorio.'/plugin.config.php';
+					if(file_exists($path.'/'.$diretorio.'/active')){
+						$phpConfig 	= $path.'/'.$diretorio.'/plugin.config.php';
 						if(file_exists($phpConfig)){
 								ob_start(); @include($phpConfig); $jsonRanderizado=ob_get_clean();
 								$contents 		=	$plugin;
-						}elseif(file_exists($jsonConfig)){
-								$contents 		=	json_decode(file_get_contents($jsonConfig));
 						}
-						echo "<option value='./../../../".$path.'/'.$diretorio."'>".$contents->pluginName.'</option>';
+
+						if( (is_array($plugin->menu) && in_array('editor',$plugin->menu)) || $plugin->menu=='editor'){
+							echo "<option value='".$path.'/'.$diretorio."'>".$contents->pluginName.'</option>';
+						}
+
 					}
 				}
 			}
@@ -1051,7 +1140,7 @@ function loadFile($pathFile=null){
 function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
-		$folderFTP 	=  '/'.$POST['pathFile'].'/'.$POST['filename'];
+		$folderFTP 	=  $POST['pathFile'].'/'.$POST['filename'];
 		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{

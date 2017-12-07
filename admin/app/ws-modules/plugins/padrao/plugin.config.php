@@ -20,6 +20,14 @@ $plugin->pluginPath 		=	"padrao";
 ########################################################################################################################################
 */
 $plugin->version 			=	"0.0.1";
+
+/*
+########################################################################################################################################
+• URL de JSON com os dados do plugin atualizados para UPDATE
+########################################################################################################################################
+*/
+$plugin->urlUpdate 			=	"";
+
 /*
 ########################################################################################################################################
 • Versão mínima do painel WebSheep
@@ -106,25 +114,31 @@ $plugin->loadType 			=	array("inner",500 ,500);
 	• $plugin->menu 			=	array("topo","lateral","editor","textarea");
 ########################################################################################################################################
 */
-$plugin->menu 				=	array();
+$plugin->menu 				=	array("editor");
 /*
 ########################################################################################################################################
 	Variáveis requeridas no plugin
 	Será os valores pré definidos por você
 	Caso seja apenas uma estring, ela entrará vazia em seu Shortcode
 	$plugin->requiredData 	=	array(
-										"Variavel_vazia"
-										,array("variavel_1","boxPlugin")
-										,array("variavel_2","Novo plugin")
-										,array("variavel_3","Conteúdo do novo plugin")
-										,array("variavel_4",500)
+										"variavel_1"=>array(1,2,"aaa","b")
+										,"variavel_2"=>"Novo plugin"
+										,"variavel_3"=>"Conteúdo do novo plugin"
+										,"variavel_4"=>500
+										,"width"=>400
 									);
 ########################################################################################################################################
 */
-$plugin->requiredData 		=	array();
+$plugin->requiredData 		=	array(
+										"variavel_1"=>array(1,2,"aaa","b")
+										,"variavel_2"=>"Novo plugin"
+										,"variavel_3"=>"Conteúdo do novo plugin"
+										,"variavel_4"=>500
+										,"width"=>400
+									);
 /*
 ########################################################################################################################################
-	Ficas a baixo do título do plugin na listagem
+	Fica a baixo do título do plugin na listagem
 	Indicado para documentação, termos de uso etc 
 	• $plugin->innerload 	= 	array(
 									"String (_blank)"=>array("painel.php","iframe"),
@@ -174,7 +188,12 @@ $plugin->links	=array(
 								,array("//code.jquery.com/jquery-3.0.0.min.js","jquery")
 							);
 */
-$plugin->script 			=	array();
+$plugin->script 			=	array(
+									$plugin->pluginPath.'/js/style.js'
+									,array($plugin->pluginPath.'/js/style.js')
+									,array($plugin->pluginPath.'/js/style.js','id="myScript" async')
+								);
+
 /*
 ########################################################################################################################################
 	caso seu plugin tenha alguma dependencia de CSS, adicione a URL dos arquivos.
@@ -222,9 +241,7 @@ $plugin->globalphp			=	array();
 	Dependencia de algum plugin instalado pode ser usado assim:
 
 	$plugin->dependency	=	"45g0y304ohf2g93469tf9owehf";
-	assim:
 	$plugin->dependency	=	array("45g0y304ohf2g93469tf9owehf");
-	ou assim:
 	$plugin->dependency	=	array(
 										"45g0y304ohf2g93469tf9owehf",
 										"hgne56yjnrtje457jymki890pol",

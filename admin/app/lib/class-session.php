@@ -10,11 +10,11 @@ class session{
 	public function __construct ($name="ws-session") {
 		$this->type 		= 	"session"; //cookie
 		$this->secury 		= 	1;
-		$this->prefix 		= 	"ws-"; 
+		$this->prefix 		= 	"websheep-"; 
 		$this->preStr 		= 	ID_SESS; 
-		$this->secret 		=	LOGGED_IN_SALT;		
+		$this->secret 		=	SECURE_AUTH_KEY;		
 		$this->maxCookie	=	20;
-		$this->CoockieIdSess=	md5('ws-idsess');
+		$this->CoockieIdSess=	md5(ID_SESS);
 		$this->cookieLenght	=	3096;	
 		$this->duratacookie	=	(time() + ( 24 * 3600));	
 		$this->newName 		= 	strtolower($this->prefix.substr(str_replace(array("_","-","==","=","."," "),"",base64_encode(md5($this->preStr))),0,256));

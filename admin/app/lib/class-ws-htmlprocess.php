@@ -575,14 +575,14 @@ class htmlProcess{
 			}
 		}
 		################################################################################################################################################################################# 
-		$a 		= 'ws-query';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) as $key){ 		$key->outertext = self::process_tag_ws_query($key);}}
-		$a 		= 'ws-scripts';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = self::process_tag_ws_scripts($key);					}}
-		$a 		= 'ws-style';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = self::process_tag_ws_style($key);						}}
-		$a 		= 'ws-paginate';	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)		as $key){ 	$key->outertext = self::process_tag_ws_paginate($key);					}}
-		$a 		= 'ws-metatags'; 	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)		as $key){ 	$key->outertext = self::process_tag_ws_metatags(); 						}}
-		$a 		= 'ws-search';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_plugin($key);					}}
-		$a 		= 'ws-plugin';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_search($key);					}}
-		$a 		= 'ws-shortcode';	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_ws_shortcode($key);						}}
+		$a 		= 'ws-query';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = self::process_tag_ws_query($key);			}}
+		$a 		= 'ws-scripts';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = self::process_tag_ws_scripts($key);		}}
+		$a 		= 'ws-style';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = self::process_tag_ws_style($key);			}}
+		$a 		= 'ws-paginate';	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)		as $key){ 	$key->outertext = self::process_tag_ws_paginate($key);		}}
+		$a 		= 'ws-metatags'; 	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)		as $key){ 	$key->outertext = self::process_tag_ws_metatags(); 			}}
+		$a 		= 'ws-search';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_search($key);		}}
+		$a 		= 'ws-plugin';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_plugin($key);		}}
+		$a 		= 'ws-shortcode';	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_ws_shortcode($key);			}}
 		return 	self::beaultyHTML($html);	
 	}
 }
