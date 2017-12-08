@@ -38,6 +38,7 @@
 </style>
 <div class="boxPlugin">
 	<img src="<?=$ws->rootPath.$ws->pathPlugin?>/avatar.png">
+	<?=$ws->innertext?>	
 </div>
 
 

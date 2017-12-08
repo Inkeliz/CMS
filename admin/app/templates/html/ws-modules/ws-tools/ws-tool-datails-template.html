@@ -228,69 +228,66 @@ _root.reloadFunctions = function(){
 	_root.reloadFunctions();
 
 	$.getScript("{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict/ace.js", function(wordList) {
-		ace.config.set('basePath', '{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
-		window.javascriptAuxiliar = ace.edit("ace_editor");
-		window.javascriptAuxiliar.setTheme("ace/theme/monokai");
-		window.javascriptAuxiliar.getSession().setMode("ace/mode/javascript");
-		window.javascriptAuxiliar.setShowPrintMargin(true); 			
-		window.javascriptAuxiliar.setHighlightActiveLine(true); 		
-		window.javascriptAuxiliar.setShowInvisibles(0); 				
-		window.javascriptAuxiliar.getSession().setUseSoftTabs(0) 		
-	    window.javascriptAuxiliar.setDisplayIndentGuides(true);
-	    window.javascriptAuxiliar.getSession().setUseWrapMode(true);  
-		window.javascriptAuxiliar.on('change', function () {
-			$("#codigo_textarea").val(window.javascriptAuxiliar.getValue())
-		}) 
-		window.javascriptAuxiliar.setValue($("#codigo_textarea").val());
-
-
-
-
-			window.TemplateHTML = ace.edit("ace_editor_html");
-			window.TemplateHTML.setTheme("ace/theme/monokai");    
-			window.TemplateHTML.setShowPrintMargin(true); 			
-			window.TemplateHTML.setHighlightActiveLine(true); 		
-			window.TemplateHTML.setShowInvisibles(0); 				
-			window.TemplateHTML.getSession().setUseSoftTabs(0) 		
-		    window.TemplateHTML.setDisplayIndentGuides(true);
-		    window.TemplateHTML.getSession().setUseWrapMode(true);  
-		
-			window.sessoesEditor = [];					 
-			window.sessoesEditor['session1'] = ["#html_item"	,ace.createEditSession($("#html_item").val(),'ace/mode/html')];
-			window.sessoesEditor['session2'] = ["#html_img"		,ace.createEditSession($("#html_img").val(),'ace/mode/html')];
-			window.sessoesEditor['session3'] = ["#html_gal"		,ace.createEditSession($("#html_gal").val(),'ace/mode/html')];
-			window.sessoesEditor['session4'] = ["#html_img_gal"	,ace.createEditSession($("#html_img_gal").val(),'ace/mode/html')];
-			window.sessoesEditor['session5'] = ["#html_cat"		,ace.createEditSession($("#html_cat").val(),'ace/mode/html')];
-			window.sessoesEditor['session6'] = ["#html_file"	,ace.createEditSession($("#html_file").val(),'ace/mode/html')];
-
-		 	window.TemplateHTML.setSession(window.sessoesEditor['session1'][1]);
-
-			$("#selectType").unbind('change').change(function(value){
-				window.TemplateHTML.setSession(window.sessoesEditor[$(this).val()][1]);
-			})
-
-			window.TemplateHTML.on('change', function () { 
-			 	$(window.sessoesEditor[$("#selectType").val()][0]).val(window.TemplateHTML.getValue())
+		$.getScript("{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict/ext-language_tools.js", function(wordList) {
+			ace.config.set('basePath', '{ROOT_WEBSHEEP}admin/app/vendor/ace/src-min-noconflict');// SETA LOCAL DOS ARQUIVOS DO EDITOR
+			window.javascriptAuxiliar = ace.edit("ace_editor");
+			window.javascriptAuxiliar.setTheme("ace/theme/monokai");
+			window.javascriptAuxiliar.getSession().setMode("ace/mode/javascript");
+			window.javascriptAuxiliar.setShowPrintMargin(true); 			
+			window.javascriptAuxiliar.setHighlightActiveLine(true); 		
+			window.javascriptAuxiliar.setShowInvisibles(0); 				
+			window.javascriptAuxiliar.getSession().setUseSoftTabs(0) 		
+		    window.javascriptAuxiliar.setDisplayIndentGuides(true);
+		    window.javascriptAuxiliar.getSession().setUseWrapMode(true);  
+			window.javascriptAuxiliar.on('change', function () {
+				$("#codigo_textarea").val(window.javascriptAuxiliar.getValue())
 			}) 
+			window.javascriptAuxiliar.setValue($("#codigo_textarea").val());
+
+				window.TemplateHTML = ace.edit("ace_editor_html");
+				window.TemplateHTML.setTheme("ace/theme/monokai");    
+				window.TemplateHTML.setShowPrintMargin(true); 			
+				window.TemplateHTML.setHighlightActiveLine(true); 		
+				window.TemplateHTML.setShowInvisibles(0); 				
+				window.TemplateHTML.getSession().setUseSoftTabs(0) 		
+			    window.TemplateHTML.setDisplayIndentGuides(true);
+			    window.TemplateHTML.getSession().setUseWrapMode(true);  
+			
+				window.sessoesEditor = [];					 
+				window.sessoesEditor['session1'] = ["#html_item"	,ace.createEditSession($("#html_item").val(),'ace/mode/html')];
+				window.sessoesEditor['session2'] = ["#html_img"		,ace.createEditSession($("#html_img").val(),'ace/mode/html')];
+				window.sessoesEditor['session3'] = ["#html_gal"		,ace.createEditSession($("#html_gal").val(),'ace/mode/html')];
+				window.sessoesEditor['session4'] = ["#html_img_gal"	,ace.createEditSession($("#html_img_gal").val(),'ace/mode/html')];
+				window.sessoesEditor['session5'] = ["#html_cat"		,ace.createEditSession($("#html_cat").val(),'ace/mode/html')];
+				window.sessoesEditor['session6'] = ["#html_file"	,ace.createEditSession($("#html_file").val(),'ace/mode/html')];
+
+			 	window.TemplateHTML.setSession(window.sessoesEditor['session1'][1]);
+
+				$("#selectType").unbind('change').change(function(value){
+					window.TemplateHTML.setSession(window.sessoesEditor[$(this).val()][1]);
+				})
+
+				window.TemplateHTML.on('change', function () { 
+				 	$(window.sessoesEditor[$("#selectType").val()][0]).val(window.TemplateHTML.getValue())
+				}) 
 
 
-
-
-/*		var wordList = [<!-- BEGIN CAMPOSTOOL -->{coluna_mysql_auto_complete}<!-- END CAMPOSTOOL -->];
-		var wsCompleterHTML = {
-			getCompletions: function(editor, session, pos, prefix, callback) {
-				if (prefix.length === 0) { callback(null, []); return }
-				callback(null, wordList.map(function(ea)  {return {value: ea, meta: 'Campo da ferramenta'}}));
+			window.wordList = [<!-- BEGIN CAMPOSTOOL -->{coluna_mysql_auto_complete}<!-- END CAMPOSTOOL -->];
+			out(window.wordList);
+			window.wsCompleterHTML = {
+				getCompletions: function(editor, session, pos, prefix, callback) {
+					if (prefix.length === 0){ callback(null, []); return }
+					callback(null,window.wordList.map(function(ea)  {return ea;}));
+				}
 			}
-		}
-		window.TemplateHTML.setOptions({enableBasicAutocompletion: false, enableSnippets: true, enableLiveAutocompletion: true });
-		var langTools = ace.require("ace/ext/language_tools");
-			langTools.setCompleters([langTools.snippetCompleter, langTools.textCompleter,wsCompleterHTML]);
-*/
-
-
-
-
+			window.TemplateHTML.setOptions({
+			    enableBasicAutocompletion: true,
+			    enableSnippets: false,
+			    enableLiveAutocompletion: true
+			});
+			window.langTools = ace.require("ace/ext/language_tools");
+			window.langTools.setCompleters([window.wsCompleterHTML])
+		})		
 	})		
 
 

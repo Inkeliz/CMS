@@ -674,6 +674,8 @@ function getShortCodesPlugin (){
 			echo '					,"includePath"		=>	ws::includePath'.PHP_EOL;
 			echo '					,"shortcode"		=>	\''.str_replace("'","\'",$shortCode).'\''.PHP_EOL;
 			echo '					,"vars" 			=>	(object)$plugin->requiredData'.PHP_EOL;
+			echo '					,"innertext"		=>	null'.PHP_EOL;
+			echo '					,"outertext"		=>	null'.PHP_EOL;
 			echo '					,"json" 			=> 	$plugin'.PHP_EOL;
 			echo '				);'.PHP_EOL.PHP_EOL;
 			echo '####################################################################################################'.PHP_EOL;
@@ -706,9 +708,11 @@ function getShortCodesPlugin (){
 			}
 			$ws =  (object) array(
 								'pathPlugin'		=>	str_replace(INCLUDE_PATH.'website/',"",$path)
-								,'rootPath'			=>	ROOT_WEBSHEEP
-								,'includePath'		=>	INCLUDE_PATH
+								,'rootPath'			=>	ws::rootPath
+								,'includePath'		=>	ws::includePath
 								,'shortcode'		=>	$shortCode
+								,'outertext'		=>	null
+								,'innertext'		=>	null
 								,'vars' 			=>	(object)$contents->requiredData
 								,'json' 			=> 	$contents
 							);

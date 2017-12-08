@@ -551,7 +551,15 @@ class htmlProcess{
 			}
 		}
 		ob_start(); @include(INCLUDE_PATH.'website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/plugin.config.php'); ob_get_clean();
-		$ws = (object) array('config' => $plugin, 'rootPath'=>$setupdata['url_plugin'].'/'.$atributos->path,'shortcode'=>$outertext,'vars' =>$atributos);
+		$ws = (object) array(
+						'pathPlugin'		=>	$setupdata['url_plugin'].'/'.$atributos->path
+						,'rootPath'			=>	ws::rootPath
+						,'includePath'		=>	ws::includePath
+						,'outertext'		=>	self::beaultyHTML($outertext)
+						,'innertext'		=>	self::beaultyHTML($innertext)
+						,'config' 			=> 	$plugin 
+						,'vars' 			=>	$atributos
+					);
 		ob_start(); @include(INCLUDE_PATH.'website/'.$setupdata['url_plugin'].'/'.$atributos->path.'/'.$plugin->plugin); $content=ob_get_clean();
 		return $content;
 	}

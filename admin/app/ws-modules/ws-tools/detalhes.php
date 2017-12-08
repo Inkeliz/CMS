@@ -178,12 +178,51 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		$template->coluna_mysql		=	$return['coluna_mysql'];
 		$template->selectmulti		=	$return['selectmulti'];
 		$template->listaTabela 		=	$return['listaTabela'];
-		$camposAutoComplete[] 		= substr($return['coluna_mysql'],strlen($FERRAMENTA['_prefix_'])) ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}'.substr($return['coluna_mysql'],strlen($FERRAMENTA['_prefix_'])).'}}", meta:"Ferramenta"}' ;
 		$template->block('OPT_LIST_TABLE');
 	}
 
+		$camposAutoComplete[] 		=  '{value: "{{{_}img_count}}",meta:"Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}titulo}}",meta:"Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}texto}}",meta:"Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}url}}",meta:"Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}avatar}}",meta:"Galerias"}' ;
 
-	$template->coluna_mysql_auto_complete		= '"'.implode($camposAutoComplete, '","').'"';
+		$camposAutoComplete[] 		=  '{value: "{{{_}titulo}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}texto}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}url}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}token}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}filename}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}posicao}}",meta:"Imagens Galerias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}file}}",meta:"<img> Imagens Galerias"}' ;
+
+
+		$camposAutoComplete[] 		=  '{value: "{{{_}titulo}}",meta:"Imagens"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}texto}}",meta:"Imagens"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}url}}",meta:"Imagens"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}filename}}",meta:"Imagens"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}token}}",meta:"Imagens"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}imagem}}",meta:"Imagens"}' ;
+
+		$camposAutoComplete[] 		=  '{value: "{{{_}titulo}}",meta:"Categorias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}texto}}",meta:"Categorias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}avatar}}",meta:"Categorias"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}token}}",meta:"Categorias"}' ;
+
+		$camposAutoComplete[] 		=  '{value: "{{{_}posicao}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}uploaded}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}titulo}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}url}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}texto}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}file}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}filename}}",meta:"Files"}' ;
+		$camposAutoComplete[] 		=  '{value: "{{{_}token}}",meta:"Files"}' ;
+
+
+
+
+
+	$template->coluna_mysql_auto_complete		= implode($camposAutoComplete, ',');
 	$template->block('CAMPOSTOOL');
 	
 
