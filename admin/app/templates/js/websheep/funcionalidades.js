@@ -245,6 +245,7 @@ function loadPluginFile(opcoes){
 			$("#ws_confirm").remove();
 			$("*").removeClass("scrollhidden").removeClass("blur");
 			$('#container').perfectScrollbar('destroy');
+
 		}else if(options.type=='modal'){
 			confirma({
 				width:dataW,
@@ -256,7 +257,13 @@ function loadPluginFile(opcoes){
 				bot2:0,
 				botclose:1
 			})
+		}else if(options.type=='iframe'){
+				$('#conteudo').html('<iframe src="'+options.filename+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;margin:0;"></iframe>');
 		}
+
+
+
+
 		window.CloseMenu();
 	})
 }

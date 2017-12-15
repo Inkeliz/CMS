@@ -135,15 +135,33 @@
 						$TEMPLATE->LI_H 	= @$dataH;
 						$TEMPLATE->LI_TYPE 	= @$dataType;
 
+						print_pre($dataType);
+						if(@trim($dataType)!="iframe"){
 
-						if(@$dataType!="iframe"){
-							$TEMPLATE->LI_PATH 	= str_replace('/'.$setupdata['url_plugin'].'/',"", $contents->realPath);
-							$TEMPLATE->LI_FILE 	= $contents->painel;
+							if (filter_var($contents->painel, FILTER_VALIDATE_URL) === FALSE) {
+								$link = ws::rootPath.$setupdata['url_plugin'].'/'.$contents->painel;
+							} else {
+								$link = $contents->painel;
+							}
+							$TEMPLATE->LI_PATH 	= dirname($link);;
+							$TEMPLATE->LI_FILE 	= $link;
 						}else{
-							$TEMPLATE->LI_PATH 	= $contents->realPath;
-							$TEMPLATE->LI_FILE 	= $contents->realPath.'/'.$contents->painel;
+							if (filter_var($contents->realPath, FILTER_VALIDATE_URL) === FALSE) {
+								$link = ws::rootPath.$contents->realPath;
+							} else {
+								$link = $contents->realPath;
+							}
+							$TEMPLATE->LI_PATH 	= dirname($link);
+							$TEMPLATE->LI_FILE 	= $contents->painel;
 						}
-						$TEMPLATE->LI_HREF 	= $contents->realPath.'/'.$contents->painel;
+
+							if (filter_var($contents->realPath, FILTER_VALIDATE_URL) === FALSE) {
+								$link = ws::rootPath.$contents->realPath;
+							} else {
+								$link = $contents->realPath;
+							}
+
+						$TEMPLATE->LI_HREF 	= $link.'/'.$contents->painel;
 
 
 						if(isset($contents->icon) &&$contents->icon!="" &&file_exists(INCLUDE_PATH.'website'.$contents->realPath.'/'.$contents->icon)){

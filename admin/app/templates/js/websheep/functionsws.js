@@ -87,9 +87,9 @@
 				background: "#F3DB7A",
 				bottomColor: "#F5C814"
 			});
-
-
 */
+
+
 var ws = new Object();
 ws = {
 	rootPath:null,
@@ -112,6 +112,18 @@ ws = {
 	get: {
 		obj:{},
 		clipboard:[],
+		domAttr:function(element){
+			if(!ws.exists.dom(element)){ws.log.error("ws.get.domAttr("+element+")");return false;}
+       		var attributes 	= {}; 
+       		var element 	= "#answer-2048786";
+			var attrs 		=  ws.$(element)[0].attributes;
+			if(ws.$(element)[0].hasAttributes()){
+				for(var i = attrs.length - 1; i >= 0; i--) {
+					attributes[attrs[i].name]= attrs[i].value;
+				}
+			}
+      		 return attributes;
+      	}
 	},
 	set: {
 		obj: function(newVal, valor) {
@@ -895,10 +907,8 @@ ws = {
 			});
 		},
 		dom: function(selector) {
-			if(typeof selector !== "string") {
-				ws.log.error("Entrada inválida, utilize strings como selectores '#' ou '.'");
-				return false;
-			}
+			if(typeof selector !== "string") {ws.log.error("Entrada inválida, utilize strings como selectores '#' ou '.'");return false;}
+
 			if(ws.$(selector).length) {
 				return true;
 			} else {
@@ -1423,12 +1433,7 @@ ws = {
 		return objectData;
 	},
 	$:function(selector, el){
-	    var selectorType = 'querySelectorAll';
-	    if (selector.indexOf('#') === 0) {
-	        selectorType = 'getElementById';
-	        selector = selector.substr(1, selector.length);
-	    }
-	    return document[selectorType](selector);
+	    return document.querySelectorAll(selector);
 	},
 	log: {
 		error: function(message) {
@@ -1441,8 +1446,4 @@ ws = {
 			console.warn(message);
 		}
 	}
-
-
-
-
 }
