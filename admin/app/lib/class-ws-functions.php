@@ -746,6 +746,7 @@
 				}
 			}
 			file_put_contents(INCLUDE_PATH.'admin/app/templates/json/ws-plugin-list.json', json_encode($json_plugins,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+			return true;
 		}
 
 	##########################################################################################################

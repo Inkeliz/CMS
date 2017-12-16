@@ -280,48 +280,11 @@ function InsertCode(){
 	global $session;
 	echo '<div class="comboShortCode">
 		<form id="formTags">
-			<div style="font-size: 20px;font-weight: bold;padding-bottom: 12px;">Adicionar conteúdo</div>
-			<div class="descricao">Selecione o que você quer, e uma ferramenta:</div>
-			<div class="c"></div>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 70px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Item: 
-					<input name="type" value="item" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 50px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Galerias: 
-					<input name="type" value="gal" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 30px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Img. de galerias: 
-					<input name="type" value="img_gal" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 57px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Imagens: 
-					<input name="type" value="img" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 41px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Categorias: 
-					<input name="type" value="cat" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 52px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Arquivos: 
-					<input name="type" value="file" type="radio"/>
-				</div>
-			</label>
-			<div class="c"></div>
-			<div style="padding: 20px;margin-top: 7px;margin-bottom: -10px;">
-				<select id="shortcodes" name="id_toll" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;"><option value="">Selecione uma popção</option>';
+			<div style="font-size: 20px;font-weight: bold;padding-bottom: 12px;">Adicionar ferramenta</div>
+
+			<div class="descricao">Selecione a ferramenta:</div>
+			<div style="padding: 10px 20px;">
+				<select id="shortcodes" name="id_toll" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;">';
 					$ws_ferramentas 				= new MySQL();
 					$ws_ferramentas->set_table(PREFIX_TABLES.'ws_ferramentas');
 					$ws_ferramentas->set_where('App_Type="1"');
@@ -334,25 +297,35 @@ function InsertCode(){
 					$fullPages->set_where('_plugin_="1"');
 					$fullPages->set_order('posicao','ASC');
 					$fullPages->select();
-					foreach ($fullPages->fetch_array as $value) {echo '<option value="'.$value['id'].'">Plugins -> '.$value['_tit_menu_'].'</option>'; }
-					
-				echo '</select>
-				</div>
-			<div class="descricao">Você quer a classe em PHP ou uma TAG HTML5?</div>
-			<label>
-				<div style="width: 200px;margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 41px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Classe PHP: 
-					<input name="typeCode" value="classe" type="radio"/>
-				</div>
-			</label>
-			<label>
-				<div style="width: 170px;margin: 10px;cursor:pointer;position: relative;float: left;padding: 10px 52px;background: rgba(255, 255, 255, 0.58);top: 16px;left: 0px;">
-					Tag HTML5: 
-					<input name="typeCode" value="tag" type="radio"/>
-				</div>
-			</label>
+					foreach ($fullPages->fetch_array as $value) {
+						echo '<option value="'.$value['id'].'">Plugins -> '.$value['_tit_menu_'].'</option>'; 
+					}
+			echo '</select>
+			</div>
+			<div class="c"></div>
+			<div class="descricao">O que você quer puxar?</div>
+			<div class="c"></div>
+			<div style="padding: 10px 20px;">
+				<select name="type" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;">
+					<option value="item">Item</option>
+					<option value="img">Imagens</option>
+					<option value="gal">Galerias</option>
+					<option value="img_gal">Imagens das galerias</option>
+					<option value="cat">Categorias</option>
+					<option value="file">Arquivos</option>
+				</select>
+			</div>
+			<div class="c"></div>
 
+				<div class="descricao">Qual formato gostaria de importar?</div>
 
+				<div style="padding: 10px 20px;">
+					<select name="typeCode" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;">
+						<option value="tag">TAG HTML5</option>
+						<option value="classe">Classe PHP</option>
+						<!-- <option value="restfull">REST FULL</option> -->
+					</select>
+				</div>
 			</form>
 		</div>';
 	exit;
@@ -618,15 +591,12 @@ function getShortCodesPlugin (){
 	global $session;
 	global $_SETUPDATA;
 
-
 	$phpConfig 	= $_REQUEST['path'].'/plugin.config.php';
 	$path 		= implode(_array_filter(explode('/',$_REQUEST['path'])),'/');
-
 	if(file_exists($phpConfig)){
 			ob_start(); @include($phpConfig); $jsonRanderizado=ob_get_clean();
 			$contents 		=	$plugin;
 	}
-
 	if(empty($contents->shortcode) || $contents->shortcode==1 ){
 
 			###########################################################################

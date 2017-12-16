@@ -134,10 +134,7 @@
 						$TEMPLATE->LI_W 	= @$dataW;
 						$TEMPLATE->LI_H 	= @$dataH;
 						$TEMPLATE->LI_TYPE 	= @$dataType;
-
-						print_pre($dataType);
 						if(@trim($dataType)!="iframe"){
-
 							if (filter_var($contents->painel, FILTER_VALIDATE_URL) === FALSE) {
 								$link = ws::rootPath.$setupdata['url_plugin'].'/'.$contents->painel;
 							} else {
