@@ -51,13 +51,13 @@ $plugin->slug 				=	"newPlugin";
 • Painel de configurações do seu plugin (caso haja um)
 ########################################################################################################################################
 */
-$plugin->painel 			=	"painel.php";
+$plugin->painel 			=	"includes/painel.php";
 /*
 ########################################################################################################################################
 • Arquivo do próprio plugin
 ########################################################################################################################################
 */
-$plugin->plugin 			=	"plugin.php";
+$plugin->plugin 			=	"includes/plugin.php";
 /*
 ########################################################################################################################################
 • 1 = insere em forma de Shortcode <ws-plugin></ws-plugin>
@@ -71,21 +71,21 @@ $plugin->shortcode			=	1;
 • Ícone pequeno, 16x16 da aplicação, que aparecerá no topo ou na lateral do painel
 ########################################################################################################################################
 */
-$plugin->icon				=	"favicon.png";
+$plugin->icon				=	"assets/images/favicon.png";
 /*	
 ########################################################################################################################################
 • Avatar da sua aplicação, 150x150. 
 • Ela que aparecerá na listagem dos plugins
 ########################################################################################################################################
 */
-$plugin->avatar				=	"avatar.png";
+$plugin->avatar				=	"assets/images/avatar.png";
 /*	
 ########################################################################################################################################
 • Miniatura da sua aplicação, 350x160. 
 • Ela que aparecerá no hover do plugin no editor de código 
 ########################################################################################################################################
 */
-$plugin->miniature			=	"miniature.png";
+$plugin->miniature			=	"assets/images/miniature.png";
 /*	
 ########################################################################################################################################
 • Descrição do plugin
@@ -148,73 +148,73 @@ $plugin->requiredData 		=	array(
 	Fica a baixo do título do plugin na listagem
 	Indicado para documentação, termos de uso etc 
 	• $plugin->innerload 	= 	array(
-									"String (_blank)"=>array("painel.php","iframe"),
-									"String (_blank)"=>array("painel.php","_blank"),
-									"String (_self)" =>array("painel.php","_self"),
-									"String (inner)" =>array("painel.php","inner"),
-									"String (modal)" =>array("painel.php","modal",500,500),
-									"String (popup)" =>array("painel.php","popup",500,500)
+									"String (_blank)"=>array("includes/painel.php","iframe"),
+									"String (_blank)"=>array("includes/painel.php","_blank"),
+									"String (_self)" =>array("includes/painel.php","_self"),
+									"String (inner)" =>array("includes/painel.php","inner"),
+									"String (modal)" =>array("includes/painel.php","modal",500,500),
+									"String (popup)" =>array("includes/painel.php","popup",500,500)
 								);
 ########################################################################################################################################
 */
 $plugin->innerload 	= 	array(
-									"String (_blank)"=>array("painel.php","_blank"),
-									"String (_self)" =>array("painel.php","_self"),
-									"String (inner)" =>array("painel.php","inner"),
-									"String (modal)" =>array("painel.php","modal",500,500),
-									"String (popup)" =>array("painel.php","popup",500,500)
+									"String (_blank)"=>array("includes/painel.php","_blank"),
+									"String (_self)" =>array("includes/painel.php","_self"),
+									"String (inner)" =>array("includes/painel.php","inner"),
+									"String (modal)" =>array("includes/painel.php","modal",500,500),
+									"String (popup)" =>array("includes/painel.php","popup",500,500)
 								);
 /*
 ########################################################################################################################################
 	• $plugin->links	=array(
-							"String (_blank)"=>array("painel.php","iframe"),
-							"String (_blank)"=>array("painel.php","_blank"),
-							"String (_self)" =>array("painel.php","_self"),
-							"String (inner)" =>array("painel.php","inner"),
-							"String (modal)" =>array("painel.php","modal",500,500),
-							"String (popup)" =>array("painel.php","popup",500,500)
+							"String (_blank)"=>array("includes/painel.php","iframe"),
+							"String (_blank)"=>array("includes/painel.php","_blank"),
+							"String (_self)" =>array("includes/painel.php","_self"),
+							"String (inner)" =>array("includes/painel.php","inner"),
+							"String (modal)" =>array("includes/painel.php","modal",500,500),
+							"String (popup)" =>array("includes/painel.php","popup",500,500)
 						);
 	// Ficas logo a baixo da descrição do plugin na listagem, ao lado do nome do autor
 	// Indicado para portfolio, sites, rede sociais etc 
 ########################################################################################################################################
 */
 $plugin->links	=array(
-							"String (_blank)"=>array("painel.php","_blank"),
-							"String (_self)" =>array("painel.php","_self"),
-							"String (inner)" =>array("painel.php","inner"),
-							"String (modal)" =>array("painel.php","modal",500,500),
-							"String (popup)" =>array("painel.php","popup",500,500)
+							"String (_blank)"=>array("includes/painel.php","_blank"),
+							"String (_self)" =>array("includes/painel.php","_self"),
+							"String (inner)" =>array("includes/painel.php","inner"),
+							"String (modal)" =>array("includes/painel.php","modal",500,500),
+							"String (popup)" =>array("includes/painel.php","popup",500,500)
 						);
 /*
 ########################################################################################################################################
 	caso seu plugin tenha alguma dependencia de script,
 	adicione a URL dos arquivos.
 	• $plugin->script =	array(
-								$plugin->pluginPath.'/js/myScript.js'
+								$plugin->pluginPath.'/assets/js/myScript.js'
 								,array("//code.jquery.com/jquery-3.0.0.min.js")
 								,array("//code.jquery.com/jquery-3.0.0.min.js","jquery")
 							);
 */
 $plugin->script 			=	array(
-									$plugin->pluginPath.'/js/style.js'
-									,array($plugin->pluginPath.'/js/style.js')
-									,array($plugin->pluginPath.'/js/style.js','id="myScript" async')
+									$plugin->pluginPath.'/assets/js/style.js'
+									,array($plugin->pluginPath.'/assets/js/style.js')
+									,array($plugin->pluginPath.'/assets/js/style.js','id="myScript" async')
 								);
 
 /*
 ########################################################################################################################################
 	caso seu plugin tenha alguma dependencia de CSS, adicione a URL dos arquivos.
 	• $plugin->style 		=	array(
-									$plugin->pluginPath.'/css/style.css'
-									,array($plugin->pluginPath.'/css/style.css')
-									,array($plugin->pluginPath.'/css/style.css','media="All"')
+									$plugin->pluginPath.'/assets/css/style.css'
+									,array($plugin->pluginPath.'/assets/css/style.css')
+									,array($plugin->pluginPath.'/assets/css/style.css','media="All"')
 								);
 ########################################################################################################################################
 */
 $plugin->style 				=	array(
-									$plugin->pluginPath.'/css/style.css'
-									,array($plugin->pluginPath.'/css/style.css')
-									,array($plugin->pluginPath.'/css/style.css','media="All"')
+									$plugin->pluginPath.'/assets/css/style.css'
+									,array($plugin->pluginPath.'/assets/css/style.css')
+									,array($plugin->pluginPath.'/assets/css/style.css','media="All"')
 								);
 
 /*
@@ -226,19 +226,19 @@ $plugin->style 				=	array(
 	Já a variável "before", será carregado após o fechamento do site
 
 	string: 
-	• $plugin->globalphp	= "path/path/arquivo.php"
+	• $plugin->globalphp	= $plugin->pluginPath.'/includes/arquivo.php';
 	Array: 
-	• $plugin->globalphp	= array("path/path/arquivo.php")
+	• $plugin->globalphp	= array($plugin->pluginPath.'/includes/arquivo.php');
 	Array: 
-	• $plugin->globalphp	= array("path/path/arquivo.php","before")
+	• $plugin->globalphp	= array($plugin->pluginPath.'/includes/arquivo.php',"before");
 	Array: 
-	• $plugin->globalphp	= array("path/path/arquivo.php","after")
+	• $plugin->globalphp	= array($plugin->pluginPath.'/includes/arquivo.php',"after");
 	Array: 
 	• $plugin->globalphp	= array(
-					"path/path/arquivo.php",
-					array("path/path/arquivo.php"),
-					array("path/path/arquivo.php","after"),
-					array("path/path/arquivo.php","before")
+					$plugin->pluginPath.'/includes/arquivo.php',
+					array($plugin->pluginPath.'/includes/arquivo.php'),
+					array($plugin->pluginPath.'/includes/arquivo.php',"after"),
+					array($plugin->pluginPath.'/includes/arquivo.php',"before")
 	)
 ########################################################################################################################################
 */
@@ -250,11 +250,11 @@ $plugin->globalphp			=	array();
 	$plugin->dependency	=	"45g0y304ohf2g93469tf9owehf";
 	$plugin->dependency	=	array("45g0y304ohf2g93469tf9owehf");
 	$plugin->dependency	=	array(
-										"45g0y304ohf2g93469tf9owehf",
-										"hgne56yjnrtje457jymki890pol",
-										"70k9iwe4gvstrjmk587ijadfnhut",
-										"sdfg54ujrnmi8p678jetrjthw346"
-									);
+									"45g0y304ohf2g93469tf9owehf",
+									"hgne56yjnrtje457jymki890pol",
+									"70k9iwe4gvstrjmk587ijadfnhut",
+									"sdfg54ujrnmi8p678jetrjthw346"
+								);
 ########################################################################################################################################
 */
 $plugin->dependency		=	array();

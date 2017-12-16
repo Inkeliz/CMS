@@ -290,8 +290,8 @@ enviaEmail:
 	$mail->addAddress(Remetente,NomeRemetente);
 	$mail->Subject =  $_LEAD->assunto;
 	$mail->AltBody = strip_tags(utf8_decode(str_replace($isso, $porissoIsso,$_LEAD->msng_resp)));
-	$mail->AddEmbeddedImage(pathImg.'/'.topoEmail, "topo", topoEmail);
-	$mail->AddEmbeddedImage(pathImg.'/'.assEmail,  "assinatura", assEmail);
+	$mail->AddEmbeddedImage(INCLUDE_PATH.'website/assets/upload-files/'.topoEmail, "topo", topoEmail);
+	$mail->AddEmbeddedImage(INCLUDE_PATH.'website/assets/upload-files/'.assEmail,  "assinatura", assEmail);
 	$mensagem ="";
 	if($_LEAD->header_email!="") 	$mensagem  .=  utf8_decode("<img src='cid:topo'><br>").PHP_EOL;
 									$mensagem  .=  utf8_decode(str_replace($isso, $porissoIsso,$_LEAD->msng_resp)).PHP_EOL;
@@ -317,8 +317,8 @@ enviaEmail:
 				$mailResp->addAddress($_FORM[$_LEAD->camp_mail_clt],NomeRemetente);
 				$mailResp->Subject = utf8_decode($_LEAD->assunto_clt);
 				$mailResp->AltBody = strip_tags(str_replace($isso, $porissoIsso,$_LEAD->msng_resp_user));
-				$mailResp->AddEmbeddedImage(pathImg.'/'.topoEmail, "topo", topoEmail);
-				$mailResp->AddEmbeddedImage(pathImg.'/'.assEmail,  "assinatura", assEmail);
+				$mailResp->AddEmbeddedImage(INCLUDE_PATH.'website/assets/upload-files/'.topoEmail, "topo", topoEmail);
+				$mailResp->AddEmbeddedImage(INCLUDE_PATH.'website/assets/upload-files/'.assEmail,  "assinatura", assEmail);
 				$mensagem ="";
 				if($_LEAD->header_email!="") 	$mensagem  .=  utf8_decode("<img src='cid:topo'><br>").PHP_EOL;
 												$mensagem  .=  utf8_decode(str_replace($isso, $porissoIsso,$_LEAD->msng_resp_user)).PHP_EOL;

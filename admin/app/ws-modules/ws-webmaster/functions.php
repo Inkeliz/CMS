@@ -802,7 +802,7 @@ function returnTagHTMLPlugin ($path=null,$requiredData=array()){
 				$arrReq[]= $key.'="'.$value.'"';
 			}
 		}
-		return '<ws-plugin path="'.$path.'" '.implode($arrReq," ").'></ws-plugin>';
+		return '<ws-plugin path="'.$path.'" '.@implode(@$arrReq," ").'></ws-plugin>';
 	}else{
 		return '<ws-plugin path="'.$path.'"></ws-plugin>';
 	}

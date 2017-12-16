@@ -115,6 +115,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 						# VERIFICAMOS SE EXISTEM ALGUNS ATRIBUTOS NECESSÁRIO 
 						###################################################################################################
 						$template->ClasseThumb = "minThumb";
+						
 						if (isset($contents->PluginPath)) {
 							$template->PluginPath = ws::rootPath.$setupdata['url_plugin'] . '/' . $contents->PluginPath;
 							$template->dataPath   = ws::rootPath.$setupdata['url_plugin'] . '/' . $contents->PluginPath;
