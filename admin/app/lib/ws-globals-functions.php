@@ -172,11 +172,8 @@ function get_caller_info() {
 	function _file_put_contents($file,$content,$replace=true, $bkp=false){
 		$bkp_date = date('Y_m_d_H_i_s_', time()).md5(microtime(true));
 		if(file_exists($file) && is_file($file) && $replace==true && $bkp==true){
-			echo "1 - : ".$file.PHP_EOL;
 			if(copy($file, $file.'__bkp_'.$bkp_date)){
-				echo "2 - : ".$file.PHP_EOL;
 				if(file_put_contents($file, $content)){
-				echo "3 - : ".$file.PHP_EOL;
 					return true;
 				}else{
 					return false;

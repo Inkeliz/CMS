@@ -42,10 +42,11 @@
 		_mkdir('website/assets/libraries',true);
 		_copyFolder('admin/app/ws-modules/plugins', 'website/plugins',true);
 		_copy(INCLUDE_PATH."admin/app/lib/my-shortcode.php",INCLUDE_PATH."ws-shortcodes/my-shortcode.php",false);
-		_file_put_contents(INCLUDE_PATH.'website/includes/header.php', 'Header<hr>',false);
-		_file_put_contents(INCLUDE_PATH.'website/includes/erro404.php', 'ERRO 404!',false);
-		_file_put_contents(INCLUDE_PATH.'website/includes/inicio.php', 'Olá mundo!',false);
-		_file_put_contents(INCLUDE_PATH.'website/includes/footer.php', '<hr>Footer',false);
+
+		_file_put_contents(INCLUDE_PATH.'website/includes/header.php', 'Header<hr>',true,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/erro404.php', 'ERRO 404!',true,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/inicio.php', 'Olá mundo!',true,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/footer.php', '<hr>Footer',true,true);
 		_file_put_contents(INCLUDE_PATH.'website/assets/.htaccess', 'RewriteEngine Off',false);
 
 

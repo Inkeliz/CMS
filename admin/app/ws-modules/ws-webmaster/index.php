@@ -200,11 +200,14 @@
 		if(refreshJsonPluginsList()){
 			$json 	= json_decode(file_get_contents(ws::includePath.'admin/app/templates/json/ws-plugin-list.json'));
 			foreach ($json as $value) {
-				echo '<div class="itemLI" data-miniature="'.ws::rootPath.$value->realPath.'/'.@$value->miniature.'" data-fullPath="'.ws::includePath.'website/'.$value->realPath.'">
-						<div class="avatar"><img src="'.ws::rootPath.$value->realPath.'/'.$value->avatar.'"/></div>
-						<div class="title w1">'.$value->pluginName.'</div>
-						<div class="description w1">'.ws::limit_words($value->description,15,'...').'</div>
-					 </div>';
+
+				if($value->menu=='editor' || @in_array('editor', $value->menu)){
+					echo '<div class="itemLI" data-miniature="'.ws::rootPath.$value->realPath.'/'.@$value->miniature.'" data-fullPath="'.ws::includePath.'website/'.$value->realPath.'">
+							<div class="avatar"><img src="'.ws::rootPath.$value->realPath.'/'.$value->avatar.'"/></div>
+							<div class="title w1">'.$value->pluginName.'</div>
+							<div class="description w1">'.ws::limit_words($value->description,15,'...').'</div>
+						 </div>';
+				}
 			}
 		};
 	?>
