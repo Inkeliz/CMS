@@ -85,6 +85,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$verify_produto->select();
 	# caso não tenha nenhuma, gera um código token novo e adiciona
 	$token = _token(PREFIX_TABLES . '_model_item', 'token');
+
 	if($verify_produto->_num_rows < 1) {
 		$insert_produto = new MySQL();
 		$insert_produto->set_table(PREFIX_TABLES . '_model_item');
@@ -96,21 +97,15 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		$set_produto->set_table(PREFIX_TABLES . '_model_item');
 		$set_produto->set_where('token="' . $token . '"');
 		$set_produto->select();
-
 		#ADICIONA NAS VARIÁVEIS GET
 		$_GET['id_item'] = $set_produto->fetch_array[0]['id'];
-
 		# grava na sessão GET o ID simulando o produto já inserido
 		$session->set('id_item',$set_produto->fetch_array[0]['id']);
 		# CASO JÁ TENHA UM PRODUTO, GRAVA NA SESSÃO O ID
-	} elseif($verify_produto->_num_rows == 1) {
-		$session->set('id_item',$verify_produto->fetch_array[0]['id']);
-		$_GET['id_item'] = $verify_produto->fetch_array[0]['id'];
-	} else {
-		#CASO CONTRARIO GRAVA O ID NA SESSÃO QUE FOI ENVIADO VIA GET
-		$session->set('id_item',$_GET['id_item']);
-		$_GET['id_item'] = $verify_produto->fetch_array[0]['id'];
-	}
+	} else{
+		$session->set('id_item',$_GET['id_item']);	
+	} 
+
 	##########################################################################################################
 	# SEPARAMOS OS CAMPOS DESTE ÍTEM
 	##########################################################################################################
@@ -134,7 +129,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	##########################################################################################################
 	$produto = new MySQL();
 	$produto->set_table(PREFIX_TABLES . "_model_item");
-
 
 	// caso nao exista rascunho ou seja pedido a visualização do arquivo original    
 	if((empty($_GET['original']) || $_GET['original'] == 'false')) {
