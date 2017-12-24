@@ -210,40 +210,23 @@
 		############################################################################################################
 		# GET
 		############################################################################################################
-			$GETDATA = http_build_query(
+			$VARS = http_build_query(
 				array(
-					'type' 			=> 'item',
-					'slug' 			=> 'teste',
-					'limit' 		=> '',
-					'innerCategory' => (int)"id",
-					'innerItem' 	=> (int)"id",
-					'item' 			=> (int)"id",
-					'setTemplate' 	=> '<div></div>',
-					'where' 		=> 'query',
-					'alias' 		=> '_alias_',
-					'paginate' 		=> 'pag, $limit',
-					'relLinker' 	=> (int)"id",
-					'relLinked' 	=> (int)"id"
-					'relType' 		=> 'item or cat'
-					'galery' 		=> (int)"id"
-					'like' 			=> array(array("coluna","palavra"),array("coluna","palavra"),array("coluna","palavra"))
-					'distinct' 		=> ''
-					'utf8' 			=> ''
-					'url' 			=> ''
-					'order' 		=> ''
-					'filter' 		=> ''
+					"type" 			=> "item",
+					"slug" 			=> "dp_home"
 				)
 			);
-			$HEADER  = array(
-				'http' => array(
-					'method' => 'GET',
-					'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . 
-								"token:" . ws::setTokenRest()."\r\n",
-					'content' => $GETDATA
+			$HEADER = stream_context_create(array(
+					"http" => array(
+						"method" => "GET",
+						"header" => "Content-Type: application/x-www-form-urlencoded\r\n"
+									."token:" . ws::setTokenRest()."\r\n"
+					)
 				)
 			);
-			$CONTENT = stream_context_create($HEADER);
-			echo file_get_contents('http://' . DOMINIO.ws::rootPath.'ws-rest/?' . $GETDATA, false, $CONTENT);
+			$obj_tool = json_decode(file_get_contents(ws::protocolURL().ws::domain.ws::rootPath."ws-rest/?".$VARS, false,$HEADER));
+
+
 		############################################################################################################
 		# PUT
 		############################################################################################################
