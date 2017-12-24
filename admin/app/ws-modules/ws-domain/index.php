@@ -49,7 +49,7 @@
 	# PRIMEIRO DEFINIMOS OS DADOS DA BASE 
 	#####################################################
 
-	$_TEMPLATE->ws_rootPath 		= ws::rootPath;
+	// $_TEMPLATE->ws_rootPath 		= ws::rootPath;
 	$_TEMPLATE->hd 					= $domain->fetch_array[0]['hd'];
 	$_TEMPLATE->smtp_host 			= $domain->fetch_array[0]['smtp_host'];
 	$_TEMPLATE->smtp_port 			= $domain->fetch_array[0]['smtp_port'];
