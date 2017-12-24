@@ -39,6 +39,7 @@
 	class WS {
    		const includePath 	=  	INCLUDE_PATH;
    		const rootPath 		= 	ROOT_WEBSHEEP;
+   		const domain 		= 	DOMINIO;
 		public function __construct() {
 			$this->dataRelType          = "item";
 			$this->setpag               = null;

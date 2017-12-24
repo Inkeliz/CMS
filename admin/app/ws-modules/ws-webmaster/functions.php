@@ -323,7 +323,7 @@ function InsertCode(){
 					<select name="typeCode" style="width:450px;padding: 10px;border: none;color: #3A639A;-moz-border-radius: 7px;-webkit-border-radius: 7px;border-radius: 7px;">
 						<option value="tag">TAG HTML5</option>
 						<option value="classe">Classe PHP</option>
-						<!-- <option value="restfull">REST FULL</option> -->
+						<option value="restfull">JSON</option>
 					</select>
 				</div>
 			</form>
@@ -375,16 +375,9 @@ function InsertCodeCampos(){
 		$output.= '	print_r($pesquisa->_num_rows);'."\n";
 		$output.= '	//Se qusier, também pode consultar diretamente a base, consultado a saída '."\n";
 		$output.= '	print_r($pesquisa->sql);'."\n";
-		$output.= '/*################################### LIVE EDITOR ###################################'."\n";
-		$output.= '		Agora você pode editar o seu site, dentro do próprio site, '."\n";
-		$output.= '		basta inserir da DIV a tag "data-live-editor"'."\n";
-		$output.= '		Por exemplo, o campo que você quer trazer é "titulo_blog",'."\n";
-		$output.= '		Você deverá inserir em sua div isso: data-live-editor="<?=$pesquisa->obj[0]->titulo_blog_editor?>".'."\n";
-		$output.= '		ATENÇÃO, COLOQUE APENAS NA DIV QUE TIVER O CONTEÚDO COMPLETO, POIS O QUE TIVER NA DIV SERÁ SALVO NA BASE DE DADOS.".'."\n";
-		$output.= '		Por exemplo, se uma div tiver apenas uma prévia do texto, e você salvar, todo conteudo será trocado pela prévia.'."\n";
-		$output.= '*/#################################################################################'."\n";
 		$output.= '	//Listando os resultados '."\n";
 		$output.= '	foreach($pesquisa->obj as $data){'."\n";
+
 		$fullPages 				= new MySQL();
 		$fullPages->set_table(PREFIX_TABLES.'_model_campos');
 		$fullPages->set_where('ws_id_ferramenta="'.$_FORM['id_toll'].'"');
@@ -454,7 +447,6 @@ function InsertCodeCampos(){
 			$output .= '		echo \'<div>\'.$data->token.\'</div>\';'."\n";
 			$output .= '		echo \'<img src="'.ws::rootPath.'ws-img/0/0/\'.$data->imagem.\'"/>\';'."\n";
 		}
-
 		if(isset($_FORM['type']) && $_FORM['type']=='cat'){
 			$output .= '		echo \'<div>\'.$data->titulo.\'</div>\';'."\n";
 			$output .= '		echo \'<div>\'.$data->texto.\'</div>\';'."\n";
@@ -495,7 +487,6 @@ function InsertCodeCampos(){
 		echo "\n".'</ws-tool>'."\n";
 		exit;
 	}
-
 	#####################################################################################################################
 	# TEMPLATE PADRÃO
 	#####################################################################################################################
@@ -570,7 +561,7 @@ function InsertCodeCampos(){
 			$output .= '	{{avatar}}'."\n";
 			$output .= '	{{token}}'."\n";
 			$output .= '	<img src="'.ws::rootPath.'ws-img/0/0/{{avatar}}"/>'."\n";
-		}
+		}	
 		if(isset($_FORM['type']) && $_FORM['type']=='file'){
 			$output .= '	{{posicao}}'."\n";
 			$output .= '	{{uploaded}}'."\n";
@@ -583,6 +574,68 @@ function InsertCodeCampos(){
 		}
 		$output .= "\n\n".'</ws-tool>';
 	}
+
+
+	if(isset($_FORM['typeCode']) && $_FORM['typeCode']=='restfull'){
+
+		$camposTool 				= new MySQL();
+		$camposTool->set_table(PREFIX_TABLES.'_model_campos');
+		$camposTool->set_where('ws_id_ferramenta="'.$_FORM['id_toll'].'"');
+		$camposTool->set_where('AND coluna_mysql<>""');
+		$camposTool->select();
+
+
+		$output = '	
+	###################################################
+	# DEFINIMOS AS VARIÁVEIS A SEREM ENVIADAS
+	# Verifique todas as variáveis em doc.websheep.com.br
+	###################################################
+			$VARS = http_build_query(
+				array(
+					"type" 			=> "'.$_FORM['type'].'",
+					"slug" 			=> "'.$ws_ferramentas->fetch_array[0]['slug'].'"
+				)
+			);
+
+	###################################################
+	# SETAMOS O HEADER DE ENVIO COM O TOKEN DE ACESSO
+	###################################################
+		$HEADER = stream_context_create(array(
+				"http" => array(
+					"method" => "GET",
+					"header" => "Content-Type: application/x-www-form-urlencoded\r\n"
+								."token:" . ws::setTokenRest()."\r\n"
+				)
+			)
+		);
+
+	###########################################
+	# CAPTAMOS O JSON E GUARDAMOS NA VARIÁVEL
+	###########################################
+		$obj_tool = json_decode(file_get_contents(ws::protocolURL().ws::domain.ws::rootPath."ws-rest/?".$VARS, false,$HEADER));'.PHP_EOL.PHP_EOL;
+
+			if($camposTool->_num_rows<1){
+				$output .= '	#######################################'.PHP_EOL;
+				$output .= '	# Nenhum campo adicionado a ferramenta'.PHP_EOL;
+				$output .= '	#######################################'.PHP_EOL.PHP_EOL;
+			}else{
+				$output .= '	#######################################'.PHP_EOL;
+				$output .= '	# Campos cadastrados desta ferramenta'.PHP_EOL;				
+				$output .= '	#######################################'.PHP_EOL;
+			}
+
+
+			$output .= '		foreach ($obj_tool as $toll) {'.PHP_EOL;
+			foreach ($camposTool->fetch_array as $toll) {
+				if($prefix!="" && substr($toll['coluna_mysql'],0,strlen($prefix))==$prefix) {
+					$output .= '			// $toll->'.substr($toll['coluna_mysql'],strlen($prefix)).';'.PHP_EOL;
+				}
+			}
+			$output .= '		}'.PHP_EOL;
+	}
+
+
+
 	echo ($output);
 	exit;
 }

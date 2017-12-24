@@ -103,9 +103,11 @@ function get_caller_info() {
 		$newClass		=	array();
 		foreach ($htaccess as $key => $line) {
 			if (strpos($line,"const includePath") >= 1) {
-  				$line=  '	const includePath="'.INCLUDE_PATH.'";';
+  				$line=  '		const includePath="'.INCLUDE_PATH.'";';
 			}elseif (strpos($line,"const rootPath") >= 1) {
-  				$line=  '	const rootPath="'.ROOT_WEBSHEEP.'";';
+  				$line=  '		const rootPath="'.ROOT_WEBSHEEP.'";';
+			}elseif (strpos($line,"const domain") >= 1) {
+  				$line=  '		const domain="'.DOMINIO.'";';
 			}
 			$newClass[] =  $line;		
 		}

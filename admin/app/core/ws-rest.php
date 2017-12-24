@@ -18,7 +18,6 @@
 
 	##################################################################
 	# SETAMOS OS CABEÇALHOS DA APLICAÇÃO
-	# Security-Policy, Allow-Origin e Content-Type  
 	##################################################################
 		header("Content-Type:application/json");
 
@@ -26,11 +25,7 @@
 	# FUNÇÃO ADDSLASHES NAS VARIÁVEIS
 	##################################################################
 		function AddSlashesArray(&$string, $x) { 
-			if(is_numeric($string) || is_int($string)){
-				$string = $string; 
-			}else{
-				$string = '"'.addSlashes($string).'"'; 
-			}
+			$string = (is_numeric($string) || is_int($string)) ? $string : '"'.addSlashes($string).'"'; 
 		}
 
 	##################################################################
@@ -45,13 +40,7 @@
 			# VERIFICAMOS O TOKEN DE ACESSO
 			##################################################################
 			ws::getTokenRest(@$_SERVER['HTTP_TOKEN']);
-
-			##################################################################
-			# MONTAMOS A VARIÁVEL QUE RECEBERÁ A STRING DA CLASSE PHP
-			##################################################################
-			$RestTool   = array();
-			$RestTool[] = '$RestTool';
-
+			$RestTool 		=new WS();
 			##################################################################
 			# VARREMOS A URL E ADICIONAMOS AS VARIÁVEIS
 			##################################################################
@@ -61,34 +50,29 @@
 						foreach ($value as $v) {
 							if(is_array($v)){
 								array_walk($v,"AddSlashesArray");
-								$RestTool[] = $key . '('.implode($v,',').')';
+								$RestTool->$key(implode($v,','));
 							}else{
 								if(is_numeric($v)){
-									$RestTool[] = $key . '(' . ($v) . ')';
+									$RestTool->$key($v);
 								}else{
-									$RestTool[] = $key . '("' . addslashes($v) . '")';						
+									$RestTool->$key(addslashes($v));						
 								}
 							}
 						}
 					}else{
 						if(is_numeric($value)){
-							$RestTool[] = $key . '(' . ($value) . ')';
+							$RestTool->$key($value);
 						}else{
-							$RestTool[] = $key . '("' . addslashes($value) . '")';						
+							$RestTool->$key(addslashes($value));						
 						}
 					}
 				}
 			}
 
 			##################################################################
-			# AGORA MONTAMOS A STRING DA CLASSE PHP IMPLODINDO A ARRAY COM "->"
-			##################################################################
-			eval('$RestTool=new WS();$RestTool='.implode($RestTool, '->').'->go()->obj;');
-
-			##################################################################
 			# RETORNAMOS O RESULTADO DE PESQUISA NO FORMADO DE JSON
 			##################################################################
-			echo json_encode($RestTool, JSON_PRETTY_PRINT);
+			echo json_encode($RestTool->go()->obj, JSON_PRETTY_PRINT);
 
 			break;
 		case "POST":
