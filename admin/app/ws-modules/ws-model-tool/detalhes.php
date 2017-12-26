@@ -73,38 +73,12 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$FERRAMENTA->set_where('id="' . ID_FERRAMENTA . '"');
 	$FERRAMENTA->debug(0);
 	$FERRAMENTA->select();
-	$_FERRAMENTA_   = $FERRAMENTA->fetch_array[0];
+	$_FERRAMENTA_  = $FERRAMENTA->fetch_array[0];
 
 	#####################################################
-	#    VERIFICA SE JÁ TEM UM ÍTEM NESSA FERRAMENTA
+	#    SETA NA SESSÃO O ID DO ÍTEM
 	#####################################################
-	$verify_produto = new MySQL();
-	$verify_produto->set_table(PREFIX_TABLES . '_model_item');
-	$verify_produto->set_where('ws_id_ferramenta="' . ID_FERRAMENTA . '"');
-	$verify_produto->set_where('AND ws_draft="0"');	/* ws_draft = rascunho */
-	$verify_produto->select();
-	# caso não tenha nenhuma, gera um código token novo e adiciona
-	$token = _token(PREFIX_TABLES . '_model_item', 'token');
-
-	if($verify_produto->_num_rows < 1) {
-		$insert_produto = new MySQL();
-		$insert_produto->set_table(PREFIX_TABLES . '_model_item');
-		$insert_produto->set_insert('token', $token);
-		$insert_produto->set_insert('ws_id_ferramenta', $_GET['ws_id_ferramenta']);
-		$insert_produto->insert();
-		# pesquisa agora com o token setado na inserção do item
-		$set_produto = new MySQL();
-		$set_produto->set_table(PREFIX_TABLES . '_model_item');
-		$set_produto->set_where('token="' . $token . '"');
-		$set_produto->select();
-		#ADICIONA NAS VARIÁVEIS GET
-		$_GET['id_item'] = $set_produto->fetch_array[0]['id'];
-		# grava na sessão GET o ID simulando o produto já inserido
-		$session->set('id_item',$set_produto->fetch_array[0]['id']);
-		# CASO JÁ TENHA UM PRODUTO, GRAVA NA SESSÃO O ID
-	} else{
-		$session->set('id_item',$_GET['id_item']);	
-	} 
+	$session->set('id_item',$_GET['id_item']);	
 
 	##########################################################################################################
 	# SEPARAMOS OS CAMPOS DESTE ÍTEM
@@ -114,6 +88,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$campos->set_order("posicao", "ASC");
 	$campos->set_where('ws_id_ferramenta="' . ID_FERRAMENTA . '"');
 	$campos->select();
+
 	##########################################################################################################
 	# VERIFICA SE JÁ TEM RASCUNHO
 	##########################################################################################################

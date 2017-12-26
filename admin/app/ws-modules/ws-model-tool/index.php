@@ -124,32 +124,65 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 
 
 	############################################################################
+	# CASO SEJA NÍVEL  - 1  CRIA UM ÍTEM (caso não tenha ainda)
+	############################################################################
+	if($_FERRAMENTA_['_niveis_']== -1){
+
+		$verify_item = new MySQL();
+		$verify_item->set_table(PREFIX_TABLES . '_model_item');
+		$verify_item->set_where('ws_id_ferramenta="' . $_GET['ws_id_ferramenta'] . '"');
+		$verify_item->set_where('AND ws_draft="0"');	/* ws_draft = rascunho */
+		$verify_item->select();
+		$token = _token(PREFIX_TABLES . '_model_item', 'token');
+
+		if($verify_item->_num_rows == 0) {
+			$insert_item = new MySQL();
+			$insert_item->set_table(PREFIX_TABLES . '_model_item');
+			$insert_item->set_insert('token', $token);
+			$insert_item->set_insert('ws_id_ferramenta', $_GET['ws_id_ferramenta']);
+			$insert_item->insert();
+			# pesquisa agora com o token setado na inserção do item
+			$get_item = new MySQL();
+			$get_item->set_table(PREFIX_TABLES . '_model_item');
+			$get_item->set_where('token="' . $token . '"');
+			$get_item->select();
+			$id_item = $get_item->fetch_array[0]['id'];
+		} else{
+			$id_item = $verify_item->fetch_array[0]['id'];
+		} 
+
+
+
+
+
+	}
+	############################################################################
 	# VERIFICA E RETORNA O ARQUIVO CERTO
 	############################################################################
 	if($_FERRAMENTA_['_niveis_']== -1 && $_CAMPOS_->_num_rows==1 && $_CAMPOS_->fetch_array[0]['type']=='bt_fotos'){
 		echo '<script type="text/javascript">
 				include_css ("./app/templates/css/websheep/ws-modules/ws-model-tool/imagens.min.css?v='.md5(uniqid(rand(), true)).'","css_mod","All");
-				$("#conteudo").load("./'._PATH_.'/imagens.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item=1&ws_nivel=-1&id_cat=1");
+				$("#conteudo").load("./'._PATH_.'/imagens.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item='.$id_item.'&ws_nivel=-1&id_cat=1");
 			</script>';exit;
 		exit;
 
 	}elseif($_FERRAMENTA_['_niveis_']== -1 && $_CAMPOS_->_num_rows==1 && $_CAMPOS_->fetch_array[0]['type']=='bt_galerias'){
 		echo '<script type="text/javascript">
 				include_css ("./app/templates/css/websheep/ws-modules/ws-model-tool/galerias.css?v='.md5(uniqid(rand(), true)).'","css_mod","All");
-				$("#conteudo").load("./'._PATH_.'/galerias.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item=1&ws_nivel=-1");
+				$("#conteudo").load("./'._PATH_.'/galerias.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item='.$id_item.'&ws_nivel=-1");
 			</script>';exit;
 		exit;
 
 	}elseif($_FERRAMENTA_['_niveis_']== -1 && $_CAMPOS_->_num_rows==1 && $_CAMPOS_->fetch_array[0]['type']=='bt_files'){
 		echo '<script type="text/javascript">
 				include_css ("./app/templates/css/websheep/ws-modules/ws-model-tool/style_files.min.css?v='.md5(uniqid(rand(), true)).'","css_mod","All");
-				$("#conteudo").load("./'._PATH_.'/files.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item=1&ws_nivel=-1");
+				$("#conteudo").load("./'._PATH_.'/files.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false&id_item='.$id_item.'&ws_nivel=-1");
 			</script>';exit;
 		exit;
 
 	}elseif($_FERRAMENTA_['_niveis_']	== -1 ){
 		echo '<script type="text/javascript">
-				$("#conteudo").load("./'._PATH_.'/detalhes.php?token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false");
+				$("#conteudo").load("./'._PATH_.'/detalhes.php?id_item='.$id_item.'&token_group='.$session->get('token_group').'&ws_id_ferramenta='.$_GET['ws_id_ferramenta'].'&back=false");
 			</script>';exit;
 		exit;
 
