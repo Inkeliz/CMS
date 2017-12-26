@@ -111,81 +111,82 @@
 		<div class="label_input w1" style="margin-left: 5px;height:36px;width: calc(100% - 15px);padding: 10px 0px 14px 10px; {LABEL_TOP_INPUT}">{LABELSUP}</div>
 		<div class="c"></div>
 		<input style="height:44px;width:calc(100% - 4px);" {FILTRO} {TYPE} {FINANCEIRO} {DISABLED} id="{ID}" {LEGENDA} class="inputText input_adicional" name="{NAME}" placeholder="{PLACE}" maxlength="{CARACTERES}" value="{VALUE}"></input>
-		<!-- BEGIN 	GOOGLE_API_PLACE -->
-		<style type="text/css">
-			.pac-logo:after,
-			.pac-icon.pac-icon-marker {
-				background: none!important;
-				display: none!important;
-			}
-			.pac-container {} .pac-item {
-				color: #00a99d!important;
-			}
-			.pac-item:hover {
-				background-color: rgb(70, 191, 183);
-				color: #FFF!important;
-				cursor: pointer;
-			}
-		</style>
-		<script type="text/javascript">
-			var autocomplete, autocomplete_textarea, componentForm;
-			componentForm = {
-				street_number: 'short_name',
-				route: 'long_name',
-				estado: 'long_name',
-				administrative_area_level_1: 'short_name',
-				country: 'long_name',
-				postal_code: 'short_name',
-				locality: 'long_name'
-			};
 
-			function fillInAddress() {
-				var place = autocomplete.getPlace();
-				for(var component in componentForm) {
-					$("input#{ID}").val("");
+		<!-- BEGIN 	GOOGLE_API_PLACE -->
+			<style type="text/css">
+				.pac-logo:after,
+				.pac-icon.pac-icon-marker {
+					background: none!important;
+					display: none!important;
 				}
-				$("input#{ID}").val(place.formatted_address);
-				for(var i = 0; i < place.address_components.length; i++) {
-					var addressType = place.address_components[i].types[0];
-					if(componentForm[addressType]) {
-						var cont = place.address_components[i][componentForm[addressType]];
-						city = place.address_components[i];
-						{inputs}
+				.pac-container {} .pac-item {
+					color: #00a99d!important;
+				}
+				.pac-item:hover {
+					background-color: rgb(70, 191, 183);
+					color: #FFF!important;
+					cursor: pointer;
+				}
+			</style>
+			<script type="text/javascript">
+				var autocomplete, autocomplete_textarea, componentForm;
+				componentForm = {
+					street_number: 'short_name',
+					route: 'long_name',
+					estado: 'long_name',
+					administrative_area_level_1: 'short_name',
+					country: 'long_name',
+					postal_code: 'short_name',
+					locality: 'long_name'
+				};
+
+				function fillInAddress() {
+					var place = autocomplete.getPlace();
+					for(var component in componentForm) {
+						$("input#{ID}").val("");
+					}
+					$("input#{ID}").val(place.formatted_address);
+					for(var i = 0; i < place.address_components.length; i++) {
+						var addressType = place.address_components[i].types[0];
+						if(componentForm[addressType]) {
+							var cont = place.address_components[i][componentForm[addressType]];
+							city = place.address_components[i];
+							{inputs}
+						}
 					}
 				}
-			}
 
-			function geolocate() {
-				if(navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(position) {
-						var geolocation = {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude
-						};
-						var circle = new google.maps.Circle({
-							center: geolocation,
-							radius: position.coords.accuracy
+				function geolocate() {
+					if(navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(function(position) {
+							var geolocation = {
+								lat: position.coords.latitude,
+								lng: position.coords.longitude
+							};
+							var circle = new google.maps.Circle({
+								center: geolocation,
+								radius: position.coords.accuracy
+							});
+							autocomplete.setBounds(circle.getBounds());
 						});
-						autocomplete.setBounds(circle.getBounds());
-					});
+					}
 				}
-			}
-			include_js('./app/vendor/google/jquery.geocomplete.min.js', 'maps_googleapis_geocomplete');
-			include_js('//maps.googleapis.com/maps/api/js?sensor=false&libraries=places', 'maps_googleapis');
-			window.ActiveGoogle = function(inputText) {
-				if(window.google) {
-					autocomplete = new google.maps.places.Autocomplete((document.getElementById(inputText)), {
-						types: ['geocode']
-					});
-					autocomplete.addListener('place_changed', fillInAddress);
-				} else {
-					setTimeout(function() {
-						ActiveGoogle(inputText)
-					}, 1000)
+				include_js('./app/vendor/google/jquery.geocomplete.min.js', 'maps_googleapis_geocomplete');
+				include_js('//maps.googleapis.com/maps/api/js?sensor=false&libraries=places', 'maps_googleapis');
+				window.ActiveGoogle = function(inputText) {
+					if(window.google) {
+						autocomplete = new google.maps.places.Autocomplete((document.getElementById(inputText)), {
+							types: ['geocode']
+						});
+						autocomplete.addListener('place_changed', fillInAddress);
+					} else {
+						setTimeout(function() {
+							ActiveGoogle(inputText)
+						}, 1000)
+					}
 				}
-			}
-			window.ActiveGoogle("{ID}");
-		</script>
+				window.ActiveGoogle("{ID}");
+			</script>
 		<!-- END 	GOOGLE_API_PLACE -->
 	</div>
 <!-- END BLOCK_INPUT_TEXT -->
@@ -206,6 +207,7 @@
 			if(CKEDITOR.stylesSet.registered.estilos_{ID}) {
 				delete CKEDITOR.stylesSet.registered.estilos_{ID}
 			}
+			
 			CKEDITOR.stylesSet.add('estilos_{ID}', window.styleCKEditor);
 			var config_{ID} = {
 				skin: 'office2013',
@@ -299,9 +301,6 @@
 					window.loadBiblioteca("{ID}")
 				}
 			}); 
-
-
-
 			{ID}_editor.addCommand("AjustarCSS", {
 				exec: function(edt) {
 					window.AjustarCSS("{ID}")

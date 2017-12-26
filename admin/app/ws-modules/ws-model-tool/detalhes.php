@@ -584,6 +584,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 
 
 				$_SET_TEMPLATE_INPUT->VALUE      = str_replace('"', "'", urldecode($produto[$k['coluna_mysql']]));
+
 				if($k['values_opt'] == "on") {
 					$_SET_TEMPLATE_INPUT->inputs = "";
 					if($k['rua'] != "") {
@@ -604,7 +605,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 					if($k['bairro'] != "") {
 						$_SET_TEMPLATE_INPUT->inputs .= '$("#' . $k['bairro'] . '").val(place.vicinity);' . PHP_EOL;
 					}
-					$_SET_TEMPLATE_INPUT->block("GOOGLE_API_PLACE");
+					//$_SET_TEMPLATE_INPUT->block("GOOGLE_API_PLACE");
 				} else {
 					$_SET_TEMPLATE_INPUT->clear("inputs");
 				}

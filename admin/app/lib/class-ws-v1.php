@@ -221,18 +221,17 @@
 			}
 			return $this;
 		}
+		######################################
+		#	UPDATE DA VARIÁVEL
+		######################################
 		public function updateVal($colum = null, $value = null) {
-			$this->setupdatecolum[] = array(
-				$colum,
-				$value
-			);
+			$this->setupdatecolum[] = array($colum,$value);
 			return $this;
 		}
 
 		######################################
 		#	PREPARA INPUT PARA BASE
 		######################################
-
 		public static function preventMySQLInject($string){
 			global $_conectMySQLi_;
 		    $script = array('OR','FROM','SELECT','INSERT','DELETE','WHERE','DROP TABLE','SHOW TABLES','*','--','=');
