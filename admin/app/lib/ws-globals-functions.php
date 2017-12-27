@@ -11,7 +11,6 @@ set_time_limit(0);
 		}
 	}
 	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
-
 #########################################################################
 # EVITANDO CONFLITOS COM QUEBRA DE LINHA
 #########################################################################
@@ -107,7 +106,7 @@ function get_caller_info() {
 			}elseif (strpos($line,"const rootPath") >= 1) {
   				$line=  '		const rootPath="'.ROOT_WEBSHEEP.'";';
 			}elseif (strpos($line,"const domain") >= 1) {
-  				$line=  '		const domain="'.DOMINIO.'";';
+  				$line=  '		const domain="'.$_SERVER['HTTP_HOST'].'";';
 			}
 			$newClass[] =  $line;		
 		}

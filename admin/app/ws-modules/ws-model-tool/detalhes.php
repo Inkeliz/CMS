@@ -57,7 +57,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 
 
 	#####################################################  
-	# PEGA O SETUP DATA
+	# 	PEGA O SETUP DATA
 	#####################################################  
 	$SETUP = new MySQL();
 	$SETUP->set_table(PREFIX_TABLES . 'setupdata');
@@ -81,7 +81,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$session->set('id_item',$_GET['id_item']);	
 
 	##########################################################################################################
-	# SEPARAMOS OS CAMPOS DESTE ÍTEM
+	# 	SEPARAMOS OS CAMPOS DESTE ÍTEM
 	##########################################################################################################
 	$campos = new MySQL();
 	$campos->set_table(PREFIX_TABLES . '_model_campos');
