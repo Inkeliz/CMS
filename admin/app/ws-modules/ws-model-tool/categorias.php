@@ -85,7 +85,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$_SET_TEMPLATE_INPUT->TITLE  		= $_FERRAMENTA_['_tit_topo_'];
 	$_GETVARS 							= $_GET;unset($_GETVARS['id_cat']);
 	$_SET_TEMPLATE_INPUT->GETVARS  		= http_build_query($_GETVARS);
-	
+
 #################################################################################
 #  BOTÃO PARA ADICIONAR CATEGORIAS 
 #################################################################################

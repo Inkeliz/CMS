@@ -266,13 +266,9 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 			// if($user->get('edit_only_own')==1 && $item['ws_author']!=$user->get('id')){
 
 			if(		
-
 				$user->get('admin')==1 			|| 	
-
 				$user->get('edit_only_own')== 0 	||
-
 				($user->get('edit_only_own')==1 && $item['ws_author']==$user->get('id'))
-
 			){
 				$_SET_TEMPLATE_INPUT->block("COMBO_EDIT");
 			}else{
@@ -283,6 +279,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 			########################################################################
 			$_SET_TEMPLATE_INPUT->block("TR_ITEM");		
 	}
+
 	$_SET_TEMPLATE_INPUT->block("ITEM_LIST");
 	$_SET_TEMPLATE_INPUT->show();
 ?>

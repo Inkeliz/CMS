@@ -2733,12 +2733,12 @@
 		$Salva->set_update('_js_', mysqli_real_escape_string($_conectMySQLi_, @$_REQUEST['_js_']));
 
 
-		$Salva->set_update('html_item', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_item'])));
-		$Salva->set_update('html_cat', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_cat'])));
-		$Salva->set_update('html_img', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_img'])));
-		$Salva->set_update('html_gal', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_gal'])));
-		$Salva->set_update('html_img_gal', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_img_gal'])));
-		$Salva->set_update('html_file', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',$_REQUEST['html_file'])));
+		$Salva->set_update('html_item', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_item'])));
+		$Salva->set_update('html_cat', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_cat'])));
+		$Salva->set_update('html_img', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_img'])));
+		$Salva->set_update('html_gal', 		mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_gal'])));
+		$Salva->set_update('html_img_gal', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_img_gal'])));
+		$Salva->set_update('html_file', 	mysqli_real_escape_string($_conectMySQLi_, str_replace("{{",'{{{_}',@$_REQUEST['html_file'])));
 
 
 

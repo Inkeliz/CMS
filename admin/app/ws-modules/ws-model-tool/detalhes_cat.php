@@ -29,7 +29,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	if(empty($_GET['LIMIT']))	{$_GET['LIMIT']="50";}
 	if(empty($_GET['PAGE']))	{$_GET['PAGE']="1";}
 
-
 	#################################################################################  
 	# INICIA CLASS TEMPLATE
 	#################################################################################
@@ -47,8 +46,8 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$_SET_TEMPLATE_INPUT->PATH 					= 'app/ws-modules/ws-model-tool';
 	$_SET_TEMPLATE_INPUT->CAT_AVATAR 			= $_CATEGORIA->avatar;
 	$_SET_TEMPLATE_INPUT->CAT_PAI 				= $_CATEGORIA->id_cat;
-	$_SET_TEMPLATE_INPUT->PAGE 					= $_GET['LIMIT'];
-	$_SET_TEMPLATE_INPUT->LIMIT  				= $_GET['PAGE'];
+	$_SET_TEMPLATE_INPUT->PAGE 					= $_GET['PAGE'];
+	$_SET_TEMPLATE_INPUT->LIMIT  				= $_GET['LIMIT'];
 
 	$listIDCat 									= 	array();
 	$listCat 									= 	array();
