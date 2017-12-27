@@ -1167,8 +1167,8 @@ function loadFile($pathFile=null){
 function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
-		$folderFTP 	= ws::includePath.'website/includes/'.$POST['filename'];
-		if(file_put_contents($folderFTP, $POST['ConteudoDoc'])){ 
+		$path = '/'.implode(array_filter(explode('/',$POST['pathFile'])),"/").'/'.$POST['filename'];
+		if(file_put_contents($path, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{
 			echo "fail";
