@@ -286,6 +286,13 @@ class htmlProcess{
 		}
 		return $metaTag;
 	}
+	public static function process_ws_php($key=null){
+		$outertext 		= $key->outertext();
+		$innertext 		= $key->innertext();
+		$atributos 		= $key->attr;
+		$content 		= ws::execCode('<? '.self::beaultyHTML($innertext).' ?>');
+		return $content;
+	}
 	public static function process_ws_shortcode($key=null){
 		$outertext 		= $key->outertext();
 		$innertext 		= $key->innertext();
@@ -569,7 +576,7 @@ class htmlProcess{
 		
 
 		$a 		= 'ws-device';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) as $key){ 		$key->outertext = self::process_tag_device($key);}}
-		$a 		= 'ws-nocode';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) 	as $key){ 	$key->outertext = "";													}}
+		$a 		= 'ws-nocode';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) as $key){ 		$key->outertext = "";													}}
 		$a 		= 'ws-lipsum';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a) as $key){ 		$key->outertext = self::process_tag_ws_repeat($key);}}
 		################################################################################################################################################################################# 
 		# self::processHTML -> Pois é recursivo; 
@@ -591,6 +598,8 @@ class htmlProcess{
 		$a 		= 'ws-search';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_search($key);		}}
 		$a 		= 'ws-plugin';		if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_tag_ws_plugin($key);		}}
 		$a 		= 'ws-shortcode';	if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_ws_shortcode($key);			}}
+		$a 		= 'ws-php';			if(count(@$html->find($a))	>0)	{ foreach (@$html->find($a)  	as $key){ 	$key->outertext = self::process_ws_php($key);				}}
+
 		return 	self::beaultyHTML($html);	
 	}
 }

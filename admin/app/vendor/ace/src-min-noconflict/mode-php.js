@@ -882,10 +882,18 @@
                     token: "support.php_tag",
                     regex: "<\\?(?:php|=)?",
                     push: "php-start"
+                },{
+                    token: "support.php_tag",
+                    regex: "<ws-php>",
+                    push: "php-start"
                 }],
                 t = [{
                     token: "support.php_tag",
                     regex: "\\?>",
+                    next: "pop"
+                },{
+                    token: "support.php_tag",
+                    regex: "</ws-php>",
                     next: "pop"
                 }];
             for (var n in this.$rules) this.$rules[n].unshift.apply(this.$rules[n], e);

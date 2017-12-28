@@ -1,5 +1,4 @@
 <?php
-
 ############################################################################################################################################
 # DEFINIMOS O ROOT DO SISTEMA
 ############################################################################################################################################
@@ -32,14 +31,13 @@
 	include_once(INCLUDE_PATH.'admin/app/lib/class-mobile-detect.php');
 	include_once(INCLUDE_PATH.'admin/app/lib/class-thumbnails.php');
 	include_once(INCLUDE_PATH.'admin/app/vendor/PHPMailer/PHPMailerAutoload.php');
-
 ############################################################################################################################################
 # INICIAMOS A CLASSE BASE DO SISTEMA
 ############################################################################################################################################
 	class WS {
-   		const includePath 	=  	INCLUDE_PATH;
-   		const rootPath 		= 	ROOT_WEBSHEEP;
-   		const domain 		= 	DOMINIO;
+		const includePath 				=null;
+		const rootPath 					=null;
+		const domain 					=null;
 		public function __construct() {
 			$this->dataRelType          = "item";
 			$this->setpag               = null;
@@ -93,10 +91,7 @@
 		static function getFullPath(){			return INCLUDE_PATH;}
 		
 		static function getRootPath(){			return ROOT_WEBSHEEP;}
-
 		static function getFullSitePath(){		return ws::getFullPath().'/website/';}
-
-
 		static function create_thumbnail( $file, $w, $h,$q){
 			$extensao 	= explode(".",basename($file));
 			$ext 		= end($extensao);	
@@ -116,7 +111,6 @@
 							);
 				return $array;
 			}
-
 			$img = new canvas();
 			if ($img->carrega($file)->redimensiona($w, $h, 'crop')->grava($saveName, $q)) {
 					$array = (object) array(
@@ -130,9 +124,7 @@
 					);
 					return $array;
 			 }
-
 		}
-
 		static function fb_count_comments($domain = null) {
 			if ($domain == null) {
 				$domain = ws::protocolURL() . DOMINIO . '/' . ws::urlPath();
@@ -168,7 +160,17 @@
 			}
 			return '(function(d, s, id) {' . '	var js, fjs = d.getElementsByTagName(s)[0];' . '	if (d.getElementById(id)) return;' . '	js = d.createElement(s); js.id = id;' . '	js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=' . $version . '' . $idFb . '";' . '	fjs.parentNode.insertBefore(js, fjs);' . '}(document, "script","facebook-jssdk"));';
 		}
-
+		static function execCode($code) {
+		    $tmp = tmpfile();
+		    $tmpf = stream_get_meta_data($tmp);
+		    $tmpf = $tmpf ['uri'];
+		    fwrite($tmp,$code );
+		    ob_start();
+		    include($tmpf);
+		    $content = ob_get_clean();
+		    fclose ( $tmp );
+		    return  $content;
+		}
 		public function insertVal($colum = null, $value = null) {
 			$this->setinsertcolum[] = array(
 				$colum,
@@ -228,7 +230,6 @@
 			$this->setupdatecolum[] = array($colum,$value);
 			return $this;
 		}
-
 		######################################
 		#	PREPARA INPUT PARA BASE
 		######################################
@@ -238,7 +239,6 @@
 	        $string = (!get_magic_quotes_gpc()) ? addslashes(str_ireplace($script,"",$string)) : str_ireplace($script,"",$string);
 	        return mysqli_real_escape_string($_conectMySQLi_,$string);
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -256,7 +256,6 @@
 			}
 			return $minified;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -280,7 +279,6 @@
 			}
 			return str_replace($isso, $porisso, $content);
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -313,7 +311,6 @@
 				}
 			}
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -358,7 +355,6 @@
 			} else {
 				die("Formato de tempo não permitido");
 			}
-
 			$now     = date("Y-m-d H:i:s");
 			$timeout = date("Y-m-d H:i:s", strtotime('+' . $timeout, strtotime(date("Y-m-d H:i:s"))));
 			$setTokenRest = _token(PREFIX_TABLES . 'ws_auth_token', 'token');
@@ -373,7 +369,6 @@
 				return null;
 			}
 		}
-
 		###################################################################################
 		# AGORA VALIDAMOS O TOKEN CRIADO...E VEMOS SE ELE É VALIDO!
 		###################################################################################
@@ -404,7 +399,6 @@
 				$_EXCL_->set_where('token="' . $setTokenRest . '"');
 				$_EXCL_->exclui();
 			}
-
 			###################################################################################
 			# VERIFICA SE EXISTE O TOKEN NA BASE, EXCLUI TODOS TOKENS VENCIDOS E RETORNA TRUE
 			###################################################################################
@@ -450,7 +444,6 @@
 			}
 			return $number;
 		}
-
 		###################################################################################
 		# RETORNA A URL DO ARQUIVO MP4 DO VÍDEO DO VIMEO OU YOUTUBE  
 		###################################################################################
@@ -522,7 +515,6 @@
 			# INCLUIMOS O SCRIPT DE UPDATE DI MYSQL...
 			##################################################################################
 			include(INCLUDE_PATH.'admin/app/ws-modules/ws-update/ws_update.php');
-
 			##################################################################################
 			# EXECUTAMOS O MYSQLI
 			##################################################################################
@@ -592,7 +584,6 @@
 				}
 			}
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -654,29 +645,22 @@
 				$s->salvar();
 			}
 		}
-
 		###################################################################################
 		#
 		###################################################################################
 		static function urlPath($node = null, $debug = true,$type="string") {
-
-
-			if(ROOT_WEBSHEEP=="/"){
+			if(ws::rootPath=="/"){
 				$_REQUEST_URI = $_SERVER['REQUEST_URI'];
 			}else{
-				$_REQUEST_URI = str_replace(ROOT_WEBSHEEP, "/",$_SERVER['REQUEST_URI']);
+				$_REQUEST_URI = str_replace(ws::rootPath, "/",$_SERVER['REQUEST_URI']);
 			}
-
 			if (is_string($node)) {
 				_erro(ws::GetDebugError(debug_backtrace(), "Erro: Isso não é um número ->	ws::urlPath('" . $node . "')"));
 				exit;
 			} elseif ($node == null || $node == 0) {
-
 				$_REQUEST_URI = (strpos($_REQUEST_URI,"?")) ? explode('?', $_REQUEST_URI) : array($_REQUEST_URI); 
-
 				 if($type=='array'){
 						return array_filter(explode('/',$_REQUEST_URI[0]),"strlen");
-
 				 }elseif($type=='get'){
 				 	if(count($_REQUEST_URI[1])>=1){ 
 				 		parse_str($_REQUEST_URI[1], $parse);
@@ -688,7 +672,6 @@
 				 	return implode(array_filter(explode('/',$_REQUEST_URI[0]),'strlen'),'/');
 				 }
 			} else {
-
 				$_REQUEST_URI = (strpos($_REQUEST_URI,"?")) ? explode('?', $_REQUEST_URI) : array($_REQUEST_URI); 
 				$_URL         = array_filter(explode('/',$_REQUEST_URI[0]),'strlen');
 				if($debug==false){ 
@@ -702,7 +685,6 @@
 				}
 			}
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -710,7 +692,6 @@
 			$this->draft = $var;
 			return $this;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -719,8 +700,6 @@
 			ob_start();
 			return $this;
 		}
-
-
 		###################################################################################
 		#
 		###################################################################################
@@ -730,7 +709,6 @@
 			ob_end_clean();
 			return $this;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -738,14 +716,12 @@
 			$layout = (string) $this->templates[$name];
 			return $layout;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
 		static function sessionStart() {
 			session_start();
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -758,10 +734,8 @@
 			$setupdata->debug(0);
 			$setupdata->select();
 			$setupdata = $setupdata->fetch_array[0];
-
 			// GERA O NOME DO CACHE
 			$urlCache  = ($_SERVER['REQUEST_URI']=='/') ? $setupdata['url_initPath'].'.php' : str_replace("/", "-", $_SERVER['REQUEST_URI']).'.php';
-
 			// VERIFICA NO SISTEMA SE O CACHE ESTÁ HABILITADO  E QUE CACHE EXISTA O ARQUIVO E INSERE
 			if ($setupdata['ws_cache'] == '1' && file_exists(ws::includePath.'ws-cache/'.$urlCache)) {
 				ob_end_clean();
@@ -773,8 +747,6 @@
 			ob_start();
 			$setupdata['url_plugin'] = $setupdata['url_plugin'];
 			$dh                      = opendir(ws::includePath.'website/' . $setupdata['url_plugin']);
-
-
 			while ($diretorio = readdir($dh)) {
 				if ($diretorio != '..' && $diretorio != '.' && $diretorio != '.htaccess') {
 					if (file_exists(ws::includePath.'website/' . $setupdata['url_plugin'] . '/' . $diretorio . '/active')) {
@@ -872,7 +844,6 @@
 			$includes->set_order("posicao", "ASC");
 			$includes->select();
 			$i = 0;
-
 			foreach ($includes->fetch_array as $item) {
 				if ($setupdata->fetch_array[0]["processoURL"] == $i) {
 					$controller->go();
@@ -899,8 +870,6 @@
 			$setupdata = $setupdata->fetch_array[0];
 			$path      = 'website/' . $setupdata['url_plugin'];
 			
-
-
 			$dh        = opendir(ws::includePath.'website/' . $setupdata['url_plugin']);
 			while ($diretorio = readdir($dh)) {
 				if ($diretorio != '..' && $diretorio != '.' && $diretorio != '.htaccess') {
@@ -956,11 +925,9 @@
 			// GUARDA TODO BUFFER EM UMA VARIÁVEL
 			$_outPutCache = ob_get_contents();
 			###################################################################
-
 			$_outPutCache = str_replace('{{rootPath}}', 	ws::rootPath, $_outPutCache);
 			$_outPutCache = str_replace('{{includePath}}',	ws::includePath, $_outPutCache);
 			$_outPutCache = str_replace('{{domain}}',		DOMINIO, $_outPutCache);
-
 			###################################################################
 			function ReplaceImages($urlFull) { 
 				$tagIMG      = $urlFull[0];
@@ -971,23 +938,18 @@
 					$arrauURL        = explode("/", $urlOriginalSubs);
 					if (count($arrauURL) == 4) {
 						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[3]);
-
 						if ($arrauURL[0] == '0') {
 							$arrauURL[0] = $fileInfo[0];
 						}
-
 						if ($arrauURL[1] == '0') {
 							$arrauURL[1] = $fileInfo[1];
 						}
-
 						if ($arrauURL[2] == '0') {
 							$ext = substr($arrauURL[2],-3);
 							if($ext== "jpg" || $ext== "jpeg" || $ext== "gif"){$arrauURL[2] = "100";}
 							elseif($ext== "png"){$arrauURL[2] = "9";}
 						}
-
 						$newURL = $fileInfo[0] . '-' . $fileInfo[1] . '-' . $fileInfo[2] . '-' . $arrauURL[3];
-
 					} elseif (count($arrauURL) == 3) {
 						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[2]);
 						if ($arrauURL[0] == '0') {
@@ -996,13 +958,9 @@
 						if ($arrauURL[1] == '0') {
 							$arrauURL[1] = $fileInfo[1];
 						}
-
-
-
 						$ext = substr($arrauURL[2],-3);
 						if($ext== "jpg" || $ext== "jpeg" || $ext== "gif"){$qldd = "100";}
 						elseif($ext== "png"){$qldd = "9";}
-
 						$newURL = $arrauURL[0] . '-' . $arrauURL[1] . '-'.$qldd.'-' . $arrauURL[2];
 					} elseif (count($arrauURL) == 2) {
 						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[1]);
@@ -1012,19 +970,16 @@
 						if ($arrauURL[1] == '0') {
 							$arrauURL[1] = $fileInfo[1];
 						}
-
 						$ext = substr($arrauURL[1],-3);
 						if($ext== "jpg" || $ext== "jpeg" || $ext== "gif"){$qldd = "100";}elseif($ext== "png"){$qldd = "9";}
 						$newURL = $arrauURL[0] . '-' . $fileInfo[1] . '-'.$qldd.'-' . $arrauURL[1];
 						
 					} else {
-
 						$ext = substr($arrauURL[0],-3);
 						if($ext== "jpg" || $ext== "jpeg" || $ext== "gif"){$qldd = "100";}elseif($ext== "png"){$qldd = "9";}
 						$fileInfo = getimagesize(ws::includePath.'website/assets/upload-files/' . $arrauURL[0]);
 						$newURL   = $fileInfo[0] . '-' . $fileInfo[1] . '-'.$qldd.'-' . $arrauURL[0];
 					}
-
 					$newURL = '/assets/upload-files/thumbnail/' . $newURL;
 					return str_replace($urlOriginal, $newURL, $tagIMG);
 				} else {
@@ -1037,20 +992,16 @@
 			
 			// VERIFICA NO SISTEMA SE A PÁGINA EXISTE E SE É PRA GERAR CACHE 
 			if ($setupdata['ws_cache'] == 1 && $controller->createCache == 1 && !file_exists(ws::includePath.'ws-cache/'.$urlCache)) {
-
 				// SUBSTITUI AS TAGS DE IMAGEM PROCESSADA E RETORNA A URL DIRETA DO ARQUIVO
 				$_outPutCacheHTML = preg_replace_callback('/<*img[^>]*src*=*["\']?([^"\']*)/i', "ReplaceImages", $_outPutCache);
 				$_outPutCacheHTML = preg_replace_callback('/url\([\'\"]?([^\"\'\)]+)([\"\']?\))/i', "ReplaceImages", $_outPutCacheHTML);
-
 				// GRAVA O ARQUIVO COM O NOME CORRETO
 				file_put_contents(ws::includePath.'ws-cache/'.$urlCache, $_outPutCacheHTML);
 			}
 				echo PHP_EOL.PHP_EOL.'<script type="text/javascript" src="'.ws::rootPath.'admin/app/templates/js/websheep/ws-client-side-record.js"></script>'.PHP_EOL.PHP_EOL;
 				echo $_outPutCache;
-
 			ob_end_flush();
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -1080,7 +1031,6 @@
 			}
 			return $linkFileList;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -1088,21 +1038,17 @@
 			ob_start();
 			include($include);
 			$get_contents = ob_get_clean();
-
 			$get_contents = str_replace('{{rootPath}}', 	ws::rootPath, $get_contents);
 			$get_contents = str_replace('{{includePath}}',	ws::includePath, $get_contents);
 			$get_contents = str_replace('{{domain}}',		DOMINIO, $get_contents);
-
 			 echo htmlProcess::processHTML($get_contents);
 		}
-
 		###################################################################################
 		#
 		###################################################################################
 		static function GetDebugError($dados, $plus = "") {
 			return ("<br>" . $plus . "<br><br><hr style='border-bottom: dashed 1px;'><br><b>Arquivo:</b>" . $dados[0]['file'] . '<br><b>Linha</b>: ' . $dados[0]['line'] . ' <br><b>Função:</b>' . $dados[0]['class'] . $dados[0]['type'] . $dados[0]['function'] . '("' . implode($dados[0]['args'], ',') . '")<br><br><hr style="border-bottom: dashed 1px;"><br><hr>');
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -1122,7 +1068,6 @@
 				return $lipsum->paragraphs($count, $format);
 			}
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -1142,7 +1087,6 @@
 			}
 			echo '	<link	type="text/css" media="' . $media . '" rel="stylesheet" href="' . $file . $cache . '" />' . PHP_EOL;
 		}
-
 		###################################################################################
 		#
 		###################################################################################
@@ -1166,7 +1110,6 @@
 			}
 			echo 'src="' . $file . $cache . '"></script>' . PHP_EOL;
 		}
-
 		#############################################################################################
 		# RETORNA JSON COM AS BRANCHES DO GITHUB
 		#############################################################################################
@@ -1180,7 +1123,6 @@
 			curl_close($branches);
 			return ($json_branches);
 		}
-
 		#############################################################################################
 		# RETORNA JSON COM OS COMMITS DO GITHUB
 		#############################################################################################
@@ -1209,7 +1151,6 @@
 		  ga('create', '" . $id . "', 'auto');
 		  ga('send', 'pageview', location.pathname);" . PHP_EOL;
 		}
-
 		#############################################################################################
 		# 
 		#############################################################################################
@@ -1220,7 +1161,6 @@
 			}
 			echo '<meta charset="' . $charset . '">' . PHP_EOL;
 		}
-
 		#############################################################################################
 		# 
 		#############################################################################################
@@ -1238,7 +1178,6 @@
 			}
 			return $string;
 		}
-
 		#############################################################################################
 		# 
 		#############################################################################################
@@ -1488,13 +1427,11 @@
 			$this->setpag[] = $limit;
 			return $this;
 		}
-
 		// TRAZER ITENS QUE O ID X  É LINKADO
 		public function linker($type) {
 			$this->dataRelLinker[] = $type;
 			return $this;
 		}
-
 		//TRAZER ITENS LINKADO AO ID X
 		public function linked($type) {
 			$this->dataRelLinked[] = $type;
@@ -1644,7 +1581,6 @@
 			$a = explode("{{" . $this->aliasStr, $this->template);
 			foreach ($a as $str) {
 				if (stripos($str, '}}')) {
-
 					$key    = substr($str, 0, stripos($str, '}}'));
 					$newKey = explode(',', $key);
 					$COLUNA = (
@@ -1672,7 +1608,6 @@
 						} elseif (count($newKey) > 2) {
 							$vars = str_replace("(this)", @$retorno[$COLUNA], implode(array_slice($newKey, 2), '","'));						
 							$func = $newKey[1];
-
 							$b[] = "{{" . $this->aliasStr . $key . "}}";
 							$c[] = $func($vars);
 						}
@@ -1858,9 +1793,7 @@
 			
 			
 			if ((count($this->dataRelLinker) > 0 && count($this->dataRelLinked) == 0) || (count($this->dataRelLinker) == 0 && count($this->dataRelLinked) > 0)) {
-
 				if ($this->dataRelType == "item") {
-
 					if (count($this->dataRelLinker) > 0) {
 						if ($this->draft == false) {
 							$_busca_->join(" INNER ", PREFIX_TABLES . 'ws_link_itens as linkRel', 'tabela_modelo.ws_draft="0" AND tabela_modelo.ws_id_draft="0" AND linkRel.id_item_link =tabela_modelo.id 	AND  linkRel.id_item="' . implode('" OR linkRel.id_item="', $this->dataRelLinker) . '"');
@@ -1885,7 +1818,6 @@
 				}
 			}
 			$_busca_->set_where($set_where);
-
 			###########################################################################
 			# FILTRA OS RASCUNHOS
 			###########################################################################
@@ -1960,11 +1892,9 @@
 					}
 				}
 			}
-
 			###############################################################################
 			# INSERIMOS AS TAGS ADICIONAIS
 			###############################################################################
-
 	 	  	  $i=0; 
 		      foreach ($_busca_->fetch_array as $key => $value) { 
 		      	$value["ws_count"] = $key;
@@ -1972,7 +1902,6 @@
 		        $_busca_->fetch_array[$key] = $value; 
 		        ++$i; 
 		      } 
-
 	 	  	  $i=0; 
 		      foreach ($_busca_->obj as $key => $value) { 
 		      	$value->{"ws_count"} = $key;
@@ -1980,8 +1909,6 @@
 		        $_busca_->obj[$key] = $value; 
 		        ++$i; 
 		      } 
-
-
 			###############################################################################
 			
 			if ($this->template == "") {
@@ -1990,7 +1917,6 @@
 			} else {
 				
 				if (count($_busca_->fetch_array) == 1) {
-
 					$this->result .= $this->get_template($_busca_->fetch_array[0]);
 				} else {
 					array_map(function($a) {
@@ -2001,7 +1927,6 @@
 			
 			return $this;
 		}
-
     public function process_obj_newprefix($fetch) { 
       $newColum = Array(); 
       $i=1; 
@@ -2015,8 +1940,6 @@
       } 
       $this->obj[] = (Object) $newColum; 
     } 
-
-
     public function process_array_newprefix($fetch) { 
       $newColum = Array(); 
       $i=1; 
@@ -2030,8 +1953,6 @@
       } 
       $this->result[] = $newColum; 
     } 
-
-
 		public function setColum($COLUMNS = "") {
 			$conditions = array(
 				"COUNT"

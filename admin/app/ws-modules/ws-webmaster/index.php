@@ -397,6 +397,13 @@
 					// window.htmEditor.setTheme("ace/theme/websheep.0.3");
 					window.htmEditor.getSession().setMode("ace/mode/php");
 
+
+
+
+
+
+
+
 					window.htmEditor.setShowPrintMargin(true); // mostra linha ativa atual
 					window.htmEditor.setHighlightActiveLine(true); // mostra linha ativa atual
 					window.htmEditor.setShowInvisibles(0); // frufru de tabulações
@@ -438,6 +445,7 @@
 
 						window.htmEditor.initDestaqueWsTags = function(){
 							$('.ace_line:not(.ws-tags):has(.ace_meta.ace_tag.ace_tag-name.ace_xml:contains("ws-"))').addClass('ws-tags');
+							$('.ace_line:not(.ws-tags):has(.ace_php_tag:contains("ws-"))').addClass('ws-tags');
 							// $('.ace_line:not(.ws-tags):has(.ace_support.ace_class:contains("ws"))').addClass('ws-tags');
 						}
 					
