@@ -127,7 +127,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	# CASO SEJA NÍVEL  - 1  CRIA UM ÍTEM (caso não tenha ainda)
 	############################################################################
 	if($_FERRAMENTA_['_niveis_']== -1){
-
 		$verify_item = new MySQL();
 		$verify_item->set_table(PREFIX_TABLES . '_model_item');
 		$verify_item->set_where('ws_id_ferramenta="' . $_GET['ws_id_ferramenta'] . '"');
@@ -150,11 +149,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		} else{
 			$id_item = $verify_item->fetch_array[0]['id'];
 		} 
-
-
-
-
-
 	}
 	############################################################################
 	# VERIFICA E RETORNA O ARQUIVO CERTO

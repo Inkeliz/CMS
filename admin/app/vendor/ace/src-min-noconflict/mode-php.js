@@ -466,6 +466,10 @@
                         regex: "<\\!--",
                         next: "comment"
                     }, {
+                        token: "comment.xml",
+                        regex: "{{",
+                        next: "comment",
+                    }, {
                         token: ["xml-pe.doctype.xml", "xml-pe.doctype.xml"],
                         regex: "(<\\!)(DOCTYPE)(?=[\\s])",
                         next: "doctype",
@@ -556,6 +560,10 @@
                     comment: [{
                         token: "comment.xml",
                         regex: "-->",
+                        next: "start"
+                    },{
+                        token: "comment.xml",
+                        regex: "}}",
                         next: "start"
                     }, {
                         defaultToken: "comment.xml"

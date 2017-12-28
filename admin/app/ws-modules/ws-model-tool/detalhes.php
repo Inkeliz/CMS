@@ -270,11 +270,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 				$_new_array = array();
 				foreach($arraykey as $keywork) {
 					if(!empty($keywork)) {
-						$_new_array[] = '"' . str_replace(array(
-							'"'
-						), array(
-							"'"
-						), $keywork) . '"';
+						$_new_array[] = '"' . str_replace(array('"'), array("'"), $keywork) . '"';
 					}
 				}
 				$_SET_TEMPLATE_INPUT->TOKEN    = $k['token'];
@@ -935,7 +931,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 				$_SET_TEMPLATE_INPUT->PLACE        = $k['place'];
 				$_SET_TEMPLATE_INPUT->ID           = $k['id_campo'];
 				$_SET_TEMPLATE_INPUT->LABELSUP     = $k['labelSup'];
-				$op_ordem                          = explode('[-]', $produto[$k['coluna_mysql']]);
+				$op_ordem                          = explode(',', $produto[$k['coluna_mysql']]);
 				foreach($op_ordem as $opcao) {
 					$mult_ordem = new MySQL();
 					$mult_ordem->set_table(PREFIX_TABLES . '_model_op_multiple');
@@ -948,7 +944,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 						$_SET_TEMPLATE_INPUT->OP_CHECK = "selected";
 						$_SET_TEMPLATE_INPUT->block("BLOCK_MULTIMPLE_SELECTBOX_OP");
 					}
-					;
 				}
 				$multiple = new MySQL();
 				$multiple->set_table(PREFIX_TABLES . '_model_op_multiple');

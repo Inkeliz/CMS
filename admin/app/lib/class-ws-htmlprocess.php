@@ -437,7 +437,7 @@ class htmlProcess{
 						if(in_array($vars[0],$type)){
 							$isso[] 		= "{{".$key."}}";
 							if($vars[0]!="img"){
-								eval('$lip=$lipsum->'.$vars[0].'('.$vars[1].');');
+								ws::execCode('<? $lip=$lipsum->'.$vars[0].'('.$vars[1].'); ?>');
 								$porisso[] 		=  $lip;
 							}else{
 								$porisso[] 		="imagem";
@@ -448,7 +448,7 @@ class htmlProcess{
 					}else{
 						if(in_array($value,$type)){
 							if($value!="img"){
-								eval('$lip=$lipsum->'.$value.'(1);');
+								ws::execCode('<? $lip=$lipsum->'.$value.'(1); ?>');
 								$isso[] 		= "{{".$key."}}";
 								$porisso[] 		=  $lip;
 							}else{
@@ -523,7 +523,7 @@ class htmlProcess{
 			$chaves = strpos($value,'{{');
 			if(is_bool($chaves) && $chaves==false) {
 				#caso queira retornar algo pelo PHP 
-				if(substr($value,0,6)=="return" ){ $value = eval(trim($value.';'));}
+				if(substr($value,0,6)=="return" ){ $value =  ws::execCode('<? '.trim($value.';').' ?>');}
 				#para posicionar o slug antes de tudo (pra captar outros dados antes de processar)
 				if($value!=""){
 					if($key=="slug" && $FirstSlug==""){ 
@@ -535,9 +535,9 @@ class htmlProcess{
 			}
 		}
 		if($template!=null){ 
-			eval ('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->')."->setTemplate('".addslashes(self::minify_html($template))."')->go();");
+			ws::execCode('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->')."->setTemplate('".addslashes(self::minify_html($template))."')->go();");
 		}else{
-			eval('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->').'->go();');
+			ws::execCode('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->').'->go();');
 		}
 		return $evalClass;
 	}

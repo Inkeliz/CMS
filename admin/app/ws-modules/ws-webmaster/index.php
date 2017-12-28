@@ -446,7 +446,8 @@
 						window.htmEditor.initDestaqueWsTags = function(){
 							$('.ace_line:not(.ws-tags):has(.ace_meta.ace_tag.ace_tag-name.ace_xml:contains("ws-"))').addClass('ws-tags');
 							$('.ace_line:not(.ws-tags):has(.ace_php_tag:contains("ws-"))').addClass('ws-tags');
-							// $('.ace_line:not(.ws-tags):has(.ace_support.ace_class:contains("ws"))').addClass('ws-tags');
+							$('.ace_line:not(.ws-colunm-tag):has(.ace_comment.ace_xml:contains("{{"))').addClass('ws-colunm-tag');
+							// $('#divEditor span:contains("{{")').css({"color":"#000"})
 						}
 					
 

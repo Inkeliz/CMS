@@ -31,6 +31,9 @@ ace.define("ace/theme/monokai",["require","exports","module","ace/lib/dom"],func
 				'.ace-monokai .ws-tags .ace_xml {color: #88e0ff!important;}'+
 				'.ace-monokai .ws-tags .ace_attribute-name {color: #54666c!important;}'+
 				'.ace-monokai .ws-tags .ace_attribute-value {color: #76878d!important;}'+
+
+				'.ace-monokai .ws-colunm-tag .ace_comment.ace_xml{color: #003c3c; background-color: #6ef8ff; font-weight: bold; border-radius: 4px;}'+
+
 				'';
 
 

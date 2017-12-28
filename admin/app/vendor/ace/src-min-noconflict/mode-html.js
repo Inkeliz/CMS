@@ -929,6 +929,10 @@ ace.define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "modul
                     token: "comment.xml",
                     regex: "<\\!--",
                     next: "comment"
+                },{
+                    token: "comment.xml",
+                    regex: "{{",
+                    next: "comment"
                 }, {
                     token: ["xml-pe.doctype.xml", "xml-pe.doctype.xml"],
                     regex: "(<\\!)(DOCTYPE)(?=[\\s])",
@@ -1020,6 +1024,10 @@ ace.define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "modul
                 comment: [{
                     token: "comment.xml",
                     regex: "-->",
+                    next: "start"
+                },{
+                    token: "comment.xml",
+                    regex: "}}",
                     next: "start"
                 }, {
                     defaultToken: "comment.xml"
@@ -1670,11 +1678,7 @@ ace.define("ace/mode/doc_comment_highlight_rules", ["require", "exports", "modul
         };
     r.inherits(v, s),
         function() {
-            this.blockComment = {
-                start: "<!--",
-                end: "-->"
-            }, this.voidElements = i.arrayToMap(p), this.getNextLineIndent = function(e, t, n) {
-                return this.$getIndent(t)
+            this.blockComment = [{start: "<!--", end: "-->"},{start: "{{", end: "}}"}], this.voidElements = i.arrayToMap(p), this.getNextLineIndent = function(e, t, n) {return this.$getIndent(t)
             }, this.checkOutdent = function(e, t, n) {
                 return !1
             }, this.getCompletions = function(e, t, n, r) {
