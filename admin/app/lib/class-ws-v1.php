@@ -165,11 +165,7 @@
 		    $tmpf = stream_get_meta_data($tmp);
 		    $tmpf = $tmpf ['uri'];
 		    fwrite($tmp,$code );
-		    ob_start();
 		    include($tmpf);
-		    $content = ob_get_clean();
-		    fclose ( $tmp );
-		    return  $content;
 		}
 		public function insertVal($colum = null, $value = null) {
 			$this->setinsertcolum[] = array(

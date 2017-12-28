@@ -437,7 +437,7 @@ class htmlProcess{
 						if(in_array($vars[0],$type)){
 							$isso[] 		= "{{".$key."}}";
 							if($vars[0]!="img"){
-								ws::execCode('<? $lip=$lipsum->'.$vars[0].'('.$vars[1].'); ?>');
+								$lip=$lipsum->$vars[0]($vars[1]); 
 								$porisso[] 		=  $lip;
 							}else{
 								$porisso[] 		="imagem";
@@ -448,7 +448,7 @@ class htmlProcess{
 					}else{
 						if(in_array($value,$type)){
 							if($value!="img"){
-								ws::execCode('<? $lip=$lipsum->'.$value.'(1); ?>');
+								$lip 			=  $lipsum->$value(1);
 								$isso[] 		= "{{".$key."}}";
 								$porisso[] 		=  $lip;
 							}else{
@@ -518,6 +518,7 @@ class htmlProcess{
 		$atributos 		= $attr;
 		$classReturn 	= Array();
 		$FirstSlug 		= "";
+		$evalClass= new WS();
 		foreach ($atributos as $key => $value) {
 			# para evitar templates nos atributos (temporário)
 			$chaves = strpos($value,'{{');
@@ -527,18 +528,24 @@ class htmlProcess{
 				#para posicionar o slug antes de tudo (pra captar outros dados antes de processar)
 				if($value!=""){
 					if($key=="slug" && $FirstSlug==""){ 
-						$FirstSlug =  (is_numeric($value) || is_int($value)) ? $key.'('.$value.')->' : $key.'("'.$value.'")->';
+						$evalClass->slug($value);
 					}else{ 
-						$classReturn[] = ((is_numeric($value) || is_int($value)) || $key=="paginate") ? $key.'((int)'.$value.')' : $key.'("'.$value.'")';					
+						if((is_numeric($value) || is_int($value)) || $key=="paginate") {
+							$evalClass->$key((int)$value);
+						}else{
+							$evalClass->$key($value);
+						}				
 					}
 				}
 			}
 		}
-		if($template!=null){ 
-			ws::execCode('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->')."->setTemplate('".addslashes(self::minify_html($template))."')->go();");
+
+		if($template!=null){ 		
+			$evalClass->setTemplate(addslashes(self::minify_html($template)))->go();
 		}else{
-			ws::execCode('$Tool= new WS();$evalClass=$Tool->'.$FirstSlug.implode($classReturn, '->').'->go();');
+			$evalClass->go();
 		}
+
 		return $evalClass;
 	}
 	public static function process_tag_ws_plugin($key=null){
