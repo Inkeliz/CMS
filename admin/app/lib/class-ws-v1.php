@@ -160,12 +160,22 @@
 			}
 			return '(function(d, s, id) {' . '	var js, fjs = d.getElementsByTagName(s)[0];' . '	if (d.getElementById(id)) return;' . '	js = d.createElement(s); js.id = id;' . '	js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=' . $version . '' . $idFb . '";' . '	fjs.parentNode.insertBefore(js, fjs);' . '}(document, "script","facebook-jssdk"));';
 		}
-		static function execCode($code) {
+		static function execCode($code,$return=false) {
 		    $tmp = tmpfile();
 		    $tmpf = stream_get_meta_data($tmp);
 		    $tmpf = $tmpf ['uri'];
 		    fwrite($tmp,$code );
-		    include($tmpf);
+			if($return==false){
+				include($tmpf);
+			    fclose ( $tmp );
+			}elseif($return==true){
+			    ob_start(); 
+			    include($tmpf); 
+			    $content = ob_get_clean(); 
+			    fclose ( $tmp );
+			    return  $content;
+			}
+
 		}
 		public function insertVal($colum = null, $value = null) {
 			$this->setinsertcolum[] = array(

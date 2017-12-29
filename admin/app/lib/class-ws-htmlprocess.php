@@ -290,7 +290,7 @@ class htmlProcess{
 		$outertext 		= $key->outertext();
 		$innertext 		= $key->innertext();
 		$atributos 		= $key->attr;
-		$content 		= ws::execCode('<? '.self::beaultyHTML($innertext).' ?>');
+		$content 		= ws::execCode('<? '.self::beaultyHTML($innertext).' ?>',true);
 		return $content;
 	}
 	public static function process_ws_shortcode($key=null){
