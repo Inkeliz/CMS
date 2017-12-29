@@ -7,73 +7,60 @@ class session{
 	private $stringone;
 	private $duratacookie;
 	private $secret;
-	public function __construct ($name="ws-session") {
-		$this->type 		= 	"session"; //cookie
+	public function __construct ($name="ws-session",$cookieUI=null) {
+		$cookieUI			= 	(isset($_COOKIE['ws-ui']) && $_COOKIE['ws-ui']!="") ? _decripta($_COOKIE['ws-ui'],TOKEN_ACCESS) : (($cookieUI!=null) ? _decripta($cookieUI,TOKEN_ACCESS) : null);
+		$this->type 		= 	"session";
 		$this->secury 		= 	1;
 		$this->prefix 		= 	"websheep-"; 
 		$this->preStr 		= 	ID_SESS; 
 		$this->secret 		=	SECURE_AUTH_KEY;		
 		$this->maxCookie	=	20;
-		$this->CoockieIdSess=	md5(ID_SESS);
+		$this->CoockieIdSess=	$cookieUI;
 		$this->cookieLenght	=	3096;	
 		$this->duratacookie	=	(time() + ( 24 * 3600));	
-		$this->newName 		= 	strtolower($this->prefix.substr(str_replace(array("_","-","==","=","."," "),"",base64_encode(md5($this->preStr))),0,256));
-		$this->start();
+		$this->newName 		= 	strtolower($this->prefix.substr(str_replace(array("_","-","==","=","."," ","+"),"",base64_encode(md5($this->preStr))),0,128));
+	
+		if($this->CoockieIdSess!=null){
+			$checkUser					= new MySQL();
+			$checkUser->set_table(PREFIX_TABLES.'ws_usuarios');
+			$checkUser->set_where('token="'.$this->CoockieIdSess.'" AND token<>""');
+			$checkUser->select();
+			$this->checkUser = $checkUser->fetch_array[0];
+			$this->start();
+		}
+		
 	}
 
 	public function start() {
-		if($this->verifyLogin()==false){
-			if ($this->type=="cookie") {
-				if($this->secury==1){
-					$this->stringone = $this->prelevaStringaTotale();
-				}
-			} else {
-				if($this->secury==0){
-					####################################################################
-					# ALGUNS SERVIDORES VEM COM O DIRETÓRIO /TMP SEM PERMISSÃO PRA LEITURA OU ESCRITA
-					# ENTÃO PARA PREVINIR ISSO JÁ JOGAMOS A PERMISSÃO 0700
-					####################################################################
-					chmod(session_save_path().'/sess_'.session_id(), 0700);
-					
-					####################################################################
-					ini_set("session.gc_maxlifetime","432000");
-					ini_set("url_rewriter.tags","");
-					ini_set("session.use_trans_sid", false);
-					if(empty($_SESSION) && session_id()!=$this->preStr){
-						session_id($this->preStr);
-						session_name($this->preStr);
-						$status = session_status();
-						if($status == PHP_SESSION_NONE){
-							session_start();
-						}
-					}
-				}else{
-					@ini_set("session.cookie_secure",true);
-					@ini_set("session.cookie_httponly",true);
-					@ini_set("session.use_trans_sid", false);
-					 if(
-						 	(empty($_COOKIE[$this->CoockieIdSess])) ||
-						 	(isset($_COOKIE[$this->CoockieIdSess]) && $_COOKIE[$this->CoockieIdSess]!=$this->newName) 
-					 ){
-						$status = session_status();
-						session_id($this->newName);
-						session_name($this->newName);
-						if($status == PHP_SESSION_NONE){session_start();}
-						setcookie($this->CoockieIdSess, $this->newName,$this->duratacookie,'/');	
-					}else{
-						$status = session_status();
-						session_id($_COOKIE[$this->CoockieIdSess]);
-						session_name($_COOKIE[$this->CoockieIdSess]);
-						@session_start();
-
-					}
-				}
+		$ID_SESS = $this->checkUser['sessao'];
+		if($this->verifyLogin()==true){
+			####################################################################
+			# ALGUNS SERVIDORES VEM COM O DIRETÓRIO /TMP SEM PERMISSÃO PRA LEITURA OU ESCRITA
+			# ENTÃO PARA PREVINIR ISSO JÁ JOGAMOS A PERMISSÃO 0700
+			####################################################################
+			if(empty($_SESSION) || (isset($_SESSION) && session_id()!=$ID_SESS) || session_status() == PHP_SESSION_NONE){
+				ini_set("session.gc_maxlifetime","432000");
+				ini_set("url_rewriter.tags","");
+				ini_set("session.cookie_secure",true);
+				ini_set("session.cookie_httponly",true);
+				ini_set("session.use_trans_sid", false);
+				chmod(session_save_path().'/sess_'.$ID_SESS, 0700);
+				@session_id($ID_SESS);
+				@session_name($this->newName);
+				@session_start();
 			}
+		}else{
+				@session_id($ID_SESS);
+				@session_name($this->newName);
+				@session_start();
 		}
 	}
 
 	public function verifyLogin() {
-		 if ($this->get("ws_log")==1) {
+
+		if(empty($_SESSION) || $this->CoockieIdSess==null){ 
+			return false;
+		}elseif(isset($this->checkUser['sessao']) && session_id()==$this->checkUser['sessao']) {
 		 	return true;
 		 }else{
 		 	return false;
@@ -186,8 +173,16 @@ class session{
 					setcookie($cookiesSet[$x],"",time()-3600*24,"/", $_SERVER['HTTP_HOST'] );
 				}
 			}
-			session_id($_COOKIE[$this->CoockieIdSess]);
-			session_name($_COOKIE[$this->CoockieIdSess]);
+
+
+			$SetUserSession = new MySQL();
+			$SetUserSession->set_table(PREFIX_TABLES.'ws_usuarios');
+			$SetUserSession->set_where('id="'.$this->checkUser['id'].'"');
+			$SetUserSession->set_update('sessao', '');
+			$SetUserSession->salvar();
+
+			session_id($_COOKIE['ws-ui']);
+			session_name($this->newName);
 			$_SESSION=array();
 			unset($_SESSION);
 			session_unset();
@@ -213,8 +208,7 @@ class session{
 		return $v;
 	}
 	public function verify() {
-		
-		  if(isset($_SESSION) && session_id()==$this->newName){
+		  if(isset($this->checkUser['sessao']) && isset($_SESSION) && session_id()==$this->checkUser['sessao']){
 		 	 return true;
 		  }else{
 		 	 return false;

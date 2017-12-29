@@ -38,17 +38,37 @@ function login (){
 		if( @$checkUser->fetch_array[0]['id_status']==4){	echo "Acesso inválido!.\n Por favor, entre em contato com a equipe de suporte.";					exit;}
 		if( @$checkUser->fetch_array[0]['id_status']>=6){	echo "Acesso inválido, código: ".$checkUser->fetch_array[0]['id_status']; 							exit;}
 
-		$User	= array();
-		$User	= $checkUser->fetch_array[0];
-		$token	= $User['token'];
-		$hour  	= (time() + ( 24 * 3600));
+		$User		= array();
+		$User		= $checkUser->fetch_array[0];
+		$token		= $User['token'];
+		$hour  		= (time() + ( 24 * 3600));
+		$ID_SESS 	= _crypt($User['id'].microtime().$User['token']);
+
+
 
 	############################################################################## 
-	# INICIA SESSÃO CRIPTADA DO USUÁRIO	
-	##############################################################################
+	# grava na base o id da sessao	
+	############################################################################## 
+		$SetUserSession = new MySQL();
+		$SetUserSession->set_table(PREFIX_TABLES.'ws_usuarios');
+		$SetUserSession->set_where('id="'.$User['id'].'"');
+		$SetUserSession->set_update('sessao', $ID_SESS);
+		$SetUserSession->salvar();
 
-		$user = new Session();
-		$user->start();
+
+	############################################################################## 
+	# gera os cookies pra sessão	
+	##############################################################################
+		ini_set("session.cookie_secure",true);
+		ini_set("session.cookie_httponly",true);
+		ini_set("session.use_trans_sid", false);
+		$tokenUser = _encripta($User['token'],TOKEN_ACCESS);
+		setcookie('ws-ui', $tokenUser, time()+60*60*24*30,"/");
+
+		############################################################################## 
+		# INICIA SESSÃO CRIPTADA DO USUÁRIO	
+		##############################################################################
+		$user= new Session(null,$tokenUser);
 		$user->set('id',			$User['id']);
 		$user->set('id_status',		$User['id_status']);
 		$user->set('token',			$User['token']);
@@ -62,20 +82,9 @@ function login (){
 		$user->set('leitura',		$User['leitura']);	
 		$user->set('hora',			$hour);	
 		$user->set('ws_log',		true);	
-
-	############################################################################## 
-	# gera os cookies pra sessão	
-	############################################################################## 
-		$cript_id	= (md5(ID_SESS.$User['id'].ID_SESS.$User['token'].ID_SESS));
-		$SetUserSession = new MySQL();
-		$SetUserSession->set_table(PREFIX_TABLES.'ws_usuarios');
-		$SetUserSession->set_where('id="'.$User['id'].'"');
-		$SetUserSession->set_update('sessao', $cript_id);
-		$SetUserSession->salvar();
 		ws::insertLog($User['id'],0 ,0,"Login","Efetuou login no sistema","Efetuou login no sistema","","system");
-
 		echo "ok";
-	exit;
+		exit;
 }
 
 function logout(){
