@@ -175,15 +175,15 @@ class session{
 			}
  			$SetUserSession = new MySQL();
 			$SetUserSession->set_table(PREFIX_TABLES.'ws_usuarios');
-			$SetUserSession->set_where('id="'.$this->checkUser['id'].'"');
+			$SetUserSession->set_where('id="'.@$this->checkUser['id'].'"');
 			$SetUserSession->set_update('sessao', '');
 			$SetUserSession->salvar();
-			session_id($_COOKIE['ws-ui']);
+			session_id(@$_COOKIE['ws-ui']);
 			session_name($this->newName);
 			$_SESSION=array();
 			unset($_SESSION);
 			session_unset();
-			session_destroy();
+			@session_destroy();
 			session_write_close();
 			flush();
 	}

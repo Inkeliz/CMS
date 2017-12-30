@@ -229,8 +229,6 @@ function loadPluginFile(opcoes){
 		dataW		:500,
 		dataH		:500
 	}, opcoes);
-
-
 	jQuery.ajax({
 		type: "POST",
 		sync: true,
@@ -238,14 +236,12 @@ function loadPluginFile(opcoes){
 		url: "./app/ws-modules/ws-tools/functions.php",
 		data: {"function":"returnFileInnerPlugin","page":options.filename}
 	}).done(function(e) {
-
 		if(options.type=='inner'){
 			$( "#conteudo" ).html('<div class="ws-plugin"><div>');
 			$( "#conteudo .ws-plugin" ).html(e)
 			$("#ws_confirm").remove();
 			$("*").removeClass("scrollhidden").removeClass("blur");
 			$('#container').perfectScrollbar('destroy');
-
 		}else if(options.type=='modal'){
 			confirma({
 				width:dataW,
@@ -259,12 +255,12 @@ function loadPluginFile(opcoes){
 			})
 		}else if(options.type=='iframe'){
 				$('#conteudo').html('<iframe src="'+options.filename+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;margin:0;"></iframe>');
+				$( "#conteudo .ws-plugin" ).html(e)
+				$("#ws_confirm").remove();
+				$("*").removeClass("scrollhidden").removeClass("blur");
+				$('#container').perfectScrollbar('destroy');
 		}
-
-
-
-
-		window.CloseMenu();
+				window.CloseMenu();
 	})
 }
 

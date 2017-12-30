@@ -217,7 +217,6 @@ $(document).ready(function(){
 									var dataW 				= $(this).data('w');
 									var dataH 				= $(this).data('h');
 									var plugin 				= $(this).data('plugin');
-									console.log(href)
 									if(plugin=="0"){
 										confirma({
 											width:"auto",

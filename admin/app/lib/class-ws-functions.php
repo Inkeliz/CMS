@@ -68,10 +68,10 @@
 				} else {
 				echo '<script>
 							document.cookie.split(";").forEach(function(c) {document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");}); 
-							if(window.location.pathname=="/admin/"){
+							if(window.location.pathname=="'.ws::rootPath.'admin/"){
 								window.top.location.reload();
 							}else{
-								window.top.location = "/admin/";
+								window.top.location = "'.ws::rootPath.'admin/";
 							}
 					</script>';
 					exit;
