@@ -62,17 +62,18 @@
 					}
 					if (isset($contents)) {
 						if ((isset($contents->menu) && ((is_array($contents->menu) && in_array("lateral", $contents->menu)) || $contents->menu == "lateral")) && isset($contents->painel) && $contents->painel != "") {
+
 							if (isset($contents->loadType) && is_array($contents->loadType)) {
 								$dataType = $contents->loadType[0];
 								$dataW    = $contents->loadType[1];
 								$dataH    = $contents->loadType[2];
 							} else {
-								$dataType = "";
-								$dataW    = "";
-								$dataH    = "";
+								$dataType 	= $contents->loadType;
+								$dataW 		= 500;
+								$dataH 		= 500;
 							}
 							if (filter_var($contents->painel, FILTER_VALIDATE_URL) === FALSE) {
-								$link = '/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->painel;
+								$link = ws::rootPath.$setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->painel;
 							} else {
 								$link = $contents->painel;
 							}
@@ -83,8 +84,15 @@
 							$menu_dashboard->PATH  = $link;
 							$menu_dashboard->W     = @$dataW;
 							$menu_dashboard->H     = @$dataH;
-							$menu_dashboard->TYPE  = @$dataType;
-							$menu_dashboard->ICON  = '/' . $setupdata['url_plugin'] . '/' . $diretorio . '/' . $contents->icon;
+							$menu_dashboard->TYPE  = $dataType;
+
+
+							if(isset($contents->icon) && $contents->icon!="" &&	file_exists(ws::includePath.'website/'.$setupdata['url_plugin'] . '/' . $diretorio.'/'.$contents->icon)){
+								$menu_dashboard->ICON 	= ws::rootPath.$setupdata['url_plugin'] . '/' . $diretorio.'/'.$contents->icon;
+							}else{
+								$menu_dashboard->clear("ICON");
+							}
+
 							$menu_dashboard->LABEL = $contents->pluginName;
 							$menu_dashboard->block("PLUGIN");
 						}

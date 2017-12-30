@@ -217,6 +217,8 @@ $(document).ready(function(){
 									var dataW 				= $(this).data('w');
 									var dataH 				= $(this).data('h');
 									var plugin 				= $(this).data('plugin');
+									var outuptPluigin 		= {'filename':href,'type':dataType,'dataW':dataW,'dataH':dataH}
+									out(outuptPluigin)
 									if(plugin=="0"){
 										confirma({
 											width:"auto",
@@ -235,8 +237,12 @@ $(document).ready(function(){
 											bot2:0
 										})
 									}else if(plugin=="1"){
+											console.log(href)
+											console.log(dataType)
+											console.log(dataW)
+											console.log(dataH)
 										if(dataType=="popup"){
-												popup(page,dataW,dataH);
+												popup(href,dataW,dataH);
 										}else{
 												loadPluginFile({'filename':href,'type':dataType,'dataW':dataW,'dataH':dataH})
 										}

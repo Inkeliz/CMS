@@ -160,9 +160,8 @@
 
 						$TEMPLATE->LI_HREF 	= $link.'/'.$contents->painel;
 
-
-						if(isset($contents->icon) &&$contents->icon!="" &&file_exists(INCLUDE_PATH.'website'.$contents->realPath.'/'.$contents->icon)){
-							$TEMPLATE->LI_ICON 	= '<img src="'.$contents->realPath.'/'.$contents->icon.'" width="15px"/>';
+						if(isset($contents->icon) && $contents->icon!="" &&	file_exists(ws::includePath.'website/'.$contents->realPath.'/'.$contents->icon)){
+							$TEMPLATE->LI_ICON 	= '<img src="'.ws::rootPath.$contents->realPath.'/'.$contents->icon.'" width="15px"/>';
 						}else{
 							$TEMPLATE->clear("LI_ICON");
 						}
