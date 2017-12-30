@@ -173,14 +173,11 @@ class session{
 					setcookie($cookiesSet[$x],"",time()-3600*24,"/", $_SERVER['HTTP_HOST'] );
 				}
 			}
-
-
-			$SetUserSession = new MySQL();
+ 			$SetUserSession = new MySQL();
 			$SetUserSession->set_table(PREFIX_TABLES.'ws_usuarios');
 			$SetUserSession->set_where('id="'.$this->checkUser['id'].'"');
 			$SetUserSession->set_update('sessao', '');
 			$SetUserSession->salvar();
-
 			session_id($_COOKIE['ws-ui']);
 			session_name($this->newName);
 			$_SESSION=array();
