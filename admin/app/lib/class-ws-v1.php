@@ -92,38 +92,48 @@
 		
 		static function getRootPath(){			return ROOT_WEBSHEEP;}
 		static function getFullSitePath(){		return ws::getFullPath().'/website/';}
-		static function create_thumbnail( $file, $w, $h,$q){
+		static function create_thumbnail( $file, $w=0, $h=0,$q=null){
 			$extensao 	= explode(".",basename($file));
 			$ext 		= end($extensao);	
 			if($ext=='png' && $q>9){$q=9;}
-			if($q>100){$q=100;}
-			$newName = $w . '-' . $h . '-' . $q . '-' . basename($file);
-			$saveName = ws::includePath.'website/assets/upload-files/thumbnail/'.$newName;
-			if(!file_exists($file)){
-				$array =(object) array(
-								'status' 		=> "fail",
-								'original' 		=> null,
-								'originalPath' => null,
-								'originalName' => null,
-								'newPath' 		=> null,
-								'rootPath' 		=> null,
-								'includePath' 	=> null
-							);
-				return $array;
-			}
+			if($q>100 || $q==null){$q=100;}
+
+			$originalName 	= ws::includePath.'website/assets/upload-files/'.$file;
+			$newName 		= $w . '-' . $h . '-' . $q . '-' . basename($file);
+			$saveName 		= ws::includePath.'website/assets/upload-files/thumbnail/'.$newName;
+			$w = ($w==null) ? getimagesize(ws::includePath.'website/assets/upload-files/'.$file)[0] : 0;
+			$h = ($h==null) ? getimagesize(ws::includePath.'website/assets/upload-files/'.$file)[1] : 0;
+
+
 			$img = new canvas();
-			if ($img->carrega($file)->redimensiona($w, $h, 'crop')->grava($saveName, $q)) {
+			if (file_exists($saveName) || $img->carrega($originalName)->redimensiona($w, $h, 'crop')->grava($saveName, $q)) {
 					$array = (object) array(
-						'status' => "sucess",
-						'original' => $file,
-						'originalPath' => dirname($file),
-						'originalName' => basename($file),
-						'newPath' => $newName,
+						'status' 		=> "sucess",
+						'original' 		=> $file,
+						'originalPath' 	=> dirname($file),
+						'originalName' 	=> basename($file),
+						'newPath' 		=> $newName,
+						'base64' 		=> base64_encode(file_get_contents(ws::includePath.'website/assets/upload-files/thumbnail/'.$newName)),
 						'rootPath' 		=> ws::rootPath.'assets/upload-files/thumbnail/'.$newName,
 						'includePath' 	=> ws::includePath.'website/assets/upload-files/thumbnail/'.$newName
 					);
 					return $array;
+			 }else{
+				$array =(object) array(
+						'status' 		=> "fail",
+						'original' 		=> null,
+						'originalPath' => null,
+						'originalName' => null,
+						'newPath' 		=> null,
+						'base64' 		=> null,
+						'rootPath' 		=> null,
+						'includePath' 	=> null
+					);
+				return $array;
 			 }
+
+
+
 		}
 		static function fb_count_comments($domain = null) {
 			if ($domain == null) {
@@ -1592,9 +1602,10 @@
 					$COLUNA = (
 									$newKey[0]		!= "id" 		&& 
 									$newKey[0] 		!= "ws_count" 	&&
-									$newKey[0] 		!= "ws_total" 	&&
-									$this->thisType == "item" 		
+									$newKey[0] 		!= "ws_total" 	
+									// && $this->thisType == "item" 		
 								) ? $this->ws_prefix_ferramenta . $newKey[0] : $newKey[0];
+
 					if (count($newKey) == 1) {
 						$b[] = "{{" . $this->aliasStr . $key . "}}";
 						$c[] = @$retorno[$COLUNA];

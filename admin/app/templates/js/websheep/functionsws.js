@@ -99,10 +99,10 @@ ws = {
 		creator: "WebSheep Tecnology"
 	},
 	init: function() {
-		if(ws.verify.jquery() == false && ws.insert.js("./admin/app/vendor/jquery/2.2.0/jquery.min.js", "jQuery", true) == true) {
+		if(ws.verify.jquery() == false && ws.insert.js(ws.rootPath+"admin/app/vendor/jquery/2.2.0/jquery.min.js", "jQuery", true) == true) {
 			ws.log.info("Jquery 2.2.0 instalado");
 		}
-		if(ws.$("#style_ws").length == 0 && ws.insert.css("/admin/app/templates/css/websheep/funcionalidades.css", "style_ws", "All") == true) {
+		if(ws.$("#style_ws").length == 0 && ws.insert.css(ws.rootPath+"admin/app/templates/css/websheep/funcionalidades.css", "style_ws", "All") == true) {
 			ws.log.info("Style Importado");
 		}
 	},
@@ -142,7 +142,7 @@ ws = {
 		},
 		log:function(opcoes){
 			var options = ws.extend({
-				url: '/admin/app/ws-modules/ws-logs/functions.php',
+				url: ws.rootPath+'/admin/app/ws-modules/ws-logs/functions.php',
 				function: 'addLog',
 				ws_author: 0,
 				id_user: 2,
@@ -185,13 +185,16 @@ ws = {
 				return this
 			},
 			push:function(){
+				thisWS 				= this;
 			    window.history.pushState({}, this.thisPath, '/'+this.thisPath);
-			    thisWS.thisListener(this.thisPath)
+			    // thisWS.thisListener(this.thisPath)
 				return this
 			},
 			replace:function(str){
-			    window.history.replaceState({}, this.thisPath, '/'+this.thisPath);
-			    thisWS.thisListener(this.thisPath)
+				thisWS 				= this;
+				thisWS.thisListener = fn
+			    window.history.replaceState({}, thisWS.thisPath, '/'+thisWS.thisPath);
+			    // thisWS.thisListener(thisWS.thisPath)
 				return this
 			}
 		}
@@ -459,7 +462,7 @@ ws = {
 
 					if(window.ajaxFormInclude != true) {
 						ws.load.script({
-							file: '/admin/ws-modules/ws-register-leads/AjaxForm.min.js',
+							file: ws.rootPath+'/admin/ws-modules/ws-register-leads/AjaxForm.min.js',
 							return: function() {
 								if(escope_this.thisCaptcha != null) {veryFyCaptcha();}else{goForm(false);}
 							}
@@ -860,8 +863,9 @@ ws = {
 					}
 					$('#avisoTopo').html("<div class=\"" + options.classText + "\" style=\"" + options.styleText + "\">" + options.mensagem + "</div>");
 				}
-				if(options.botClose != null && options.botClose != false) {
-					$(options.botClose).unbind("click").click(function() {
+				if(options.botclose != null && options.botclose != false) {
+
+					$(options.botclose).unbind("click").click(function() {
 						$("#avisoTopo").animate({
 							height: 0,
 							"padding": 0
@@ -1246,7 +1250,7 @@ ws = {
 			divScroll: "body",
 			divBlur: "#menu_tools,#container,#header",
 			drag: true,
-			botclose: false,
+			botclose: true,
 			newFun: function() {},
 			onCancel: function() {},
 			onClose: function() {},
@@ -1256,8 +1260,6 @@ ws = {
 				return true
 			}
 		}, opcoes)
-
-
 		options.Init();
 		var BotClose = ""
 		var ArryBotoes = "";
@@ -1297,18 +1299,13 @@ ws = {
 			} else {
 				var botao2 = "<div id='recusar' class='recusar'>" + options.cancel + "</div>"
 			}
-			if(options.botClose == null || options.botClose == false) {
-				var BotClose = ""
-			} else {
-				var BotClose = "<div id='close' class='botao close' >x</div>"
-			}
 			if(options.bot1 == false && options.cancel == false) {
 				var Botoes = "";
 			} else {
 				var Botoes = "<div id='bottons' class='bottons'>" + botao1 + botao2 + "</div>";
 			}
-			// if(options.bot1 == false && options.cancel == false && options.botclose == false) {
-			// 	var BotClose = "<div id='close' class='botao close' >x</div>";
+			// if(options.bot1 == false && options.cancel == false && options.botFechar == false) {
+			// 	var BotFechar = "<div id='close' class='botao close' >x</div>";
 			// }
 		}
 
@@ -1321,8 +1318,14 @@ ws = {
 		} else {
 			return false;
 		}
+
+		if(options.botclose == true) {
+			var BotFechar = "<div class='botao close'>x</div>"
+		} else {
+			var BotFechar = ""
+		}
 		$("#" + options.idModal).remove();
-		$('body').prepend("<div id='" + options.idModal + "' class='ws_popup_confirm' style='opacity:1;width:100%;height:100%;z-index:" + index_highest + "!important'><div class='body'>" + BotClose + "<div class='ws_confirm_conteudo w1'>" + options.conteudo + "</div>" + Botoes + "</div></div>");
+		$('body').prepend("<div id='" + options.idModal + "' class='ws_popup_confirm' style='opacity:1;width:100%;height:100%;z-index:" + index_highest + "!important'><div class='body'>" + BotFechar+"<div class='ws_confirm_conteudo w1'>" + options.conteudo + "</div>" + Botoes + "</div></div>");
 		$("#" + options.idModal + " .body").css({
 			"width": options.width,
 			"height": options.height
@@ -1348,6 +1351,12 @@ ws = {
 			$(options.divBlur).removeClass("blur");
 			$("#" + options.idModal).animate({ opacity: 0 }, 200, 'linear', function() { $("#" + options.idModal).remove() });
 			options.posClose();
+		}
+		if($("#" + options.idModal + " .close").length > 0) {
+			$("#" + options.idModal + " .close").click(function() {
+				options.onClose();
+				closeAlert();
+			});
 		}
 		if(options.bots.length > 0) {
 			$.each(options.bots, function(index, value) {
@@ -1381,10 +1390,6 @@ ws = {
 		} else {
 			$("#" + options.idModal + " .recusar").click(function() {
 				options.onCancel();
-				closeAlert();
-			});
-			$("#" + options.idModal + " .close").click(function() {
-				options.onClose();
 				closeAlert();
 			});
 			$("#" + options.idModal + " .aceitar").click(function() {

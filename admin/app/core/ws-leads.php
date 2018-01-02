@@ -126,6 +126,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$TYPE_SEND = $_POST;
 	$TYPE_SEND = $_REQUEST;
 
+
 	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
 	if(isset($TYPE_SEND['typeSend']) && $TYPE_SEND['typeSend']=='captcha'){
 		@session_name('_WS_');@session_id($_COOKIE['_WS_']);@session_start(); 
@@ -264,6 +265,7 @@ if($_LEAD->finalidade=='Apenas gravar na base'){			goto gravaNaBase;};
 		exit;
 	};
 
+
 enviaEmail:
 	$getPOSTs=array();
 	$local = new MySQL();
@@ -273,6 +275,10 @@ enviaEmail:
 	$isso			=array();
 	$porissoIsso	=array();
 	foreach($getPOSTs as $coluna){if(isset($_FORM[$coluna])){$isso[]='['.$coluna.']';$porissoIsso[]= $_FORM[$coluna];}}
+
+
+
+
 
 
 	$mail = new PHPMailer;
@@ -286,6 +292,13 @@ enviaEmail:
 	$mail->Password 	= Password;
 	$mail->charSet 		= 'UTF-8';	
 	$mail->Debugoutput = 'html'; 
+
+    $mail->XMailer="";
+    $mail->IsHTML(true);
+    $mail->Priority = 1;
+    $mail->AddCustomHeader("X-MSMail-Priority: High");
+    $mail->AddCustomHeader("Importance: High");
+    
 	$mail->setFrom(Username, NomeRemetente);
 	$mail->addAddress(Remetente,NomeRemetente);
 	$mail->Subject =  $_LEAD->assunto;
@@ -297,6 +310,10 @@ enviaEmail:
 									$mensagem  .=  utf8_decode(str_replace($isso, $porissoIsso,$_LEAD->msng_resp)).PHP_EOL;
 	if($_LEAD->footer_email!="")  	$mensagem  .=  utf8_decode("<img src='cid:assinatura'>");
 	$mail->msgHTML(str_replace(PHP_EOL,"",$mensagem));
+	$mail->Body= str_replace(PHP_EOL,"",$mensagem);
+
+
+
 	#########################################################################################################################
 	######################################################################################################################### RESPOSTA AO USUARIO
 	#########################################################################################################################
@@ -324,6 +341,7 @@ enviaEmail:
 												$mensagem  .=  utf8_decode(str_replace($isso, $porissoIsso,$_LEAD->msng_resp_user)).PHP_EOL;
 				if($_LEAD->footer_email!="")  	$mensagem  .=  utf8_decode("<img src='cid:assinatura'>");
 				$mailResp->msgHTML(str_replace(PHP_EOL,"",$mensagem));
+				$mailResp->Body = (str_replace(PHP_EOL,"",$mensagem));
 				if (!$mailResp->send()) {
 					echo "Error 2: " . $mailResp->ErrorInfo;
 					exit; 

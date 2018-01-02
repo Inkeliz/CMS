@@ -1097,13 +1097,13 @@ function loadFile($pathFile=null){
 		$file 							=	basename($pathFile);
 
 
-		$file_exists_dir 				= 	new MySQL();
-		$file_exists_dir->set_table(PREFIX_TABLES.'ws_webmaster');
-		$file_exists_dir->set_where('path="'.$pathFile.'"');
-		$file_exists_dir->set_where('AND original="'.$file.'"');
-		$file_exists_dir->set_order('id','DESC');
-		$file_exists_dir->select();
-		$count =$file_exists_dir->_num_rows;
+		// $file_exists_dir 				= 	new MySQL();
+		// $file_exists_dir->set_table(PREFIX_TABLES.'ws_webmaster');
+		// $file_exists_dir->set_where('path="'.$pathFile.'"');
+		// $file_exists_dir->set_where('AND original="'.$file.'"');
+		// $file_exists_dir->set_order('id','DESC');
+		// $file_exists_dir->select();
+		// $count =$file_exists_dir->_num_rows;
 		$ext = explode('.',$file);
 		$ext = end($ext);
 		$newTokenFile = createPass(rand(9,50), $maiusculas = true, $numeros = false, $simbolos = false);
@@ -1115,7 +1115,7 @@ function loadFile($pathFile=null){
 		echo '$("#nameFile").html("<span class=\'b1 noSelect\'>Nome do arquivo:</span> /'.str_replace('./../../../','', $_REQUEST['pathFile']).'");';
 		echo '$("#mode option[value 	=\''.$ext.'\']").attr("selected","true").trigger("chosen:updated");';
 		echo 'window.typeLoaded			= "file";';
-		echo 'window.pathFile 			= "'.$path.'";';
+		echo 'window.pathFile 			= "/'.$path.'/'.$file.'";';
 		echo 'window.loadFile 			= "'.$file.'";';
 		echo 'window.newTokenFile 		= "'.$newTokenFile.'";';
 

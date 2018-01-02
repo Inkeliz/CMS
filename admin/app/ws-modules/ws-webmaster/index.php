@@ -348,9 +348,11 @@
 						})
 					};
 					window.addTab = function($newTokenFile, $pathFile, $loadFile, $saved) {
+						out("<?=ws::includePath?>website  --  "+$pathFile+" - "+$loadFile+" - "+$saved);
 						if (!$('.fileTabContainer .fileTab[data-full-path-file="' + $pathFile + $loadFile + '"]').length) {
 							$(".tabSortable.fileTab.loader").remove();
 							$(".fileTab").removeClass("active");
+
 							$(".fileTabContainer .container").prepend('<div '+
 								'legenda="' +$pathFile.replace("<?=ws::includePath.'website'?>", "")+'" '+ 
 								'class="tabSortable fileTab active ' + $saved + '" '+
@@ -360,7 +362,7 @@
 								'data-pathFile="' + $pathFile.replace($loadFile,"") + '" '+
 								'data-loadFile="' + $loadFile + '"> '+
 								'<div class="str">' + 
-								"/"+$pathFile.replace("<?=ws::includePath.'website/'?>", "")+"/"+$loadFile+
+									$pathFile.replace("<?=ws::includePath?>website", "")+
 								'</div><div class="close"></div><div class="tab_shadow"></div><textarea style="display:none"></textarea> </div>');
 							if ($(".fileTabContainer .container.ui-sortable").length) {
 								$(".fileTabContainer .container").sortable("destroy");
@@ -466,9 +468,6 @@
 								$('.fileTab[data-full-path-file="' + window.pathFile + window.loadFile + '"]').removeClass('saved').addClass('unsave');
 							}
 						})
-
-
-
 						if (!window.listFilesWebmaster) {
 							window.listFilesWebmaster = Object();
 						} else {

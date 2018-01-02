@@ -1279,12 +1279,11 @@
 		}
 		$Salva = new MySQL();
 		$Salva->set_table(PREFIX_TABLES . '_model_img');
-		//$Salva->set_where('ws_draft="1" AND id_item="' . $_REQUEST['idImg'] . '"');
-		$Salva->set_where('id="' . $_REQUEST['iDimg'] . '"');
-		$Salva->set_update('titulo', $_REQUEST['titulo']);
-		$Salva->set_update('texto', urlencode($_REQUEST['texto']));
-		$Salva->set_update('url', urlencode($_REQUEST['url']));
-		$Salva->set_update('avatar', $_REQUEST['avatar']);
+		$Salva->set_where('id="' . 		@$_REQUEST['iDimg'] . '"');
+		$Salva->set_update('titulo', 	@$_REQUEST['titulo']);
+		$Salva->set_update('texto', 	@$_REQUEST['texto']);
+		$Salva->set_update('url', 		@$_REQUEST['url']);
+		$Salva->set_update('avatar', 	@$_REQUEST['avatar']);
 		if ($Salva->salvar()) {
 			echo "sucesso";
 			exit;
