@@ -1118,8 +1118,6 @@ function loadFile($pathFile=null){
 		echo 'window.pathFile 			= "/'.$path.'/'.$file.'";';
 		echo 'window.loadFile 			= "'.$file.'";';
 		echo 'window.newTokenFile 		= "'.$newTokenFile.'";';
-
-
 		echo 'window.tokenFile 			= "'.$newTokenFile.'";';
 		echo 'window.htmEditor.setReadOnly(false);';
 		//MONTA O OBJETO COM OS ARQUIVOS E AS SESSÕES 
@@ -1167,7 +1165,16 @@ function loadFile($pathFile=null){
 function geraBKPeAplica(){
 		global $session;
 		parse_str($_POST['GET'], $POST);	
-		$path = '/'.implode(array_filter(explode('/',$POST['pathFile'])),"/").'/'.$POST['filename'];
+		$urlPath= implode(array_filter(explode('/',$POST['pathFile'])),"/").'/'.$POST['filename'];
+
+		if(file_exists($urlPath)){
+			$path = $urlPath;
+		}elseif(file_exists('/'.$urlPath)){
+			$path = '/'.$urlPath;
+		}else{
+			die("Arquivo não existe:".PHP_EOL.$urlPath);
+		}
+
 		if(file_put_contents($path, $POST['ConteudoDoc'])){ 
 			echo "sucesso";
 		}else{

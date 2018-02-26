@@ -18,8 +18,8 @@
 	$ws->rootPath
 
 	Por exemplo, precisar mostrar uma imagem:
-	<?=$ws->rootPath?>img/avatar.jpg
-	<?=$ws->rootPath?>css/style.css
+	<?=$ws->rootPath?>/assets/images/avatar.jpg
+	<?=$ws->rootPath?>/assets/css/style.css
 
 	Caso esse arquivo seja exibido separadamente em outra janela ou popup, será necessário descomentar as 2 linhas a seguir:
 */
@@ -37,7 +37,7 @@
 	}
 </style>
 <div class="boxPlugin">
-	<img src="<?=$ws->rootPath.$ws->pathPlugin?>/avatar.png">
+	<img src="<?=$ws->rootPath.$ws->pathPlugin?>/assets/images/avatar.png">
 	<?=$ws->innertext?>	
 </div>
 

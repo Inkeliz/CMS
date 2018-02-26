@@ -4,11 +4,7 @@
 body{
 	margin:0!important; 
 	padding:0!important;
-	background: #aaffe0;
-	background: -moz-radial-gradient(center, ellipse cover,  #aaffe0 0%, #2490b7 100%);
-	background: -webkit-radial-gradient(center, ellipse cover,  #aaffe0 0%,#2490b7 100%);
-	background: radial-gradient(ellipse at center,  #aaffe0 0%,#2490b7 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aaffe0', endColorstr='#2490b7',GradientType=1 );
+	background: #FFFFFF;
 }
 html, body, #container { 
 	height: 100%;

@@ -180,8 +180,8 @@ ws = {
 			},
 			listener:function(fn){
 				thisWS 				= this;
-				thisWS.thisListener = fn
-				window.onpopstate 	= function (event) {thisWS.thisListener(thisWS.thisPath)}
+				// thisWS.thisListener = fn
+				// window.onpopstate 	= function (event) {thisWS.thisListener(thisWS.thisPath)}
 				return this
 			},
 			push:function(){
@@ -192,7 +192,7 @@ ws = {
 			},
 			replace:function(str){
 				thisWS 				= this;
-				thisWS.thisListener = fn
+				// thisWS.thisListener = fn
 			    window.history.replaceState({}, thisWS.thisPath, '/'+thisWS.thisPath);
 			    // thisWS.thisListener(thisWS.thisPath)
 				return this

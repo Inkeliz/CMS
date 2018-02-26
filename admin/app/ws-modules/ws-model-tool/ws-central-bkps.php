@@ -43,6 +43,7 @@
 	##########################################################################################################
 	$template->PATH												=	PATH;
 	$template->ROOT_WEBSHEEP									=	ROOT_WEBSHEEP;
+	$template->ws_rootPath										=	ws::rootPath;
 	$template->centralBkp_download								=	ws::getlang('centralBkp>download');
 	$template->centralBkp_title									=	ws::getlang('centralBkp>title');
 	$template->centralBkp_exportBackup							= 	ws::getlang('centralBkp>exportBackup');;
@@ -150,9 +151,7 @@
 	# RETORNA O HTML DO TEMPLATE NA TELA
 	##########################################################################################################
 	$template->block("BLOCK_CENTRAL_BKP");
-	 $template->show();
-
-
+	$template->show();
 
 
 

@@ -127,8 +127,7 @@
 						$resultTool[] = '1';
 					elseif ($key == '_prefix_')
 						$resultTool[] = '{{prefix}}';
-					elseif ($key == '_grupo_pai_')
-						$resultTool[] = '{{grupo_pai}}';
+					// elseif ($key == '_grupo_pai_') $resultTool[] = '{{grupo_pai}}';
 					elseif ($key == 'det_listagem_item')
 						$resultTool[] = '{{det_listagem_item}}';
 					elseif ($key == 'clone_tool')
@@ -2418,7 +2417,7 @@
 		$I->set_insert('App_Type', 1);
 		$I->set_insert('App_Type', 1);
 		$I->set_insert('_prefix_', $_PREFIXO_);
-		$I->set_insert('_grupo_pai_', $_getInput['page']);
+		// $I->set_insert('_grupo_pai_', $_getInput['page']);
 		$I->set_insert('_tit_menu_', $_getInput['title'] . $complementoTitulo);
 		$I->set_insert('_tit_topo_', $_getInput['title']);
 		$I->set_insert('slug', $_getInput['slug']);
@@ -2714,7 +2713,7 @@
 			$_getInput['_plugin_'] = '1';
 		}
 		
-		$Salva->set_update('_grupo_pai_', 0);
+		// $Salva->set_update('_grupo_pai_', 0);
 		$Salva->set_update('_prefix_', $_getInput['_prefix_']);
 		$Salva->set_update('_menu_popup_', $_getInput['_menu_popup_']);
 		$Salva->set_update('_tit_menu_', $_getInput['_tit_menu_']);

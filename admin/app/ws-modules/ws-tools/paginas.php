@@ -116,7 +116,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		if($file->_num_rows==1){
 			$template->LI_ID 		=	$ferramenta['id'];
 			$template->LI_TOKEN		=	$ferramenta['token'];
-			$template->LI_FILE 		=	$file->fetch_array[0]['file'];
+			$template->LI_FILE 		=	'includes/'.$file->fetch_array[0]['file'];
 			$template->LI_ID_FILE 	=	$file->fetch_array[0]['id'];
 			$template->LI_TITLE 	= 	$ferramenta['_tit_menu_'];	
 			$template->block('LI_PAGES');

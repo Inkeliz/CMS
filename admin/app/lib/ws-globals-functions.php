@@ -39,11 +39,11 @@ function _array_filter($array=array(),$filter="strlen") {
 #########################################################################
 
 function get_caller_info() {
-    $c = '';
-    $file = '';
-    $func = '';
-    $class = '';
-    $trace = debug_backtrace();
+    $c 		= '';
+    $file 	= '';
+    $func 	= '';
+    $class 	= '';
+    $trace 	= debug_backtrace();
     if (isset($trace[2])) {
         $file = $trace[1]['file'];
         $func = $trace[2]['function'];
@@ -1512,6 +1512,25 @@ function get_caller_info() {
 		return base64_encode($iv.$hmac.$ciphertext_raw);
 	}
 
+
+##########################################################################################################
+# ALGUNS SERVIDORES ESTÁ DESABILITADO ESSA FUNÇÃO NATIVA, ENTÃO REDESENHAMOS ELA
+##########################################################################################################
+	if(!function_exists('hash_equals')){
+	    function hash_equals($str1, $str2){
+	        if(strlen($str1) != strlen($str2)){
+	            return false;
+	        }else{
+	            $res = $str1 ^ $str2;
+	            $ret = 0;
+	            for($i = strlen($res) - 1; $i >= 0; $i--){
+	                $ret |= ord($res[$i]);
+	            }
+	            return !$ret;
+	        }
+	    }
+	}
+
 ##########################################################################################################
 # DESCRIPTOGRAFA UMA STRING COM SENHA
 ##########################################################################################################
@@ -1523,20 +1542,6 @@ function get_caller_info() {
 		$ciphertext_raw		= substr($c, $ivlen+$sha2len);
 		$original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
 		$calcmac 			= hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
-		if(!function_exists('hash_equals')){
-		    function hash_equals($str1, $str2){
-		        if(strlen($str1) != strlen($str2)){
-		            return false;
-		        }else{
-		            $res = $str1 ^ $str2;
-		            $ret = 0;
-		            for($i = strlen($res) - 1; $i >= 0; $i--){
-		                $ret |= ord($res[$i]);
-		            }
-		            return !$ret;
-		        }
-		    }
-		}
 		if (hash_equals($hmac, $calcmac)){
 		    return $original_plaintext;
 		}else{
@@ -1679,7 +1684,7 @@ function get_caller_info() {
 	}
 
 #####################################################################
-# 	COMPRIME OS ARQUIVOS DO SITE PARA GZIP
+# 	ORGANIZA PATH E URLS
 #####################################################################
 		function normalizePath($path) {
 			$parts    = array();

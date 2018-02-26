@@ -152,8 +152,15 @@
 			$dh = opendir($dir);
 			while($diretorio = readdir($dh)){
 				if($diretorio != '..' && $diretorio != '.' && is_dir($dir.'/'.$diretorio)){
+
+
+				$dataPath = '/'.implode(array_filter(explode('/',str_replace(INCLUDE_PATH.'website',"",$dir.'/'.$diretorio))),"/");
+
+
 					if(!file_exists($dir.'/'.$diretorio.'/.htaccess')){ file_put_contents($dir.'/'.$diretorio.'/.htaccess',"#".PHP_EOL."#".PHP_EOL."#Exclua apenas se souber o que está fazendo.".PHP_EOL."#".PHP_EOL."#".PHP_EOL."RewriteEngine off");}
-					echo '<div class="w1 folder_alert folder" data-folder="'.str_replace(INCLUDE_PATH.'website',"",$dir.'/'.$diretorio).'">'.$diretorio."</div>".PHP_EOL;
+					echo '<div class="w1 folder_alert folder" data-folder="'.$dataPath.'">'.$diretorio."</div>".PHP_EOL;
+					// echo '<div class="w1 folder_alert folder" data-new="/'.$dataPath.'" data-folder="'.str_replace(INCLUDE_PATH.'website',"",$dir.'/'.$diretorio).'">'.$diretorio."</div>".PHP_EOL;
+					
 					echo "<div class='w1 container'>".PHP_EOL;
 					CriaPastas($dir.'/'.$diretorio."/",$oq);
 					if($oq==1 || $oq==true) MostraFiles($dir.'/'.$diretorio."/");
@@ -170,9 +177,12 @@
 				$ext = @$ext[1];
 				if(	isset($ext)		&&($ext=="txt" 	||$ext=="htm" 	||$ext=="html" 	||$ext=="xhtml" 	||$ext=="xml" 	||$ext=="js"	 	||$ext=="json" 	||$ext=="php" 	||$ext=="css" 	||$ext=="less" 	||$ext=="sass" 	||$ext=="htaccess"||$ext=="key" 	||$ext=="asp" 	||$ext=="aspx" 	||$ext=="net" 	||$ext=="conf" 	||$ext=="ini" 	||$ext=="sql" 	||$ext=="as" 		||$ext=="htc" 	|| $ext=="--")){
 					
+
+					$dataNewPath = implode(_array_filter(explode('/',$dir.$arquivo)),"/");
+
 					if(substr($dir,-1)!="/"){$dir=$dir.'/';}
 
-					echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dir.$arquivo.'"  >'.$arquivo."</div>".PHP_EOL;
+					echo '	<div class="w1 file '.$ext.' multiplos" data-id="null" data-file="'.$dataNewPath.'">'.$arquivo."</div>".PHP_EOL;
 				
 				};
 			};
@@ -256,10 +266,7 @@
 							window.refreshClick();
 							ws.preload.close()
 						})
-					}
-
-
-					
+					}			
 					window.funcTabs = function() {
 						$(".fileTabContainer .fileTab").unbind("tap click").bind("tap click", function() {
 							$(".fileTab").removeClass("active");
@@ -286,12 +293,14 @@
 										window.closeToSave = true;
 										setTimeout(function() {
 											$("#salvarArquivo").click();
+											$("#Balao_ToolType").remove();
 										}, 1000)
 									},
 									onCancel: function() {
 										if (window.pathFile == $(aba).parent().attr("data-pathFile") && window.loadFile == $(aba).parent().attr("data-loadFile")) {
 											delete window.listFilesWebmaster[$(aba).parent().attr("data-token")];
 											$(aba).parent().remove();
+											$("#Balao_ToolType").remove();
 											window.resizeTab()
 											if ($(".fileTabContainer .fileTab").length) {
 												$(".fileTabContainer .fileTab:last-child").click();
@@ -304,6 +313,7 @@
 										} else {
 											delete window.listFilesWebmaster[$(aba).parent().attr("data-token")];
 											$(aba).parent().remove();
+											$("#Balao_ToolType").remove()
 											window.resizeTab()
 											if (!$(".fileTabContainer .fileTab").length) {
 												window.pathFile = null;
@@ -324,6 +334,7 @@
 								if (window.pathFile == $(aba).parent().attr("data-pathFile") && window.loadFile == $(aba).parent().attr("data-loadFile")) {
 									delete window.listFilesWebmaster[$(aba).parent().attr("data-token")];
 									$(aba).parent().remove();
+									$("#Balao_ToolType").remove()
 									window.resizeTab()
 									if ($(".fileTabContainer .fileTab").length) {
 										$(".fileTabContainer .fileTab:last-child").click();
@@ -336,6 +347,7 @@
 								} else {
 									delete window.listFilesWebmaster[$(aba).parent().attr("data-token")];
 									$(aba).parent().remove();
+									$("#Balao_ToolType").remove()
 									window.resizeTab()
 									if (!$(".fileTabContainer .fileTab").length) {
 										window.pathFile = null;
@@ -478,9 +490,17 @@
 						}
 						<?
 						// CASO TENHA ALGUM PATH DE ARQUIVO PARA ABRIR "LOAD" 
-						if (isset($_GET['get_file']) && $_GET['get_file'] != ""): ?> setTimeout(function() {
-							$(".file[data-file='<?=$_GET['get_file']?>']").click();
-						}, 500); <? endif; ?>
+						if (isset($_GET['get_file']) && $_GET['get_file'] != ""): ?> 
+							setTimeout(function() {
+								var openDirectFile = "<?=ws::includePath.'website/'.$_GET['get_file']?>";
+								var VerifyOptExist = $(".file[data-file='"+openDirectFile+"']").length;
+								if(VerifyOptExist>0){ 
+									$(".file[data-file='"+openDirectFile+"']").click();
+								}else{ 
+									TopAlert({mensagem: "Este arquivo não existe",type: 2});
+								}
+							},500); 
+						<? endif; ?>
 					}, 1000);
 					$("#Balao_TollType").remove();
 					sanfona('.folder');
@@ -684,25 +704,10 @@
 													$("*").removeClass("blur");
 
 											})
-
-
-
-
-
-
-
-
-
-
-
-
 										}
 									})
 							})
 						})
-
-
-
 						$('#formatHTML').unbind('tap press click').bind('tap press click', function() {
 							confirma({
 								conteudo: '<iframe id="bootstrap" src="<?=ws::rootPath?>admin/app/ws-modules/ws-webmaster/formatter/index.php" width="100%" height="100%" scrolling="no"></iframe>',
@@ -717,8 +722,6 @@
 										$('#bootstrap')[0].contentWindow.beautify();
 								}
 							})
-
-
 
 							//window.htmEditor.setValue(ws.string.formatHTML(window.htmEditor.getValue()));
 						})

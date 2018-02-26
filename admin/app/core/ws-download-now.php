@@ -12,7 +12,9 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 
 	############################################################################################################################################
 	include(INCLUDE_PATH.'admin/app/lib/class-ws-v1.php');
-	$file_url = INCLUDE_PATH.'website/'.$_GET['filename'];
+	
+	$file_url = INCLUDE_PATH.$_GET['filename'];
+
 	header('Content-Type: application/octet-stream');
 	header("Content-Transfer-Encoding: Binary"); 
 	header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
