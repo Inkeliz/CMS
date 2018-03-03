@@ -116,7 +116,10 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$template->ToolsManager_ToolDetails_modal_saving			=	ws::getLang("ToolsManager>ToolDetails>modal>saving");
 	$template->ToolsManager_ToolDetails_modal_save_sucess		=	ws::getLang("ToolsManager>ToolDetails>modal>save>sucess");
 	$template->ToolsManager_ToolDetails_AddHTML					=	ws::getLang("ToolsManager>ToolDetails>AddHTML");
+	$template->ToolsManager_ToolDetails_MaxItem					=	ws::getLang("ToolsManager>ToolDetails>MaxItem");
 	
+
+	$template->max_item 										=	stripcslashes($FERRAMENTA['max_item']);
 	$template->_js_ 											=	stripcslashes($FERRAMENTA['_js_']);
 	$template->html_item										=	stripcslashes($FERRAMENTA['html_item']);
 	$template->html_img											=	stripcslashes($FERRAMENTA['html_img']);

@@ -2664,11 +2664,16 @@
 		$Salva->set_where('id="' . $_REQUEST['ws_id_ferramenta'] . '"');
 		$_getInput = array();
 		parse_str($_REQUEST['inputs'], $_getInput);
+
 		if (empty($_getInput['_menu_popup_'])) {
 			$_getInput['_menu_popup_'] = '0';
 		} else {
 			$_getInput['_menu_popup_'] = '1';
 		}
+
+		if (empty($_getInput['max_item'])) {
+			$_getInput['max_item'] = '0';
+		} 
 
 		if (empty($_getInput['_keywords_'])) {
 			$_getInput['_keywords_'] = '0';
@@ -2714,6 +2719,7 @@
 		}
 		
 		// $Salva->set_update('_grupo_pai_', 0);
+		$Salva->set_update('max_item', $_getInput['max_item']);
 		$Salva->set_update('_prefix_', $_getInput['_prefix_']);
 		$Salva->set_update('_menu_popup_', $_getInput['_menu_popup_']);
 		$Salva->set_update('_tit_menu_', $_getInput['_tit_menu_']);

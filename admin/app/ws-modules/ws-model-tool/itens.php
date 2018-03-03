@@ -82,9 +82,24 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 			$_SET_TEMPLATE_INPUT->block("FORM_SEARCH");
 			$_SET_TEMPLATE_INPUT->clear("LINK_BACK");
 			$_SET_TEMPLATE_INPUT->clear("KEYWORK");
-			$_SET_TEMPLATE_INPUT->block("BT_ADD");
 			$_SET_TEMPLATE_INPUT->block("FILTER_KEYUP");
+			$_SET_TEMPLATE_INPUT->block("BT_ADD");
+
+			$itens = new MySQL();
+			$itens->url('decode');
+			$itens->set_table(PREFIX_TABLES . "_model_item ");
+			$itens->set_where('ws_id_draft="0" AND ws_id_ferramenta="' . $_GET['ws_id_ferramenta'] . '" ');
+			$itens->select();
+	 		if ($_GET['ws_nivel']>=0 && $_FERRAMENTA_['max_item'] >=1  &&  count($itens->fetch_array)>=$_FERRAMENTA_['max_item']) {
+				$_SET_TEMPLATE_INPUT->hideAdd = "display:none";
+	 		}else{
+				$_SET_TEMPLATE_INPUT->hideAdd = "display:block";
+	 		}
 	}
+
+
+
+
 
 	####################################################################################
 	# CASO A PAGINAÇÃO SEJA "ALL" E Ñ TENHA PESQUISA, ELE MOSTRA O BOTÃO DE MOVER O ÍTEM
@@ -96,6 +111,11 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	if ($_FERRAMENTA_['_niveis_'] >= 1) {
 			$_SET_TEMPLATE_INPUT->block("BT_CAT");
 	}
+
+
+
+
+
 	$s = new MySQL();
 	$s->set_table(PREFIX_TABLES . "ws_ferramentas");
 	$s->set_where('id="' . $_GET['ws_id_ferramenta'] . '"');
@@ -107,7 +127,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	$itens->url('decode');
 	$itens->set_table(PREFIX_TABLES . "_model_item ");
 	$itens->set_where(' ws_id_draft="0" ');
-	// $itens->set_where(' AND id_cat="' . $_GET['id_cat'] . '" ');
 	$itens->set_where(' AND ws_id_ferramenta="' . $_GET['ws_id_ferramenta'] . '" ');
 	$itens->set_colum('id');
 	$itens->set_colum('posicao');
@@ -149,8 +168,6 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 		########################################################################
 		# PAGINAÇÃO
 		########################################################################
-
-
 		if($_GET['LIMIT']!="All" && empty($_GET['keywork'])){
 			$totalResults = new MySQL();
 			$totalResults->set_table(PREFIX_TABLES . "_model_item ");
@@ -279,6 +296,8 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 			########################################################################
 			$_SET_TEMPLATE_INPUT->block("TR_ITEM");		
 	}
+
+
 
 	$_SET_TEMPLATE_INPUT->block("ITEM_LIST");
 	$_SET_TEMPLATE_INPUT->show();

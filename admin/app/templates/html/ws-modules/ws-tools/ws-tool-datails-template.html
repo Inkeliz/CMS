@@ -40,7 +40,7 @@
 
 
 				<div class="label w1 _menu_popup_">{ToolsManager_ToolDetails_toolType}</div>
-				<div class="w1">
+				<div class="w1" style="padding: 10px 10px;">
 					<label style="text-align: left;"><input class="inputText _menu_popup_"	name="_niveis_"	type="radio" value="-1"  {checked1} style="position: relative; width: 15px; height: 15px; top: 2px; ">{ToolsManager_ToolDetails_label_anItem}</label>
 					<label style="text-align: left;"><input class="inputText _menu_popup_"	name="_niveis_"	type="radio" value="0" 	 {checked2} style="position: relative; width: 15px; height: 15px; top: 2px; ">{ToolsManager_ToolDetails_label_list}</label>
 					<label style="text-align: left;"><input class="inputText _menu_popup_"	name="_niveis_"	type="radio" value="1" 	 {checked3} style="position: relative; width: 15px; height: 15px; top: 2px; ">{ToolsManager_ToolDetails_label_category}</label>
@@ -48,15 +48,14 @@
 
 				<div class="c"></div>
 
+				<div class=" max label w1" style="padding:17px 10px;">{ToolsManager_ToolDetails_MaxItem}</div>
+				<input name="max_item" min="0" type="number" class=" max inputText" placeholder=""	value="{max_item}">
 
-
-
+				<div class="c"></div>
 
 				<div class="w1">
 					<label style="text-align: left;width: 50%;position: relative;float: left;padding: 20px 10px;;"><input class="inputText _menu_popup_"	name="_plugin_"	type="checkbox" {_plugin_} style="position: relative; width: 15px; height: 15px; top: 2px; ">{ToolsManager_ToolDetails_toolIsPartOfAPlugin}</label>
 				</div>
-
-
 
 				<div class="c"></div>
 				<div class="label w1 _menu_popup_" style="width: 570px;font-size:26px">{ToolsManager_ToolDetails_columnsWillBeDisplayed}</div>
@@ -118,6 +117,7 @@ _root.reloadFunctions = function(){
 				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
 			});
 		})
+
 		$("#editar_campos_item").unbind('click').click(function(){
 			confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_loading}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
 			if(_root.form_preenchido!= $("#form_basico").serialize()){
@@ -145,83 +145,99 @@ _root.reloadFunctions = function(){
 		$("#voltar_basico").unbind('click').click(function(){ $('#conteudo').load("./index.php"); })
 
 		$("input[type=checkbox]").click(function(){if ( $(this).is(':checked') ) {$(this).val('1');}else{$(this).val('0');}})
-		$("#salvar_basico").unbind('click').click(function(){
-			if($('input[name="_slug_"]').val()==""){
-				TopAlert({
-					mensagem: "{ToolsManager_ToolDetails_TopAlert_setSlug}",
-					clickclose: true,
-					height: 20,
-					timer: 9000,
-					type: 1,
-				})
-			}else if($('input[name="_tit_menu_"]').val()==""){
-				TopAlert({
-					mensagem: "{ToolsManager_ToolDetails_TopAlert_setTitle}",
-					clickclose: true,
-					height: 20,
-					timer: 9000,
-					type: 1,
-				})
-			}else if($('input[name="_tb_"]').val()=="" && $( "input[type='checkbox'][name='_menu_popup_']" ).val()=='0'){
-				TopAlert({
-					mensagem: "{ToolsManager_ToolDetails_TopAlert_setMySQL}",
-					clickclose: true,
-					height: 20,
-					timer: 9000,
-					type: 1,
-				})
-			}else{
-				var inputs = $("#form_basico").serialize();
-				if($("#InfoItemSelect_chosen .chosen-choices .search-choice").length>=1){
-					var chos ="&det_listagem_item="+$("#InfoItemSelect").chosen().val().join(',')
-				}else{
-					var chos ="&det_listagem_item=&";
-				}
-				$.ajax({
-				  type: "POST",
-				  cache: false,
-				  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
-				  beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-				  data: {
-				  	_js_:window.javascriptAuxiliar.getSession().getValue(),
-				  	html_item:$("#html_item").val(), 
-				  	html_cat:$("#html_cat").val(), 
-				  	html_img:$("#html_img").val(), 
-				  	html_gal:$("#html_gal").val(), 
-				  	html_img_gal:$("#html_img_gal").val(), 
-				  	html_file:$("#html_file").val(), 
-				  	function:"salvaFerramenta",
-				  	ws_id_ferramenta: "{WS_ID_FERRAMENTA}",
-				  	inputs:inputs+chos
-				  }
-				}).done(function(e) {
-					if(e=="sucesso"){
-						window.refreshMenuDesktop();
-						_root.form_preenchido = inputs;
-						if(window.gotoCampos==true){
-							$("#editar_campos_item").click();
-						}
 
-						TopAlert({
-							mensagem: "{ToolsManager_ToolDetails_modal_save_sucess}",
-							clickclose: true,
-							height: 20,
-							timer: 9000,
-							type: 3
-						});
-					}else{
-						TopAlert({
-							mensagem: e,
-							clickclose: true,
-							height: 50,
-							timer: 9000,
-							type: 2
-						})
-					}
-					$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
-				});
-			}
+		$("input[name='_niveis_']").click(function(){
+			if( $(this).val()== -1){
+				$('.max').hide();
+			}else{
+				$('.max').show();
+			};
 		})
+		if( $("input[type='radio'][name='_niveis_']:checked").val()==-1){
+			$('.max').hide();
+		}else{
+			$('.max').show();
+		};
+
+
+
+	$("#salvar_basico").unbind('click').click(function(){
+		if($('input[name="_slug_"]').val()==""){
+			TopAlert({
+				mensagem: "{ToolsManager_ToolDetails_TopAlert_setSlug}",
+				clickclose: true,
+				height: 20,
+				timer: 9000,
+				type: 1,
+			})
+		}else if($('input[name="_tit_menu_"]').val()==""){
+			TopAlert({
+				mensagem: "{ToolsManager_ToolDetails_TopAlert_setTitle}",
+				clickclose: true,
+				height: 20,
+				timer: 9000,
+				type: 1,
+			})
+		}else if($('input[name="_tb_"]').val()=="" && $( "input[type='checkbox'][name='_menu_popup_']" ).val()=='0'){
+			TopAlert({
+				mensagem: "{ToolsManager_ToolDetails_TopAlert_setMySQL}",
+				clickclose: true,
+				height: 20,
+				timer: 9000,
+				type: 1,
+			})
+		}else{
+			var inputs = $("#form_basico").serialize();
+			if($("#InfoItemSelect_chosen .chosen-choices .search-choice").length>=1){
+				var chos ="&det_listagem_item="+$("#InfoItemSelect").chosen().val().join(',')
+			}else{
+				var chos ="&det_listagem_item=&";
+			}
+			$.ajax({
+			  type: "POST",
+			  cache: false,
+			  url: "{ROOT_WEBSHEEP}admin/app/ws-modules/ws-tools/functions.php",
+			  beforeSend:function(){confirma({width:"auto",conteudo:"  {ToolsManager_ToolDetails_modal_saving}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"{ROOT_WEBSHEEP}admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+			  data: {
+			  	_js_:window.javascriptAuxiliar.getSession().getValue(),
+			  	html_item:$("#html_item").val(), 
+			  	html_cat:$("#html_cat").val(), 
+			  	html_img:$("#html_img").val(), 
+			  	html_gal:$("#html_gal").val(), 
+			  	html_img_gal:$("#html_img_gal").val(), 
+			  	html_file:$("#html_file").val(), 
+			  	function:"salvaFerramenta",
+			  	ws_id_ferramenta: "{WS_ID_FERRAMENTA}",
+			  	inputs:inputs+chos
+			  }
+			}).done(function(e) {
+				if(e=="sucesso"){
+					window.refreshMenuDesktop();
+					_root.form_preenchido = inputs;
+					if(window.gotoCampos==true){
+						$("#editar_campos_item").click();
+					}
+
+					TopAlert({
+						mensagem: "{ToolsManager_ToolDetails_modal_save_sucess}",
+						clickclose: true,
+						height: 20,
+						timer: 9000,
+						type: 3
+					});
+				}else{
+					TopAlert({
+						mensagem: e,
+						clickclose: true,
+						height: 50,
+						timer: 9000,
+						type: 2
+					})
+				}
+				$("#ws_confirm").remove();$("#body").removeClass("scrollhidden");$("*").removeClass("blur");
+			});
+		}
+	})
 	$('#container').perfectScrollbar({suppressScrollX: true});
 }	
 	if($('#Balao_ToolType').length){$('#Balao_ToolType').remove();}

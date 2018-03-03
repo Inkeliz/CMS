@@ -37,7 +37,7 @@
 		<div id="bt_categorias" class="botao">{modulo_itens_buttons_category}</div>
 		<!-- END BT_CAT -->
 		<!-- BEGIN BT_ADD -->
-		<div id="bt_Add_Galeria" class="botao">{modulo_itens_buttons_addItem}</div>
+		<div id="bt_Add_Galeria" class="botao" style="{hideAdd}">{modulo_itens_buttons_addItem}</div>
 		<!-- END BT_ADD -->
 	</div>
 </div>
@@ -190,24 +190,26 @@
 				$("#body").removeClass("scrollhidden");
 				$("*").removeClass("blur");
 			});
-		})
+		});
+
+
 		$("#bt_Add_Galeria").unbind('click').bind("click",function(){
-				$.ajax({
-				  type: "POST",
-				  url: "./{PATH}/functions.php",
-				  beforeSend:function(){confirma({width:"auto",conteudo:"  {modulo_itens_modal_addItem_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
-				  data: {"function":"addItem","id_cat":"{ID_CAT}","ws_nivel":"{WS_NIVEL}" ,"ws_id_ferramenta":"{ID_FERRAMENTA}"}
-				}).done(function(data) {
-					var json = jQuery.parseJSON(data);
-					if(json.resposta=="sucesso"){
-						confirma({width:"auto",conteudo:"  {modulo_itens_modal_loading_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
-							$("#conteudo").load("./{PATH}/detalhes.php?PAGE={PAGE}&LIMIT={LIMIT}&token_group={TOKEN_GROUP}&ws_id_ferramenta={ID_FERRAMENTA}&id_cat={ID_CAT}&ws_nivel={WS_NIVEL}&id_item="+json.id,function(){
-							$("#ws_confirm").remove();
-							$("#body").removeClass("scrollhidden");
-							$("*").removeClass("blur");
-						});
-					}
-				});
+			$.ajax({
+				type: "POST",
+				url: "./{PATH}/functions.php",
+				beforeSend:function(){confirma({width:"auto",conteudo:"  {modulo_itens_modal_addItem_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 68px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0})},
+				data: {"function":"addItem","id_cat":"{ID_CAT}","ws_nivel":"{WS_NIVEL}" ,"ws_id_ferramenta":"{ID_FERRAMENTA}"}
+			}).done(function(data) {
+				var json = jQuery.parseJSON(data);
+				if(json.resposta=="sucesso"){
+					confirma({width:"auto",conteudo:"  {modulo_itens_modal_loading_content}<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top: 53px;background-image:url(\"./app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",drag:false,bot1:0,bot2:0});
+					$("#conteudo").load("./{PATH}/detalhes.php?PAGE={PAGE}&LIMIT={LIMIT}&token_group={TOKEN_GROUP}&ws_id_ferramenta={ID_FERRAMENTA}&id_cat={ID_CAT}&ws_nivel={WS_NIVEL}&id_item="+json.id,function(){
+						$("#ws_confirm").remove();
+						$("#body").removeClass("scrollhidden");
+						$("*").removeClass("blur");
+					});
+				}
+			});
 		})
 
 		$("#ws_confirm #ws_confirm_conteudo #form-img").ajaxForm({
@@ -266,10 +268,14 @@
 							$("#body").removeClass("scrollhidden");
 							$("*").removeClass("blur");
 							if(e.indexOf('sucesso')>=0){
-								$('.data-tbl-simple tr#'+iDgaleria).fadeOut(400, function(){
-									$(this).remove();
-									window.DesativaTabela();
-									window.AtivaTabela();
+								$('.table-tr#'+iDgaleria).fadeOut(400, function(){
+									$('.table-tr#'+iDgaleria).remove();
+
+									if($('.search').length){
+										$("#bt_Add_Galeria").show('fade');
+									}
+
+
 								}); 
 								TopAlert({
 									mensagem:'{modulo_itens_topAlert_sucessDelete}',
