@@ -2,7 +2,7 @@
 	"version":"0.6.3",
 	"minVersion":"0.6.3",
 	"license":"https://raw.githubusercontent.com/websheep/CMS/v.6.3/LICENSE.md",
-    "alert":"Atenção!",
-    "commit":null,
-    "features": []
+    	"alert":"Atenção!",
+	"commit":null,
+   	"features": []
 }
