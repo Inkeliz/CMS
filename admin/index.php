@@ -34,29 +34,29 @@
 	############################################################################################################################
 	# CASO NÃO TENHA SIDO VERIFICADO OU SEJA UMA NOVA INSTALAÇÃO/UPDATE IMPORTA VERIFICAÇÃO DO SERVIDOR
 	############################################################################################################################
-	if(
-		!file_exists(INCLUDE_PATH.'admin/app/config/ws-server-ok')
-	){
-		include_once(INCLUDE_PATH.'admin/app/config/ws-verify-server.php');
-	}
+		if(
+			!file_exists(INCLUDE_PATH.'admin/app/config/ws-server-ok')
+		){
+			include_once(INCLUDE_PATH.'admin/app/config/ws-verify-server.php');
+		}
 
 	############################################################################################################################################
 	# IMPORTAMOS AS FUNÇÕES GLOBAIS 
 	############################################################################################################################################
-	include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/ws-globals-functions.php');
 
 	############################################################################################################################
 	# CASO NÃO EXISTA O 'ws-config.php' IMPORTA A TELA DE SETUP
 	############################################################################################################################
-	if(!file_exists(INCLUDE_PATH.'ws-config.php')) {
-		include_once(INCLUDE_PATH.'admin/app/core/ws-setup.php');
-		exit;
-	}
+		if(!file_exists(INCLUDE_PATH.'ws-config.php')) {
+			include_once(INCLUDE_PATH.'admin/app/core/ws-setup.php');
+			exit;
+		}
 
 	############################################################################################################################################
 	# ANTES DE TUDO, VERIFICA SE JÁ TEMOS AS VARIÁVEIS NO HTACCESS E SE ESTÃO CORRETAS
 	############################################################################################################################################
-	include_once(INCLUDE_PATH.'admin/app/lib/ws-refresh-paths.php');
+		include_once(INCLUDE_PATH.'admin/app/lib/ws-refresh-paths.php');
 
 
 	############################################################################################################################
@@ -67,9 +67,9 @@
 	############################################################################################################################
 	#	CASO SEJA O 1° ACESSO, IMPORTA A TELA DE INSTALAÇÃO
 	############################################################################################################################
-	if(file_exists(INCLUDE_PATH.'admin/app/config/firstacess') && file_get_contents(INCLUDE_PATH.'admin/app/config/firstacess')=='true'){
-		include(INCLUDE_PATH.'admin/app/core/ws-install.php');exit;
-	}
+		if(file_exists(INCLUDE_PATH.'admin/app/config/firstacess') && file_get_contents(INCLUDE_PATH.'admin/app/config/firstacess')=='true'){
+			include(INCLUDE_PATH.'admin/app/core/ws-install.php');exit;
+		}
 
 	############################################################################################################################
 	#	CASO ESTEJA LOGADO DIRETAMENTE COM ACCESSKEY

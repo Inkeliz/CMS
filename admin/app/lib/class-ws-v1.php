@@ -1607,29 +1607,35 @@
 								) ? $this->ws_prefix_ferramenta . $newKey[0] : $newKey[0];
 
 					if (count($newKey) == 1) {
-						$b[] = "{{" . $this->aliasStr . $key . "}}";
+						$b[] = "{{".$ALIAS.$key."}}";
 						$c[] = @$retorno[$COLUNA];
 						// se tiver 2 parâmetros
 					} elseif (count($newKey) >= 2) {
 						$verify = implode(array_slice($newKey, 1), ',');
 						if (count($newKey) == 2) {
 							if (is_numeric(@$newKey[1]) || is_int(@$newKey[1])) {
-								$b[] = "{{" . $key . "}}";
+								$b[] = "{{".$ALIAS.$key."}}";
 								$c[] = substr(strip_tags(str_replace("_ws_php_eol_", PHP_EOL, @$retorno[$COLUNA])), 0, $newKey[1]);
 							} else {
 								$result = str_replace("_ws_php_eol_", PHP_EOL, $newKey[1](@$retorno[$COLUNA]));
-								$b[]    = "{{" . $this->aliasStr . $key . "}}";
+								$b[]    = "{{".$ALIAS.$key."}}";
 								$c[]    = $result;
 							}
 						// se for o campo 1° e depois a função depois parametros
 						} elseif (count($newKey) > 2) {
-							$vars = str_replace("(this)", @$retorno[$COLUNA], implode(array_slice($newKey, 2), '","'));						
-							$func = $newKey[1];
-							$b[] = "{{" . $this->aliasStr . $key . "}}";
-							$c[] = $func($vars);
+							$function 	= $newKey[1];
+							$newArrayKeys = array_slice($newKey, 2);
+							foreach ($newArrayKeys as $key => $value) {
+								if(is_string($value) && !is_numeric($value)){
+									$newArrayKeys[$key]  = str_replace("(this)", @$retorno[$COLUNA],$value);
+								}else{
+									$newArrayKeys[$key]  = $value;
+								}
+							}
+							$b[] = "{{".$ALIAS.implode($newKey,',')."}}";
+							$c[] = call_user_func_array($function,$newArrayKeys);
 						}
 					}
-					
 				}
 			}
 			$processo = str_replace($b, $c, $this->template);

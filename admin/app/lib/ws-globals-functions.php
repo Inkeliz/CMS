@@ -37,6 +37,43 @@ function _array_filter($array=array(),$filter="strlen") {
 #########################################################################
 # CAPTA UM CALL DE ERRO
 #########################################################################
+function videoData($url = null, $data = "player", $w = null, $h = null, $default = null, $autoplay = "0") {
+	$types = array('site', 'url', 'title', 'description', 'image', 'player', 'id');
+	if ($url == null || (!strpos($url, "youtube") && !strpos($url, "vimeo"))) {
+		if ($default == null) {
+			return _erro("Erro ba função videoData, permitido apenas link do youtube ou vímeo");
+		} else {
+			return $default;
+		}
+	} elseif (!in_array($data, $types)) {
+		return _erro("Erro na função videoData.<br>Os valores permitidos: site, url, title, description, image e player");
+	} else {
+		$tags = get_meta_tags($url);
+		if ($w == null && $h == null) {
+			$w = $tags['twitter:player:width'];
+			$h = $tags['twitter:player:height'];
+		}
+		if ($data == "player") {
+			return '<iframe width="' . $w . '" height="' . $h . '" src="' . $tags['twitter:' . $data] . '?autoplay=' . $autoplay . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		} elseif ($data == "site") {
+			$tags['twitter:' . $data] = str_replace(array(
+				'@'
+			), '', $tags['twitter:' . $data]);
+			return $tags['twitter:' . $data];
+		} elseif ($data == "id") {
+			$tags['twitter:player'] = str_replace(array(
+				'https://player.vimeo.com/video/',
+				'https://www.youtube.com/embed/'
+			), '', $tags['twitter:player']);
+			return $tags['twitter:player'];
+		} else {
+			return $tags['twitter:' . $data];
+		}
+	}
+}
+#########################################################################
+# CAPTA UM CALL DE ERRO
+#########################################################################
 
 function get_caller_info() {
     $c 		= '';
@@ -110,7 +147,7 @@ function get_caller_info() {
 			}
 			$newClass[] =  $line;		
 		}
-		copy($pathDestino,$pathDestino.'.bkp');
+		copy($pathDestino,$pathDestino.'.bkp.'.rand(0,999999999999));
 		file_put_contents($pathDestino, implode(PHP_EOL,$newClass));
 	}
 	

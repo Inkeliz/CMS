@@ -497,6 +497,7 @@ class htmlProcess{
 			return str_replace(array('_ws_php_eol_','<!-- [ws] -->'),array(PHP_EOL,""), $html);
 	}
 	public static function process_tag_ws_tool($key=null){
+		
 		$Newkey 		= self::minify_html($key->outertext());
 		$Newkey 		= str_get_html($Newkey);
 		$Newkey 		= $Newkey->find('ws-tool',0);

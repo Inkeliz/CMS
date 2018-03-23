@@ -257,6 +257,12 @@ $(document).ready(function(){
 						return false;
 					});
 
+					$(".reportBugs").unbind("click tap press").bind("click tap press",function(e) {
+						e.preventDefault();
+						$('#conteudo').html('<iframe src="//api.websheep.com.br/report-bugs/" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;margin:0;"></iframe>');
+						return false;
+					});
+
 
 					$(".biblioteca").unbind("click tap press").bind("click tap press",function(e) {
 						e.preventDefault();

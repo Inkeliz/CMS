@@ -166,6 +166,8 @@
 	$menu_dashboard->logRecords 					= ws::getlang('dashboard>lateralMenu>logRecords');
 	$menu_dashboard->label_logout					= ws::getlang('dashboard>lateralMenu>Logout');
 	$menu_dashboard->label_reportBugs				= ws::getlang('dashboard>lateralMenu>reportBugs');
+	$menu_dashboard->label_update					= ws::getlang('dashboard>lateralMenu>update');
+
 	$menu_dashboard->dashboard_modal_logOut_content	= ws::getlang('dashboard>modal>logOut>content');
 	$menu_dashboard->dashboard_modal_logOut_bot1	= ws::getlang('dashboard>modal>logOut>bot1');
 	$menu_dashboard->dashboard_modal_logOut_bot2	= ws::getlang('dashboard>modal>logOut>bot2');

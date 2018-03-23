@@ -208,6 +208,7 @@
 				"manage": "Gerenciar",
 				"installedPlugins": "Plugins instalados"
 			},
+			"update": "Update e Restauração",
 			"FTP": "FTP",
 			"CodeEditor": "Editor de códigos",
 			"PanelConfiguration": "Configuração do painel",

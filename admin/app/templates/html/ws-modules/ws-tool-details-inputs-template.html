@@ -423,9 +423,9 @@
 <!-- END BLOCK_BOT_GALERIAS -->
 
 <!-- BEGIN BLOCK_BOT_TOOLS -->
-	<div style="width:calc({WIDTH}% - 3px);" class="botao botao_adicional" id="InnerToll" {LEGENDA}>{LABEL}</div>
+	<div style="width:calc({WIDTH}% - 3px);" class="botao botao_adicional" id="InnerToll_{VALUE}" {LEGENDA}>{LABEL}</div>
 	<script>
-		$("#InnerToll").unbind("click").click(function() {
+		$("#InnerToll_{VALUE}").unbind("click").click(function() {
 			confirma({
 				width: "auto",
 				conteudo: "<div class=\'preloaderupdate\' style=\'left: 50%;margin-left: -15px; position: absolute;width: 30px;height: 18px;top:35px;background-image:url(\""+ws.rootPath +"admin/app/templates/img/websheep/loader_thumb.gif\");background-repeat:no-repeat;background-position: top center;\'></div>",
