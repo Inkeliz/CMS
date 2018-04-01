@@ -14,10 +14,10 @@
 	# DEFINIMOS O ROOT DO SISTEMA
 	############################################################################################################################################
 		if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+			$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+			$path = implode(array_filter(explode('/',$path)),"/");
+			define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+		}
 
 		if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
 
@@ -47,18 +47,20 @@
 					"{SENHA_BD}",
 					"{SERVIDOR_BD}",
 					"{RECAPTCHA}",
-					"{LANG}"
+					"{LANG}",
+					'{{domain}}',
 					);
-				$porisso       = Array(
-									str_replace(PHP_EOL, "", $data['DOMINIO']),
-									str_replace(PHP_EOL, "", strtolower($data['PREFIX_TABLES'])),
-									str_replace(PHP_EOL, "", strtolower($data['NOME_BD'])),
-									str_replace(PHP_EOL, "", $data['USUARIO_BD']),
-									str_replace(PHP_EOL, "", $data['SENHA_BD']),
-									str_replace(PHP_EOL, "", strtolower($data['SERVIDOR_BD'])),
-									str_replace(PHP_EOL, "", $data['RECAPTCHA']),
-									$data['LANG']
-								);
+				$porisso= Array(
+					str_replace(PHP_EOL, "", $data['DOMINIO']),
+					str_replace(PHP_EOL, "", strtolower($data['PREFIX_TABLES'])),
+					str_replace(PHP_EOL, "", strtolower($data['NOME_BD'])),
+					str_replace(PHP_EOL, "", $data['USUARIO_BD']),
+					str_replace(PHP_EOL, "", $data['SENHA_BD']),
+					str_replace(PHP_EOL, "", strtolower($data['SERVIDOR_BD'])),
+					str_replace(PHP_EOL, "", $data['RECAPTCHA']),
+					$data['LANG'],
+					$_SERVER['HTTP_HOST'],
+				);
 				
 				$isso_Password = array(
 									'{ID_SESS}',

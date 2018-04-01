@@ -1096,6 +1096,8 @@ function loadFile($pathFile=null){
 		$path 							=	dirname(implode("/",array_filter(explode("/",$pathFile))));
 		$file 							=	basename($pathFile);
 
+		if(!file_exists($pathFile) && file_exists('/'.$pathFile)){$pathFile = '/'.$pathFile;}
+
 
 		// $file_exists_dir 				= 	new MySQL();
 		// $file_exists_dir->set_table(PREFIX_TABLES.'ws_webmaster');

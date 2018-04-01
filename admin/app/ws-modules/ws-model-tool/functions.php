@@ -1202,8 +1202,9 @@
 		$iDimg = $_REQUEST['iDimg'];
 		$Dados = new MySQL();
 		$Dados->set_table(PREFIX_TABLES . '_model_files');
-		$Dados->set_where('id=' . $iDimg);
+		$Dados->set_where('id='.$iDimg);
 		$Dados->select();
+	
 		$arquivo    = $Dados->obj[0]->file;
 		$token      = $Dados->obj[0]->token;
 		$Biblioteca = new MySQL();

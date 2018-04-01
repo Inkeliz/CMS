@@ -43,10 +43,10 @@
 		_copyFolder('admin/app/ws-modules/plugins', 'website/plugins',true);
 		_copy(INCLUDE_PATH."admin/app/lib/my-shortcode.php",INCLUDE_PATH."ws-shortcodes/my-shortcode.php",false);
 
-		_file_put_contents(INCLUDE_PATH.'website/includes/header.php', 'Header<hr>',true,true);
-		_file_put_contents(INCLUDE_PATH.'website/includes/erro404.php', 'ERRO 404!',true,true);
-		_file_put_contents(INCLUDE_PATH.'website/includes/inicio.php', 'Olá mundo!',true,true);
-		_file_put_contents(INCLUDE_PATH.'website/includes/footer.php', '<hr>Footer',true,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/header.php', 'Header<hr>',false,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/erro404.php', 'ERRO 404!',false,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/inicio.php', 'Olá mundo!',false,true);
+		_file_put_contents(INCLUDE_PATH.'website/includes/footer.php', '<hr>Footer',false,true);
 		_file_put_contents(INCLUDE_PATH.'website/assets/.htaccess', 'RewriteEngine Off',false);
 
 

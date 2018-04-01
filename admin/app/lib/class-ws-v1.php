@@ -34,10 +34,7 @@
 ############################################################################################################################################
 # INICIAMOS A CLASSE BASE DO SISTEMA
 ############################################################################################################################################
-	class WS {
-		const includePath 				=null;
-		const rootPath 					=null;
-		const domain 					=null;
+	class ws extends wsconfig {
 		public function __construct() {
 			$this->dataRelType          = "item";
 			$this->setpag               = null;

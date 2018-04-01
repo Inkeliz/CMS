@@ -437,7 +437,7 @@ class htmlProcess{
 				foreach ($atributos as $key => $value) {
 					if(strpos($value,",")!==false){
 						$vars 			= explode(',', $value);
-						if(in_array($vars[0],$type)){
+					//	if(in_array($vars[0],$type)){
 							$isso[] 		= "{{".$key."}}";
 							if($vars[0]!="img"){
 								$lip=$lipsum->$vars[0]($vars[1]); 
@@ -445,9 +445,9 @@ class htmlProcess{
 							}else{
 								$porisso[] 		="imagem";
 							}
-						}else{
-							die("Valores inválidos em <ws-lipsum ".$key."='".$vars[0]."'> Valores permitidos:'".implode($type,"','")."'");
-						}
+						// }else{
+						// 	die("Valores inválidos em <ws-lipsum ".$key."='".$vars[0]."'> Valores permitidos:'".implode($type,"','")."'");
+						// }
 					}else{
 						if(in_array($value,$type)){
 							if($value!="img"){

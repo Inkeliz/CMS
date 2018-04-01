@@ -92,7 +92,7 @@
 
 var ws = new Object();
 ws = {
-	rootPath:null,
+	//{{rootPath}},
 	info: {
 		version: "0.3.4",
 		compatible: "6.2+",

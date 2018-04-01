@@ -26,13 +26,21 @@
 ####################################################################################
 # DEFINIMOS O PATH DE INSTALAÇÃO DO WEBSITE
 ####################################################################################
-if(!defined("ROOT_WEBSHEEP"))	{
-	$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
-	$path = implode(array_filter(explode('/',$path)),"/");
-	define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
-}
+	if(!defined("ROOT_WEBSHEEP"))	{
+		$path = substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'admin'));
+		$path = implode(array_filter(explode('/',$path)),"/");
+		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
+	}
 
 	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
+
+	class wsconfig{
+		const includePath 	=INCLUDE_PATH;
+		const rootPath 		=ROOT_WEBSHEEP;
+		const domain 		="{{domain}}";
+	}
+
+
 
 ####################################################################################
 # UTILIZE FALSE ESTRITAMENTE PARA DESENVOLVIMENTO!!!!

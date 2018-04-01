@@ -118,17 +118,9 @@ function get_caller_info() {
 # REFRESH PATH NO FUNCTIONS WS JS
 #########################################################################
 	function refresh_Path_functions_JS(){
+		$pathModel 		= 	INCLUDE_PATH.'admin/app/templates/js/websheep/functionsws_model.js';
 		$pathDestino 	= 	INCLUDE_PATH.'admin/app/templates/js/websheep/functionsws.js';
-		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($pathDestino)));
-		$newClass		=	array();
-		foreach ($htaccess as $key => $line) {
-			if (strpos($line,"rootPath:") >= 1) {
-  				$line=  '	rootPath:"'.ROOT_WEBSHEEP.'",';
-			}
-			$newClass[] =  $line;		
-		}
-		copy($pathDestino,$pathDestino.'.bkp');
-		file_put_contents($pathDestino, implode(PHP_EOL,$newClass));
+		file_put_contents($pathDestino, str_replace('//{{rootPath}},', 'rootPath:"'.ROOT_WEBSHEEP.'",', file_get_contents($pathModel)));
 	}
 #########################################################################
 # REFRESH PATH NO FUNCTION WS EM PHP
@@ -137,6 +129,7 @@ function get_caller_info() {
 		$pathDestino 	= 	INCLUDE_PATH.'admin/app/lib/class-ws-v1.php';
 		$htaccess 		=	array_filter(explode(PHP_EOL,file_get_contents($pathDestino)));
 		$newClass		=	array();
+		
 		foreach ($htaccess as $key => $line) {
 			if (strpos($line,"const includePath") >= 1) {
   				$line=  '		const includePath="'.INCLUDE_PATH.'";';
@@ -156,7 +149,7 @@ function get_caller_info() {
 #########################################################################
     function refresh_Path_AllFiles(){
 		 refresh_Path_functions_JS();
-		 refresh_Path_functions_PHP();
+		 // refresh_Path_functions_PHP();
 		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess-admin.txt',	INCLUDE_PATH.'admin/.htaccess');
 		 refresh_Path_htaccess(INCLUDE_PATH.'admin/app/templates/txt/ws-first-htaccess.txt',		INCLUDE_PATH.'.htaccess');
     }
@@ -209,6 +202,7 @@ function get_caller_info() {
 #####################################################################
 	function _file_put_contents($file,$content,$replace=true, $bkp=false){
 		$bkp_date = date('Y_m_d_H_i_s_', time()).md5(microtime(true));
+
 		if(file_exists($file) && is_file($file) && $replace==true && $bkp==true){
 			if(copy($file, $file.'__bkp_'.$bkp_date)){
 				if(file_put_contents($file, $content)){
@@ -225,6 +219,8 @@ function get_caller_info() {
 			}else{
 				return false;
 			};
+		}elseif(file_exists($file) && $replace==false){
+			return true;
 		}else{
 			if(file_put_contents($file, $content)){
 				return true;
