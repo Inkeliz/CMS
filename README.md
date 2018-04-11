@@ -1,4 +1,4 @@
-![WebSheep](https://raw.githubusercontent.com/websheep/cms/v.6.3/admin/App/Templates/img/websheep/logoEmail.png)
+![WebSheep](https://raw.githubusercontent.com/websheep/cms/v.6.3/admin/app/templates/img/websheep/logoEmail.png)
 
 
 ![Latest Stable Version](https://img.shields.io/badge/version-0.6.3-blue.svg)
@@ -16,7 +16,7 @@ Este software é distribuido sob a licença [GNU GPLv3](https://choosealicense.c
 
 ## Instalação simples e rápida
 
-Faça download do diretório **/ws-install/**  e jogue na raiz do seu servidor ( *ex: /www/ws-install/* ). 
+Faça download do diretório **/ws-install-master/**  e jogue na raiz do seu servidor ( *ex: /www/ws-install-master/* ). 
 
 Execute o script e prossiga com a instalação normalmente. 
 
