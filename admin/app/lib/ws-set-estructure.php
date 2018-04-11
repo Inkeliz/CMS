@@ -41,6 +41,7 @@
 		_mkdir('website/assets/upload-files/thumbnail',true);
 		_mkdir('website/assets/libraries',true);
 		_copyFolder('admin/app/ws-modules/plugins', 'website/plugins',true);
+		_copyFolder('admin/app/ws-modules/ws-update/ws-update', 'ws-update',true);
 		_copy(INCLUDE_PATH."admin/app/lib/my-shortcode.php",INCLUDE_PATH."ws-shortcodes/my-shortcode.php",false);
 
 		_file_put_contents(INCLUDE_PATH.'website/includes/header.php', 'Header<hr>',false,true);

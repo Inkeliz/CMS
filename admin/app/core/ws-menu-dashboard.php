@@ -172,8 +172,8 @@
 	$menu_dashboard->dashboard_modal_logOut_bot1	= ws::getlang('dashboard>modal>logOut>bot1');
 	$menu_dashboard->dashboard_modal_logOut_bot2	= ws::getlang('dashboard>modal>logOut>bot2');
 
-
 	$menu_dashboard->label_logout_loading			= ws::getlang('dashboard>modal>logOut>loading');
+	$menu_dashboard->ASH_UPDATE						= ws::setTokenRest('2 days');
 
 	$menu_dashboard->block("MENU_DASHBOARD");
 	$menu_dashboard->show();
