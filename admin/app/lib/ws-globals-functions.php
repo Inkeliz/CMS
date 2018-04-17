@@ -1690,7 +1690,6 @@ function get_caller_info() {
 		if ($result !== false) {
 			$statusCode = @curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			@curl_close($curl);
-
 			if ($statusCode == 200) {
 				return true;
 			}else{

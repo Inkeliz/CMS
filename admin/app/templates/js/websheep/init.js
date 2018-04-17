@@ -127,7 +127,37 @@ $(document).ready(function(){
 			// 	bottomColor:"#000"
 			// })
 
-
+			if(directAccess.oldVersion.deprecated==true){
+				ws.alert.top({
+					mensagem:"A sua versão do painel está obsoleta. <a id='update'><b>Faça update agora</b></a> ",
+					clickclose:true,
+					height:20,
+					timer:7000,
+					posFn:function(){ 
+						$("#update").bind("click tap press",function(){
+							$(".updateRestore").click();						
+						})
+					},
+					styleText:"color:#ffffff",
+					background:"#bc0d0d",
+					bottomColor:"#000"
+				})
+			}else if(directAccess.newUpdate==true){
+				ws.alert.top({
+					mensagem:"Oba! O WebSheep disponibilizou uma atualização do painel! <a id='update'><b>Faça update agora</b></a> ",
+					clickclose:true,
+					height:20,
+					timer:10000,
+					posFn:function(){ 
+						$("#update").bind("click tap press",function(){
+							$(".updateRestore").click();						
+						})
+					},
+					styleText:"color:#ffffff;text-shadow: -1px -1px 1px #3a5104;",
+					background:"#75a700",
+					bottomColor:"#000"
+				})
+			}
 			window.CloseMenu = function(){
 				$("#menu_tools,#container").removeClass("open").addClass("closed"); 
 				$("#menu_tools .FolderOpen").click();
@@ -367,13 +397,8 @@ $(document).ready(function(){
 				})			
 			}
 			window.refreshMenuDesktop();
-
-
-
-
-
 			$("#preloadWS").hide("fade", {}, 1000);
-			//RightClick.init('html');// tira click direito
+			RightClick.init('html');// tira click direito
 			$(".ws_menu .folder").unbind("click contextmenu  tap press mousedown").bind("click contextmenu  tap press mousedown",function(){
 				$('.ws_menu_popup').fadeOut('fast');
 				$(this).parent().find('.ws_menu_popup').fadeIn('fast');
@@ -437,6 +462,9 @@ $(document).ready(function(){
 		 	if(directAccess.type_obj=='files' && directAccess.id_item>0){
 			 	var linkAccess = ws.rootPath+"admin/app/ws-modules/ws-model-tool/files.php?direct=true&ws_nivel=-1&ws_id_ferramenta="+directAccess.id_tool+"&id_item="+directAccess.id_item;
 		 	}
+
+
+
 		 	if(linkAccess!=null){
 				confirma({
 					width:"auto",
@@ -451,7 +479,6 @@ $(document).ready(function(){
 					}
 				})
 		 	}
-
 		 }
 
 
