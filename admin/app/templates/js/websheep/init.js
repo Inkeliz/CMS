@@ -142,7 +142,9 @@ $(document).ready(function(){
 					background:"#bc0d0d",
 					bottomColor:"#000"
 				})
-			}else if(directAccess.newUpdate==true){
+			}
+
+			if(directAccess.newUpdate==true){
 				ws.alert.top({
 					mensagem:"Oba! O WebSheep disponibilizou uma atualização do painel! <a id='update'><b>Faça update agora</b></a> ",
 					clickclose:true,

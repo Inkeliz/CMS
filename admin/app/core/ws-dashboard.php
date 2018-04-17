@@ -222,6 +222,7 @@
 	$GITVersion  		= json_decode(file_get_contents(ws::protocolURL().DOMINIO.ROOT_WEBSHEEP.'ws-branches'));
  	$versionDeprecated 	= 'false';
  	$versionNewVersion 	= $localVersion->version;
+
 	foreach ($GITVersion as $value) {
 		if (version_compare($localVersion->version, str_replace('v.',"",$value->name)) < 0) {
 			$versionDeprecated = 'true';
