@@ -545,6 +545,22 @@
 				} while ($mysqli->more_results() && $mysqli->next_result());
 			}
 			
+
+
+			##########################################################################################
+			#  DATA E HORA DO INSTALAÇÃO/UPDATE   
+			##########################################################################################
+			// $updateDateTime = new DateTime("now"); 
+			// $updateDateTime = $updateDateTime->format( 'Y-m-d H:i:sP' );
+			// $I = new MySQL();
+			// $I->set_table(PREFIX_TABLES . 'setupdata');
+			// $I->set_where('id=1');
+			// $I->set_update('data_update',$updateDateTime);
+			// $I->debug(0);
+			// $I->salvar();
+
+
+
 			##################################################################################
 			# AGORA SELECIONAMOS OS CAMPOS DA FERRAMENTA
 			##################################################################################
