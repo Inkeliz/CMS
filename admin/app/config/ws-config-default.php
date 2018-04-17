@@ -32,7 +32,9 @@
 		define('ROOT_WEBSHEEP',(($path=="") ? "/" : '/'.$path.'/'));
 	}
 
-	if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));}
+	if(!defined("INCLUDE_PATH")){
+		define("INCLUDE_PATH",str_replace("\\","/",substr(realpath(__DIR__),0,strrpos(realpath(__DIR__),'admin'))));
+	}
 
 	class wsconfig{
 		const includePath 	=INCLUDE_PATH;
@@ -68,7 +70,7 @@
  *
  * Chaves únicas de autenticação e salts.
  * Altere cada chave para um frase única!
- * Você pode gerá-las usando o {@link https://api.websheep.com.br/ws-config-secret-key}
+ * Você pode gerá-las usando o {@link api.websheep.com.br/ws-config-secret-key}
  * Você pode alterá-las a qualquer momento para desvalidar quaisquer cookies existentes. 
  * Isto irá forçar todos os usuários a fazerem login novamente.
  *
@@ -92,13 +94,17 @@ if(!defined("NONCE_SALT"))			define('NONCE_SALT',		'{NONCE_SALT}');
 ############################################
 #	VERSÃO DO PHP REQUERIDO
 ############################################
-if(!defined("php_version")) 	define('php_version',file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-php-version.txt'));
+if(!defined("php_version")) 	{
+	define('php_version',file_get_contents(INCLUDE_PATH.'admin/app/templates/txt/ws-php-version.txt'));
+}
 
 ############################################
 #	DEFINE O IDIOMA DO ADMIN
 ############################################
 // TRADUÇÃO ANTIGA
-if( !defined( '__LANG__' ) )define( '__LANG__', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-lang.json')));
+if( !defined( '__LANG__' ) ){
+	define( '__LANG__', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-lang.json')));
+}
 
 // TRADUÇÃO NOVA (em desenvolvimento ainda)
 if( !defined( 'wslang' ) )	define( 'wslang', str_replace(array(PHP_EOL,"\n","\r"),"",file_get_contents(INCLUDE_PATH.'admin/app/config/lang/'.LANG.'.json')) );

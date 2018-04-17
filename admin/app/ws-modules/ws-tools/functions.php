@@ -2101,10 +2101,18 @@
 		#  VERSÃO DO SISTEMA   
 		##########################################################################################
 		$localVersion  = json_decode(file_get_contents(INCLUDE_PATH.'admin/app/templates/json/ws-update.json'));
+		
+		##########################################################################################
+		#  DATA E HORA DO INSTALAÇÃO/UPDATE   
+		##########################################################################################
+		$updateDateTime = new DateTime("now"); 
+		$updateDateTime = $updateDateTime->format( 'Y-m-d H:i:sP' );
 		$I = new MySQL();
 		$I->set_table(PREFIX_TABLES . 'setupdata');
 		$I->set_insert('id', 1);
 		$I->set_insert('system_version',$localVersion->version);
+		$I->set_insert('data_update',$updateDateTime);
+
 		//####################################### apenas se for o setup inicial
 		
 		if (isset($_REQUEST['formulario'])) {

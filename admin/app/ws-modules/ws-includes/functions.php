@@ -44,13 +44,10 @@ function SalvaPaths(){
 		$setupdata->set_update('url_ignore_add','1');
 	}else{
 		$setupdata->set_update('url_ignore_add','0');
-
 	}
 	
 	if($setupdata->salvar()){
-
 		echo "sucesso";exit;
-
 	};
 
 

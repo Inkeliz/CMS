@@ -370,6 +370,7 @@ if(!defined("INCLUDE_PATH")){define("INCLUDE_PATH",str_replace("\\","/",substr(r
 	add_if_not_exist('setupdata'	,'ip' 					,'float NOT NULL default 0');
 	add_if_not_exist('setupdata'	,'plano' 				,'int(11) NOT NULL default 0');
 	add_if_not_exist('setupdata'	,'data_criacao' 		,'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP');
+	add_if_not_exist('setupdata'	,'data_update' 			,'DATETIME NOT NULL');
 	add_if_not_exist('setupdata'	,'url_exclusiva' 		,'varchar(300) 	NULL default ""');
 	add_if_not_exist('setupdata'	,'valor_pag' 			,'varchar(50) 	NULL DEFAULT ""');
 	add_if_not_exist('setupdata'	,'prest_pag' 			,'varchar(50) 	NULL default ""');
