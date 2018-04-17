@@ -239,13 +239,17 @@
 	if($versionDeprecated=='false'){
 		$url 			= 'http://websheep.com.br/commit/lasted-push-github.json';
 		$lastVersion 	= @file_get_contents($url);
+
 		if($lastVersion){
 			$lastVersion = json_decode($lastVersion);
-			$githubData = new DateTime($lastVersion->date.'T'.$lastVersion->time);
+			$githubData = new DateTime($lastVersion[0]->date.'T'.$lastVersion[0]->time);
 			$githubData = $githubData->format('Y-m-d H:i:s');
 			$myLastUpdate = new DateTime($setupdata['data_update']);
 			$myLastUpdate = $myLastUpdate->format('Y-m-d H:i:s');
-			if($githubData > $myLastUpdate){$TEMPLATE->NEW_UPDATE='true';}
+
+			if($githubData > $myLastUpdate){
+				$TEMPLATE->NEW_UPDATE='true';
+			}
 		}
 	}
 
