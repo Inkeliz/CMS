@@ -1387,7 +1387,7 @@ function get_caller_info() {
 	    $senha = "";
 
 	    // Definindo o tamanho 0 não precisará fazer nada
-	    if ($tamanho === 0 || !is_int($tamanho)) {
+	    if ($tamanho == 0) {
 		return  $senha;
 	    }
 
@@ -1407,7 +1407,7 @@ function get_caller_info() {
 		// 52 - 61 = 1234567890                 // ASCII = 48-57
 		$int -= (((51 - $int) & ($int - 62)) >> 8) & 4;
 
-		// 62-69 = !@#$%*-                      // ASCII = 33-33 | 64-64 | 35-37 | 42-42 | 45-45
+		// 62 - 68 = !@#$%*-                      // ASCII = 33-33 | 64-64 | 35-37 | 42-42 | 45-45
 		$int -= (((61 - $int) & ($int - 63)) >> 8) & 29;
 		$int -= (((63 - $int) & ($int - 67)) >> 8) & 29;
 		$int -= (((66 - $int) & ($int - 68)) >> 8) & 25;
