@@ -1383,23 +1383,44 @@ function get_caller_info() {
 ############################################################################################################################
 #	CRIA UMA SENHA ALEATÓRIA
 ############################################################################################################################
-	function createPass($tamanho = 8, $maiusculas = true, $numeros = true, $simbolos = false){
-		$lmin = 'abcdefghijklmnopqrstuvwxyz';
-		$lmai = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$num  = '1234567890';
-		$simb = '!@#$%*-';
-		$retorno = '';
-		$caracteres = '';
-		$caracteres .= $lmin;
-		if ($maiusculas) $caracteres .= $lmai;
-		if ($numeros) $caracteres .= $num;
-		if ($simbolos) $caracteres .= $simb;
-		$len = strlen($caracteres);
-		for ($n = 1; $n <= $tamanho; $n++) {
-			$rand = mt_rand(1, $len);
-			$retorno .= $caracteres[$rand-1];
-		}
-		return $retorno;
+	function createPass($tamanho = 8, $maiusculas = true, $numeros = true, $simbolos = false) {
+	    $senha = "";
+
+	    // Definindo o tamanho 0 não precisará fazer nada
+	    if ($tamanho == 0) {
+		return  $senha;
+	    }
+
+	    // Define o maximo entre 0 até N caracters possíveis caracteres
+	    $max = 68;
+	    $max = $maiusculas ? 52 : $max;
+	    $max = $numeros ? 62 : $max;
+	    $max = $simbolos ? 68 : $max;
+
+	    for ($n = 0; $n < $tamanho; $n++) {
+		$int = \random_int(0, $max);
+
+		// 00 - 25 = abcdefghijklmnopqrstuvwxyz // ASCII = 97-122
+		$int += (((-1 - $int) & ($int - 26)) >> 8) & 97;
+		$int -= (((25 - $int) & ($int - 52)) >> 8) & 26;
+
+		// 52 - 61 = 1234567890                 // ASCII = 48-57
+		$int -= (((51 - $int) & ($int - 62)) >> 8) & 4;
+
+		// 62-69 = !@#$%*-                      // ASCII = 33-33 | 64-64 | 35-37 | 42-42 | 45-45
+		$int -= (((61 - $int) & ($int - 63)) >> 8) & 29;
+		$int -= (((63 - $int) & ($int - 67)) >> 8) & 29;
+		$int -= (((66 - $int) & ($int - 68)) >> 8) & 25;
+		$int -= (((67 - $int) & ($int - 69)) >> 8) & 23;
+		$int += (((62 - $int) & ($int - 64)) >> 8) & 1;
+
+		// 26 - 51 = ABCDEFGHIJKLMNOPQRSTUVWXYZ // ASCII = 65-90
+		$int += (((-1 - $int) & ($int - 26)) >> 8) & 65;
+
+		$senha .= \pack('C', $int);
+	    }
+
+	    return $senha;
 	}
 
 ##########################################################################################################
