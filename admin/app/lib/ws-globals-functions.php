@@ -1392,9 +1392,9 @@ function get_caller_info() {
 	    }
 
 	    // Define o maximo entre 0 até N caracters possíveis caracteres
-	    $max = 68;
-	    $max = $maiusculas ? 52 : $max;
-	    $max = $numeros ? 62 : $max;
+	    $max = 26;
+	    $max = $maiusculas ? 51 : $max;
+	    $max = $numeros ? 61 : $max;
 	    $max = $simbolos ? 68 : $max;
 
 	    for ($n = 0; $n < $tamanho; $n++) {
