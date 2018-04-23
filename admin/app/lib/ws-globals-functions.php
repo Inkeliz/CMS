@@ -1387,7 +1387,7 @@ function get_caller_info() {
 	    $senha = "";
 
 	    // Definindo o tamanho 0 não precisará fazer nada
-	    if ($tamanho == 0) {
+	    if ($tamanho === 0 || !is_int($tamanho)) {
 		return  $senha;
 	    }
 
